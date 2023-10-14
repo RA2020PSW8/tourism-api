@@ -27,4 +27,15 @@ public class AuthenticationController : BaseApiController
         var result = _authenticationService.Login(credentials);
         return CreateResponse(result);
     }
+
+    [HttpGet("profile")]
+    public ActionResult<AccountRegistrationDto> getStakeholderProfile([FromQuery] long userId)
+    {
+        var profile = _authenticationService.GetPersonProfile(userId);
+        if (profile != null)
+        {
+            return Ok(profile);
+        }
+        return NotFound();
+    }
 }

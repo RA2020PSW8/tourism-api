@@ -29,13 +29,17 @@ public class AuthenticationService : IAuthenticationService
         try
         {
             personId = _userRepository.GetPersonId(user.Id);
+            var personProfile = GetPersonProfile(personId);
         }
         catch (KeyNotFoundException)
         {
             personId = 0;
         }
+
         return _tokenGenerator.GenerateAccessToken(user, personId);
     }
+
+   
 
     public Result<AuthenticationTokensDto> RegisterTourist(AccountRegistrationDto account)
     {
@@ -53,5 +57,23 @@ public class AuthenticationService : IAuthenticationService
             return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
             // There is a subtle issue here. Can you find it?
         }
+    }
+
+    public AccountRegistrationDto GetPersonProfile(long userId)
+    {
+       
+        var personProfile = _personRepository.Get(userId);
+
+        
+        var account = new AccountRegistrationDto
+        {
+            Name = personProfile.Name,
+            Surname = personProfile.Surname,
+            ProfileImage = personProfile.ProfileImage,
+            Biography = personProfile.Biography,
+            Quote = personProfile.Quote
+        };
+
+        return account;
     }
 }
