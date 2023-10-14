@@ -5,7 +5,7 @@ using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.Core.Domain;
 using FluentResults;
 
-namespace Explorer.Tours.Core.UseCases.Administration;
+namespace Explorer.Tours.Core.UseCases.TourAuthoring;
 
 public class KeypointService : CrudService<KeypointDto, Keypoint>, IKeypointService
 {
