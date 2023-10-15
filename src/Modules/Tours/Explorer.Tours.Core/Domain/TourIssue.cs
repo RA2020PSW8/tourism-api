@@ -22,7 +22,7 @@ namespace Explorer.Tours.Core.Domain
         public TourIssue(string category, uint priority, string description, DateTime dateTime)
         {
             if (string.IsNullOrWhiteSpace(category)) throw new ArgumentNullException("Category must be filled.");
-            if (priority < 1 || priority > 5) throw new ArgumentException("Invalid priority."); 
+            if (priority < 0 || priority > 5) throw new ArgumentException("Invalid priority."); 
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentNullException("Description is required.");
 
             Category = category;

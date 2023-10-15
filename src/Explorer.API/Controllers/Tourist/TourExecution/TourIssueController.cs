@@ -46,7 +46,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
         }
 
         [HttpDelete("{id:int}")]
-        public ActionResult<TourIssueDto[]> Delete(int id) 
+        public ActionResult Delete(int id) 
         {
             var result = _tourIssueService.Delete(id);
             return CreateResponse(result);
