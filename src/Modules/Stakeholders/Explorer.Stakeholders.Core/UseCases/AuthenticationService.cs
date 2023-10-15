@@ -1,23 +1,27 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+﻿using AutoMapper;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
+using System.Diagnostics;
 
 namespace Explorer.Stakeholders.Core.UseCases;
 
-public class AuthenticationService : IAuthenticationService
+public class AuthenticationService : CrudService<PersonDto,Person>, IAuthenticationService
 {
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IUserRepository _userRepository;
     private readonly ICrudRepository<Person> _personRepository;
+    private readonly IMapper _mapper;
 
-    public AuthenticationService(IUserRepository userRepository, ICrudRepository<Person> personRepository, ITokenGenerator tokenGenerator)
+    public AuthenticationService(IUserRepository userRepository, ICrudRepository<Person> personRepository, ITokenGenerator tokenGenerator, IMapper mapper): base (personRepository,mapper)
     {
         _tokenGenerator = tokenGenerator;
         _userRepository = userRepository;
         _personRepository = personRepository;
+        _mapper = mapper;
     }
 
     public Result<AuthenticationTokensDto> Login(CredentialsDto credentials)
@@ -76,4 +80,48 @@ public class AuthenticationService : IAuthenticationService
 
         return account;
     }
+
+   
+    public Result<PersonDto> UpdateProfile(long id, PersonDto updatedPerson)
+    {
+
+        var existingPerson = _personRepository.Get(id);
+
+        if (existingPerson == null)
+        {
+            return Result.Fail(FailureCode.NotFound);
+        }
+        var profile = new PersonDto
+        {
+            UserId = existingPerson.Id,
+            Name = existingPerson.Name,
+            Surname = existingPerson.Surname,
+            ProfileImage = existingPerson.ProfileImage,
+            Biography = existingPerson.Biography,
+            Quote = existingPerson.Quote,
+            Email = existingPerson.Email
+        };
+
+        //profile.UserId = existingPerson.UserId;
+        profile.Name = updatedPerson.Name;
+        profile.Surname = updatedPerson.Surname;
+        profile.ProfileImage = updatedPerson.ProfileImage;
+        profile.Biography = updatedPerson.Biography;
+        profile.Quote = updatedPerson.Quote;
+        Console.WriteLine(profile);
+
+
+        existingPerson = _mapper.Map<Person>(profile);
+        _personRepository.Update(existingPerson);
+        var updatedPersonDto = _mapper.Map<PersonDto>(existingPerson);
+        return Result.Ok(updatedPersonDto);
+    }
+
 }
+
+
+
+
+
+
+

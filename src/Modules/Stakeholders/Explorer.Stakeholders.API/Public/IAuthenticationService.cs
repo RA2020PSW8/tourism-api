@@ -9,4 +9,7 @@ public interface IAuthenticationService
     Result<AuthenticationTokensDto> RegisterTourist(AccountRegistrationDto account/*, PersonDto person*/);
 
     AccountRegistrationDto GetPersonProfile(long userId);
+
+    Result<PersonDto> UpdateProfile(long id, PersonDto updatedPerson);
+
 }

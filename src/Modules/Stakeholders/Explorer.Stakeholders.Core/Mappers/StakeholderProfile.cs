@@ -8,6 +8,6 @@ public class StakeholderProfile : Profile
 {
     public StakeholderProfile()
     {
-       // CreateMap<PersonDto, Person>().ReverseMap();
+        CreateMap<PersonDto, Person>().ReverseMap();
     }
 }

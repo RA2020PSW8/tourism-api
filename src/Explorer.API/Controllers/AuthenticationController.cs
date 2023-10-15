@@ -1,5 +1,6 @@
 ﻿using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
+using Explorer.Tours.API.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers;
@@ -37,5 +38,12 @@ public class AuthenticationController : BaseApiController
             return Ok(profile);
         }
         return NotFound();
+    }
+
+    [HttpPut("{id:int}")]
+    public ActionResult<EquipmentDto> Update(int id,[FromBody] PersonDto person)
+    {
+        var result = _authenticationService.UpdateProfile(id,person);
+        return CreateResponse(result);
     }
 }

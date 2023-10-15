@@ -47,8 +47,20 @@ public class CrudDatabaseRepository<TEntity, TDbContext> : ICrudRepository<TEnti
         }
         catch (DbUpdateException e)
         {
-            throw new KeyNotFoundException(e.Message);
-        }
+            
+       
+            if (e.InnerException != null)
+            {
+                Console.WriteLine("Inner Exception Message: " + e.InnerException.Message);
+                Console.WriteLine("Inner Exception Stack Trace: " + e.InnerException.StackTrace);
+            }
+            else
+            {
+                Console.WriteLine("Exception Message: " + e.Message);
+                Console.WriteLine("Exception Stack Trace: " + e.StackTrace);
+            }
+        
+    }
         return entity;
     }
 
