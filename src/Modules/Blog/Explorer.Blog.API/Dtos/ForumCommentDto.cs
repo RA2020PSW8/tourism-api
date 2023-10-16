@@ -9,9 +9,12 @@ namespace Explorer.Blog.API.Dtos
 {
     public class ForumCommentDto
     {
+        public int Id { get; set; }
         public int ForumId { get; set; }
-        public string Username { get; set; }
-        public string Comment { get; set; }
+        public string? Username { get; set; }
+        public string? Comment { get; set; }
+        public DateTime PostingTime { get; set; }
+        public DateTime LastEditTime { get; set; }
         public bool IsDeleted { get; set; }
     }
 }
