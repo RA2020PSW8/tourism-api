@@ -1,12 +1,13 @@
 ﻿using Explorer.Blog.API.Dtos;
-using Explorer.Blog.API.Public.Comment;
+using Explorer.Blog.API.Public.Commenting;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist.Commenting
 {
     [Authorize(Policy = "touristPolicy")]
-    [Route("api/commenting/comment")]
+    [Route("api/blog/comments")]
     public class ForumCommentController : BaseApiController
     {
         private readonly IForumCommentService _forumCommentService;
@@ -17,6 +18,13 @@ namespace Explorer.API.Controllers.Tourist.Commenting
         }
 
         [HttpGet]
+        public ActionResult<PagedResult<ForumCommentDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var result = _forumCommentService.GetPaged(page, pageSize);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("{id:int}")]
         public ActionResult<ForumCommentDto> Get(int id)
         {
             var result = _forumCommentService.Get(id);

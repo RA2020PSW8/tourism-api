@@ -11,24 +11,26 @@ namespace Explorer.Blog.Core.Domain
     public class ForumComment : Entity
     {
         public int ForumId { get; private set; }
-        public User? User { get; private set; }  
+        public string? Username { get; private set; }  
         public string? Comment { get; private set; }
         public DateTime PostTime { get; private set; }  
-        public DateTime LastEditTime { get; set; }
-        public bool IsDeleted { get; set; }
+        public DateTime LastEditTime { get; private set; }
+        public bool IsDeleted { get; private set; }
 
         public ForumComment() 
         {
             Id = -1;
         }
 
-        public ForumComment(int forumId, User? user, string? comment)
+        public ForumComment(int id,int forumId, string? username, string? comment,DateTime postTime,DateTime lastEditTime,bool isDeleted)
         {
-            Id = -1;
+            Id = id;
             ForumId = forumId;
-            User = user;
+            Username = username;
             Comment = string.IsNullOrEmpty(comment) ? string.Empty : comment;
-            PostTime = DateTime.Now;
+            PostTime = postTime;
+            LastEditTime = lastEditTime;
+            IsDeleted = isDeleted;
         }
     }
 }
