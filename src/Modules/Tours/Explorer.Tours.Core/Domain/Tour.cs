@@ -43,6 +43,7 @@ namespace Explorer.Tours.Core.Domain
             if (UserId <= 0) throw new ArgumentException("Invalid UserId");
             if (string.IsNullOrWhiteSpace(Description)) throw new ArgumentException("Invalid description.");
             if (Price < 0) throw new Exception("Invalid price.");
+            if (string.IsNullOrEmpty(Name)) throw new ArgumentException("Invalid name");
         }
     }
 }
