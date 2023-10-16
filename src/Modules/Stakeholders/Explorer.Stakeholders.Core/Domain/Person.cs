@@ -31,7 +31,7 @@ public class Person : Entity
         if (string.IsNullOrWhiteSpace(Name)) throw new ArgumentException("Invalid Name");
         if (string.IsNullOrWhiteSpace(Surname)) throw new ArgumentException("Invalid Surname");
         if (!MailAddress.TryCreate(Email, out _)) throw new ArgumentException("Invalid Email");
-        if (string.IsNullOrWhiteSpace(ProfileImage)) throw new ArgumentException("Invalid ProfileImages");
+        if (string.IsNullOrWhiteSpace(ProfileImage)) throw new ArgumentException("Invalid ProfileImage");
         if (string.IsNullOrWhiteSpace(Biography)) throw new ArgumentException("Invalid Biography");
         if (string.IsNullOrWhiteSpace(Quote)) throw new ArgumentException("Invalid Quote");
     }
