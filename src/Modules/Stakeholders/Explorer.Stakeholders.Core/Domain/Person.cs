@@ -35,4 +35,6 @@ public class Person : Entity
         if (string.IsNullOrWhiteSpace(Biography)) throw new ArgumentException("Invalid Biography");
         if (string.IsNullOrWhiteSpace(Quote)) throw new ArgumentException("Invalid Quote");
     }
+
+
 }

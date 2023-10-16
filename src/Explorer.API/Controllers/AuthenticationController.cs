@@ -41,9 +41,11 @@ public class AuthenticationController : BaseApiController
     }
 
     [HttpPut("{id:int}")]
-    public ActionResult<EquipmentDto> Update(int id,[FromBody] PersonDto person)
+    public ActionResult<PersonDto> Update(int id, [FromBody] PersonDto updatedPerson)
     {
-        var result = _authenticationService.UpdateProfile(id,person);
+        updatedPerson.Id = id; // Ensure the ID is set correctly
+
+        var result = _authenticationService.Update(updatedPerson);
         return CreateResponse(result);
     }
 }

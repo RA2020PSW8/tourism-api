@@ -81,39 +81,26 @@ public class AuthenticationService : CrudService<PersonDto,Person>, IAuthenticat
         return account;
     }
 
-   
-    public Result<PersonDto> UpdateProfile(long id, PersonDto updatedPerson)
-    {
 
-        var existingPerson = _personRepository.Get(id);
+    public Result<PersonDto> Update(PersonDto updatedPerson)
+    {
+        // Retrieve the existing Person entity by its ID or some other identifier
+        var existingPerson = _personRepository.Get(updatedPerson.Id);
 
         if (existingPerson == null)
         {
             return Result.Fail(FailureCode.NotFound);
         }
-        var profile = new PersonDto
-        {
-            UserId = existingPerson.Id,
-            Name = existingPerson.Name,
-            Surname = existingPerson.Surname,
-            ProfileImage = existingPerson.ProfileImage,
-            Biography = existingPerson.Biography,
-            Quote = existingPerson.Quote,
-            Email = existingPerson.Email
-        };
 
-        //profile.UserId = existingPerson.UserId;
-        profile.Name = updatedPerson.Name;
-        profile.Surname = updatedPerson.Surname;
-        profile.ProfileImage = updatedPerson.ProfileImage;
-        profile.Biography = updatedPerson.Biography;
-        profile.Quote = updatedPerson.Quote;
-        Console.WriteLine(profile);
+        // Map the updatedPerson DTO to the existing Person entity
+        _mapper.Map(updatedPerson, existingPerson);
 
-
-        existingPerson = _mapper.Map<Person>(profile);
+        // Update the entity in the repository
         _personRepository.Update(existingPerson);
+
+        // Map the updated entity back to a DTO
         var updatedPersonDto = _mapper.Map<PersonDto>(existingPerson);
+
         return Result.Ok(updatedPersonDto);
     }
 
