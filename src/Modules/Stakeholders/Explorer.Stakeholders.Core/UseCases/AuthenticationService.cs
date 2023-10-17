@@ -33,7 +33,7 @@ public class AuthenticationService : CrudService<PersonDto,Person>, IAuthenticat
         try
         {
             personId = _userRepository.GetPersonId(user.Id);
-            var personProfile = GetPersonProfile(personId);
+            
         }
         catch (KeyNotFoundException)
         {
