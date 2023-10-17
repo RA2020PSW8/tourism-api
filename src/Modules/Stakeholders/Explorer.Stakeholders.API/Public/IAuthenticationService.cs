@@ -6,10 +6,10 @@ namespace Explorer.Stakeholders.API.Public;
 public interface IAuthenticationService
 {
     Result<AuthenticationTokensDto> Login(CredentialsDto credentials);
-    Result<AuthenticationTokensDto> RegisterTourist(AccountRegistrationDto account/*, PersonDto person*/);
+    Result<AuthenticationTokensDto> RegisterTourist(AccountRegistrationDto account);
 
-    AccountRegistrationDto GetPersonProfile(long userId);
+    Result<AccountRegistrationDto> GetPersonProfile(long userId);
     Result<PersonDto> Update(PersonDto updatedPerson);
-    //Result<PersonDto> UpdateProfile(long id, PersonDto updatedPerson);
+    
 
 }

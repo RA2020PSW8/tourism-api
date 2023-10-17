@@ -63,7 +63,7 @@ public class AuthenticationService : CrudService<PersonDto,Person>, IAuthenticat
         }
     }
 
-    public AccountRegistrationDto GetPersonProfile(long userId)
+    public Result<AccountRegistrationDto> GetPersonProfile(long userId)
     {
        
         var personProfile = _personRepository.Get(userId);
@@ -78,13 +78,13 @@ public class AuthenticationService : CrudService<PersonDto,Person>, IAuthenticat
             Quote = personProfile.Quote
         };
 
-        return account;
+        return Result.Ok(account);
     }
 
 
     public Result<PersonDto> Update(PersonDto updatedPerson)
     {
-        // Retrieve the existing Person entity by its ID or some other identifier
+        
         var existingPerson = _personRepository.Get(updatedPerson.Id);
 
         if (existingPerson == null)
@@ -92,13 +92,13 @@ public class AuthenticationService : CrudService<PersonDto,Person>, IAuthenticat
             return Result.Fail(FailureCode.NotFound);
         }
 
-        // Map the updatedPerson DTO to the existing Person entity
+        
         _mapper.Map(updatedPerson, existingPerson);
 
-        // Update the entity in the repository
+       
         _personRepository.Update(existingPerson);
 
-        // Map the updated entity back to a DTO
+        
         var updatedPersonDto = _mapper.Map<PersonDto>(existingPerson);
 
         return Result.Ok(updatedPersonDto);
