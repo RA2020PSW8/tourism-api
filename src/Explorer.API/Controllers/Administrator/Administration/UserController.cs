@@ -33,12 +33,12 @@ namespace Explorer.API.Controllers.Administrator.Administration
         //    return CreateResponse(result);
         //}
 
-        //[HttpPut("{id:int}")]
-        //public ActionResult<EquipmentDto> Update([FromBody] EquipmentDto equipment)
-        //{
-        //    var result = _equipmentService.Update(equipment);
-        //    return CreateResponse(result);
-        //}
+        [HttpPut("{id:int}")]
+        public ActionResult<UserDto> Update([FromBody] UserDto user)
+        {
+            var result = _userService.Update(user);
+            return CreateResponse(result);
+        }
 
         //[HttpDelete("{id:int}")]
         //public ActionResult Delete(int id)

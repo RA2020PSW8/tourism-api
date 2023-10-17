@@ -14,6 +14,8 @@ namespace Explorer.Stakeholders.API.Dtos
         public string Password { get; set; }
         public UserRole Role { get; set; }
         public bool IsActive { get; set; }
+        public string Mail {  get; set; }
+        public bool IsBlocked {  get; set; }
     }
     public enum UserRole
     {
