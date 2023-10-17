@@ -63,46 +63,7 @@ public class AuthenticationService : CrudService<PersonDto,Person>, IAuthenticat
         }
     }
 
-    public Result<AccountRegistrationDto> GetPersonProfile(long userId)
-    {
-       
-        var personProfile = _personRepository.Get(userId);
-
-        
-        var account = new AccountRegistrationDto
-        {
-            Name = personProfile.Name,
-            Surname = personProfile.Surname,
-            ProfileImage = personProfile.ProfileImage,
-            Biography = personProfile.Biography,
-            Quote = personProfile.Quote
-        };
-
-        return Result.Ok(account);
-    }
-
-
-    public Result<PersonDto> Update(PersonDto updatedPerson)
-    {
-        
-        var existingPerson = _personRepository.Get(updatedPerson.Id);
-
-        if (existingPerson == null)
-        {
-            return Result.Fail(FailureCode.NotFound);
-        }
-
-        
-        _mapper.Map(updatedPerson, existingPerson);
-
-       
-        _personRepository.Update(existingPerson);
-
-        
-        var updatedPersonDto = _mapper.Map<PersonDto>(existingPerson);
-
-        return Result.Ok(updatedPersonDto);
-    }
+    
 
 }
 
