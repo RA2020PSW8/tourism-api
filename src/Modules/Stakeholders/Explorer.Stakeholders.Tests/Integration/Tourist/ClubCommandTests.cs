@@ -28,7 +28,8 @@ namespace Explorer.Stakeholders.Tests.Integration.Tourist
             var newEntity = new ClubDto
             {
                 Name = "Klub55",
-                Description = "Mid"
+                Description = "Mid",
+                UserId = 10
             };
 
             // Act
@@ -75,7 +76,8 @@ namespace Explorer.Stakeholders.Tests.Integration.Tourist
             {
                 Id = -1,
                 Name = "Klub 384",
-                Description = "Kul"
+                Description = "Kul",
+                UserId = -2
             };
 
             // Act
@@ -86,6 +88,7 @@ namespace Explorer.Stakeholders.Tests.Integration.Tourist
             result.Id.ShouldBe(-1);
             result.Name.ShouldBe(updatedEntity.Name);
             result.Description.ShouldBe(updatedEntity.Description);
+            result.UserId.ShouldBe(updatedEntity.UserId); 
 
             // Assert - Database
             var storedEntity = dbContext.Clubs.FirstOrDefault(i => i.Name == "Klub 384");
