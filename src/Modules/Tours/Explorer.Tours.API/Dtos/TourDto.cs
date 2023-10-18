@@ -8,14 +8,14 @@ namespace Explorer.Tours.API.Dtos
 {
     public class TourDto
     {
-        public long UserId { get; init; }
-        public string Name { get; init; }
-        public string Description { get; init; }
-        public double Price { get; init; }
-        public string Difficulty { get; init; }
-        public string TransportType { get; init; }
-        public string Status { get; init; }
-        public List<String> Tags { get; init; }
+        public long UserId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public double Price { get; set; }
+        public string Difficulty { get; set; }
+        public string TransportType { get; set; }
+        public string Status { get; set; }
+        public List<String> Tags { get; set; }
     
         public TourDto()
         {
