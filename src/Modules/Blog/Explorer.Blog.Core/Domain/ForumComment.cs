@@ -12,22 +12,23 @@ namespace Explorer.Blog.Core.Domain
     {
         public int ForumId { get; private set; }
         public string? Username { get; private set; }  
-        public string? Comment { get; private set; }
+        public string Comment { get; private set; }
         public DateTime PostTime { get; private set; }  
         public DateTime LastEditTime { get; private set; }
         public bool IsDeleted { get; private set; }
 
-        public ForumComment() 
+        public ForumComment()
         {
-            Id = -1;
+
         }
 
-        public ForumComment(int id,int forumId, string? username, string? comment,DateTime postTime,DateTime lastEditTime,bool isDeleted)
+        public ForumComment(int forumId, string? username, string comment,DateTime postTime,DateTime lastEditTime,bool isDeleted)
         {
-            Id = id;
             ForumId = forumId;
             Username = username;
-            Comment = string.IsNullOrEmpty(comment) ? string.Empty : comment;
+            if (string.IsNullOrWhiteSpace(comment)) throw new ArgumentException("Invalid comment");
+            
+            Comment = comment;
             PostTime = postTime;
             LastEditTime = lastEditTime;
             IsDeleted = isDeleted;
