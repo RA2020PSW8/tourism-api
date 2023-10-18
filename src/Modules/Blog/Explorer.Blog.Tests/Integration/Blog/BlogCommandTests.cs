@@ -80,7 +80,8 @@ namespace Explorer.Blog.Tests.Integration.Blog
                 Title = "Spectacular visit to Russia",
                 Description = "Spectacular!",
                 CreationDate = DateTime.Now.ToUniversalTime(),
-                ImageLinks = new List<string>() { "www.google.com" },
+                //ImageLinks = new List<string>() { "www.google.com" },
+                ImageLinks = "www.google.com",
                 Status = BlogDto.BlogStatus.DRAFT
             };
 

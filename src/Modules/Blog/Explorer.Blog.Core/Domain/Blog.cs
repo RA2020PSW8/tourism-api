@@ -13,7 +13,9 @@ namespace Explorer.Blog.Core.Domain
         public required string Title { get; init; }
         public required string Description { get; init; }
         public DateTime CreationDate { get; init; }
-        public List<string>? ImageLinks { get; init; }
+
+        //public List<string>? ImageLinks { get; init; }
+        public string ImageLinks { get; init; }
         public BlogStatus Status { get; init; }
 
         public Blog()
@@ -21,7 +23,8 @@ namespace Explorer.Blog.Core.Domain
 
         }
 
-        public Blog(string title, string description, DateTime creationDate, List<string>? imageLinks, BlogStatus status)
+        //public Blog(string title, string description, DateTime creationDate, List<string>? imageLinks, BlogStatus status)
+        public Blog(string title, string description, DateTime creationDate, string imageLinks, BlogStatus status)
         {
             if(string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Title cannot be empty.");

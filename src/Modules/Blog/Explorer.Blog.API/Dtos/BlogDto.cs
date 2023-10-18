@@ -13,7 +13,8 @@ namespace Explorer.Blog.API.Dtos
         public required string Title { get; set; }
         public required string Description { get; set; }
         public DateTime CreationDate { get; set; }
-        public List<string>? ImageLinks { get; set; }
+        //public List<string>? ImageLinks { get; set; }
+        public string? ImageLinks { get; set; }
         public BlogStatus Status { get; set; }
     }
 }
