@@ -12,8 +12,8 @@ namespace Explorer.Stakeholders.API.Public
     public interface IUserService
     {
         Result<PagedResult<UserDto>> GetPaged(int page, int pageSize);
-        //Result<UserDto> Create(UserDto equipment);
+        Result<UserDto> Create(UserDto user);
         Result<UserDto> Update(UserDto user);
-        //Result Delete(int id);
+        Result Delete(int id);
     }
 }

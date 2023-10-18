@@ -26,12 +26,12 @@ namespace Explorer.API.Controllers.Administrator.Administration
             return CreateResponse(result);
         }
 
-        //[HttpPost]
-        //public ActionResult<EquipmentDto> Create([FromBody] EquipmentDto equipment)
-        //{
-        //    var result = _equipmentService.Create(equipment);
-        //    return CreateResponse(result);
-        //}
+        [HttpPost]
+        public ActionResult<UserDto> Create([FromBody] UserDto user)
+        {
+            var result = _userService.Create(user);
+            return CreateResponse(result);
+        }
 
         [HttpPut("{id:int}")]
         public ActionResult<UserDto> Update([FromBody] UserDto user)
@@ -40,11 +40,11 @@ namespace Explorer.API.Controllers.Administrator.Administration
             return CreateResponse(result);
         }
 
-        //[HttpDelete("{id:int}")]
-        //public ActionResult Delete(int id)
-        //{
-        //    var result = _equipmentService.Delete(id);
-        //    return CreateResponse(result);
-        //}
+        [HttpDelete("{id:int}")]
+        public ActionResult Delete(int id)
+        {
+            var result = _userService.Delete(id);
+            return CreateResponse(result);
+        }
     }
 }
