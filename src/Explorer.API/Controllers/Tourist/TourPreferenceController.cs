@@ -17,10 +17,10 @@ namespace Explorer.API.Controllers.Tourist
             _tourPreferenceService = tourPreferenceService;
         }
 
-        [HttpGet]
-        public ActionResult<PagedResult<TourPreferenceDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        [HttpGet("{id:int}")]
+        public ActionResult<TourPreferenceDto> Get(int id)
         {
-            var result = _tourPreferenceService.GetPaged(page, pageSize);
+            var result = _tourPreferenceService.Get(id);
             return CreateResponse(result);
         }
 

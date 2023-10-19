@@ -1,4 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
+using Explorer.Tours.Core.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,21 +34,5 @@ namespace Explorer.Tours.Core.Domain
         {
             if (UserId <= 0) throw new ArgumentException("Invalid UserId");
         }
-    }
-
-    public enum TourDifficulty 
-    {
-        EASY,
-        MEDIUM,
-        HARD,
-        EXTREME
-    }
-
-    public enum TransportType 
-    { 
-        WALK,
-        BIKE,
-        CAR,
-        BOAT 
     }
 }

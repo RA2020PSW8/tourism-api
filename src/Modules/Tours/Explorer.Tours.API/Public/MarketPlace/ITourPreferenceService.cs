@@ -11,7 +11,7 @@ namespace Explorer.Tours.API.Public.MarketPlace
 {
     public interface ITourPreferenceService
     {
-        Result<PagedResult<TourPreferenceDto>> GetPaged(int page, int pageSize);
+        Result<TourPreferenceDto> Get(int id);
         Result<TourPreferenceDto> Create(TourPreferenceDto tourPreference);
         Result<TourPreferenceDto> Update(TourPreferenceDto tourPreference);
         Result Delete(int id);
