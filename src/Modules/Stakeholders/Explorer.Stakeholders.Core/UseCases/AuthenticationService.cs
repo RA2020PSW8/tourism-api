@@ -9,19 +9,17 @@ using System.Diagnostics;
 
 namespace Explorer.Stakeholders.Core.UseCases;
 
-public class AuthenticationService : CrudService<PersonDto,Person>, IAuthenticationService
+public class AuthenticationService : IAuthenticationService
 {
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IUserRepository _userRepository;
     private readonly ICrudRepository<Person> _personRepository;
-    private readonly IMapper _mapper;
 
-    public AuthenticationService(IUserRepository userRepository, ICrudRepository<Person> personRepository, ITokenGenerator tokenGenerator, IMapper mapper): base (personRepository,mapper)
+    public AuthenticationService(IUserRepository userRepository, ICrudRepository<Person> personRepository, ITokenGenerator tokenGenerator)
     {
         _tokenGenerator = tokenGenerator;
         _userRepository = userRepository;
         _personRepository = personRepository;
-        _mapper = mapper;
     }
 
     public Result<AuthenticationTokensDto> Login(CredentialsDto credentials)
@@ -33,26 +31,22 @@ public class AuthenticationService : CrudService<PersonDto,Person>, IAuthenticat
         try
         {
             personId = _userRepository.GetPersonId(user.Id);
-            
         }
         catch (KeyNotFoundException)
         {
             personId = 0;
         }
-
         return _tokenGenerator.GenerateAccessToken(user, personId);
     }
 
-   
-
     public Result<AuthenticationTokensDto> RegisterTourist(AccountRegistrationDto account)
     {
-        if(_userRepository.Exists(account.Username)) return Result.Fail(FailureCode.NonUniqueUsername);
+        if (_userRepository.Exists(account.Username)) return Result.Fail(FailureCode.NonUniqueUsername);
 
         try
         {
             var user = _userRepository.Create(new User(account.Username, account.Password, UserRole.Tourist, true));
-            var person = _personRepository.Create(new Person(user.Id, account.Name, account.Surname, account.Email, account.ProfileImage, account.Biography, account.Quote));
+            var person = _personRepository.Create(new Person(user.Id, account.Name, account.Surname, account.Email,account.ProfileImage, account.Biography, account.Quote));
 
             return _tokenGenerator.GenerateAccessToken(user, person.Id);
         }
@@ -62,14 +56,4 @@ public class AuthenticationService : CrudService<PersonDto,Person>, IAuthenticat
             // There is a subtle issue here. Can you find it?
         }
     }
-
-    
-
 }
-
-
-
-
-
-
-
