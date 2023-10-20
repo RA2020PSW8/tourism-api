@@ -8,17 +8,17 @@ public class User : Entity
     public string Password { get; private set; }
     public UserRole Role { get; private set; }
     public bool IsActive { get; set; }
-    public string Mail {  get; private set; }
+    public string Email {  get; private set; }
     public bool IsBlocked {  get; set; }
 
-    public User(string username, string password, UserRole role, bool isActive, string mail, bool isBlocked)
+    public User(string username, string password, UserRole role, bool isActive, string email, bool isBlocked)
     {
         Username = username;
         Password = password;
         Role = role;
         IsActive = isActive;
         Validate();
-        Mail = mail;
+        Email = email;
         IsBlocked = isBlocked;
     }
 
