@@ -1,6 +1,8 @@
 using AutoMapper;
-using Explorer.Blog.Core.Domain;
+
 using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.Core.Domain;
+using Explorer.Blog.Core.Domain;
 
 namespace Explorer.Stakeholders.Core.Mappers;
 
@@ -8,6 +10,10 @@ public class StakeholderProfile : Profile
 {
     public StakeholderProfile()
     {
+
+        CreateMap<PersonDto, Person>().ReverseMap();
+
         CreateMap<ClubDto, Club>().ReverseMap();
+
     }
 }
