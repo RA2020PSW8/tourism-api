@@ -5,9 +5,9 @@ namespace Explorer.Stakeholders.API.Dtos
 
     public class ClubInvitationDto
     {
-        public int Id { get; set; }
-        public int ClubId { get; set; }
-        public int TouristId { get; set; }
+        public long Id { get; set; }
+        public long ClubId { get; set; }
+        public long UserId { get; set; }
         public InvitationStatus Status { get; set; }
     }
 }

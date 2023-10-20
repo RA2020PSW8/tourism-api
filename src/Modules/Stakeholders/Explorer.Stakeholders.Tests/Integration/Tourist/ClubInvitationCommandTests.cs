@@ -2,7 +2,6 @@
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public.Tourist;
 using Explorer.Stakeholders.Infrastructure.Database;
-using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -24,7 +23,7 @@ namespace Explorer.Stakeholders.Tests.Integration.Tourist
             var newEntity = new ClubInvitationDto
             {
                 ClubId = 20,
-                TouristId = 1,
+                UserId = 1,
                 Status = InvitationStatus.PENDING
             };
 
@@ -35,10 +34,10 @@ namespace Explorer.Stakeholders.Tests.Integration.Tourist
             result.ShouldNotBeNull();
             result.Id.ShouldNotBe(0);
             result.ClubId.ShouldBe(newEntity.ClubId);
-            result.TouristId.ShouldBe(newEntity.TouristId);
+            result.UserId.ShouldBe(newEntity.UserId);
 
             // Assert - Database
-            var storedEntity = dbContext.ClubInvitations.FirstOrDefault(i => i.ClubId == newEntity.ClubId & i.TouristId == newEntity.TouristId);
+            var storedEntity = dbContext.ClubInvitations.FirstOrDefault(i => i.ClubId == newEntity.ClubId && i.UserId == newEntity.UserId);
             storedEntity.ShouldNotBeNull();
             storedEntity.Id.ShouldBe(result.Id);
         }
@@ -54,7 +53,7 @@ namespace Explorer.Stakeholders.Tests.Integration.Tourist
             {
                 Id = -1,
                 ClubId = 3,
-                TouristId = 3,
+                UserId = 3,
                 Status = InvitationStatus.DENIED
             };
 
@@ -65,7 +64,7 @@ namespace Explorer.Stakeholders.Tests.Integration.Tourist
             result.ShouldNotBeNull();
             result.Id.ShouldBe(-1);
             result.ClubId.ShouldBe(updatedEntity.ClubId);
-            result.TouristId.ShouldBe(updatedEntity.TouristId);
+            result.UserId.ShouldBe(updatedEntity.UserId);
             result.Status.ShouldBe(updatedEntity.Status);
 
             // Assert - Database
@@ -89,41 +88,6 @@ namespace Explorer.Stakeholders.Tests.Integration.Tourist
 
             // Act
             var result = (ObjectResult)controller.Update(updatedEntity).Result;
-
-            // Assert
-            result.ShouldNotBeNull();
-            result.StatusCode.ShouldBe(404);
-        }
-
-        [Fact]
-        public void Deletes()
-        {
-            // Arrange
-            using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
-
-            // Act
-            var result = (OkResult)controller.Delete(-3);
-
-            // Assert - Response
-            result.ShouldNotBeNull();
-            result.StatusCode.ShouldBe(200);
-
-            // Assert - Database
-            var storedCourse = dbContext.ClubInvitations.FirstOrDefault(i => i.Id == -3);
-            storedCourse.ShouldBeNull();
-        }
-
-        [Fact]
-        public void Delete_fails_invalid_id()
-        {
-            // Arrange
-            using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-
-            // Act
-            var result = (ObjectResult)controller.Delete(-1000);
 
             // Assert
             result.ShouldNotBeNull();

@@ -26,20 +26,13 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(result);
         }
 
-        [HttpGet("{id:int}")]
-        public ActionResult<ClubInvitationDto> Get(int id)
-        {
-            var result = _clubInvitationService.Get(id);
-            return CreateResponse(result);
-        }
-
         [HttpPost]
         public ActionResult<ClubInvitationDto> Create([FromBody] ClubInvitationDto invitation)
         {
+            invitation.Status = InvitationStatus.PENDING;
             var result = _clubInvitationService.Create(invitation);
             return CreateResponse(result);
         }
-
 
         [HttpPut("{id:int}")]
         public ActionResult<ClubInvitationDto> Update([FromBody] ClubInvitationDto invitation)
@@ -48,12 +41,6 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(result);
         }
 
-        [HttpDelete("{id:int}")]
-        public ActionResult Delete(int id)
-        {
-            var result = _clubInvitationService.Delete(id);
-            return CreateResponse(result);
-        }
     }
 }
 

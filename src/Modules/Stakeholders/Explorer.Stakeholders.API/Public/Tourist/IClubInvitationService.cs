@@ -8,9 +8,7 @@ namespace Explorer.Stakeholders.API.Public.Tourist
     {
 
         Result<PagedResult<ClubInvitationDto>> GetPaged(int page, int pageSize);
-        Result<ClubInvitationDto> Get(int id);
         Result<ClubInvitationDto> Create(ClubInvitationDto invitation);
         Result<ClubInvitationDto> Update(ClubInvitationDto invitation);
-        Result Delete(int id);
     }
 }
