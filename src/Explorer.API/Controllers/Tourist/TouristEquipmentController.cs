@@ -7,15 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist
 {
-    [Authorize(Policy = "touristPolicy")]
+    //[Authorize(Policy = "touristPolicy")]
     [Route("api/tourist/touristEquipment")]
     public class TouristEquipmentController : BaseApiController
     {
         private readonly ITouristEquipmentService _touristEquipmentService;
+        private readonly IEquipmentService _equipmentService;
 
-        public TouristEquipmentController(ITouristEquipmentService touristEquipmentService)
+        public TouristEquipmentController(ITouristEquipmentService touristEquipmentService, IEquipmentService equipmentService)
         {
             _touristEquipmentService = touristEquipmentService;
+            _equipmentService = equipmentService;
+        }
+
+        [HttpGet("forSelected/{id:int}")]
+        public ActionResult<IEnumerable<EquipmentDto>> GetAllForSelected(int id)
+        {
+            var result = _equipmentService.GetAll(id);
+            return Ok(result);
         }
 
         [HttpPost]

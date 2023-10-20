@@ -45,12 +45,5 @@ namespace Explorer.API.Controllers.Administrator.Administration
             var result = _equipmentService.Delete(id);
             return CreateResponse(result);
         }
-
-        [HttpGet("forSelected/{id:int}")]
-        public ActionResult<IEnumerable<EquipmentDto>> GetAllForSelected(int id)
-        {
-            var result = _equipmentService.GetAll(id);
-            return Ok(result);
-        }
     }
 }
