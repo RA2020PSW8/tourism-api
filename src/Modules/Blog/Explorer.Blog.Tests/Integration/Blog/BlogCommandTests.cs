@@ -30,6 +30,7 @@ namespace Explorer.Blog.Tests.Integration.Blog
                 Title = "Breathtaking visit to Dubai",
                 Description = "Simply breathtaking.",
                 CreationDate = DateTime.Now.ToUniversalTime(),
+                ImageLinks = "image1.jpg",
                 Status = BlogDto.BlogStatus.DRAFT
             };
 
