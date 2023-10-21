@@ -11,7 +11,10 @@ public static class ModulesConfiguration
         services.ConfigureStakeholdersModule();
         services.ConfigureToursModule();
         services.ConfigureBlogModule();
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2dc6df9cd896eac0e2396e42bb8c45552d69f5ad
         return services;
     }
 }
