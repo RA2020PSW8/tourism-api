@@ -1,10 +1,13 @@
+using Explorer.Blog.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Stakeholders.API.Public;
+using Explorer.Stakeholders.API.Public.Tourist;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using Explorer.Stakeholders.Core.Mappers;
 using Explorer.Stakeholders.Core.UseCases;
+using Explorer.Stakeholders.Core.UseCases.Tourist;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Stakeholders.Infrastructure.Database;
 using Explorer.Stakeholders.Infrastructure.Database.Repositories;
@@ -26,14 +29,17 @@ public static class StakeholdersStartup
     private static void SetupCore(IServiceCollection services)
     {
         services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IClubService, ClubService>(); 
         services.AddScoped<ITokenGenerator, JwtGenerator>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IProfileService, ProfileService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped(typeof(ICrudRepository<Person>), typeof(CrudDatabaseRepository<Person, StakeholdersContext>));
         services.AddScoped(typeof(ICrudRepository<User>), typeof(CrudDatabaseRepository<User, StakeholdersContext>));
+        services.AddScoped(typeof(ICrudRepository<Club>), typeof(CrudDatabaseRepository<Club, StakeholdersContext>));
         services.AddScoped<IUserRepository, UserDatabaseRepository>();
 
         services.AddDbContext<StakeholdersContext>(opt =>

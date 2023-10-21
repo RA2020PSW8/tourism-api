@@ -1,9 +1,11 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+﻿using AutoMapper;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
+using System.Diagnostics;
 
 namespace Explorer.Stakeholders.Core.UseCases;
 
@@ -41,12 +43,12 @@ public class AuthenticationService : IAuthenticationService
 
     public Result<AuthenticationTokensDto> RegisterTourist(AccountRegistrationDto account)
     {
-        if(_userRepository.Exists(account.Username)) return Result.Fail(FailureCode.NonUniqueUsername);
+        if (_userRepository.Exists(account.Username)) return Result.Fail(FailureCode.NonUniqueUsername);
 
         try
         {
             var user = _userRepository.Create(new User(account.Username, account.Password, Domain.UserRole.Tourist, true, account.Email, false));
-            var person = _personRepository.Create(new Person(user.Id, account.Name, account.Surname, account.Email));
+            var person = _personRepository.Create(new Person(user.Id, account.Name, account.Surname, account.Email,account.ProfileImage, account.Biography, account.Quote));
 
             return _tokenGenerator.GenerateAccessToken(user, person.Id);
         }
