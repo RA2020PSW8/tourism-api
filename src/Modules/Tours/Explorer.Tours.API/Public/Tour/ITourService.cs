@@ -15,5 +15,7 @@ namespace Explorer.Tours.API.Public.Tour
         Result<TourDto> Create(TourDto equipment);
         Result<TourDto> Update(TourDto equipment);
         Result Delete(int id);
+
+        Result<PagedResult<TourDto>> GetForAuthor(int page, int pageSize, int id);
     }
 }

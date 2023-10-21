@@ -10,7 +10,7 @@ namespace Explorer.Tours.Core.Domain
 {
     public class Tour : Entity
     {
-        public long UserId { get; init; }
+        public int UserId { get; init; }
         public string Name { get; init; }
         public string Description { get; init; }
         public double Price { get; init; }
@@ -24,7 +24,7 @@ namespace Explorer.Tours.Core.Domain
             Tags = new List<String>();
         }
 
-        public Tour(long userId, string name, string description, double price, TourDifficulty? difficulty, TransportType? transportType, TourStatus? status, List<string> tags)
+        public Tour(int userId, string name, string description, double price, TourDifficulty? difficulty, TransportType? transportType, TourStatus? status, List<string> tags)
         {
             UserId = userId;
             Name = name;
