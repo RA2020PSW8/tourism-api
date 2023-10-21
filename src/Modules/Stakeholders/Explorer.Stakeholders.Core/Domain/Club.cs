@@ -12,7 +12,14 @@ namespace Explorer.Stakeholders.Core.Domain
 
         public int UserId { get; init; }
 
-        public Club(string name, string? description, string? image, int userId)
+        public List<int> MemberIds { get; init; }
+
+        public Club()
+        {
+            MemberIds = new List<int>();
+        }
+
+        public Club(string name, string? description, string? image, int userId, List<int> memberIds)
         {
 
             if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("Invalid name.");
@@ -22,6 +29,7 @@ namespace Explorer.Stakeholders.Core.Domain
             Description = description;
             Image = image;  
             UserId = userId;
+            MemberIds = memberIds;
         }
 
 

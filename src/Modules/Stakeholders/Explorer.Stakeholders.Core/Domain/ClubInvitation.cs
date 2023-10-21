@@ -16,7 +16,6 @@ namespace Explorer.Stakeholders.Core.Domain
 
         public ClubInvitation(long clubId, long touristId, InvitationStatus status)
         {
-
             ClubId = clubId;
             UserId = touristId;
             Status = status;
