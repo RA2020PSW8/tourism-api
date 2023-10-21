@@ -1,6 +1,8 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.MarketPlace;
+using Explorer.Tours.Core.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,31 +19,34 @@ namespace Explorer.API.Controllers.Tourist
             _tourPreferenceService = tourPreferenceService;
         }
 
-        [HttpGet("{id:int}")]
-        public ActionResult<TourPreferenceDto> Get(int id)
+        [HttpGet]
+        public ActionResult<TourPreferenceDto> GetByUser()
         {
-            var result = _tourPreferenceService.Get(id);
+            var result = _tourPreferenceService.GetByUser(ClaimsPrincipalExtensions.PersonId(User));
             return CreateResponse(result);
         }
 
         [HttpPost]
         public ActionResult<TourPreferenceDto> Create([FromBody] TourPreferenceDto tourPreference)
         {
+            tourPreference.UserId = ClaimsPrincipalExtensions.PersonId(User);
             var result = _tourPreferenceService.Create(tourPreference);
             return CreateResponse(result);
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut]
         public ActionResult<TourPreferenceDto> Update([FromBody] TourPreferenceDto tourPreference)
         {
+            tourPreference.UserId = ClaimsPrincipalExtensions.PersonId(User);
             var result = _tourPreferenceService.Update(tourPreference);
             return CreateResponse(result);
         }
 
-        [HttpDelete("{id:int}")]
-        public ActionResult Delete(int id)
+        [HttpDelete]
+        public ActionResult Delete()
         {
-            var result = _tourPreferenceService.Delete(id);
+            int userId = ClaimsPrincipalExtensions.PersonId(User);
+            var result = _tourPreferenceService.Delete(userId);
             return CreateResponse(result);
         }
     }

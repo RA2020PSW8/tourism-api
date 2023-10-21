@@ -9,8 +9,8 @@ namespace Explorer.Tours.API.Dtos
 {
     public class TourPreferenceDto
     {
-        public int Id { get; set; }
-        public long UserId { get; set; }
+        public long Id { get; set; }
+        public long UserId { get; set; } 
         public TourDifficulty Difficulty { get; set; }
         public TransportType TransportType { get; set; }
         public List<string> Tags { get; set; }

@@ -10,7 +10,7 @@ namespace Explorer.Tours.Core.Domain
 {
     public class TourPreference : Entity
     {
-        public long UserId { get; init; }
+        public long UserId { get; init; } // we are actually using PersonId, needs checking
         public TourDifficulty? Difficulty { get; init; }
         public TransportType? TransportType { get; init; }
         public List<string> Tags { get; init; }
