@@ -11,7 +11,6 @@ public static class ModulesConfiguration
         services.ConfigureStakeholdersModule();
         services.ConfigureToursModule();
         services.ConfigureBlogModule();
-
         return services;
     }
 }
