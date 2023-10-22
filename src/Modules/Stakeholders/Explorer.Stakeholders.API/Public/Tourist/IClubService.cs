@@ -14,6 +14,6 @@ namespace Explorer.Stakeholders.API.Public.Tourist
         Result<PagedResult<ClubDto>> GetPaged(int page, int pageSize);
         Result<ClubDto> Create(ClubDto club);
         Result<ClubDto> Update(ClubDto club);
- 
+        PagedResult<ClubDto> GetAllByUser(int page, int pageSize, int userId);
     }
 }

@@ -29,7 +29,8 @@ namespace Explorer.Stakeholders.Tests.Integration.Tourist
             {
                 Name = "Klub55",
                 Description = "Mid",
-                UserId = 10
+                UserId = 10,
+                MemberIds = new List<int>()
             };
 
             // Act

@@ -1,15 +1,8 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Explorer.Blog.Core.Domain
+namespace Explorer.Stakeholders.Core.Domain
 {
   
-
     public class Club: Entity 
     {
         public string Name { get; init; }
@@ -19,7 +12,14 @@ namespace Explorer.Blog.Core.Domain
 
         public int UserId { get; init; }
 
-        public Club(string name, string? description, string? image, int userId)
+        public List<int> MemberIds { get; init; }
+
+        public Club()
+        {
+            MemberIds = new List<int>();
+        }
+
+        public Club(string name, string? description, string? image, int userId, List<int> memberIds)
         {
 
             if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("Invalid name.");
@@ -29,6 +29,7 @@ namespace Explorer.Blog.Core.Domain
             Description = description;
             Image = image;  
             UserId = userId;
+            MemberIds = memberIds;
         }
 
 
