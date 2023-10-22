@@ -3,6 +3,7 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public.Tourist;
 using Explorer.Stakeholders.Core.Domain;
+using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -14,18 +15,23 @@ namespace Explorer.Stakeholders.Core.UseCases.Tourist
 {
     public class ClubJoinRequestService : CrudService<ClubJoinRequestDto, ClubJoinRequest>, IClubJoinRequestService
     {
-        public ClubJoinRequestService(ICrudRepository<ClubJoinRequest> repository, IMapper mapper) : base(repository, mapper) { }
-
-        public Result<List<ClubJoinRequestDto>> GetAllByUserId(int id)
+        protected readonly IClubJoinRequestRepository _requestRepository;
+        public ClubJoinRequestService(IClubJoinRequestRepository repository, IMapper mapper) : base(repository, mapper)
         {
-            List<ClubJoinRequestDto> results = new List<ClubJoinRequestDto>();
-            /*foreach (var keypoint in CrudRepository.GetPaged())
-            {
-                var result = CrudRepository.Create(MapToDomain(keypoint));
-                results.Add(MapToDto(result));
-            }*/
+            _requestRepository = repository;
+        }
 
-            return results;
+        public Result<PagedResult<ClubJoinRequestDto>> GetAllByUser(int userId)
+        {
+            try
+            {
+                var requests = _requestRepository.GetAllByUser(userId);
+                return MapToDto(requests);
+            }
+            catch (KeyNotFoundException e)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
         }
     }
 }
