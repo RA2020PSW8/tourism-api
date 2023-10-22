@@ -20,6 +20,14 @@ namespace Explorer.API.Controllers.Tourist
             _requestService = requestService;
 
         }
+        [HttpGet("all")]
+        public ActionResult<PagedResult<ClubJoinRequestDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        {
+
+            var result = _requestService.GetPaged(page, pageSize);
+            return CreateResponse(result);
+
+        }
         [HttpGet]
         public ActionResult<ClubJoinRequestDto> GetAllByUser()
         {

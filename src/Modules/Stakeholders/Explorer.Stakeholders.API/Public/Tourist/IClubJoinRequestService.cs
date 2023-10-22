@@ -11,6 +11,7 @@ namespace Explorer.Stakeholders.API.Public.Tourist
 {
     public interface IClubJoinRequestService
     {
+        Result<PagedResult<ClubJoinRequestDto>> GetPaged(int page, int pageSize);
         Result<PagedResult<ClubJoinRequestDto>> GetAllByUser(int userId);
         Result<ClubJoinRequestDto> Create(ClubJoinRequestDto request);
         Result<ClubJoinRequestDto> Update(ClubJoinRequestDto request);

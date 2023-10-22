@@ -8,6 +8,7 @@ using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +32,19 @@ namespace Explorer.Stakeholders.Core.UseCases.Tourist
             catch (KeyNotFoundException e)
             {
                 return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
+        }
+        override public Result<ClubJoinRequestDto> Create(ClubJoinRequestDto entity)
+        {
+            if (_requestRepository.Exists(entity.ClubId, entity.UserId)) return Result.Fail(FailureCode.Conflict).WithError("Request for this user already exists");
+            try
+            {
+                var result = CrudRepository.Create(MapToDomain(entity));
+                return MapToDto(result);
+            }
+            catch (ArgumentException e)
+            {  
+                return Result.Fail(FailureCode.InvalidArgument).WithError($"Error while creating request: {e.Message}");
             }
         }
     }
