@@ -10,36 +10,36 @@ namespace Explorer.API.Controllers.Tourist.Commenting
     [Route("api/blog/comments")]
     public class ForumCommentController : BaseApiController
     {
-        private readonly IForumCommentService _forumCommentService;
+        private readonly IBlogCommentService _forumCommentService;
 
-        public ForumCommentController(IForumCommentService forumCommentService)
+        public ForumCommentController(IBlogCommentService forumCommentService)
         {
             _forumCommentService = forumCommentService;
         }
 
         [HttpGet]
-        public ActionResult<PagedResult<ForumCommentDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        public ActionResult<PagedResult<BlogCommentDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _forumCommentService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
 
         [HttpGet("{id:int}")]
-        public ActionResult<ForumCommentDto> Get(int id)
+        public ActionResult<BlogCommentDto> Get(int id)
         {
             var result = _forumCommentService.Get(id);
             return CreateResponse(result);
         }
 
         [HttpPost]
-        public ActionResult<ForumCommentDto> Create([FromBody] ForumCommentDto comment)
+        public ActionResult<BlogCommentDto> Create([FromBody] BlogCommentDto comment)
         {
             var result = _forumCommentService.Create(comment);
             return CreateResponse(result);
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult<ForumCommentDto> Update([FromBody] ForumCommentDto comment)
+        public ActionResult<BlogCommentDto> Update([FromBody] BlogCommentDto comment)
         {
             var result = _forumCommentService.Update(comment);
             return CreateResponse(result);

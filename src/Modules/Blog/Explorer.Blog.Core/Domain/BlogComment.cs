@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Explorer.Blog.Core.Domain
 {
-    public class ForumComment : Entity
+    public class BlogComment : Entity
     {
         public int ForumId { get; private set; }
         public string? Username { get; private set; }  
@@ -17,12 +17,12 @@ namespace Explorer.Blog.Core.Domain
         public DateTime LastEditTime { get; private set; }
         public bool IsDeleted { get; private set; }
 
-        public ForumComment()
+        public BlogComment()
         {
 
         }
 
-        public ForumComment(int forumId, string? username, string comment,DateTime postTime,DateTime lastEditTime,bool isDeleted)
+        public BlogComment(int forumId, string? username, string comment,DateTime postTime,DateTime lastEditTime,bool isDeleted)
         {
             ForumId = forumId;
             Username = username;

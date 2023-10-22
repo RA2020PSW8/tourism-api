@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 
 namespace Explorer.Blog.Core.UseCases.Commenting
 {
-    public class ForumCommentService : CrudService<ForumCommentDto,ForumComment>,IForumCommentService
+    public class BlogCommentService : CrudService<BlogCommentDto,BlogComment>,IBlogCommentService
     {
-        public ForumCommentService(ICrudRepository<ForumComment> repository,IMapper mapper) : base(repository, mapper) { }
+        public BlogCommentService(ICrudRepository<BlogComment> repository,IMapper mapper) : base(repository, mapper) { }
     }
 }
