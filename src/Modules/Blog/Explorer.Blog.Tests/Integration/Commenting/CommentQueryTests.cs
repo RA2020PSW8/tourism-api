@@ -26,7 +26,7 @@ namespace Explorer.Blog.Tests.Integration.Commenting
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
 
-            var result = ((ObjectResult)controller.GetAll(0, 0).Result)?.Value as PagedResult<ForumCommentDto>;
+            var result = ((ObjectResult)controller.GetAll(0, 0).Result)?.Value as PagedResult<BlogCommentDto>;
 
             result.ShouldNotBeNull();
             result.Results.Count.ShouldBe(3);
@@ -35,7 +35,7 @@ namespace Explorer.Blog.Tests.Integration.Commenting
 
         private static ForumCommentController CreateController(IServiceScope scope)
         {
-            return new ForumCommentController(scope.ServiceProvider.GetRequiredService<IForumCommentService>())
+            return new ForumCommentController(scope.ServiceProvider.GetRequiredService<IBlogCommentService>())
             {
                 ControllerContext = BuildContext("-1")
             };

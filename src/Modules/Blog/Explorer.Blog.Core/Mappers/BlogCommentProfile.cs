@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Explorer.Blog.Core.Mappers
 {
-    public class ForumCommentProfile : Profile
+    public class BlogCommentProfile : Profile
     {
-        public ForumCommentProfile()
+        public BlogCommentProfile()
         {
-            CreateMap<ForumCommentDto, ForumComment>().ReverseMap();
+            CreateMap<BlogCommentDto, BlogComment>().ReverseMap();
         }
     }
 }

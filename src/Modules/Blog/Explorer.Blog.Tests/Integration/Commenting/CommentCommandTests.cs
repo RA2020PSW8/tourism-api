@@ -24,7 +24,7 @@ namespace Explorer.Blog.Tests.Integration.Commenting
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
-            var newEntity = new ForumCommentDto
+            var newEntity = new BlogCommentDto
             {
                 ForumId = 1,
                 Username = "steva",
@@ -35,7 +35,7 @@ namespace Explorer.Blog.Tests.Integration.Commenting
 
             };
 
-            var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as ForumCommentDto;
+            var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as BlogCommentDto;
 
             result.ShouldNotBeNull();
             result.Id.ShouldNotBe(0);
@@ -52,7 +52,7 @@ namespace Explorer.Blog.Tests.Integration.Commenting
             // Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            var updatedEntity = new ForumCommentDto
+            var updatedEntity = new BlogCommentDto
             {
                 Comment = string.Empty
             };
@@ -71,7 +71,7 @@ namespace Explorer.Blog.Tests.Integration.Commenting
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
-            var updatedEntity = new ForumCommentDto
+            var updatedEntity = new BlogCommentDto
             {
                 Id = -1,
                 ForumId = 1,
@@ -82,7 +82,7 @@ namespace Explorer.Blog.Tests.Integration.Commenting
                 IsDeleted = false
             };
 
-            var result = ((ObjectResult)controller.Update(updatedEntity).Result)?.Value as ForumCommentDto;
+            var result = ((ObjectResult)controller.Update(updatedEntity).Result)?.Value as BlogCommentDto;
 
             result.ShouldNotBeNull();
             result.Id.ShouldBe(-1);
@@ -105,7 +105,7 @@ namespace Explorer.Blog.Tests.Integration.Commenting
         {
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            var updatedEntity = new ForumCommentDto
+            var updatedEntity = new BlogCommentDto
             {
                 Id = -69,
                 Comment = "nesto ovde ne valja"
@@ -147,7 +147,7 @@ namespace Explorer.Blog.Tests.Integration.Commenting
 
         private static ForumCommentController CreateController(IServiceScope scope)
         {
-            return new ForumCommentController(scope.ServiceProvider.GetRequiredService<IForumCommentService>())
+            return new ForumCommentController(scope.ServiceProvider.GetRequiredService<IBlogCommentService>())
             {
                 ControllerContext = BuildContext("-1")
             };

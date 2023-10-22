@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Explorer.Blog.API.Dtos
 {
-    public class ForumCommentDto
+    public class BlogCommentDto
     {
         public int Id { get; set; }
         public int ForumId { get; set; }

@@ -23,12 +23,12 @@ public static class BlogStartup
     
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddScoped<IForumCommentService,ForumCommentService>();
+        services.AddScoped<IBlogCommentService,BlogCommentService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
-        services.AddScoped(typeof(ICrudRepository<ForumComment>), typeof(CrudDatabaseRepository<ForumComment, BlogContext>));
+        services.AddScoped(typeof(ICrudRepository<BlogComment>), typeof(CrudDatabaseRepository<BlogComment, BlogContext>));
 
         services.AddDbContext<BlogContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("blog"),
