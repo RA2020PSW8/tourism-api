@@ -46,7 +46,14 @@ namespace Explorer.API.Controllers.Tour
             var result = _tourService.Delete(id);
             return CreateResponse(result);
         }
-        
+
+        [HttpGet("{id:int}")]
+        public ActionResult<PagedResult<TourDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize, int id)
+        {
+            var result = _tourService.GetForAuthor(page, pageSize, id);
+            return CreateResponse(result);
+        }
+
     }
 }
 
