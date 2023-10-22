@@ -6,10 +6,10 @@ using Explorer.Tours.API.Public.TourExecution;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Mappers;
-using Explorer.Tours.Core.UseCases.Administration
+using Explorer.Tours.Core.UseCases.Administration;
 using Explorer.Tours.Core.UseCases.MarketPlace;
 using Explorer.Tours.Core.UseCases.TourExecution;
-using Explorer.Tours.Core.UseCases.TourAuthoring
+using Explorer.Tours.Core.UseCases.TourAuthoring;
 using Explorer.Tours.Infrastructure.Database;
 using Explorer.Tours.Infrastructure.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
