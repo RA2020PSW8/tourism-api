@@ -1,4 +1,3 @@
-using Explorer.Blog.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Stakeholders.API.Public;
@@ -28,9 +27,10 @@ public static class StakeholdersStartup
     
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
-        services.AddScoped<IClubService, ClubService>(); 
+        services.AddScoped<IAuthenticationService, AuthenticationService>();        
         services.AddScoped<ITokenGenerator, JwtGenerator>();
+        services.AddScoped<IClubService, ClubService>();
+        services.AddScoped<IClubInvitationService, ClubInvitationService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProfileService, ProfileService>();
     }
@@ -41,6 +41,7 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(ICrudRepository<User>), typeof(CrudDatabaseRepository<User, StakeholdersContext>));
         services.AddScoped(typeof(ICrudRepository<Club>), typeof(CrudDatabaseRepository<Club, StakeholdersContext>));
         services.AddScoped<IUserRepository, UserDatabaseRepository>();
+        services.AddScoped(typeof(ICrudRepository<ClubInvitation>), typeof(CrudDatabaseRepository<ClubInvitation, StakeholdersContext>));
 
         services.AddDbContext<StakeholdersContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("stakeholders"),

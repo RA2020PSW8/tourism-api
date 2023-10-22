@@ -2,6 +2,11 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.MarketPlace;
+using Explorer.Tours.API.Public.Tour;
+using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Mappers;
+using Explorer.Tours.Core.UseCases.Administration;
+using Explorer.Tours.Core.UseCases.Tour;
 using Explorer.Tours.API.Public.TourExecution;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
@@ -32,6 +37,7 @@ public static class ToursStartup
     {
         services.AddScoped<IEquipmentService, EquipmentService>();
         services.AddScoped<ITourPreferenceService, TourPreferenceService>();
+        services.AddScoped<ITourService, TourService>();
         services.AddScoped<ITourIssueService, TourIssueService>();
         services.AddScoped<IKeypointService, KeypointService>();
     }
@@ -40,6 +46,7 @@ public static class ToursStartup
     {
         services.AddScoped(typeof(ICrudRepository<Equipment>), typeof(CrudDatabaseRepository<Equipment, ToursContext>));
         services.AddScoped(typeof(ITourPreferenceRepository), typeof(TourPreferenceDatabaseRepository));
+        services.AddScoped(typeof(ICrudRepository<Tour>), typeof(CrudDatabaseRepository<Tour, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<TourIssue>), typeof(CrudDatabaseRepository<TourIssue, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Keypoint>), typeof(CrudDatabaseRepository<Keypoint, ToursContext>));
 
