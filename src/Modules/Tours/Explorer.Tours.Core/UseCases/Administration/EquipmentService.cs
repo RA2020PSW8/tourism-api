@@ -16,14 +16,14 @@ public class EquipmentService : CrudService<EquipmentDto, Equipment>, IEquipment
         _equipmentRepository = equipmentRepository;
     }
 
-    public IEnumerable<EquipmentDto> GetAll(int userId) 
+    public IEnumerable<EquipmentForSelectionDto> GetAllForSelected(int userId) 
     {
         IEnumerable<Equipment> equipment = _equipmentRepository.GetAll();
-        List<EquipmentDto> dtosForSelection = new List<EquipmentDto>();
+        List<EquipmentForSelectionDto> dtosForSelection = new List<EquipmentForSelectionDto>();
         foreach (var equipmentItem in equipment)
         {
             bool isSelected = _touristEquipmentRepository.GetByTouristAndEquipment(userId, equipmentItem.Id) != null;
-            EquipmentDto dto = new EquipmentDto((int)equipmentItem.Id, equipmentItem.Name, equipmentItem.Description, isSelected);
+            EquipmentForSelectionDto dto = new EquipmentForSelectionDto((int)equipmentItem.Id, equipmentItem.Name, equipmentItem.Description, isSelected);
             dtosForSelection.Add(dto);
         }
 

@@ -17,18 +17,47 @@ namespace Explorer.Tours.Core.UseCases
     public class TouristEquipmentService : CrudService<TouristEquipmentDto, TouristEquipment>, ITouristEquipmentService
     {
         private readonly ITouristEquipmentRepository _touristEquipmentRepository;
+        private readonly ICrudRepository<Equipment> _equipmentRepository;
 
-        public TouristEquipmentService(ITouristEquipmentRepository touristEquipmentRepository, ICrudRepository<TouristEquipment> repository, IMapper mapper) : base(repository, mapper)
+        public TouristEquipmentService(ICrudRepository<Equipment> equipmentRepository, ITouristEquipmentRepository touristEquipmentRepository, ICrudRepository<TouristEquipment> repository, IMapper mapper) : base(repository, mapper)
         {
             _touristEquipmentRepository = touristEquipmentRepository;
+            _equipmentRepository = equipmentRepository;
         }
 
-        public Result<TouristEquipmentDto> ItemSelection(TouristEquipmentDto dto)
+        public Result<TouristEquipmentDto> Create(TouristEquipmentDto dto)
         {
+            try
+            {
+                _equipmentRepository.Get(dto.EquipmentId);
+            }
+            catch (KeyNotFoundException ke)
+            {
+                return Result.Fail(FailureCode.InvalidArgument).WithError("");
+            }
+            
+            TouristEquipment foundTouristEquipment = _touristEquipmentRepository.GetByTouristAndEquipment(dto.TouristId, dto.EquipmentId);
+            if (foundTouristEquipment != null)
+            {
+                return Result.Fail(FailureCode.InvalidArgument).WithError("");
+            }
+            return base.Create(dto);
+        }
+
+        public Result Delete(TouristEquipmentDto dto)
+        {
+            try
+            {
+                _equipmentRepository.Get(dto.EquipmentId);
+            }
+            catch (KeyNotFoundException ke)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError("");
+            }
             TouristEquipment foundTouristEquipment = _touristEquipmentRepository.GetByTouristAndEquipment(dto.TouristId, dto.EquipmentId);
             if (foundTouristEquipment == null)
             {
-                return Create(dto);
+                return Result.Fail(FailureCode.NotFound).WithError(""); 
             }
             return Delete((int)foundTouristEquipment.Id);
         }

@@ -9,8 +9,8 @@ namespace Explorer.Tours.API.Dtos
     public class TouristEquipmentDto
     {
         public long Id { get; set; }
-        public long TouristId { get; init; }
-        public long EquipmentId { get; init; }
+        public long TouristId { get; set; }
+        public long EquipmentId { get; set; }
 
         public TouristEquipmentDto(long id, long touristId, long equipmentId)
         {

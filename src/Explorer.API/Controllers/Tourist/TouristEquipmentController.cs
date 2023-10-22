@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist
 {
-    //[Authorize(Policy = "touristPolicy")]
+    [Authorize(Policy = "touristPolicy")]
     [Route("api/tourist/touristEquipment")]
     public class TouristEquipmentController : BaseApiController
     {
@@ -21,19 +21,25 @@ namespace Explorer.API.Controllers.Tourist
         }
 
         [HttpGet("forSelected/{id:int}")]
-        public ActionResult<IEnumerable<EquipmentDto>> GetAllForSelected(int id)
+        public ActionResult<IEnumerable<EquipmentForSelectionDto>> GetAllForSelected(int id)
         {
-            var result = _equipmentService.GetAll(id);
+            var result = _equipmentService.GetAllForSelected(id);
             return Ok(result);
         }
 
         [HttpPost]
-        public ActionResult<TouristEquipmentDto> ItemSelection([FromBody] TouristEquipmentDto touristEquipment)
+        public ActionResult<TouristEquipmentDto> Create([FromBody] TouristEquipmentDto touristEquipment)
         {
-            var result = _touristEquipmentService.ItemSelection(touristEquipment);
+            var result = _touristEquipmentService.Create(touristEquipment);
             return CreateResponse(result);
         }
 
-        
+        [HttpPost("deleteByTouristAndEquipmentId")]
+        public ActionResult Delete([FromBody] TouristEquipmentDto touristEquipment)
+        {
+            var result = _touristEquipmentService.Delete(touristEquipment);
+            return CreateResponse(result);
+        }
+
     }
 }

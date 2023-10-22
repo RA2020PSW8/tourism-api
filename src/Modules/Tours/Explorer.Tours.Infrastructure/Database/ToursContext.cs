@@ -20,8 +20,7 @@ public class ToursContext : DbContext
     private static void ConfigureTour(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TouristEquipment>()
-            .HasOne<Equipment>()
-            .WithOne()
-            .HasForeignKey<TouristEquipment>(s => s.EquipmentId);
+            .HasMany<Equipment>()
+            .WithOne();
     }
 }
