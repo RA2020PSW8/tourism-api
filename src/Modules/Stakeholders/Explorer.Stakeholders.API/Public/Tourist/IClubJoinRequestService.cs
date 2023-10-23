@@ -13,6 +13,7 @@ namespace Explorer.Stakeholders.API.Public.Tourist
     {
         Result<PagedResult<ClubJoinRequestDto>> GetPaged(int page, int pageSize);
         Result<PagedResult<ClubJoinRequestDto>> GetAllByUser(int userId);
+        Result<PagedResult<ClubJoinRequestDto>> GetAllByClub(int clubId);
         Result<ClubJoinRequestDto> Create(ClubJoinRequestDto request);
         Result<ClubJoinRequestDto> Update(ClubJoinRequestDto request);
     }

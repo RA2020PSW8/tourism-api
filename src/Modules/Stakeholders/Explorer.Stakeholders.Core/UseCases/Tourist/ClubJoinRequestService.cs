@@ -34,6 +34,18 @@ namespace Explorer.Stakeholders.Core.UseCases.Tourist
                 return Result.Fail(FailureCode.NotFound).WithError(e.Message);
             }
         }
+        public Result<PagedResult<ClubJoinRequestDto>> GetAllByClub(int clubId)
+        {
+            try
+            {
+                var requests = _requestRepository.GetAllByClub(clubId);
+                return MapToDto(requests);
+            }
+            catch (KeyNotFoundException e)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
+        }
         override public Result<ClubJoinRequestDto> Create(ClubJoinRequestDto entity)
         {
             if (_requestRepository.Exists(entity.ClubId, entity.UserId)) return Result.Fail(FailureCode.Conflict).WithError("Request for this user already exists");

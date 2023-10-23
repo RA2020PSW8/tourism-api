@@ -34,7 +34,15 @@ namespace Explorer.API.Controllers.Tourist
             var result = _requestService.GetAllByUser(ClaimsPrincipalExtensions.PersonId(User));
             return CreateResponse(result);
         }
-        
+        [HttpGet("{clubId}")]
+        public ActionResult<PagedResult<ClubJoinRequestDto>> GetAllByClub([FromRoute] int clubId)
+        {
+
+            var result = _requestService.GetAllByClub(clubId);
+            return CreateResponse(result);
+
+        }
+
         [HttpPost]
         public ActionResult<ClubJoinRequestDto> Create([FromBody] ClubJoinRequestDto request)
         {

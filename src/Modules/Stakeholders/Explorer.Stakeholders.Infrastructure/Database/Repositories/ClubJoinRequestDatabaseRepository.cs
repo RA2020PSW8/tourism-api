@@ -27,6 +27,11 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories
             var requests = _dbSet.AsNoTracking().Where(jr => jr.UserId == userId).ToList();
             return new PagedResult<ClubJoinRequest>(requests, requests.Count);
         }
+        public PagedResult<ClubJoinRequest> GetAllByClub(long clubId)
+        {
+            var requests = _dbSet.AsNoTracking().Where(jr => jr.ClubId == clubId).ToList();
+            return new PagedResult<ClubJoinRequest>(requests, requests.Count);
+        }
         public bool Exists(long clubId, long userId)
         {
             return DbContext.ClubJoinRequests.Any(request => request.ClubId == clubId && request.UserId == userId &&
