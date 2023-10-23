@@ -14,14 +14,5 @@ namespace Explorer.Tours.API.Dtos
         public string? Image { get; set; }
         public string Category { get; set; }
 
-
-        public ObjectDto(int id, string name, string? description, string? image, string category)
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-            Image = image;
-            Category = category;
-        }
     }
 }

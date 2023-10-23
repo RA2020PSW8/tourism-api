@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Explorer.API.Controllers.Object
 {
     [Authorize(Policy = "touristPolicy")]
-    [Route("api/object")]
+    [Route("api/objects")]
     public class ObjectController : BaseApiController
     {
         private readonly IObjectService _objectService;
