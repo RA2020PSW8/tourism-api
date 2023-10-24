@@ -6,6 +6,7 @@ using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -46,12 +47,20 @@ namespace Explorer.Stakeholders.Core.UseCases.Tourist
                 return Result.Fail(FailureCode.NotFound).WithError(e.Message);
             }
         }
-        override public Result<ClubJoinRequestDto> Create(ClubJoinRequestDto entity)
+        public Result<ClubJoinRequestDto> Create(ClubDto club, int userId)
         {
-            if (_requestRepository.Exists(entity.ClubId, entity.UserId)) return Result.Fail(FailureCode.Conflict).WithError("Request for this user already exists");
+            if (_requestRepository.Exists(club.Id, userId)) return Result.Fail(FailureCode.Conflict).WithError("Request for this user already exists");
+            if (club.MemberIds.Any(id => id == userId)) return Result.Fail(FailureCode.Conflict).WithError("User is member");
             try
             {
-                var result = CrudRepository.Create(MapToDomain(entity));
+                var joinRequest = new ClubJoinRequestDto
+                {
+                    Id = 0,
+                    UserId = userId,
+                    ClubId = club.Id,
+                    Status = ClubJoinRequestDto.JoinRequestStatus.Pending
+                };
+                var result = CrudRepository.Create(MapToDomain(joinRequest));
                 return MapToDto(result);
             }
             catch (ArgumentException e)

@@ -26,46 +26,51 @@ namespace Explorer.Stakeholders.Tests.Integration.Tourist
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
-            var newEntity = new ClubJoinRequestDto
+            var club = new ClubDto
             {
-                UserId = -21,
-                ClubId = -2,
-                Status = ClubJoinRequestDto.JoinRequestStatus.Pending
+                Id = -2,
+                Name = "Klub 2",
+                Description = "Dobar",
+                Image = "klub2.png",
+                UserId = -3,
+                MemberIds = new List<int> { 1, 2}
             };
 
             // Act
-            var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as ClubJoinRequestDto;
+            var result = ((ObjectResult)controller.Create(club).Result)?.Value as ClubJoinRequestDto;
 
             // Assert - Response
             result.ShouldNotBeNull();
-            result.Status.ShouldBe(newEntity.Status);
+            result.ClubId.ShouldBe(club.Id);
 
             // Assert - Database
-            var storedEntity = dbContext.ClubJoinRequests.FirstOrDefault(i => i.UserId == newEntity.UserId && i.ClubId == newEntity.ClubId);
+            var storedEntity = dbContext.ClubJoinRequests.FirstOrDefault(i => i.UserId == result.UserId && i.ClubId == result.ClubId);
             storedEntity.ShouldNotBeNull();
-            storedEntity.Status.ToString().ShouldBe(newEntity.Status.ToString());
         }
-        /* Zbog medjuzavisnosti prolazi svakako
+       
         [Fact]
         public void Create_fails_invalid_data()
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            //ovdje stavi podrazumjevane vrijednosti 0, 0 treba da ubacim u crud provjeru
-            var updatedEntity = new ClubJoinRequestDto
+            var club = new ClubDto
             {
-                
+                Id = -1,
+                Name = "Klub 1",
+                Description = "Dobar",
+                Image = "klub1.png",
+                UserId = -2,
+                MemberIds = new List<int> { 1, 2 }
             };
 
             // Act
-            var result = (ObjectResult)controller.Create(updatedEntity).Result;
+            var result = (ObjectResult)controller.Create(club).Result;
 
             // Assert
-            result.ShouldNotBeNull();
-            result.StatusCode.ShouldBe(400);
+            result.StatusCode.ShouldBe(409);
         }
-        */
+        
         [Fact]
         public void Updates()
         {

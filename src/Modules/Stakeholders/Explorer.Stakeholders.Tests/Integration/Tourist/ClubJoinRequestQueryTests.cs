@@ -30,8 +30,8 @@ namespace Explorer.Stakeholders.Tests.Integration.Tourist
 
             // Assert
             result.ShouldNotBeNull();
-            result.Results.Count.ShouldBe(3);
-            result.TotalCount.ShouldBe(3);
+            result.Results.Count.ShouldBe(4);
+            result.TotalCount.ShouldBe(4);
         }
 
         private static ClubJoinRequestController CreateController(IServiceScope scope)

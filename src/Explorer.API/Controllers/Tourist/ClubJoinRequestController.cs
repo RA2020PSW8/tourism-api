@@ -44,9 +44,9 @@ namespace Explorer.API.Controllers.Tourist
         }
 
         [HttpPost]
-        public ActionResult<ClubJoinRequestDto> Create([FromBody] ClubJoinRequestDto request)
+        public ActionResult<ClubJoinRequestDto> Create([FromBody] ClubDto club)
         {
-            var result = _requestService.Create(request);
+            var result = _requestService.Create(club, ClaimsPrincipalExtensions.PersonId(User));
             return CreateResponse(result);
         }
 

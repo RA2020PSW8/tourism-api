@@ -34,8 +34,8 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories
         }
         public bool Exists(long clubId, long userId)
         {
-            return DbContext.ClubJoinRequests.Any(request => request.ClubId == clubId && request.UserId == userId &&
-                                                  (request.Status == JoinRequestStatus.Accepted || request.Status == JoinRequestStatus.Pending));
+            return DbContext.ClubJoinRequests.Any(request => (request.ClubId == clubId && request.UserId == userId &&
+                                                  request.Status == JoinRequestStatus.Pending));
         }
     }
 }
