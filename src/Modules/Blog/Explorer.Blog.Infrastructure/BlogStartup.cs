@@ -1,5 +1,9 @@
+using Explorer.Blog.API.Public.Blog;
+using Explorer.Blog.Core.Domain;
 using Explorer.Blog.Core.Mappers;
+using Explorer.Blog.Core.UseCases.Blog;
 using Explorer.Blog.Infrastructure.Database;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,10 +23,12 @@ public static class BlogStartup
     
     private static void SetupCore(IServiceCollection services)
     {
+        services.AddScoped<IBlogService, BlogService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
+        services.AddScoped(typeof(ICrudRepository<Core.Domain.Blog>), typeof(CrudDatabaseRepository<Core.Domain.Blog, BlogContext>));
 
         services.AddDbContext<BlogContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("blog"),
