@@ -6,7 +6,7 @@ namespace Explorer.Stakeholders.Core.Domain
     {
         public int Rating {  get; private set; }
         public string Comment { get; private set; }
-        public string Username { get; private set; }
+        public int UserId { get; private set; }
         public DateTime LastModified { get; private set; }
         public bool IsRated { get; private set; }
 
@@ -14,7 +14,7 @@ namespace Explorer.Stakeholders.Core.Domain
         {
         }
 
-        public ApplicationRating(int rating, string comment, string username, DateTime lastModified)
+        public ApplicationRating(int rating, string comment, int userId, DateTime lastModified)
         {
             if (rating < 1 || rating > 5)
             {
@@ -23,7 +23,7 @@ namespace Explorer.Stakeholders.Core.Domain
 
             Rating = rating;
             Comment = comment;
-            Username = username;
+            UserId = userId;
             LastModified = lastModified;
             IsRated = true;
         }

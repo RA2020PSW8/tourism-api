@@ -1,5 +1,6 @@
 ﻿using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,9 @@ namespace Explorer.API.Controllers.Tourist
         [HttpPost]
         public ActionResult<ApplicationRatingDto> Create([FromBody] ApplicationRatingDto applicationRatingDto)
         {
+           // ClaimsPrincipalExtensions.PersonId(User);
+            applicationRatingDto.userId = ClaimsPrincipalExtensions.PersonId(User);
+
             var result = _applicationRatingService.Create(applicationRatingDto);
             return CreateResponse(result);
         }
