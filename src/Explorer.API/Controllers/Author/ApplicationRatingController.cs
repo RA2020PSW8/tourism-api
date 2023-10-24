@@ -1,5 +1,6 @@
 ﻿using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,14 @@ namespace Explorer.API.Controllers.Author
         public ActionResult<ApplicationRatingDto> Update([FromBody] ApplicationRatingDto applicationRatingDto, [FromRoute] string username)
         {
             var result = _applicationRatingService.Update(applicationRatingDto);
+            return CreateResponse(result);
+        }
+
+        [HttpGet]
+        public ActionResult<ApplicationRatingDto> GetByUserId()
+        {
+            int userId = ClaimsPrincipalExtensions.PersonId(User);
+            var result = _applicationRatingService.GetByUserId(0, 0, userId);
             return CreateResponse(result);
         }
 

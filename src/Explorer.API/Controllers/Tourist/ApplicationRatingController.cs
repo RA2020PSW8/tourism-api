@@ -21,7 +21,7 @@ namespace Explorer.API.Controllers.Tourist
         public ActionResult<ApplicationRatingDto> Create([FromBody] ApplicationRatingDto applicationRatingDto)
         {
            // ClaimsPrincipalExtensions.PersonId(User);
-            applicationRatingDto.userId = ClaimsPrincipalExtensions.PersonId(User);
+            applicationRatingDto.UserId = ClaimsPrincipalExtensions.PersonId(User);
 
             var result = _applicationRatingService.Create(applicationRatingDto);
             return CreateResponse(result);
@@ -31,6 +31,14 @@ namespace Explorer.API.Controllers.Tourist
         public ActionResult<ApplicationRatingDto> Update([FromBody] ApplicationRatingDto applicationRatingDto, [FromRoute] string username)
         {
             var result = _applicationRatingService.Update(applicationRatingDto);
+            return CreateResponse(result);
+        }
+
+        [HttpGet]
+        public ActionResult<ApplicationRatingDto> GetByUserId()
+        {
+            int userId = ClaimsPrincipalExtensions.PersonId(User);
+            var result = _applicationRatingService.GetByUserId(0, 0, userId);
             return CreateResponse(result);
         }
     }

@@ -17,5 +17,20 @@ namespace Explorer.Stakeholders.Core.UseCases
         public ApplicationRatingService(ICrudRepository<ApplicationRating> crudRepository, IMapper mapper) : base(crudRepository, mapper) 
         { 
         }
+
+        public Result<PagedResult<ApplicationRatingDto>> GetByUserId(int page, int pageSize, int userId)
+        {
+            try
+            {
+                var result = GetPaged(page, pageSize);
+                result.Value.Results.Where(r => r.UserId == userId).ToList();
+                
+                return result;
+            }
+            catch (KeyNotFoundException e)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
+        }
     }
 }
