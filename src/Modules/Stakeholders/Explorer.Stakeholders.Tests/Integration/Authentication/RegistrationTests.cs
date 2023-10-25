@@ -24,11 +24,16 @@ public class RegistrationTests : BaseStakeholdersIntegrationTest
         var controller = CreateController(scope);
         var account = new AccountRegistrationDto
         {
-            Username = "turistaA@gmail.com",
+            Username = "turistaA",
             Email = "turistaA@gmail.com",
             Password = "turistaA",
             Name = "Žika",
-            Surname = "Žikić"
+            Surname = "Žikić",
+            Biography = "ja sam rodjen u najboljim godinama",
+            ProfileImage = "https://play-lh.googleusercontent.com/RX3ntjobJrEdwSgntRwSejMCjyeXrtEKpH4QrF-ikBjiEJFrqCdVEcp1LZOJ8T4ArQ",
+            Quote = "joj ne radis ono sto sma ti rekao"
+
+
         };
 
         // Act
@@ -44,9 +49,9 @@ public class RegistrationTests : BaseStakeholdersIntegrationTest
 
         // Assert - Database
         dbContext.ChangeTracker.Clear();
-        var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == account.Email);
+        var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == account.Username);
         storedAccount.ShouldNotBeNull();
-        storedAccount.Role.ShouldBe(UserRole.Tourist);
+        storedAccount.Role.ShouldBe(Core.Domain.UserRole.Tourist);
         var storedPerson = dbContext.People.FirstOrDefault(i => i.Email == account.Email);
         storedPerson.ShouldNotBeNull();
         storedPerson.UserId.ShouldBe(storedAccount.Id);
