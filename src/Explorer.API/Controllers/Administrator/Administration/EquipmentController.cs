@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Administrator.Administration
 {
-    [Authorize(Policy = "administratorPolicy")]
+
     [Route("api/administration/equipment")]
     public class EquipmentController : BaseApiController
     {
@@ -18,6 +18,7 @@ namespace Explorer.API.Controllers.Administrator.Administration
         }
 
         [HttpGet]
+        [Authorize(Roles = "administrator,author")]
         public ActionResult<PagedResult<EquipmentDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _equipmentService.GetPaged(page, pageSize);
@@ -25,6 +26,7 @@ namespace Explorer.API.Controllers.Administrator.Administration
         }
 
         [HttpPost]
+        [Authorize(Roles = "administrator")]
         public ActionResult<EquipmentDto> Create([FromBody] EquipmentDto equipment)
         {
             var result = _equipmentService.Create(equipment);
@@ -32,6 +34,7 @@ namespace Explorer.API.Controllers.Administrator.Administration
         }
 
         [HttpPut("{id:int}")]
+        [Authorize(Roles = "administrator")]
         public ActionResult<EquipmentDto> Update([FromBody] EquipmentDto equipment)
         {
             var result = _equipmentService.Update(equipment);
@@ -39,6 +42,7 @@ namespace Explorer.API.Controllers.Administrator.Administration
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "administrator")]
         public ActionResult Delete(int id)
         {
             var result = _equipmentService.Delete(id);
