@@ -75,7 +75,7 @@ namespace Explorer.Tours.Tests.Integration.Tour
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var updatedEntity = new TourDto()
             {
-                Id = 1,
+                Id = -1,
                 UserId = 1,
                 Name = "Test",
                 Description = "Test",
@@ -91,7 +91,7 @@ namespace Explorer.Tours.Tests.Integration.Tour
 
             // Assert - Response
             result.ShouldNotBeNull();
-            result.Id.ShouldBe(1);
+            result.Id.ShouldBe(-1);
             result.Name.ShouldBe(updatedEntity.Name);
             result.Description.ShouldBe(updatedEntity.Description);
             result.Price.ShouldBe(updatedEntity.Price);
@@ -115,7 +115,7 @@ namespace Explorer.Tours.Tests.Integration.Tour
             var controller = CreateController(scope);
             var updatedEntity = new TourDto()
             {
-                Id = -1,
+                Id = 1,
                 UserId = 1,
                 Name = "Test",
                 Description = "Test",
@@ -143,14 +143,14 @@ namespace Explorer.Tours.Tests.Integration.Tour
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
 
             // Act
-            var result = (OkResult)controller.Delete(1);
+            var result = (OkResult)controller.Delete(-1);
 
             // Assert - Response
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(200);
 
             // Assert - Database
-            var storedCourse = dbContext.Tours.FirstOrDefault(i => i.Id == -3);
+            var storedCourse = dbContext.Tours.FirstOrDefault(i => i.Id == -1);
             storedCourse.ShouldBeNull();
         }
 
