@@ -26,8 +26,6 @@ public class ToursContext : DbContext
 
     private static void ConfigureTour(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<TouristEquipment>()
-            .HasMany<Equipment>()
-            .WithOne();
+        //TODO: Entity connection
     }
 }
