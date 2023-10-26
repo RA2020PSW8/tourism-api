@@ -1,6 +1,9 @@
 ﻿using Explorer.Blog.API.Dtos;
 using Explorer.Blog.API.Public.Commenting;
 using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +11,12 @@ namespace Explorer.API.Controllers.Tourist.Commenting
 {
     [Authorize(Policy = "touristPolicy")]
     [Route("api/blog/comments")]
-    public class ForumCommentController : BaseApiController
+    public class BlogCommentController : BaseApiController
     {
         private readonly IBlogCommentService _forumCommentService;
+        private readonly IUserRepository _userRepository;
 
-        public ForumCommentController(IBlogCommentService forumCommentService)
+        public BlogCommentController(IBlogCommentService forumCommentService)
         {
             _forumCommentService = forumCommentService;
         }

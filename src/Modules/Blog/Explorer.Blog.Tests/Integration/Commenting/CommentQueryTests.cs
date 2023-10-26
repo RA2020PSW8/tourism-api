@@ -33,9 +33,9 @@ namespace Explorer.Blog.Tests.Integration.Commenting
             result.TotalCount.ShouldBe(3);
         }
 
-        private static ForumCommentController CreateController(IServiceScope scope)
+        private static BlogCommentController CreateController(IServiceScope scope)
         {
-            return new ForumCommentController(scope.ServiceProvider.GetRequiredService<IBlogCommentService>())
+            return new BlogCommentController(scope.ServiceProvider.GetRequiredService<IBlogCommentService>())
             {
                 ControllerContext = BuildContext("-1")
             };
