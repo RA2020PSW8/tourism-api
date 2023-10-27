@@ -1,5 +1,6 @@
 ﻿using Explorer.Tours.Core.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Object = Explorer.Tours.Core.Domain.Object;
 
 namespace Explorer.Tours.Infrastructure.Database;
@@ -26,6 +27,11 @@ public class ToursContext : DbContext
 
     private static void ConfigureTour(ModelBuilder modelBuilder)
     {
-        //TODO: Entity connection
+        modelBuilder.Entity<Keypoint>()
+            .HasOne(k => k.Tour)
+            .WithMany()
+            .HasForeignKey(k => k.TourId);
+        
+        
     }
 }
