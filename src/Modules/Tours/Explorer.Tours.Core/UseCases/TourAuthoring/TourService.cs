@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Core.UseCases.Tour
+namespace Explorer.Tours.Core.UseCases.TourAuthoring
 {
     public class TourService : CrudService<TourDto, Domain.Tour>, ITourService
     {

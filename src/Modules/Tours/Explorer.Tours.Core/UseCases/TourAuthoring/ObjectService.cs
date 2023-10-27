@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Core.UseCases.Object
+namespace Explorer.Tours.Core.UseCases.TourAuthoring
 {
     public class ObjectService : CrudService<ObjectDto, Domain.Object>, IObjectService
     {

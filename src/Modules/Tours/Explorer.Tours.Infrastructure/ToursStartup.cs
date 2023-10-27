@@ -11,8 +11,6 @@ using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Mappers;
 using Explorer.Tours.Core.UseCases;
 using Explorer.Tours.Core.UseCases.Administration;
-using Explorer.Tours.Core.UseCases.Object;
-using Explorer.Tours.Core.UseCases.Tour;
 using Explorer.Tours.Core.UseCases.MarketPlace;
 using Explorer.Tours.Core.UseCases.TourExecution;
 using Explorer.Tours.Core.UseCases.TourAuthoring;
