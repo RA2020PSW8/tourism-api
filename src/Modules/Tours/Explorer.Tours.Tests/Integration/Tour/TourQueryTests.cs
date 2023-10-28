@@ -25,8 +25,8 @@ namespace Explorer.Tours.Tests.Integration.Tour
 
             // Assert
             result.ShouldNotBeNull();
-            result.Results.Count.ShouldBe(0);
-            result.TotalCount.ShouldBe(0);
+            result.Results.Count.ShouldBe(3);
+            result.TotalCount.ShouldBe(3);
         }
 
         private static TourController CreateController(IServiceScope scope)
