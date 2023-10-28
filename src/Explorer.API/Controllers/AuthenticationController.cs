@@ -1,5 +1,6 @@
 ﻿using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers;
@@ -27,4 +28,8 @@ public class AuthenticationController : BaseApiController
         var result = _authenticationService.Login(credentials);
         return CreateResponse(result);
     }
+
+    
+
+    
 }
