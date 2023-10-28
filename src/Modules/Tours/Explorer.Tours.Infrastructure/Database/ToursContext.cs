@@ -22,15 +22,13 @@ public class ToursContext : DbContext
     {
         modelBuilder.HasDefaultSchema("tours");
 
-        modelBuilder.Entity<TourEquipment>().HasKey(te => new { te.TourId, te.EquipmentId });
-        modelBuilder.Entity<TourEquipment>().HasOne<Tour>().WithMany(t => t.TourEquipments).HasForeignKey(te => te.TourId);
-        modelBuilder.Entity<TourEquipment>().HasOne<Equipment>().WithMany(e => e.TourEquipments).HasForeignKey(te => te.EquipmentId);
-
         ConfigureTour(modelBuilder);
     }
 
     private static void ConfigureTour(ModelBuilder modelBuilder)
     {
-        //TODO: Entity connection
+        modelBuilder.Entity<TourEquipment>().HasKey(te => new { te.TourId, te.EquipmentId });
+        modelBuilder.Entity<TourEquipment>().HasOne<Tour>().WithMany(t => t.TourEquipments).HasForeignKey(te => te.TourId);
+        modelBuilder.Entity<TourEquipment>().HasOne<Equipment>().WithMany(e => e.TourEquipments).HasForeignKey(te => te.EquipmentId);
     }
 }
