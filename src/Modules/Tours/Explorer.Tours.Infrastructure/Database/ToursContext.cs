@@ -14,7 +14,8 @@ public class ToursContext : DbContext
     public DbSet<TourIssue> TourIssue { get; set; }
     public DbSet<Keypoint> Keypoints { get; set; }
     public DbSet<Object> Objects { get; set; }
-    
+    public DbSet<TourEquipment> TourEquipments { get; set; }
+
     public ToursContext(DbContextOptions<ToursContext> options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,6 +27,8 @@ public class ToursContext : DbContext
 
     private static void ConfigureTour(ModelBuilder modelBuilder)
     {
-        //TODO: Entity connection
+        modelBuilder.Entity<TourEquipment>().HasKey(te => new { te.TourId, te.EquipmentId });
+        modelBuilder.Entity<TourEquipment>().HasOne<Tour>().WithMany(t => t.TourEquipments).HasForeignKey(te => te.TourId);
+        modelBuilder.Entity<TourEquipment>().HasOne<Equipment>().WithMany(e => e.TourEquipments).HasForeignKey(te => te.EquipmentId);
     }
 }
