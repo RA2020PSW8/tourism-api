@@ -94,7 +94,7 @@ namespace Explorer.Stakeholders.Tests.Integration.Administration
             };
 
             // Act
-            var result = ((ObjectResult)controller.Create(updatedEntity).Result)?.Value as ApplicationRatingDto;
+            var result = ((ObjectResult)controller.Update(updatedEntity).Result)?.Value as ApplicationRatingDto;
 
             // Assert - Response
             result.ShouldNotBeNull();
@@ -155,7 +155,7 @@ namespace Explorer.Stakeholders.Tests.Integration.Administration
             };
 
             // Act
-            var result = (OkResult)controller.Delete(entity);
+            var result = (OkResult)controller.Delete();
 
             // Assert - Response
             result.ShouldNotBeNull();
