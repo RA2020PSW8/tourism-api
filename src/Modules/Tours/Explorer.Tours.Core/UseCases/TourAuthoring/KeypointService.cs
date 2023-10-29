@@ -3,14 +3,17 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.TourAuthoring;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using FluentResults;
 
 namespace Explorer.Tours.Core.UseCases.TourAuthoring;
 
 public class KeypointService : CrudService<KeypointDto, Keypoint>, IKeypointService
 {
-    public KeypointService(ICrudRepository<Keypoint> crudRepository, IMapper mapper) : base(crudRepository, mapper)
+    protected readonly IKeypointRepository _keypointRepository;
+    public KeypointService(IKeypointRepository keypointRepository, IMapper mapper) : base(keypointRepository, mapper)
     {
+        _keypointRepository = keypointRepository;
     }
     
     public Result<List<KeypointDto>> CreateMultiple(List<KeypointDto> keypoints)
@@ -23,5 +26,11 @@ public class KeypointService : CrudService<KeypointDto, Keypoint>, IKeypointServ
         }
 
         return results;
+    }
+
+    public Result<PagedResult<KeypointDto>> GetByTourId(int page, int pageSize, int tourId)
+    {
+        var result = _keypointRepository.GetByTour(page, pageSize, tourId);
+        return MapToDto(result);
     }
 }

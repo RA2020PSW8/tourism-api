@@ -29,6 +29,13 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
         
+        [HttpGet("tour/{tourId:int}")]
+        public ActionResult<PagedResult<KeypointDto>> GetByTour([FromQuery] int page, [FromQuery] int pageSize, [FromRoute] int tourId)
+        {
+            var result = _keypointService.GetByTourId(page, pageSize, tourId);
+            return CreateResponse(result);
+        }
+        
         [HttpPost]
         public ActionResult<KeypointDto> Create([FromBody] KeypointDto keypoint)
         {
