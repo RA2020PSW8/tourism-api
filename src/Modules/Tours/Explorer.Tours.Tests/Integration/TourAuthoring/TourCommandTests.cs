@@ -19,8 +19,7 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
             // Arrange
             var userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var newEntity = new TourDto()
             {
@@ -52,8 +51,9 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
         public void Create_fails_invalid_data()
         {
             // Arrange
+            var userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var updatedEntity = new TourDto()
             {
                 Description = "Update"
@@ -73,8 +73,7 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
             // Arrange
             var userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var updatedEntity = new TourDto()
             {
@@ -116,8 +115,7 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
             // Arrange
             var userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
+            var controller = CreateController(scope, userId);
             var updatedEntity = new TourDto()
             {
                 Id = 1,
@@ -143,8 +141,9 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
         public void Deletes()
         {
             // Arrange
+            var userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
 
             // Act
@@ -163,8 +162,9 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
         public void Delete_fails_invalid_id()
         {
             // Arrange
+            var userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
 
             // Act
             var result = (ObjectResult)controller.Delete(-1000);
@@ -174,11 +174,11 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
             result.StatusCode.ShouldBe(404);
         }
 
-        private static TourController CreateController(IServiceScope scope)
+        private static TourController CreateController(IServiceScope scope, int userId)
         {
             return new TourController(scope.ServiceProvider.GetRequiredService<ITourService>())
             {
-                ControllerContext = BuildContext("-1")
+                ControllerContext = BuildContext(userId.ToString())
             };
         }
     }
