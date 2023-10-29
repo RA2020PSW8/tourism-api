@@ -17,8 +17,10 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
         public void Creates()
         {
             // Arrange
+            var userId = -1;
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
+            controller.ControllerContext = BuildContext(userId.ToString());
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var newEntity = new TourDto()
             {
@@ -69,8 +71,10 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
         public void Updates()
         {
             // Arrange
+            var userId = -1;
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
+            controller.ControllerContext = BuildContext(userId.ToString());
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var updatedEntity = new TourDto()
             {
@@ -110,8 +114,10 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
         public void Update_fails_invalid_id()
         {
             // Arrange
+            var userId = -1;
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
+            controller.ControllerContext = BuildContext(userId.ToString());
             var updatedEntity = new TourDto()
             {
                 Id = 1,

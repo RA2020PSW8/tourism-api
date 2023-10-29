@@ -1,4 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.TourAuthoring;
@@ -26,7 +27,7 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
         
-        [HttpGet("tour/{tourId:int}")]
+        [HttpGet("{tourId:int}")]
         public ActionResult<TourDto> GetById([FromRoute] int tourId)
         {
             var result = _tourService.Get(tourId);
@@ -36,6 +37,7 @@ namespace Explorer.API.Controllers.Author
         [HttpPost]
         public ActionResult<TourDto> Create([FromBody] TourDto tour)
         {
+            tour.UserId = ClaimsPrincipalExtensions.PersonId(User);
             var result = _tourService.Create(tour);
             return CreateResponse(result);
         }
@@ -43,6 +45,7 @@ namespace Explorer.API.Controllers.Author
         [HttpPut("{id:int}")]
         public ActionResult<TourDto> Update([FromBody] TourDto tour)
         {
+            tour.UserId = ClaimsPrincipalExtensions.PersonId(User);
             var result = _tourService.Update(tour);
             return CreateResponse(result);
         }
@@ -54,10 +57,11 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
-        [HttpGet("{id:int}")]
-        public ActionResult<PagedResult<TourDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize, int id)
+        [HttpGet("author")]
+        public ActionResult<PagedResult<TourDto>> GetByAuthor([FromQuery] int page, [FromQuery] int pageSize)
         {
-            var result = _tourService.GetForAuthor(page, pageSize, id);
+            var authorId = ClaimsPrincipalExtensions.PersonId(User);
+            var result = _tourService.GetForAuthor(page, pageSize, authorId);
             return CreateResponse(result);
         }
 
