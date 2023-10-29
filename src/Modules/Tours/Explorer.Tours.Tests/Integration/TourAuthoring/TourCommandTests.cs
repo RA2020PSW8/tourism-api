@@ -27,10 +27,13 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
                 Name = "Test",
                 Description = "Test",
                 Price = 0,
+                Duration = 100,
+                Distance = 2.1,
                 Difficulty = "EASY",
                 TransportType = "CAR",
                 Status = "DRAFT",
-                Tags = new()
+                Tags = new(),
+                StatusUpdateTime = DateTime.Now.ToUniversalTime()
             };
         
             // Act
@@ -82,10 +85,13 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
                 Name = "Test",
                 Description = "Test",
                 Price = 0,
+                Duration = 100,
+                Distance = 2.1,
                 Difficulty = "EASY",
                 TransportType = "CAR",
                 Status = "DRAFT",
-                Tags = new()
+                Tags = new(),
+                StatusUpdateTime = DateTime.Now.ToUniversalTime()
             };
 
             // Act
@@ -123,10 +129,13 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
                 Name = "Test",
                 Description = "Test",
                 Price = 0,
+                Duration = 100,
+                Distance = 2.1,
                 Difficulty = "EASY",
                 TransportType = "CAR",
                 Status = "DRAFT",
-                Tags = new()
+                Tags = new(),
+                StatusUpdateTime = DateTime.Now.ToUniversalTime()
             };
 
             // Act
