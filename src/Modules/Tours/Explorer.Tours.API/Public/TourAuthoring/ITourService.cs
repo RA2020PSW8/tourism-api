@@ -12,10 +12,12 @@ namespace Explorer.Tours.API.Public.TourAuthoring
     public interface ITourService
     {
         Result<PagedResult<TourDto>> GetPaged(int page, int pageSize);
+        Result<TourDto> Get(int id);
         Result<TourDto> Create(TourDto equipment);
         Result<TourDto> Update(TourDto equipment);
         Result Delete(int id);
 
         Result<PagedResult<TourDto>> GetForAuthor(int page, int pageSize, int id);
+
     }
 }

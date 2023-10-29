@@ -25,6 +25,13 @@ namespace Explorer.API.Controllers.Author
             var result = _tourService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
+        
+        [HttpGet("tour/{tourId:int}")]
+        public ActionResult<TourDto> GetById([FromRoute] int tourId)
+        {
+            var result = _tourService.Get(tourId);
+            return CreateResponse(result);
+        }
 
         [HttpPost]
         public ActionResult<TourDto> Create([FromBody] TourDto tour)
