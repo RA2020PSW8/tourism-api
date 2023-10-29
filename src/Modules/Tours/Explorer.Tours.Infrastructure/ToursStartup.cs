@@ -42,7 +42,6 @@ public static class ToursStartup
         services.AddScoped<ITourReviewService, TourReviewService>();
         services.AddScoped<ITourPreferenceService, TourPreferenceService>();
         services.AddScoped<ITourService, TourService>();
-        services.AddScoped<ITourIssueService, TourIssueService>();
         services.AddScoped<IKeypointService, KeypointService>();
         services.AddScoped<IObjectService, ObjectService>();
         services.AddScoped<ITourEquipmentService, TourEquipmentService>();
@@ -57,7 +56,6 @@ public static class ToursStartup
         services.AddScoped(typeof(ICrudRepository<TourReview>), typeof(CrudDatabaseRepository<TourReview, ToursContext>));
         services.AddScoped(typeof(ITourPreferenceRepository), typeof(TourPreferenceDatabaseRepository));
         services.AddScoped(typeof(ICrudRepository<Tour>), typeof(CrudDatabaseRepository<Tour, ToursContext>));
-        services.AddScoped(typeof(ICrudRepository<TourIssue>), typeof(CrudDatabaseRepository<TourIssue, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Keypoint>), typeof(CrudDatabaseRepository<Keypoint, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Object>), typeof(CrudDatabaseRepository<Object, ToursContext>));
         services.AddScoped(typeof(ITourEquipmentRepository), typeof(TourEquipmentDatabaseRepository));

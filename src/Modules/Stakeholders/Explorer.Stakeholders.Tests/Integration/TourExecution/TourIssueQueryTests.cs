@@ -1,7 +1,8 @@
 ﻿using Explorer.API.Controllers.Tourist.TourExecution;
 using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.TourExecution;
+using Explorer.Stakeholders.Tests;
+using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.API.Public.TourExecution;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -13,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Tests.Integration.TourExecution
 {
-    public class TourIssueQueryTests : BaseToursIntegrationTest
+    public class TourIssueQueryTests : BaseStakeholdersIntegrationTest
     {
-        public TourIssueQueryTests(ToursTestFactory factory) : base(factory) { }
+        public TourIssueQueryTests(StakeholdersTestFactory factory) : base(factory) { }
 
         [Fact]
         public void Retrieves_all()
