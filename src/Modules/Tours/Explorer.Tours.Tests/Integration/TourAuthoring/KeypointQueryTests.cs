@@ -1,12 +1,12 @@
 using Explorer.API.Controllers.Author;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.TourAuthoring;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 
-namespace Explorer.Tours.Tests.Integration.Author;
+namespace Explorer.Tours.Tests.Integration.TourAuthoring;
 
 [Collection("Sequential")]
 public class KeypointQueryTests : BaseToursIntegrationTest

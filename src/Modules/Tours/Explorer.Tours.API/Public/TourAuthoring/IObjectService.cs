@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.API.Public.Object
+namespace Explorer.Tours.API.Public.TourAuthoring
 {
     public interface IObjectService
     {

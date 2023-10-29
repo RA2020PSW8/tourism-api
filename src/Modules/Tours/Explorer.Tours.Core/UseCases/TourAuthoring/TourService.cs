@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.Tour;
+using Explorer.Tours.API.Public.TourAuthoring;
 using Explorer.Tours.Core.Domain;
 using FluentResults;
 using System;

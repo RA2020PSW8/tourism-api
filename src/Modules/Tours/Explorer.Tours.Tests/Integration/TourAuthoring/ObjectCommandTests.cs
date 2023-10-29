@@ -1,6 +1,6 @@
-﻿using Explorer.API.Controllers.Object;
+﻿using Explorer.API.Controllers.Author;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.Object;
+using Explorer.Tours.API.Public.TourAuthoring;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Tests.Integration.Object
+namespace Explorer.Tours.Tests.Integration.TourAuthoring
 {
     [Collection("Sequential")]
     public class ObjectCommandTests : BaseToursIntegrationTest
