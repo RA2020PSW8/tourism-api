@@ -18,7 +18,7 @@ namespace Explorer.Tours.API.Dtos
         public string Difficulty { get; set; }
         public string TransportType { get; set; }
         public string Status { get; set; }
-        public List<String> Tags { get; set; }
+        public List<String>? Tags { get; set; }
         public DateTime StatusUpdateTime { get; set; }
     }
 }

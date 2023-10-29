@@ -20,7 +20,7 @@ namespace Explorer.Tours.Core.Domain
         public TransportType? TransportType { get; init; }
         public TourStatus? Status { get; init; }
         public DateTime StatusUpdateTime { get; init; }
-        public List<String> Tags { get; init; }
+        public List<String>? Tags { get; init; }
         public ICollection<TourEquipment> TourEquipments { get; set; }
 
         public Tour()
