@@ -8,6 +8,8 @@ namespace Explorer.Tours.Core.Domain.Enum
 {
     public enum TourStatus
     {
-        DRAFT
+        DRAFT,
+        PUBLISHED,
+        ARCHIVED
     }
 }

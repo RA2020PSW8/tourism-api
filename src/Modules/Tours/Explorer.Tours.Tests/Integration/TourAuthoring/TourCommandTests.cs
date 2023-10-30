@@ -1,14 +1,13 @@
 ﻿using Explorer.API.Controllers.Author;
-using Explorer.API.Controllers.Tour;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.Tour;
+using Explorer.Tours.API.Public.TourAuthoring;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 
 
-namespace Explorer.Tours.Tests.Integration.Tour
+namespace Explorer.Tours.Tests.Integration.TourAuthoring
 {
     public class TourCommandTests : BaseToursIntegrationTest
     {
@@ -18,8 +17,9 @@ namespace Explorer.Tours.Tests.Integration.Tour
         public void Creates()
         {
             // Arrange
+            var userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var newEntity = new TourDto()
             {
@@ -27,10 +27,13 @@ namespace Explorer.Tours.Tests.Integration.Tour
                 Name = "Test",
                 Description = "Test",
                 Price = 0,
+                Duration = 100,
+                Distance = 2.1,
                 Difficulty = "EASY",
                 TransportType = "CAR",
                 Status = "DRAFT",
-                Tags = new()
+                Tags = new(),
+                StatusUpdateTime = DateTime.Now.ToUniversalTime()
             };
         
             // Act
@@ -51,8 +54,9 @@ namespace Explorer.Tours.Tests.Integration.Tour
         public void Create_fails_invalid_data()
         {
             // Arrange
+            var userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var updatedEntity = new TourDto()
             {
                 Description = "Update"
@@ -70,8 +74,9 @@ namespace Explorer.Tours.Tests.Integration.Tour
         public void Updates()
         {
             // Arrange
+            var userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var updatedEntity = new TourDto()
             {
@@ -80,10 +85,13 @@ namespace Explorer.Tours.Tests.Integration.Tour
                 Name = "Test",
                 Description = "Test",
                 Price = 0,
+                Duration = 100,
+                Distance = 2.1,
                 Difficulty = "EASY",
                 TransportType = "CAR",
                 Status = "DRAFT",
-                Tags = new()
+                Tags = new(),
+                StatusUpdateTime = DateTime.Now.ToUniversalTime()
             };
 
             // Act
@@ -111,8 +119,9 @@ namespace Explorer.Tours.Tests.Integration.Tour
         public void Update_fails_invalid_id()
         {
             // Arrange
+            var userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var updatedEntity = new TourDto()
             {
                 Id = 1,
@@ -120,10 +129,13 @@ namespace Explorer.Tours.Tests.Integration.Tour
                 Name = "Test",
                 Description = "Test",
                 Price = 0,
+                Duration = 100,
+                Distance = 2.1,
                 Difficulty = "EASY",
                 TransportType = "CAR",
                 Status = "DRAFT",
-                Tags = new()
+                Tags = new(),
+                StatusUpdateTime = DateTime.Now.ToUniversalTime()
             };
 
             // Act
@@ -138,8 +150,9 @@ namespace Explorer.Tours.Tests.Integration.Tour
         public void Deletes()
         {
             // Arrange
+            var userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
 
             // Act
@@ -158,8 +171,9 @@ namespace Explorer.Tours.Tests.Integration.Tour
         public void Delete_fails_invalid_id()
         {
             // Arrange
+            var userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
 
             // Act
             var result = (ObjectResult)controller.Delete(-1000);
@@ -169,11 +183,11 @@ namespace Explorer.Tours.Tests.Integration.Tour
             result.StatusCode.ShouldBe(404);
         }
 
-        private static TourController CreateController(IServiceScope scope)
+        private static TourController CreateController(IServiceScope scope, int userId)
         {
             return new TourController(scope.ServiceProvider.GetRequiredService<ITourService>())
             {
-                ControllerContext = BuildContext("-1")
+                ControllerContext = BuildContext(userId.ToString())
             };
         }
     }
