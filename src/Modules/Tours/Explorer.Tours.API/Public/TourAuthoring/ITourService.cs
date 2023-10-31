@@ -19,5 +19,6 @@ namespace Explorer.Tours.API.Public.TourAuthoring
 
         Result<PagedResult<TourDto>> GetForAuthor(int page, int pageSize, int id);
 
+        public Result<PagedResult<TourDto>> GetPublishedPaged(int page, int pageSize);
     }
 }
