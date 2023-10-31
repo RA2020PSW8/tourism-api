@@ -61,7 +61,7 @@ namespace Explorer.API.Controllers.Author
         public ActionResult<PagedResult<TourDto>> GetByAuthor([FromQuery] int page, [FromQuery] int pageSize)
         {
             var authorId = ClaimsPrincipalExtensions.PersonId(User);
-            var result = _tourService.GetForAuthor(page, pageSize, authorId);
+            var result = _tourService.GetByAuthor(page, pageSize, authorId);
             return CreateResponse(result);
         }
 

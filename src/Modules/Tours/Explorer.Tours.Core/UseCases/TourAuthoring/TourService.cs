@@ -22,11 +22,10 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring
             _tourRepository = tourRepository;
         }
 
-        public Result<PagedResult<TourDto>> GetForAuthor(int page, int pageSize, int id)
+        public Result<PagedResult<TourDto>> GetByAuthor(int page, int pageSize, int id)
         {
-            var result = GetPaged(page, pageSize);
-            result.Value.Results.Where(r => r.UserId == id).ToList();
-            return result;
+            var result = _tourRepository.GetByAuthorPaged(page, pageSize, id);
+            return MapToDto(result);
         }
 
         public Result<PagedResult<TourDto>> GetPublishedPaged(int page, int pageSize)
