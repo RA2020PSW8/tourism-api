@@ -45,9 +45,9 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
             result.Id.ShouldBe(-1);
         }
 
-        private static TourController CreateController(IServiceScope scope)
+        private static TourManagementController CreateController(IServiceScope scope)
         {
-            return new TourController(scope.ServiceProvider.GetRequiredService<ITourService>())
+            return new TourManagementController(scope.ServiceProvider.GetRequiredService<ITourService>())
             {
                 ControllerContext = BuildContext("-1")
             };
