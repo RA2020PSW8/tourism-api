@@ -43,6 +43,7 @@ public static class ToursStartup
         services.AddScoped<IKeypointService, KeypointService>();
         services.AddScoped<IObjectService, ObjectService>();
         services.AddScoped<ITourEquipmentService, TourEquipmentService>();
+        services.AddScoped<ITouristPositionService, TouristPositionService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -59,6 +60,7 @@ public static class ToursStartup
         services.AddScoped(typeof(ICrudRepository<Keypoint>), typeof(CrudDatabaseRepository<Keypoint, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<Object>), typeof(CrudDatabaseRepository<Object, ToursContext>));
         services.AddScoped(typeof(ITourEquipmentRepository), typeof(TourEquipmentDatabaseRepository));
+        services.AddScoped(typeof(ITouristPositionRepository), typeof(TouristPositionRepository));
 
         services.AddDbContext<ToursContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
