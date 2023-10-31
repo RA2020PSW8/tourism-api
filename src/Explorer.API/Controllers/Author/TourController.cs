@@ -1,13 +1,14 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
-using Explorer.Tours.API.Public.Tour;
+using Explorer.Tours.API.Public.TourAuthoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Explorer.API.Controllers.Tour
+namespace Explorer.API.Controllers.Author
 {
-    [Authorize(Policy = "administratorPolicy")]
+    [Authorize(Policy = "authorPolicy")]
     [Route("api/author/tours/")]
     public class TourController : BaseApiController
     {
@@ -25,10 +26,18 @@ namespace Explorer.API.Controllers.Tour
             var result = _tourService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
+        
+        [HttpGet("{tourId:int}")]
+        public ActionResult<TourDto> GetById([FromRoute] int tourId)
+        {
+            var result = _tourService.Get(tourId);
+            return CreateResponse(result);
+        }
 
         [HttpPost]
         public ActionResult<TourDto> Create([FromBody] TourDto tour)
         {
+            tour.UserId = ClaimsPrincipalExtensions.PersonId(User);
             var result = _tourService.Create(tour);
             return CreateResponse(result);
         }
@@ -36,6 +45,7 @@ namespace Explorer.API.Controllers.Tour
         [HttpPut("{id:int}")]
         public ActionResult<TourDto> Update([FromBody] TourDto tour)
         {
+            tour.UserId = ClaimsPrincipalExtensions.PersonId(User);
             var result = _tourService.Update(tour);
             return CreateResponse(result);
         }
@@ -47,10 +57,11 @@ namespace Explorer.API.Controllers.Tour
             return CreateResponse(result);
         }
 
-        [HttpGet("{id:int}")]
-        public ActionResult<PagedResult<TourDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize, int id)
+        [HttpGet("author")]
+        public ActionResult<PagedResult<TourDto>> GetByAuthor([FromQuery] int page, [FromQuery] int pageSize)
         {
-            var result = _tourService.GetForAuthor(page, pageSize, id);
+            var authorId = ClaimsPrincipalExtensions.PersonId(User);
+            var result = _tourService.GetForAuthor(page, pageSize, authorId);
             return CreateResponse(result);
         }
 

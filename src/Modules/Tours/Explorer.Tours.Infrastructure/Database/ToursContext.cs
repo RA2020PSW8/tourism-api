@@ -1,5 +1,6 @@
 ﻿using Explorer.Tours.Core.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Object = Explorer.Tours.Core.Domain.Object;
 
 namespace Explorer.Tours.Infrastructure.Database;
@@ -26,6 +27,11 @@ public class ToursContext : DbContext
 
     private static void ConfigureTour(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Keypoint>()
+            .HasOne(k => k.Tour)
+            .WithMany()
+            .HasForeignKey(k => k.TourId);
+        
         modelBuilder.Entity<TourEquipment>().HasKey(te => new { te.TourId, te.EquipmentId });
         modelBuilder.Entity<TourEquipment>().HasOne<Tour>().WithMany(t => t.TourEquipments).HasForeignKey(te => te.TourId);
         modelBuilder.Entity<TourEquipment>().HasOne<Equipment>().WithMany(e => e.TourEquipments).HasForeignKey(te => te.EquipmentId);

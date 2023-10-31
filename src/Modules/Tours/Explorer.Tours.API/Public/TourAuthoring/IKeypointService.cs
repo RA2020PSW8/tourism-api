@@ -2,7 +2,7 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using FluentResults;
 
-namespace Explorer.Tours.API.Public.Administration;
+namespace Explorer.Tours.API.Public.TourAuthoring;
 
 public interface IKeypointService
 {
@@ -11,4 +11,5 @@ public interface IKeypointService
     Result<List<KeypointDto>> CreateMultiple(List<KeypointDto> keypoints);
     Result<KeypointDto> Update(KeypointDto keypoint);
     Result Delete(int id);
+    Result<PagedResult<KeypointDto>> GetByTourId(int page, int pageSize, int tourId);
 }

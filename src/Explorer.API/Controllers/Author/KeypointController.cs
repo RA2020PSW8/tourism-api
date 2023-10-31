@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.TourAuthoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +26,13 @@ namespace Explorer.API.Controllers.Author
         public ActionResult<PagedResult<KeypointDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _keypointService.GetPaged(page, pageSize);
+            return CreateResponse(result);
+        }
+        
+        [HttpGet("tour/{tourId:int}")]
+        public ActionResult<PagedResult<KeypointDto>> GetByTour([FromQuery] int page, [FromQuery] int pageSize, [FromRoute] int tourId)
+        {
+            var result = _keypointService.GetByTourId(page, pageSize, tourId);
             return CreateResponse(result);
         }
         
