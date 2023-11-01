@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Author
 {
-    [Authorize(Policy = "touristPolicy")]
+    [Authorize(Policy = "authorPolicy")]
     [Route("api/author/objects")]
     public class ObjectController : BaseApiController
     {
