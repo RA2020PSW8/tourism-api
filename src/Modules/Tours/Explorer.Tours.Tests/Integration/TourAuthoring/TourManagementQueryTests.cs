@@ -8,10 +8,10 @@ using Shouldly;
 
 namespace Explorer.Tours.Tests.Integration.TourAuthoring
 {
-    public class TourQueryTests : BaseToursIntegrationTest
+    public class TourManagementQueryTests : BaseToursIntegrationTest
     {
 
-        public TourQueryTests(ToursTestFactory factory) : base(factory) { }
+        public TourManagementQueryTests(ToursTestFactory factory) : base(factory) { }
 
         [Fact]
         public void Retrieves_all()

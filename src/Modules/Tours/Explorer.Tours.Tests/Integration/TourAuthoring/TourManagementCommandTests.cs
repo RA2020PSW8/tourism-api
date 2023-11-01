@@ -9,9 +9,9 @@ using Shouldly;
 
 namespace Explorer.Tours.Tests.Integration.TourAuthoring
 {
-    public class TourCommandTests : BaseToursIntegrationTest
+    public class TourManagementCommandTests : BaseToursIntegrationTest
     {
-        public TourCommandTests(ToursTestFactory factory) : base(factory) { }
+        public TourManagementCommandTests(ToursTestFactory factory) : base(factory) { }
 
         [Fact]
         public void Creates()
