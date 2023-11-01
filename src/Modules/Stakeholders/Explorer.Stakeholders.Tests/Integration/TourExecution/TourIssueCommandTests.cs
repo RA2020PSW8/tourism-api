@@ -1,8 +1,8 @@
 ﻿using Explorer.API.Controllers.Tourist.TourExecution;
 using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.TourExecution;
-using Explorer.Tours.Infrastructure.Database;
+using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.API.Public.TourExecution;
+using Explorer.Stakeholders.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -12,11 +12,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Tests.Integration.TourExecution
+namespace Explorer.Stakeholders.Tests.Integration.TourExecution
 {
-    public class TourIssueCommandTests : BaseToursIntegrationTest
+    public class TourIssueCommandTests : BaseStakeholdersIntegrationTest
     {
-        public TourIssueCommandTests(ToursTestFactory factory) : base(factory) { }
+        public TourIssueCommandTests(StakeholdersTestFactory factory) : base(factory) { }
         
         [Fact]
         public void Creates()
@@ -24,7 +24,7 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
             //Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
             var newEntity = new TourIssueDto
             {
                 Category = "Test",
@@ -67,7 +67,7 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
             //Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
             var updatedEntity = new TourIssueDto
             {
                 Id = -1,
@@ -125,7 +125,7 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
             //Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
 
             //Act
             var result = (OkResult)controller.Delete(-2);

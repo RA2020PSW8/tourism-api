@@ -12,7 +12,6 @@ public class ToursContext : DbContext
     public DbSet<TourReview> TourReviews { get; set; }
     public DbSet<TourPreference> TourPreference { get; set; }
     public DbSet<Tour> Tours { get; set; }
-    public DbSet<TourIssue> TourIssue { get; set; }
     public DbSet<Keypoint> Keypoints { get; set; }
     public DbSet<Object> Objects { get; set; }
     public DbSet<TourEquipment> TourEquipments { get; set; }
