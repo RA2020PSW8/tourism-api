@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
 using FluentResults;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Explorer.Stakeholders.Core.UseCases
 {
-    public class ProfileService: IProfileService
+    public class ProfileService: IProfileService, IInternalProfileService
     {
         private readonly ICrudRepository<Person> _personRepository;
         private readonly IMapper _mapper;
@@ -21,6 +22,31 @@ namespace Explorer.Stakeholders.Core.UseCases
         {
             _personRepository = personRepository;
             _mapper = mapper;
+        }
+
+        public Result<List<PersonDto>> GetMany(List<int> peopleIds)
+        {
+            List<PersonDto> people = new();
+            foreach (int id in peopleIds)
+            {
+                var person = _personRepository.Get(id);
+                if(person != null)
+                {
+                    PersonDto newPerson = new PersonDto
+                    {
+                        Id = person.Id,
+                        Name = person.Name,
+                        Surname = person.Surname,
+                        Biography = person.Biography,
+                        Email = person.Email,
+                        ProfileImage = person.ProfileImage,
+                        Quote = person.Quote,
+                        UserId = person.UserId
+                    };
+                    people.Add(newPerson);
+                }
+            }
+            return people;
         }
 
         public Result<AccountRegistrationDto> GetProfile(long userId)

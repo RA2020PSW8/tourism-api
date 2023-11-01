@@ -11,6 +11,9 @@ namespace Explorer.Blog.API.Dtos
     {
         public int Id { get; set; }
         public int CreatorId { get; set; }
+        public string? CreatorName { get; set; }
+        public string? CreatorSurname { get; set; }
+        public int CreatorRole { get; set; }
         public required string Title { get; set; }
         public required string Description { get; set; }
         public BlogStatus Status { get; set; }
