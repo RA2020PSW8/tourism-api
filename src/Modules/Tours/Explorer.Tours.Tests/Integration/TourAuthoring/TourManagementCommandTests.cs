@@ -9,9 +9,9 @@ using Shouldly;
 
 namespace Explorer.Tours.Tests.Integration.TourAuthoring
 {
-    public class TourCommandTests : BaseToursIntegrationTest
+    public class TourManagementCommandTests : BaseToursIntegrationTest
     {
-        public TourCommandTests(ToursTestFactory factory) : base(factory) { }
+        public TourManagementCommandTests(ToursTestFactory factory) : base(factory) { }
 
         [Fact]
         public void Creates()
@@ -183,9 +183,9 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
             result.StatusCode.ShouldBe(404);
         }
 
-        private static TourController CreateController(IServiceScope scope, int userId)
+        private static TourManagementController CreateController(IServiceScope scope, int userId)
         {
-            return new TourController(scope.ServiceProvider.GetRequiredService<ITourService>())
+            return new TourManagementController(scope.ServiceProvider.GetRequiredService<ITourService>())
             {
                 ControllerContext = BuildContext(userId.ToString())
             };

@@ -10,12 +10,12 @@ namespace Explorer.API.Controllers.Author
 {
     [Authorize(Policy = "authorPolicy")]
     [Route("api/author/tours/")]
-    public class TourController : BaseApiController
+    public class TourManagementController : BaseApiController
     {
         
         private readonly ITourService _tourService;
 
-        public TourController(ITourService tourService)
+        public TourManagementController(ITourService tourService)
         {
             _tourService = tourService;
         }
@@ -61,7 +61,7 @@ namespace Explorer.API.Controllers.Author
         public ActionResult<PagedResult<TourDto>> GetByAuthor([FromQuery] int page, [FromQuery] int pageSize)
         {
             var authorId = ClaimsPrincipalExtensions.PersonId(User);
-            var result = _tourService.GetForAuthor(page, pageSize, authorId);
+            var result = _tourService.GetByAuthor(page, pageSize, authorId);
             return CreateResponse(result);
         }
 

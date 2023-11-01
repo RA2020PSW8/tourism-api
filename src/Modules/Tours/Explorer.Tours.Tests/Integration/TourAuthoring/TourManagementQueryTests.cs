@@ -8,10 +8,10 @@ using Shouldly;
 
 namespace Explorer.Tours.Tests.Integration.TourAuthoring
 {
-    public class TourQueryTests : BaseToursIntegrationTest
+    public class TourManagementQueryTests : BaseToursIntegrationTest
     {
 
-        public TourQueryTests(ToursTestFactory factory) : base(factory) { }
+        public TourManagementQueryTests(ToursTestFactory factory) : base(factory) { }
 
         [Fact]
         public void Retrieves_all()
@@ -45,9 +45,9 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
             result.Id.ShouldBe(-1);
         }
 
-        private static TourController CreateController(IServiceScope scope)
+        private static TourManagementController CreateController(IServiceScope scope)
         {
-            return new TourController(scope.ServiceProvider.GetRequiredService<ITourService>())
+            return new TourManagementController(scope.ServiceProvider.GetRequiredService<ITourService>())
             {
                 ControllerContext = BuildContext("-1")
             };

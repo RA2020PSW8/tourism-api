@@ -9,18 +9,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 
 namespace Explorer.Tours.Core.UseCases.TourAuthoring
 {
     public class TourService : CrudService<TourDto, Domain.Tour>, ITourService
     {
-        public TourService(ICrudRepository<Tour> repository, IMapper mapper) : base(repository, mapper) {}
+        protected readonly ITourRepository _tourRepository;
 
-        public Result<PagedResult<TourDto>> GetForAuthor(int page, int pageSize, int id)
+        public TourService(ITourRepository tourRepository, IMapper mapper) : base(tourRepository, mapper)
         {
-            var result = GetPaged(page, pageSize);
-            result.Value.Results.Where(r => r.UserId == id).ToList();
-            return result;
+            _tourRepository = tourRepository;
+        }
+
+        public Result<PagedResult<TourDto>> GetByAuthor(int page, int pageSize, int id)
+        {
+            var result = _tourRepository.GetByAuthorPaged(page, pageSize, id);
+            return MapToDto(result);
+        }
+
+        public Result<PagedResult<TourDto>> GetPublishedPaged(int page, int pageSize)
+        {
+            var result = _tourRepository.GetPublishedPaged(page, pageSize);
+            return MapToDto(result);
         }
     }
 }

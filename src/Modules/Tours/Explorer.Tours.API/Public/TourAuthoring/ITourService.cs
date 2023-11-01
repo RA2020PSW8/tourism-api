@@ -17,7 +17,8 @@ namespace Explorer.Tours.API.Public.TourAuthoring
         Result<TourDto> Update(TourDto equipment);
         Result Delete(int id);
 
-        Result<PagedResult<TourDto>> GetForAuthor(int page, int pageSize, int id);
+        Result<PagedResult<TourDto>> GetByAuthor(int page, int pageSize, int id);
 
+        public Result<PagedResult<TourDto>> GetPublishedPaged(int page, int pageSize);
     }
 }
