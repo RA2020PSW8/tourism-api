@@ -26,7 +26,7 @@ public class TourRepository : CrudDatabaseRepository<Tour, ToursContext>, ITourR
 
     public PagedResult<Tour> GetPublishedPaged(int page, int pageSize)
     {
-        var task = _dbSet.Where(t => t.Status == TourStatus.PUBLISHED).GetPagedById(page, pageSize);
+        var task = _dbSet.Where(t => t.Status == TourStatus.PUBLISHED).Include(t => t.Keypoints).GetPagedById(page, pageSize);
         task.Wait();
         return task.Result;
     }

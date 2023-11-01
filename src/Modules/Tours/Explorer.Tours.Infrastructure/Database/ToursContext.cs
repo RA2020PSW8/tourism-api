@@ -30,7 +30,7 @@ public class ToursContext : DbContext
     {
         modelBuilder.Entity<Keypoint>()
             .HasOne(k => k.Tour)
-            .WithMany()
+            .WithMany(t => t.Keypoints)
             .HasForeignKey(k => k.TourId);
         
         modelBuilder.Entity<TourEquipment>().HasKey(te => new { te.TourId, te.EquipmentId });

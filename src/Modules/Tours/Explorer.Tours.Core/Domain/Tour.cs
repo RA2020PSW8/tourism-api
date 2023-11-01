@@ -22,6 +22,7 @@ namespace Explorer.Tours.Core.Domain
         public DateTime StatusUpdateTime { get; init; }
         public List<String>? Tags { get; init; }
         public ICollection<TourEquipment> TourEquipments { get; set; }
+        public ICollection<Keypoint>? Keypoints { get; set; }
 
         public Tour()
         {
