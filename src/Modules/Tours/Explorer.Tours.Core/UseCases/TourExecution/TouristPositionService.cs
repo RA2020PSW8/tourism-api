@@ -48,6 +48,7 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
             }
             catch (KeyNotFoundException e)
             {
+                entity.UpdatedAt = DateTime.UtcNow;
                 var result = _touristPositionRepository.Create(MapToDomain(entity));
                 return MapToDto(result);
             }
@@ -59,6 +60,7 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
             {
                 var foundTouristPosition = _touristPositionRepository.GetByUser(entity.UserId);
                 entity.Id = foundTouristPosition.Id;
+                entity.UpdatedAt = DateTime.UtcNow;
                 return base.Update(entity);
             }
             catch (KeyNotFoundException e)
