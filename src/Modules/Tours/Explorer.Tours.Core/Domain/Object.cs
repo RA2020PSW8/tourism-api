@@ -13,15 +13,15 @@ namespace Explorer.Tours.Core.Domain
         public string Name { get; init; }
         public string Description { get; init; }
         public string? Image { get; init; }
-
         public Category Category { get; init; }
+        public ObjectStatus Status { get; init; }
 
         public Object() 
         {
 
         }
 
-        public Object(string name, string description, string? image, Category category)
+        public Object(string name, string description, string? image, Category category, ObjectStatus status)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Name.");
             if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("Invalid Name.");
@@ -29,6 +29,7 @@ namespace Explorer.Tours.Core.Domain
             Description = description;
             Image = image;
             Category = category;
+            Status = status;
         }
 
 

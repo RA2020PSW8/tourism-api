@@ -1,4 +1,5 @@
 using Explorer.BuildingBlocks.Core.Domain;
+using Explorer.Tours.Core.Domain.Enum;
 
 namespace Explorer.Tours.Core.Domain;
 
@@ -8,13 +9,14 @@ public class Keypoint : Entity
     public double Latitude { get; init; }
     public double Longitude { get; init; }
     public string? Description { get; init; }
+    public KeypointStatus Status { get; init; }
 
     public Keypoint()
     {
         
     }
     
-    public Keypoint(string name, double latitude, double longitude, string? description)
+    public Keypoint(string name, double latitude, double longitude, string? description, KeypointStatus status)
     {
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid name");
         if (latitude is > 90 or < -90) throw new ArgumentException("Invalid latitude");
@@ -24,5 +26,6 @@ public class Keypoint : Entity
         Latitude = latitude;
         Longitude = longitude;
         Description = description;
+        Status = status;
     }
 }

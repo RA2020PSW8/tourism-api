@@ -1,5 +1,6 @@
 ﻿using Explorer.API.Controllers.Object;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.Enums;
 using Explorer.Tours.API.Public.Object;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,8 @@ namespace Explorer.Tours.Tests.Integration.Object
                 Name = "Test",
                 Description = "Test",
                 Image = "Test",
-                Category = "WC"
+                Category = "WC",
+                Status = ObjectStatus.PRIVATE
             };
 
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as ObjectDto;
@@ -75,7 +77,8 @@ namespace Explorer.Tours.Tests.Integration.Object
                 Name = "Test",
                 Description = "Test",
                 Image = "Test",
-                Category = "WC"
+                Category = "WC",
+                Status = ObjectStatus.PRIVATE
             };
 
             var result = ((ObjectResult)controller.Update(updatedEntity).Result)?.Value as ObjectDto;
@@ -86,6 +89,7 @@ namespace Explorer.Tours.Tests.Integration.Object
             result.Description.ShouldBe(updatedEntity.Description);
             result.Image.ShouldBe(updatedEntity.Image);
             result.Category.ShouldBe(updatedEntity.Category);
+            result.Status.ShouldBe(updatedEntity.Status);
 
             var storedEntity = dbContext.Objects.FirstOrDefault(i => i.Name == updatedEntity.Name);
             storedEntity.ShouldNotBeNull();
@@ -105,7 +109,8 @@ namespace Explorer.Tours.Tests.Integration.Object
                 Name = "Test",
                 Description = "Test",
                 Image = "Test",
-                Category = "WC"
+                Category = "WC",
+                Status = ObjectStatus.PRIVATE
             };
 
             var result = (ObjectResult)controller.Update(updatedEntity).Result;
