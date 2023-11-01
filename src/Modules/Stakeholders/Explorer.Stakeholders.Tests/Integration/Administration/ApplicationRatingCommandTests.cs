@@ -27,15 +27,16 @@ namespace Explorer.Stakeholders.Tests.Integration.Administration
         public void Creates()
         {
             // Arrange
+            int userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
             var newEntity = new ApplicationRatingDto
             {
                 Id = 12,
                 Rating = 4,
                 Comment = "Very good!",
-                UserId = -1,
+                UserId = userId,
                 LastModified = DateTime.UtcNow
             };
 
@@ -57,15 +58,16 @@ namespace Explorer.Stakeholders.Tests.Integration.Administration
         public void Create_fails_rating_exists()
         {
             // Arrange
+            int userId = -2;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
             var newEntity = new ApplicationRatingDto
             {
                 Id = 13,
                 Rating = 4,
                 Comment = "Very good!",
-                UserId = 2,
+                UserId = userId,
                 LastModified = DateTime.UtcNow
             };
 
@@ -81,15 +83,16 @@ namespace Explorer.Stakeholders.Tests.Integration.Administration
         public void Updates()
         {
             // Arrange
+            int userId = -2;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
             var updatedEntity = new ApplicationRatingDto
             {
                 Id = -22,
                 Rating = 5,
                 Comment = "Great!",
-                UserId = 2,
+                UserId = userId,
                 LastModified = DateTime.UtcNow
             };
 
@@ -118,15 +121,16 @@ namespace Explorer.Stakeholders.Tests.Integration.Administration
         public void Update_fails_rating_missing()
         {
             // Arrange
+            int userId = -7;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
             var updatedEntity = new ApplicationRatingDto
             {
                 Id = 77,
                 Rating = 5,
                 Comment = "Great!",
-                UserId = 7,
+                UserId = userId,
                 LastModified = DateTime.UtcNow
             };
 
@@ -142,15 +146,16 @@ namespace Explorer.Stakeholders.Tests.Integration.Administration
         public void Deletes()
         {
             // Arrange
+            int userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
             var entity = new ApplicationRatingDto
             {
                 Id = -21,
                 Rating = 5,
                 Comment = "I like it!",
-                UserId = 1,
+                UserId = userId,
                 LastModified = DateTime.UtcNow
             };
 
@@ -163,14 +168,14 @@ namespace Explorer.Stakeholders.Tests.Integration.Administration
 
             // Assert - Database
             var storedCourse = dbContext.ApplicationRatings.FirstOrDefault(i => i.Id == entity.Id);
-            storedCourse.ShouldNotBeNull();
+            storedCourse.ShouldBeNull();
         }
 
-        private static ApplicationRatingController CreateController(IServiceScope scope)
+        private static ApplicationRatingController CreateController(IServiceScope scope, int userId)
         {
             return new ApplicationRatingController(scope.ServiceProvider.GetRequiredService<IApplicationRatingService>())
             {
-                ControllerContext = BuildContext("-1")
+                ControllerContext = BuildContext(userId.ToString())
             };
         }
     }
