@@ -21,10 +21,18 @@ namespace Explorer.Tours.Core.Domain
 
         public TouristPosition(long userId, double latitude, double longitude)
         {
+            Validate(latitude, longitude);
+
             UserId = userId;
             Latitude = latitude;
             Longitude = longitude;
             UpdatedAt = DateTime.Now;
+        }
+
+        private static void Validate(double latitude, double longitude)
+        {
+            if (latitude is > 90 or < -90) throw new ArgumentException("Invalid latitude");
+            if (longitude is > 180 or < -180) throw new ArgumentException("Invalid longitude");
         }
     }
 }
