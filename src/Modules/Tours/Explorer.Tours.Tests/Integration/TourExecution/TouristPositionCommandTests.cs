@@ -23,7 +23,7 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
         public void Creates()
         {
             // Arrange
-            int userId = 5;
+            int userId = -5;
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
@@ -50,7 +50,7 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
         public void Create_fails_position_exists()
         {
             // Arrange
-            int userId = 3;
+            int userId = -3;
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope, userId);
             var newEntity = new TouristPositionDto
@@ -71,7 +71,7 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
         public void Updates()
         {
             // Arrange
-            int userId = 3;
+            int userId = -3;
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
@@ -102,7 +102,7 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
         public void Update_fails_preference_missing()
         {
             // Arrange
-            int userId = 4;
+            int userId = -4;
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();

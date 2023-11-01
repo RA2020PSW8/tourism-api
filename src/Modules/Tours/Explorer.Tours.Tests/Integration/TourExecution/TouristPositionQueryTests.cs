@@ -27,7 +27,7 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
         public void Retrieves()
         {
             // Arrange
-            int userId = 3;
+            int userId = -3;
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope, userId);
 
