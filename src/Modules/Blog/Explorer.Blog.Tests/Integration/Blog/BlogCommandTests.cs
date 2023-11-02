@@ -28,7 +28,7 @@ namespace Explorer.Blog.Tests.Integration.Blog
             var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
             var newEntity = new BlogDto
             {
-                CreatorId = -1,
+                CreatorId = -11,
                 Title = "Breathtaking visit to Dubai",
                 Description = "Simply breathtaking.",
                 CreationDate = DateOnly.FromDateTime(DateTime.Now.ToUniversalTime()),

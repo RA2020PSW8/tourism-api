@@ -12,6 +12,7 @@ using Explorer.Blog.API.Public.Blog;
 using FluentResults;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.Core.Domain;
 
 namespace Explorer.Blog.Core.UseCases.Blog
 {
@@ -52,7 +53,15 @@ namespace Explorer.Blog.Core.UseCases.Blog
 
         public Result Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _repository.Delete(id);
+                return Result.Ok();
+            }
+            catch (KeyNotFoundException e)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
         }
 
         public Result<BlogDto> Get(int id)
@@ -62,18 +71,16 @@ namespace Explorer.Blog.Core.UseCases.Blog
                 var result = _repository.Get(id);
                 BlogDto newDto = MapToDto(result);
                 //TODO Promeni kada neko doda get({id})
-                var users = _userService.GetPaged(0,0);
-                foreach (var user in users.Value.Results)
+                if(newDto.CreatorId != 0)
                 {
-                    if(user.Id == newDto.CreatorId)
+                    var users = _userService.GetPaged(0, 0);
+                    foreach (var user in users.Value.Results)
                     {
-                        newDto.CreatorRole = user.Role;
+                        LoadUserInformation(newDto, user);
                     }
-                }
 
-                AccountRegistrationDto person = _profileService.GetProfile(newDto.CreatorId).Value;
-                newDto.CreatorName = person.Name;
-                newDto.CreatorSurname = person.Surname;
+                    LoadPersonInformation(newDto);
+                }
                 return newDto;
             }
             catch (KeyNotFoundException e)
@@ -90,24 +97,20 @@ namespace Explorer.Blog.Core.UseCases.Blog
             {
                 dtos.Add(MapToDto(item));
             }
+
             //TODO Promeni kada neko doda get({id})
             var users = _userService.GetPaged(0, 0);
             foreach (var user in users.Value.Results)
             {
                 foreach(BlogDto dto in dtos)
                 {
-                    if (user.Id == dto.CreatorId)
-                    {
-                        dto.CreatorRole = user.Role;
-                    }
+                    LoadUserInformation(dto, user);
                 }
             }
 
             foreach(BlogDto dto in dtos)
             {
-                AccountRegistrationDto person = _profileService.GetProfile(dto.CreatorId).Value;
-                dto.CreatorName = person.Name;
-                dto.CreatorSurname = person.Surname;
+                LoadPersonInformation(dto);
             }
 
             PagedResult<BlogDto> res = new(dtos, dtos.Count);
@@ -128,6 +131,24 @@ namespace Explorer.Blog.Core.UseCases.Blog
             catch (ArgumentException e)
             {
                 return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
+            }
+        }
+
+        public void LoadPersonInformation(BlogDto dto)
+        {
+            if (dto.CreatorId != 0)
+            {
+                AccountRegistrationDto person = _profileService.GetProfile(dto.CreatorId).Value;
+                dto.CreatorName = person.Name;
+                dto.CreatorSurname = person.Surname;
+            }
+        }
+
+        public void LoadUserInformation(BlogDto dto, UserDto user)
+        {
+            if (user.Id == dto.CreatorId && dto.CreatorId != 0)
+            {
+                dto.CreatorRole = user.Role;
             }
         }
     }
