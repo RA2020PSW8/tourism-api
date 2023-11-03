@@ -10,6 +10,9 @@ using Explorer.Stakeholders.Core.UseCases.Tourist;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Stakeholders.Infrastructure.Database;
 using Explorer.Stakeholders.Infrastructure.Database.Repositories;
+using Explorer.Stakeholders.API.Public.TourExecution;
+using Explorer.Stakeholders.Core.Domain;
+using Explorer.Stakeholders.Core.UseCases.TourExecution;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,6 +38,7 @@ public static class StakeholdersStartup
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProfileService, ProfileService>();
         services.AddScoped<IApplicationRatingService, ApplicationRatingService>();
+        services.AddScoped<ITourIssueService, TourIssueService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -47,6 +51,7 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(ICrudRepository<Club>), typeof(CrudDatabaseRepository<Club, StakeholdersContext>));
         services.AddScoped<IUserRepository, UserDatabaseRepository>();
         services.AddScoped(typeof(ICrudRepository<ClubInvitation>), typeof(CrudDatabaseRepository<ClubInvitation, StakeholdersContext>));
+        services.AddScoped(typeof(ICrudRepository<TourIssue>), typeof(CrudDatabaseRepository<TourIssue, StakeholdersContext>));
         services.AddScoped(typeof(IApplicationRatingRepository), typeof(ApplicationRatingDatabaseRepository));
 
         services.AddDbContext<StakeholdersContext>(opt =>
