@@ -33,7 +33,7 @@ namespace Explorer.Blog.Tests.Integration.Blog
                 Description = "Simply breathtaking.",
                 CreationDate = DateOnly.FromDateTime(DateTime.Now.ToUniversalTime()),
                 ImageLinks = new List<string>() { "test" },
-                Status = BlogStatus.DRAFT
+                Status = BlogStatus.DRAFT.ToString()
             };
 
             //Act
@@ -59,7 +59,8 @@ namespace Explorer.Blog.Tests.Integration.Blog
             var updatedEntity = new BlogDto
             {
                 Title = "",
-                Description = ""
+                Description = "",
+                Status = ""
             };
 
             //Act
@@ -85,7 +86,7 @@ namespace Explorer.Blog.Tests.Integration.Blog
                 Description = "Spectacular!",
                 CreationDate = DateOnly.FromDateTime(DateTime.Now.ToUniversalTime()),
                 ImageLinks = new List<string> { "img1.jpg"},
-                Status = BlogStatus.DRAFT
+                Status = BlogStatus.DRAFT.ToString()
             };
 
             //Act
@@ -118,7 +119,8 @@ namespace Explorer.Blog.Tests.Integration.Blog
             {
                 Id = -420,
                 Title = "Invalid update",
-                Description = "Cannot happen"
+                Description = "Cannot happen",
+                Status = ""
             };
 
             //Act
