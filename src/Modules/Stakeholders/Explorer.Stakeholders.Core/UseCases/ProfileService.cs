@@ -32,17 +32,7 @@ namespace Explorer.Stakeholders.Core.UseCases
                 var person = _personRepository.Get(id);
                 if(person != null)
                 {
-                    PersonDto newPerson = new PersonDto
-                    {
-                        Id = person.Id,
-                        Name = person.Name,
-                        Surname = person.Surname,
-                        Biography = person.Biography,
-                        Email = person.Email,
-                        ProfileImage = person.ProfileImage,
-                        Quote = person.Quote,
-                        UserId = person.UserId
-                    };
+                    PersonDto newPerson = _mapper.Map<PersonDto>(person);
                     people.Add(newPerson);
                 }
             }

@@ -16,7 +16,7 @@ namespace Explorer.Blog.API.Dtos
         public int CreatorRole { get; set; }
         public required string Title { get; set; }
         public required string Description { get; set; }
-        public BlogStatus Status { get; set; }
+        public required string Status { get; set; }
         public DateOnly CreationDate { get; set; }
         public List<string>? ImageLinks { get; set; }
     }
