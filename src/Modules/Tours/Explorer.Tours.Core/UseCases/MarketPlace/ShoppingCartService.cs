@@ -37,7 +37,7 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
 
                 // Update the existing shopping cart with the new data
                 existingShoppingCart.OrdersId = updatedShoppingCart.OrdersId;
-
+                existingShoppingCart.Price = updatedShoppingCart.Price;
                 // Save the changes to the data storage
                 _cartRepository.Update(existingShoppingCart);
 
