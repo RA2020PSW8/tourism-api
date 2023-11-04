@@ -12,12 +12,12 @@ namespace Explorer.API.Controllers.Tourist.Marketplace;
 public class TourController : BaseApiController
 {
     private readonly ITourService _tourService;
-    private readonly ITourFilteringService _filteringService;
+   
 
-    public TourController(ITourService tourService, ITourFilteringService filteringService)
+    public TourController(ITourService tourService/*, ITourFilteringService filteringService*/)
     {
         _tourService = tourService;
-        _filteringService = filteringService;
+        //_filteringService = filteringService;
     }
     
     [HttpGet]
@@ -27,10 +27,11 @@ public class TourController : BaseApiController
         return CreateResponse(result);
     }
 
-    [HttpGet]
+    /*[HttpGet]
     public ActionResult<PagedResult<TourDto>> GetFilteredTours([FromQuery] int page, [FromQuery] int pageSize, [FromBody] TourFilterCriteriaDto filter)
     {
         var result = _filteringService.GetFilteredTours(page, pageSize, filter);
         return CreateResponse(result);
     }
+    */
 }
