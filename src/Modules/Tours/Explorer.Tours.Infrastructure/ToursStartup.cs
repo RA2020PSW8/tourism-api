@@ -44,6 +44,7 @@ public static class ToursStartup
         services.AddScoped<ITourEquipmentService, TourEquipmentService>();
         services.AddScoped<ITouristPositionService, TouristPositionService>();
         services.AddScoped<IOrderItemService, OrderItemService>();
+        services.AddScoped<IShoppingCartService, ShoppingCartService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -51,6 +52,7 @@ public static class ToursStartup
         services.AddScoped(typeof(ICrudRepository<Equipment>), typeof(CrudDatabaseRepository<Equipment, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<TouristEquipment>), typeof(CrudDatabaseRepository<TouristEquipment, ToursContext>));
         services.AddScoped(typeof(ICrudRepository<OrderItem>), typeof(CrudDatabaseRepository<OrderItem, ToursContext>));
+        services.AddScoped(typeof(ICrudRepository<ShoppingCart>), typeof(CrudDatabaseRepository<ShoppingCart, ToursContext>));
         services.AddScoped<ITouristEquipmentRepository, TouristEquipmentRepository>();
         services.AddScoped<IEquipmentRepository, EquipmentRepository>();
         services.AddScoped(typeof(ICrudRepository<TourReview>), typeof(CrudDatabaseRepository<TourReview, ToursContext>));
@@ -61,7 +63,8 @@ public static class ToursStartup
         services.AddScoped(typeof(ICrudRepository<Object>), typeof(CrudDatabaseRepository<Object, ToursContext>));
         services.AddScoped(typeof(ITourEquipmentRepository), typeof(TourEquipmentDatabaseRepository));
         services.AddScoped(typeof(ITouristPositionRepository), typeof(TouristPositionRepository));
-        //services.AddScoped(typeof(IOrderItemRepository), typeof(OrderItemRepository));
+        services.AddScoped(typeof(IOrderItemRepository), typeof(OrderItemRepository));
+        services.AddScoped(typeof(IShoppingCartRepository), typeof(ShoppingCartRepository));
 
         services.AddDbContext<ToursContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
