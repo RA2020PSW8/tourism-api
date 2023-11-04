@@ -17,5 +17,6 @@ public class StakeholderProfile : Profile
         CreateMap<ClubDto, Club>().ReverseMap();
         CreateMap<ClubInvitationDto, ClubInvitation>().ReverseMap();
         CreateMap<TourIssueDto, TourIssue>().ReverseMap();
+        CreateMap<TourIssueCommentDto, TourIssueComment>().ReverseMap();
     }
 }

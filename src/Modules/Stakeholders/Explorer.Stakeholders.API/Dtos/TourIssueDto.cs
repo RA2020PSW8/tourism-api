@@ -12,6 +12,8 @@ namespace Explorer.Stakeholders.API.Dtos
         public required string Category { get; set; }
         public uint Priority { get; set; }
         public required string Description { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime CreationDateTime { get; set; }
+        public DateTime? ResolveDateTime { get; set; }
+        public bool IsResolved { get; set; }
     }
 }
