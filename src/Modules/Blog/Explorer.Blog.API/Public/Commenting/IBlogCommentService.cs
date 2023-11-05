@@ -13,8 +13,8 @@ namespace Explorer.Blog.API.Public.Commenting
     {
         Result<PagedResult<BlogCommentDto>> GetPaged(int page,int pageSize);
         Result<BlogCommentDto> Get(int id);
-        Result<BlogCommentDto> Create(BlogCommentDto forumCommentDto);
-        Result<BlogCommentDto> Update(BlogCommentDto forumCommentDto);
+        Result<BlogCommentDto> Create(BlogCommentDto blogCommentDto);
+        Result<BlogCommentDto> Update(BlogCommentDto blogCommentDto);
         Result Delete(int id);
     }
 }

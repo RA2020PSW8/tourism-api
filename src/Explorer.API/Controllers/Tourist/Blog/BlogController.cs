@@ -1,8 +1,10 @@
 ﻿using Explorer.Blog.API.Dtos;
 using Explorer.Blog.API.Public.Blog;
 using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Explorer.API.Controllers.Tourist.Blog
 {

@@ -26,13 +26,12 @@ namespace Explorer.Blog.Tests.Integration.Commenting
             var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
             var newEntity = new BlogCommentDto
             {
-                ForumId = 1,
+                BlogId = 1,
                 Username = "steva",
                 Comment = "test komentar",
                 PostTime = DateTime.Now.ToUniversalTime(),
                 LastEditTime = DateTime.Now.ToUniversalTime(),
                 IsDeleted = false
-
             };
 
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as BlogCommentDto;
@@ -74,7 +73,7 @@ namespace Explorer.Blog.Tests.Integration.Commenting
             var updatedEntity = new BlogCommentDto
             {
                 Id = -1,
-                ForumId = 1,
+                BlogId = 1,
                 Username = "steva",
                 Comment = "novi komentar",
                 PostTime = DateTime.Now.ToUniversalTime(),
@@ -86,7 +85,7 @@ namespace Explorer.Blog.Tests.Integration.Commenting
 
             result.ShouldNotBeNull();
             result.Id.ShouldBe(-1);
-            result.ForumId.ShouldBe(updatedEntity.ForumId);
+            result.BlogId.ShouldBe(updatedEntity.BlogId);
             result.Comment.ShouldBe(updatedEntity.Comment);
             result.PostTime.ShouldBe(updatedEntity.PostTime);
             result.LastEditTime.ShouldBe(updatedEntity.LastEditTime);
