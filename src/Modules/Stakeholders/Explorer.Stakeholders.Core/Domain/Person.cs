@@ -1,4 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Mail;
 
 namespace Explorer.Stakeholders.Core.Domain;
@@ -12,6 +13,11 @@ public class Person : Entity
     public string ProfileImage { get; init; }
     public string Biography { get; init; }
     public string Quote { get; init; }
+    [InverseProperty(nameof(Person.Followings))]
+    public List<Person> Followers { get; } = new();
+
+    [InverseProperty(nameof(Person.Followers))]
+    public List<Person> Followings { get; } = new();
 
     public Person(long userId, string name, string surname, string email, string profileImage, string biography, string quote)
     {
@@ -22,6 +28,8 @@ public class Person : Entity
         ProfileImage = profileImage;
         Biography = biography;
         Quote = quote;
+        Followers = new List<Person>();
+        Followings = new List<Person>();
         Validate();
     }
 

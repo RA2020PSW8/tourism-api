@@ -4,6 +4,7 @@ using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
+using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,10 @@ namespace Explorer.Stakeholders.Core.UseCases
 {
     public class ProfileService: IProfileService, IInternalProfileService
     {
-        private readonly ICrudRepository<Person> _personRepository;
+        private readonly IPersonRepository _personRepository;
         private readonly IMapper _mapper;
 
-        public ProfileService(ICrudRepository<Person> personRepository, IMapper mapper)
+        public ProfileService(IPersonRepository personRepository, IMapper mapper) //: base(personRepository, mapper)
         {
             _personRepository = personRepository;
             _mapper = mapper;
@@ -74,6 +75,42 @@ namespace Explorer.Stakeholders.Core.UseCases
 
             var updatedPersonDto = _mapper.Map<PersonDto>(existingPerson);
 
+            return Result.Ok(updatedPersonDto);
+        }
+        public bool IsProfileAlreadyFollowed(long follower, long following)
+        {
+            var existingFollower = _personRepository.Get(follower);
+            return existingFollower.Followings.Any(f => f.Id == following);
+        }
+        public Result<PersonDto> FollowProfile(long follower, long following)
+        {
+            /*
+            var existingFollower = _personRepository.Get(follower);
+            var existingFollowing = _personRepository.Get(following);
+            */
+            /* odmah provjeri da li je moguce bez provjere u controlleru
+            if (existingPerson == null)
+            {
+                return Result.Fail(FailureCode.NotFound);
+            }
+
+            existingFollower.Followings.Add(existingFollowing);
+
+            // Update the Followings list for existingFollowing
+            existingFollowing.Followers.Add(existingFollower);
+            */
+            /*_mapper.Map(follower, existingFollower);
+            _mapper.Map(following, existingFollowing);
+
+            existingFollower.Followings.Add(following);*/
+/*
+            _personRepository.Update(existingFollower);
+            _personRepository.Update(existingFollowing);
+
+            var updatedFollower = _mapper.Map<PersonDto>(existingFollower);*/
+            //var updatedPersonDto = _mapper.Map<PersonDto>(existingPerson);
+            var person = _personRepository.GetOne(follower);
+            var updatedPersonDto = _mapper.Map<PersonDto>(person);
             return Result.Ok(updatedPersonDto);
         }
     }

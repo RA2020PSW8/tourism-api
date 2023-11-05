@@ -12,5 +12,7 @@ namespace Explorer.Stakeholders.API.Public
     {
         Result<AccountRegistrationDto> GetProfile(long userId);
         Result<PersonDto> UpdateProfile(PersonDto updatedPerson);
+        bool IsProfileAlreadyFollowed(long follower, long followed);
+        Result<PersonDto> FollowProfile(long follower, long followed);
     }
 }
