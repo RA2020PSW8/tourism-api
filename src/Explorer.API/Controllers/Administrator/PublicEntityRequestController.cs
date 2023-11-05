@@ -1,13 +1,12 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+﻿using Microsoft.AspNetCore.Authorization;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-namespace Explorer.API.Controllers.Author
+namespace Explorer.API.Controllers.Administrator
 {
-    [Authorize(Policy = "authorPolicy")]
-    [Route("api/author/publicEntityRequests")]
+    [Authorize(Policy = "administratorPolicy")]
+    [Route("api/administrator/publicEntityRequests")]
     public class PublicEntityRequestController : BaseApiController
     {
         private readonly IPublicEntityRequestService _publicEntityRequestService;
@@ -31,18 +30,18 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
-        [HttpPost]
-        public ActionResult<PublicEntityRequestDto> Create([FromBody] PublicEntityRequestDto publicEntityRequestDto)
+        [HttpPut("approve")]
+        public ActionResult<PublicEntityRequestDto> Approve(PublicEntityRequestDto publicEntityRequestDto)
         {
-            var result = _publicEntityRequestService.Create(publicEntityRequestDto);
+            var result = _publicEntityRequestService.Approve(publicEntityRequestDto);
             return CreateResponse(result);
         }
 
-        [HttpDelete("{id:int}")]
-        public ActionResult Delete(int id)  // za cancel
+        [HttpPut("decline")]
+        public ActionResult<PublicEntityRequestDto> Decline([FromBody] PublicEntityRequestDto publicEntityRequestDto)
         {
-            var result = _publicEntityRequestService.Delete(id);
-            return  CreateResponse(result);
+            var result = _publicEntityRequestService.Decline(publicEntityRequestDto);
+            return CreateResponse(result);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Explorer.Tours.Core.Domain
         public string Description { get; init; }
         public string? Image { get; init; }
         public Category Category { get; init; }
-        public ObjectStatus Status { get; init; }
+        public ObjectStatus Status { get; set; }
 
         public Object() 
         {

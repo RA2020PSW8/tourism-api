@@ -17,6 +17,7 @@ public class ToursContext : DbContext
     public DbSet<TourEquipment> TourEquipments { get; set; }
     public DbSet<PublicEntityRequest> PublicEntityRequests { get; set; }
     public DbSet<TouristPosition> TouristPositions { get; set; }
+    public DbSet<PublicKeypoint> PublicKeyPoints { get; set; }
 
     public ToursContext(DbContextOptions<ToursContext> options) : base(options) {}
 
@@ -32,10 +33,10 @@ public class ToursContext : DbContext
         modelBuilder.Entity<Keypoint>()
             .HasOne(k => k.Tour)
             .WithMany(t => t.Keypoints)
-            .HasForeignKey(k => k.TourId);
-        
+            .HasForeignKey(k => k.TourId); 
+
         modelBuilder.Entity<TourEquipment>().HasKey(te => new { te.TourId, te.EquipmentId });
         modelBuilder.Entity<TourEquipment>().HasOne<Tour>().WithMany(t => t.TourEquipments).HasForeignKey(te => te.TourId);
-        modelBuilder.Entity<TourEquipment>().HasOne<Equipment>().WithMany(e => e.TourEquipments).HasForeignKey(te => te.EquipmentId);
+        modelBuilder.Entity<TourEquipment>().HasOne<Equipment>().WithMany(e => e.TourEquipments).HasForeignKey(te => te.EquipmentId); 
     }
 }

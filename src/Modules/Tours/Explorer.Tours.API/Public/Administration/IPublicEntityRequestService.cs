@@ -14,7 +14,10 @@ namespace Explorer.Tours.API.Public.Administration
         public Result<PagedResult<PublicEntityRequestDto>> GetPaged(int page , int pageSize);
         public Result<PublicEntityRequestDto> Get(int id);
         public Result<PublicEntityRequestDto> Create(PublicEntityRequestDto entity);
-        public Result<PublicEntityRequestDto> Update(PublicEntityRequestDto entity);
-        public Result Delete(int id);
+        //public Result<PublicEntityRequestDto> Update(PublicEntityRequestDto entity);
+        public Result Delete(int id); //for request cancelation
+        public Result<PublicEntityRequestDto> Approve(PublicEntityRequestDto publicEntityRequestDto);
+        public Result<PublicEntityRequestDto> Decline(PublicEntityRequestDto publicEntityRequestDto);
+
     }
 }

@@ -13,14 +13,14 @@ public class Keypoint : Entity
     public string? Description { get; init; }
     public int? Position { get; init; }
     public string? Image { get; set; }
-    public KeypointStatus Status { get; init; }
+
 
     public Keypoint()
     {
         
     }
     
-    public Keypoint(long tourId, string name, double latitude, double longitude, string? description, int? position, string? image, KeypointStatus status)
+    public Keypoint(long tourId, string name, double latitude, double longitude, string? description, int? position, string? image)
     {
         Validate(name, latitude, longitude, position);
 
@@ -31,7 +31,6 @@ public class Keypoint : Entity
         Description = description;
         Position = position;
         Image = image;
-        Status = status;
     }
 
     private static void Validate(string name, double latitude, double longitude, int? position)

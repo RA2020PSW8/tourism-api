@@ -14,19 +14,21 @@ namespace Explorer.Tours.Core.Domain
         public int EntityId { get; init; }
         public EntityType EntityType { get; init; }
         public PublicEntityRequestStatus Status { get; init; }
+        public string? Comment {  get; init; }
 
         public PublicEntityRequest()
         {
 
         }
 
-        public PublicEntityRequest(int userId, int entityId, EntityType entityType, PublicEntityRequestStatus status)
+        public PublicEntityRequest(int userId, int entityId, EntityType entityType, PublicEntityRequestStatus status, string? comment)
         {
             UserId = userId;
             EntityId = entityId;
             EntityType = entityType;
             Status = status;
             Validate();
+            Comment = comment;
         }
 
         private void Validate()

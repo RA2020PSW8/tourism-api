@@ -15,5 +15,6 @@ namespace Explorer.Tours.API.Dtos
         public int EntityId {  get; set; }
         public EntityType EntityType {  get; set; }
         public PublicEntityRequestStatus Status { get; set; }
+        public string? Comment { get; init; }
     }
 }

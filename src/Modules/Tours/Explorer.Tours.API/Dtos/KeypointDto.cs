@@ -12,5 +12,4 @@ public class KeypointDto
     public string? Description { get; set; }
     public int? Position { get; set; }
     public string? Image { get; set; }
-    public KeypointStatus Status { get; set; }
 }

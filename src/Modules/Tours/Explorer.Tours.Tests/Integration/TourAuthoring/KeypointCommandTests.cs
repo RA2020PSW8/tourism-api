@@ -1,6 +1,5 @@
 using Explorer.API.Controllers.Author;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Dtos.Enums;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.TourAuthoring;
 using Explorer.Tours.Infrastructure.Database;
@@ -28,7 +27,6 @@ public class KeypointCommandTests : BaseToursIntegrationTest
             Latitude = 33.2,
             Longitude = 12.1,
             Description = "When it comes to romance, some seem to prefer fantasy to reality. The house in Verona that has been billed as Juliet’s, is on the whole fluff covered with touristic fairy dust. Shakespeare’s Juliet wasn’t based on a real person, and the house doesn’t have any relation to the story.",
-            Status = KeypointStatus.PRIVATE,
             Position = 3,
             Image = "image.png"
         };
@@ -81,7 +79,6 @@ public class KeypointCommandTests : BaseToursIntegrationTest
             Latitude = 33.1,
             Longitude = 0.0,
             Description = "Niagara Falls is a group of three waterfalls at the southern end of Niagara Gorge, spanning the border between the province of Ontario in Canada and the state of New York in the United States. The largest of the three is Horseshoe Falls, which straddles the international border of the two countries.",
-            Status = KeypointStatus.PRIVATE,
             Position = 1,
             Image = "image123.png"
         };
@@ -96,7 +93,6 @@ public class KeypointCommandTests : BaseToursIntegrationTest
         result.Latitude.ShouldBe(updatedEntity.Latitude);
         result.Longitude.ShouldBe(updatedEntity.Longitude);
         result.Description.ShouldBe(updatedEntity.Description);
-        result.Status.ShouldBe(updatedEntity.Status);
 
         // Assert - Database
         var storedEntity = dbContext.Keypoints.FirstOrDefault(i => i.Name == "Niagara Falls");
@@ -118,8 +114,7 @@ public class KeypointCommandTests : BaseToursIntegrationTest
             Name = "Niagara Falls",
             Latitude = 33.1,
             Longitude = 0.0,
-            Description = "Niagara Falls is a group of three waterfalls at the southern end of Niagara Gorge, spanning the border between the province of Ontario in Canada and the state of New York in the United States. The largest of the three is Horseshoe Falls, which straddles the international border of the two countries.",
-            Status = KeypointStatus.PRIVATE
+            Description = "Niagara Falls is a group of three waterfalls at the southern end of Niagara Gorge, spanning the border between the province of Ontario in Canada and the state of New York in the United States. The largest of the three is Horseshoe Falls, which straddles the international border of the two countries."
         };
 
         // Act
