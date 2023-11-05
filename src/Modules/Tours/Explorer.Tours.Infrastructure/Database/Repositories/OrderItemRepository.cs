@@ -27,5 +27,11 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
             task.Wait();
             return task.Result;
         }
+        public OrderItem GetByUser(int userId)
+        {
+            var item = _dbSet.AsNoTracking().FirstOrDefault(tp => tp.UserId == userId);
+            if (item == null) throw new KeyNotFoundException("Not found: " + userId);
+            return item;
+        }
     }
 }

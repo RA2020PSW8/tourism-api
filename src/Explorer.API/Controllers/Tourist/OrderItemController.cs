@@ -6,6 +6,7 @@ using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.MarketPlace;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.UseCases.MarketPlace;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,12 @@ namespace Explorer.API.Controllers.Tourist
         public ActionResult<OrderItemDto> Create([FromBody] OrderItemDto orderItem)
         {
             var result = _orderItemService.Create(orderItem);
+            return CreateResponse(result);
+        }
+        [HttpDelete("{id:int}")]
+        public ActionResult Delete(int id)
+        {
+            var result = _orderItemService.Delete(id);
             return CreateResponse(result);
         }
 

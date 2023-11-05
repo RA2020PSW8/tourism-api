@@ -15,5 +15,6 @@ namespace Explorer.Tours.API.Public.MarketPlace
         Result<OrderItemDto> Create(OrderItemDto orderItem);
         Result<OrderItemDto> Update(OrderItemDto orderItem);
         PagedResult<OrderItemDto> GetAllByUser(int page, int pageSize, int userId);
+        Result Delete(int id);
     }
 }

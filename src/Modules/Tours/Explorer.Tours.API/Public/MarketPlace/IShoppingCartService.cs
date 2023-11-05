@@ -15,5 +15,6 @@ namespace Explorer.Tours.API.Public.MarketPlace
         Result<PagedResult<ShoppingCartDto>> GetPaged(int page, int pageSize);
         Result<ShoppingCartDto> Update(ShoppingCartDto shoppingCart);
         ShoppingCartDto GetByUser(int userId);
+        Result Delete(int id);
     }
 }
