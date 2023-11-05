@@ -26,22 +26,16 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
         {
             try
             {
-                // Retrieve the existing shopping cart from the data storage
                 var existingShoppingCart = _cartRepository.Get(updatedShoppingCart.UserId);
 
                 if (existingShoppingCart == null)
                 {
-                    // If the shopping cart doesn't exist, return an error
                     return Result.Fail("Shopping cart not found.");
                 }
 
-                // Update the existing shopping cart with the new data
                 existingShoppingCart.OrdersId = updatedShoppingCart.OrdersId;
                 existingShoppingCart.Price = updatedShoppingCart.Price;
-                // Save the changes to the data storage
                 _cartRepository.Update(existingShoppingCart);
-
-                // Return the updated shopping cart as a DTO
                 return Result.Ok(new ShoppingCartDto
                 {
                     UserId = existingShoppingCart.UserId,
@@ -50,7 +44,6 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
             }
             catch (Exception ex)
             {
-                // Handle any exceptions that may occur during the update
                 return Result.Fail($"An error occurred while updating the shopping cart: {ex.Message}");
             }
         }
