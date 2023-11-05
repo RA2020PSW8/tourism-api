@@ -33,6 +33,7 @@ namespace Explorer.Stakeholders.Tests.Integration.TourExecution
                 CreationDateTime = DateTime.Now.ToUniversalTime(),
                 ResolveDateTime = null,
                 IsResolved = false,
+                UserId = -21
             };
 
             //Act
@@ -79,6 +80,8 @@ namespace Explorer.Stakeholders.Tests.Integration.TourExecution
                 CreationDateTime = DateTime.Now.ToUniversalTime(),
                 ResolveDateTime = DateTime.MinValue,
                 IsResolved = false,
+                TourId = 1,
+                UserId = -21,
             };
 
             //Act

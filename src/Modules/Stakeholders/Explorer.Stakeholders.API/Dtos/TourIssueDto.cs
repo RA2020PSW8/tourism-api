@@ -15,5 +15,8 @@ namespace Explorer.Stakeholders.API.Dtos
         public DateTime CreationDateTime { get; set; }
         public DateTime? ResolveDateTime { get; set; }
         public bool IsResolved { get; set; }
+        public int TourId { get; set; }
+        public List<TourIssueCommentDto> Comments { get; set; }
+        public int UserId { get; set; }
     }
 }

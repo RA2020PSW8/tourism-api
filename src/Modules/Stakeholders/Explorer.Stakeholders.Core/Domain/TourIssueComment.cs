@@ -9,22 +9,24 @@ namespace Explorer.Stakeholders.Core.Domain
 {
     public class TourIssueComment : Entity
     {
-        public int TourID { get; init; }
-        public int UserID { get; init; }
-        public required string Comment { get; init; }
-        public DateTime CreationDateTime { get; init; }
 
+        public string Comment { get; init; }
+        public DateTime CreationDateTime { get; init; }
+        public long TourIssueId { get; init; }
+        public long UserId { get; init; }
         public TourIssueComment()
         {
 
         }
 
-        public TourIssueComment(int tourID, int userID, string comment, DateTime creationDateTime)
+        public TourIssueComment(string comment, DateTime creationDateTime, int tourIssueId, int userId)
         {
-            TourID = tourID;
-            UserID = userID;
             Comment = comment;
             CreationDateTime = creationDateTime;
+            TourIssueId = tourIssueId;
+            //TourIssue = tourIssue;
+            UserId = userId;
+            //User = user;
         }
     }
 }
