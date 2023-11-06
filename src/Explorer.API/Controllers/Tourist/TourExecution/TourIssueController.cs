@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public.TourExecution;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,6 +57,20 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
         public ActionResult<PagedResult<TourIssueDto>> GetByUserAll([FromQuery] int page, [FromQuery] int pageSize, int userId)
         {
             var result = _tourIssueService.GetByUserPaged(page, pageSize, userId);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("tour/{tourId:int}")]
+        public ActionResult<PagedResult<TourIssueDto>> GetByTourId([FromQuery] int page, [FromQuery] int pageSize, int tourId)
+        {
+            var result = _tourIssueService.GetByTourId(page, pageSize, tourId);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("id/{tourIssueId:int}")]
+        public ActionResult<PagedResult<TourIssueDto>> GetByTourIssueId([FromQuery] int page, [FromQuery] int pageSize, int tourIssueId)
+        {
+            var result = _tourIssueService.GetByTourIssueId(page, pageSize, tourIssueId);
             return CreateResponse(result);
         }
     }
