@@ -15,7 +15,7 @@ public class StakeholdersContext : DbContext
 
     public StakeholdersContext(DbContextOptions<StakeholdersContext> options) : base(options) 
     {
-       //options.//LazyLoadingEnabled = false;
+       //options.LazyLoadingEnabled = false; ask professor about it
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,23 +35,11 @@ public class StakeholdersContext : DbContext
             .HasForeignKey<Person>(s => s.UserId);
 
         modelBuilder.Entity<Person>()
-        .HasMany(u => u.Followers)
-        .WithMany(u => u.Followings);
-        /*.UsingEntity(join => join
-            .ToTable("UserUsers")
-            .MapLeftKey("FollowerUserId")
-            .MapRightKey("FollowingUserId"));
-        /*.Map(mapping =>
-        {
-            mapping.ToTable("UserUsers");
-            mapping.MapLeftKey("User_Id");
-            mapping.MapRightKey("User_Id1");
-        });*/
-        /*.UsingEntity(u =>
-        {
-            u.ToTable("UserFollow"); // Define the name of the join table
-            u.HasOne<User>().WithMany().HasForeignKey("User_Id");
-            u.HasOne<User>().WithMany().HasForeignKey("User_Id1");
-        });*/
+            .HasMany(u => u.Followers)
+            .WithMany(u => u.Following);
     }
+    /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseLazyLoadingProxy(false);
+    }*/
 }

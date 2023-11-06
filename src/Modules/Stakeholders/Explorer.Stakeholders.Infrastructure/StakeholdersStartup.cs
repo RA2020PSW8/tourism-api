@@ -16,6 +16,7 @@ using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.UseCases.TourExecution;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json.Serialization;
 
 namespace Explorer.Stakeholders.Infrastructure;
 
@@ -48,16 +49,19 @@ public static class StakeholdersStartup
     {
         services.AddScoped(typeof(ICrudRepository<Person>), typeof(CrudDatabaseRepository<Person, StakeholdersContext>));
         services.AddScoped(typeof(ICrudRepository<ClubJoinRequest>), typeof(CrudDatabaseRepository<ClubJoinRequest, StakeholdersContext>));
-        services.AddScoped<IUserRepository, UserDatabaseRepository>();
+        services.AddScoped(typeof(IUserRepository), typeof(UserDatabaseRepository));
         services.AddScoped(typeof(IClubJoinRequestRepository), typeof(ClubJoinRequestDatabaseRepository));
         services.AddScoped(typeof(ICrudRepository<User>), typeof(CrudDatabaseRepository<User, StakeholdersContext>));
         services.AddScoped(typeof(ICrudRepository<Club>), typeof(CrudDatabaseRepository<Club, StakeholdersContext>));
-        services.AddScoped<IUserRepository, UserDatabaseRepository>();
+        //services.AddScoped<IUserRepository, UserDatabaseRepository>();
         services.AddScoped(typeof(ICrudRepository<ClubInvitation>), typeof(CrudDatabaseRepository<ClubInvitation, StakeholdersContext>));
         services.AddScoped(typeof(ICrudRepository<TourIssue>), typeof(CrudDatabaseRepository<TourIssue, StakeholdersContext>));
         services.AddScoped(typeof(IPersonRepository), typeof(PersonDatabaseRepository));
         services.AddScoped(typeof(IApplicationRatingRepository), typeof(ApplicationRatingDatabaseRepository));
-
+        services.AddControllers().AddJsonOptions(options => {
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            options.JsonSerializerOptions.WriteIndented = true;
+        });
         services.AddDbContext<StakeholdersContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("stakeholders"),
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "stakeholders")));

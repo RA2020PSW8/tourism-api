@@ -1,4 +1,5 @@
-﻿using Explorer.Stakeholders.API.Dtos;
+﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.API.Dtos;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,11 @@ namespace Explorer.Stakeholders.API.Public
     public interface IProfileService
     {
         Result<AccountRegistrationDto> GetProfile(long userId);
+        Result<PagedResult<PersonDto>> GetFollowers(long userId);
+        Result<PagedResult<PersonDto>> GetFollowing(long userId);
+        Result<PagedResult<PersonDto>> GetUserNonFollowedProfiles(int page, int pageSize, long userId);
         Result<PersonDto> UpdateProfile(PersonDto updatedPerson);
-        bool IsProfileAlreadyFollowed(long follower, long followed);
-        Result<PersonDto> FollowProfile(long follower, long followed);
+        Result<PagedResult<PersonDto>> Follow(long followerId, PersonDto followed);
+        Result<PagedResult<PersonDto>> Unfollow(long followerId, PersonDto unfollowed);
     }
 }

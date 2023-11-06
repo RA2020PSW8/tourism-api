@@ -14,12 +14,12 @@ using System.Threading.Tasks;
 
 namespace Explorer.Stakeholders.Core.UseCases
 {
-    public class ProfileService: IProfileService, IInternalProfileService
+    public class ProfileService: CrudService<PersonDto, Person>, IProfileService, IInternalProfileService
     {
         private readonly IPersonRepository _personRepository;
         private readonly IMapper _mapper;
 
-        public ProfileService(IPersonRepository personRepository, IMapper mapper) //: base(personRepository, mapper)
+        public ProfileService(IPersonRepository personRepository, IMapper mapper) : base(personRepository, mapper)
         {
             _personRepository = personRepository;
             _mapper = mapper;
@@ -39,6 +39,22 @@ namespace Explorer.Stakeholders.Core.UseCases
             }
             return people;
         }
+        public Result<PagedResult<PersonDto>> GetUserNonFollowedProfiles(int page, int pageSize, long userId)
+        {
+            try
+            {
+                List<Person> profiles = _personRepository.GetPaged(page, pageSize).Results;
+                var user = _personRepository.GetFollowersAndFollowings(userId);
+
+                var nonFollowedProfiles = profiles.Where(profile => !user.Following.Contains(profile) && profile.Id != user.Id).ToList();
+                var results = new PagedResult<Person>(nonFollowedProfiles, nonFollowedProfiles.Count);
+                return MapToDto(results);
+            }
+            catch (KeyNotFoundException e)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
+        }
 
         public Result<AccountRegistrationDto> GetProfile(long userId)
         {
@@ -51,7 +67,7 @@ namespace Explorer.Stakeholders.Core.UseCases
                 Surname = personProfile.Surname,
                 ProfileImage = personProfile.ProfileImage,
                 Biography = personProfile.Biography,
-                Quote = personProfile.Quote
+                Quote = personProfile.Quote,
             };
 
             return Result.Ok(account);
@@ -66,52 +82,48 @@ namespace Explorer.Stakeholders.Core.UseCases
                 return Result.Fail(FailureCode.NotFound);
             }
 
-
             _mapper.Map(updatedPerson, existingPerson);
-
-
             _personRepository.Update(existingPerson);
-
 
             var updatedPersonDto = _mapper.Map<PersonDto>(existingPerson);
 
             return Result.Ok(updatedPersonDto);
         }
-        public bool IsProfileAlreadyFollowed(long follower, long following)
+        public Result<PagedResult<PersonDto>> GetFollowers(long userId)
         {
-            var existingFollower = _personRepository.Get(follower);
-            return existingFollower.Followings.Any(f => f.Id == following);
+            var userProfile = _personRepository.GetFollowersAndFollowings(userId);
+            var results = new PagedResult<Person>(userProfile.Followers, userProfile.Followers.Count);
+            return MapToDto(results);
         }
-        public Result<PersonDto> FollowProfile(long follower, long following)
+        public Result<PagedResult<PersonDto>> GetFollowing(long userId)
         {
-            /*
-            var existingFollower = _personRepository.Get(follower);
-            var existingFollowing = _personRepository.Get(following);
-            */
-            /* odmah provjeri da li je moguce bez provjere u controlleru
-            if (existingPerson == null)
-            {
-                return Result.Fail(FailureCode.NotFound);
-            }
+            var userProfile = _personRepository.GetFollowersAndFollowings(userId);
+            var results = new PagedResult<Person>(userProfile.Following, userProfile.Following.Count);
+            return MapToDto(results);
+        }
+        public Result<PagedResult<PersonDto>> Follow(long followerId, PersonDto followed)
+        {
+            var follower = _personRepository.GetFollowersAndFollowings(followerId);
+            if(follower.IsPersonAlreadyFollowed(followed.Id)) return Result.Fail(FailureCode.Conflict).WithError("You already follow this profile.");
 
-            existingFollower.Followings.Add(existingFollowing);
+            if(followerId == followed.Id) return Result.Fail(FailureCode.Conflict).WithError("You can't follow yourself");
 
-            // Update the Followings list for existingFollowing
-            existingFollowing.Followers.Add(existingFollower);
-            */
-            /*_mapper.Map(follower, existingFollower);
-            _mapper.Map(following, existingFollowing);
+            follower.Following.Add(_mapper.Map<Person>(followed));
+            _personRepository.Update(follower);
+            var results = new PagedResult<Person>(follower.Following, follower.Following.Count);
 
-            existingFollower.Followings.Add(following);*/
-/*
-            _personRepository.Update(existingFollower);
-            _personRepository.Update(existingFollowing);
+            return MapToDto(results);
+        }
+        public Result<PagedResult<PersonDto>> Unfollow(long followerId, PersonDto unfollowed)
+        {
+            var follower = _personRepository.GetFollowersAndFollowings(followerId);
+            if(!follower.IsPersonAlreadyFollowed(unfollowed.Id)) return Result.Fail(FailureCode.Conflict).WithError("You don't follow this profile.");
 
-            var updatedFollower = _mapper.Map<PersonDto>(existingFollower);*/
-            //var updatedPersonDto = _mapper.Map<PersonDto>(existingPerson);
-            var person = _personRepository.GetOne(follower);
-            var updatedPersonDto = _mapper.Map<PersonDto>(person);
-            return Result.Ok(updatedPersonDto);
+            follower.Following.Remove(_mapper.Map<Person>(unfollowed));
+            _personRepository.Update(follower);
+            var results = new PagedResult<Person>(follower.Following, follower.Following.Count);
+
+            return MapToDto(results);
         }
     }
 }

@@ -13,11 +13,12 @@ public class Person : Entity
     public string ProfileImage { get; init; }
     public string Biography { get; init; }
     public string Quote { get; init; }
-    [InverseProperty(nameof(Person.Followings))]
+
+    [InverseProperty(nameof(Person.Following))]
     public List<Person> Followers { get; } = new();
 
     [InverseProperty(nameof(Person.Followers))]
-    public List<Person> Followings { get; } = new();
+    public List<Person> Following { get; } = new();
 
     public Person(long userId, string name, string surname, string email, string profileImage, string biography, string quote)
     {
@@ -29,7 +30,7 @@ public class Person : Entity
         Biography = biography;
         Quote = quote;
         Followers = new List<Person>();
-        Followings = new List<Person>();
+        Following = new List<Person>();
         Validate();
     }
 
@@ -42,6 +43,10 @@ public class Person : Entity
         if (string.IsNullOrWhiteSpace(ProfileImage)) throw new ArgumentException("Invalid ProfileImage");
         if (string.IsNullOrWhiteSpace(Biography)) throw new ArgumentException("Invalid Biography");
         if (string.IsNullOrWhiteSpace(Quote)) throw new ArgumentException("Invalid Quote");
+    }
+    public bool IsPersonAlreadyFollowed(long personId)
+    {
+        return Following.Any(f => f.Id == personId);
     }
 
 

@@ -2,6 +2,7 @@
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
 using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers
@@ -17,9 +18,29 @@ namespace Explorer.API.Controllers
         }
 
         [HttpGet("{userId:int}")]
-        public ActionResult<AccountRegistrationDto> getStakeholderProfile(long userId)
+        public ActionResult<AccountRegistrationDto> GetStakeholderProfile(long userId)
         {
             var result = _profileService.GetProfile(userId);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("all/{userId:int}")]
+        public ActionResult<PagedResult<PersonDto>> GetNonFollowedProfiles([FromQuery] int page, [FromQuery] int pageSize, long userId)
+        {
+            var result = _profileService.GetUserNonFollowedProfiles(page, pageSize, userId);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("followers/{userId:int}")]
+        public ActionResult<PagedResult<PersonDto>> GetFollowers(long userId)
+        {
+            var result = _profileService.GetFollowers(userId);
+            return CreateResponse(result);
+        }
+        [HttpGet("following/{userId:int}")]
+        public ActionResult<PagedResult<PersonDto>> GetFollowing(long userId)
+        {
+            var result = _profileService.GetFollowing(userId);
             return CreateResponse(result);
         }
 
@@ -31,15 +52,25 @@ namespace Explorer.API.Controllers
             var result = _profileService.UpdateProfile(updatedPerson);
             return CreateResponse(result);
         }
-        [HttpPut("{follower:long}/{following:long}")]
-        public ActionResult<PersonDto> FollowProfile(long follower, long following)
+        [HttpPut("follow/{followerId:long}")]
+        public ActionResult<PagedResult<PersonDto>> FollowProfile(long followerId, [FromBody] PersonDto followed)
         {
-            //if (  _profileService.IsProfileAlreadyFollowed(follower, following)) return CreateResponse(Result.Fail(FailureCode.Conflict));
-
             try
             {
-
-                var result = _profileService.FollowProfile(follower, following);
+                var result = _profileService.Follow(followerId, followed);
+                return CreateResponse(result);
+            }
+            catch (ArgumentException e)
+            {
+                return CreateResponse(Result.Fail(FailureCode.InvalidArgument).WithError(e.Message));
+            }
+        }
+        [HttpPut("unfollow/{followerId:long}")]
+        public ActionResult<PagedResult<PersonDto>> UnfollowProfile(long followerId, [FromBody] PersonDto followed)
+        {
+            try
+            {
+                var result = _profileService.Unfollow(followerId, followed);
                 return CreateResponse(result);
             }
             catch (ArgumentException e)

@@ -9,6 +9,6 @@ namespace Explorer.Stakeholders.Core.Domain.RepositoryInterfaces
 {
     public interface IPersonRepository: ICrudRepository<Person>
     {
-        Person GetOne(long personId);
+        Person GetFollowersAndFollowings(long personId);
     }
 }
