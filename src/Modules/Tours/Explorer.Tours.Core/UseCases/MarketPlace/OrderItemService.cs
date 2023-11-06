@@ -75,18 +75,18 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
 
         public PagedResult<OrderItemDto> GetAllByUser(int page, int pageSize, int currentUserId)
         {
-            var r = _shoppingCartService.GetByUser(currentUserId);
+            var shoppingCart = _shoppingCartService.GetByUser(currentUserId);
             var result = this.GetPaged(page, pageSize);
             var filteredItems = new List<OrderItemDto>();
 
-            foreach (OrderItemDto c in result.ValueOrDefault.Results)
-                if (r != null)
+            foreach (OrderItemDto order in result.ValueOrDefault.Results)
+                if (shoppingCart != null)
                 {
-                    foreach (int id in r.OrdersId)
+                    foreach (int id in shoppingCart.OrdersId)
                     {
-                        if (c.UserId == currentUserId && c.Id == id)
+                        if (order.UserId == currentUserId && order.Id == id)
                         {
-                            filteredItems.Add(c);
+                            filteredItems.Add(order);
                         }
                     }
                 }
@@ -112,7 +112,7 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
                 {
                     _shoppingCartService.Delete(shoppingCart.Id);
                 }
-                CrudRepository.Delete(id);
+                _orderItemRepository.Delete(id);
                 return Result.Ok();
             }
             catch (KeyNotFoundException e)

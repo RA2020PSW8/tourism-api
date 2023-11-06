@@ -12,7 +12,7 @@ using Explorer.Tours.API.Dtos;
 
 namespace Explorer.Tours.Infrastructure.Database.Repositories
 {
-    public class ShoppingCartRepository : CrudDatabaseRepository<TouristPosition, ToursContext>, IShoppingCartRepository
+    public class ShoppingCartRepository : CrudDatabaseRepository<ShoppingCart, ToursContext>, IShoppingCartRepository
     {
         private readonly DbSet<ShoppingCart> _dbSet;
 

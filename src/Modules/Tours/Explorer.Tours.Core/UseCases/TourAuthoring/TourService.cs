@@ -35,7 +35,7 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring
         }
         public TourDto GetById(int id)
         {
-            var tour = _tourRepository.GetById(id);
+            var tour = _tourRepository.Get(id);
             return MapToDto(tour);
         }
     }

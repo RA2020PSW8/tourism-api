@@ -1,4 +1,5 @@
-﻿using Explorer.Tours.API.Dtos;
+﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Tours.API.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.Domain.RepositoryInterfaces
 {
-    public interface IShoppingCartRepository
+    public interface IShoppingCartRepository: ICrudRepository<ShoppingCart>
     {
         ShoppingCart GetByUser(int userId);
+
     }
 }

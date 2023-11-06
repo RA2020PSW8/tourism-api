@@ -15,18 +15,18 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
 {
     public class ShoppingCartService: CrudService<ShoppingCartDto, ShoppingCart>, IShoppingCartService
     {
-        private readonly ICrudRepository<ShoppingCart> _cartRepository;
         protected readonly IShoppingCartRepository _shoppingCartRepository;
-        public ShoppingCartService(ICrudRepository<ShoppingCart> repository, IMapper mapper, IShoppingCartRepository rep) : base(repository, mapper) {
-            _cartRepository = repository;
-            _shoppingCartRepository = rep;
+        public ShoppingCartService(IShoppingCartRepository repository, IMapper mapper) : base(repository, mapper)
+        {
+            _shoppingCartRepository = repository;
         }
+
 
         override public Result<ShoppingCartDto> Update(ShoppingCartDto updatedShoppingCart)
         {
             try
             {
-                var existingShoppingCart = _cartRepository.Get(updatedShoppingCart.UserId);
+                var existingShoppingCart = _shoppingCartRepository.Get(updatedShoppingCart.UserId);
 
                 if (existingShoppingCart == null)
                 {
@@ -35,7 +35,7 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
 
                 existingShoppingCart.OrdersId = updatedShoppingCart.OrdersId;
                 existingShoppingCart.Price = updatedShoppingCart.Price;
-                _cartRepository.Update(existingShoppingCart);
+                _shoppingCartRepository.Update(existingShoppingCart);
                 return Result.Ok(new ShoppingCartDto
                 {
                     UserId = existingShoppingCart.UserId,
@@ -50,7 +50,7 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
 
         override public Result<ShoppingCartDto> Create(ShoppingCartDto entity)
         {
-            var result = CrudRepository.Create(MapToDomain(entity));
+            var result = _shoppingCartRepository.Create(MapToDomain(entity));
             return MapToDto(result);
         }
         public ShoppingCartDto GetByUser(int userId)

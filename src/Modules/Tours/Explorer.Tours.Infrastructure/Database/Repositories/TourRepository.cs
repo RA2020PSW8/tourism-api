@@ -30,9 +30,4 @@ public class TourRepository : CrudDatabaseRepository<Tour, ToursContext>, ITourR
         task.Wait();
         return task.Result;
     }
-    public Tour GetById(int id)
-    {
-        var tour = _dbSet.AsNoTracking().FirstOrDefault(tp => tp.Id == id);
-        return tour;
-    }
 }

@@ -2,6 +2,7 @@
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public.Tourist;
 using Explorer.Stakeholders.Core.Domain;
+using Explorer.Stakeholders.Core.UseCases.Tourist;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.MarketPlace;
@@ -55,6 +56,12 @@ namespace Explorer.API.Controllers.Tourist
         public ActionResult Delete(int id)
         {
             var result = _orderItemService.Delete(id);
+            return CreateResponse(result);
+        }
+        [HttpPut("{id:int}")]
+        public ActionResult<OrderItemDto> Update([FromBody] OrderItemDto order)
+        {
+            var result = _orderItemService.Update(order);
             return CreateResponse(result);
         }
 
