@@ -12,8 +12,9 @@ namespace Explorer.Stakeholders.API.Public
     public interface IApplicationRatingService
     {
         Result<PagedResult<ApplicationRatingDto>> GetPaged(int  page, int pageSize);
+        Result<ApplicationRatingDto> GetByUser(int userId);
         Result<ApplicationRatingDto> Create(ApplicationRatingDto applicationRating);
         Result<ApplicationRatingDto> Update(ApplicationRatingDto applicationRating);
-        public Result<PagedResult<ApplicationRatingDto>> GetByUserId(int page, int pageSize, int userId);
+        Result Delete(int userId);
     }
 }

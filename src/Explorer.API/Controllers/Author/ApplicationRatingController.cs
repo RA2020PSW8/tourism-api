@@ -20,22 +20,33 @@ namespace Explorer.API.Controllers.Author
         [HttpPost]
         public ActionResult<ApplicationRatingDto> Create([FromBody] ApplicationRatingDto applicationRatingDto)
         {
+            applicationRatingDto.UserId = ClaimsPrincipalExtensions.PersonId(User);
+
             var result = _applicationRatingService.Create(applicationRatingDto);
             return CreateResponse(result);
         }
 
-        [HttpPut("{username}")]
-        public ActionResult<ApplicationRatingDto> Update([FromBody] ApplicationRatingDto applicationRatingDto, [FromRoute] string username)
+        [HttpPut]
+        public ActionResult<ApplicationRatingDto> Update([FromBody] ApplicationRatingDto applicationRatingDto)
         {
+            applicationRatingDto.UserId = ClaimsPrincipalExtensions.PersonId(User);
             var result = _applicationRatingService.Update(applicationRatingDto);
             return CreateResponse(result);
         }
 
         [HttpGet]
-        public ActionResult<ApplicationRatingDto> GetByUserId()
+        public ActionResult<ApplicationRatingDto> GetByUser()
         {
             int userId = ClaimsPrincipalExtensions.PersonId(User);
-            var result = _applicationRatingService.GetByUserId(0, 0, userId);
+            var result = _applicationRatingService.GetByUser(userId);
+            return CreateResponse(result);
+        }
+
+        [HttpDelete]
+        public ActionResult Delete()
+        {
+            int userId = ClaimsPrincipalExtensions.PersonId(User);
+            var result = _applicationRatingService.Delete(userId);
             return CreateResponse(result);
         }
 

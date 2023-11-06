@@ -1,5 +1,6 @@
 ﻿using Explorer.API.Controllers.Tourist.Blog;
 using Explorer.Blog.API.Dtos;
+using Explorer.Blog.API.Dtos.Enums;
 using Explorer.Blog.API.Public.Blog;
 using Explorer.Blog.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
@@ -27,11 +28,12 @@ namespace Explorer.Blog.Tests.Integration.Blog
             var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
             var newEntity = new BlogDto
             {
+                CreatorId = -11,
                 Title = "Breathtaking visit to Dubai",
                 Description = "Simply breathtaking.",
-                CreationDate = DateTime.Now.ToUniversalTime(),
-                ImageLinks = "image1.jpg",
-                Status = BlogDto.BlogStatus.DRAFT
+                CreationDate = DateOnly.FromDateTime(DateTime.Now.ToUniversalTime()),
+                ImageLinks = new List<string>() { "test" },
+                Status = BlogStatus.DRAFT.ToString()
             };
 
             //Act
@@ -57,7 +59,8 @@ namespace Explorer.Blog.Tests.Integration.Blog
             var updatedEntity = new BlogDto
             {
                 Title = "",
-                Description = ""
+                Description = "",
+                Status = ""
             };
 
             //Act
@@ -78,12 +81,12 @@ namespace Explorer.Blog.Tests.Integration.Blog
             var updatedEntity = new BlogDto
             {
                 Id = -1,
+                CreatorId = -1,
                 Title = "Spectacular visit to Russia",
                 Description = "Spectacular!",
-                CreationDate = DateTime.Now.ToUniversalTime(),
-                //ImageLinks = new List<string>() { "www.google.com" },
-                ImageLinks = "www.google.com",
-                Status = BlogDto.BlogStatus.DRAFT
+                CreationDate = DateOnly.FromDateTime(DateTime.Now.ToUniversalTime()),
+                ImageLinks = new List<string> { "img1.jpg"},
+                Status = BlogStatus.DRAFT.ToString()
             };
 
             //Act
@@ -116,7 +119,8 @@ namespace Explorer.Blog.Tests.Integration.Blog
             {
                 Id = -420,
                 Title = "Invalid update",
-                Description = "Cannot happen"
+                Description = "Cannot happen",
+                Status = ""
             };
 
             //Act
