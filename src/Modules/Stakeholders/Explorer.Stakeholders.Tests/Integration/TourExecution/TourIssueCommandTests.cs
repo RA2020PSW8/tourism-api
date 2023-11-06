@@ -30,7 +30,10 @@ namespace Explorer.Stakeholders.Tests.Integration.TourExecution
                 Category = "Test",
                 Priority = 3,
                 Description = "Test",
-                DateTime = DateTime.Now.ToUniversalTime(),
+                CreationDateTime = DateTime.Now.ToUniversalTime(),
+                ResolveDateTime = null,
+                IsResolved = false,
+                UserId = -21
             };
 
             //Act
@@ -74,7 +77,11 @@ namespace Explorer.Stakeholders.Tests.Integration.TourExecution
                 Category = "Travel problem",
                 Priority = 3,
                 Description = "Bus delays",
-                DateTime = DateTime.Now.ToUniversalTime()
+                CreationDateTime = DateTime.Now.ToUniversalTime(),
+                ResolveDateTime = DateTime.MinValue,
+                IsResolved = false,
+                TourId = 1,
+                UserId = -21,
             };
 
             //Act
@@ -86,8 +93,9 @@ namespace Explorer.Stakeholders.Tests.Integration.TourExecution
             result.Category.ShouldBe(updatedEntity.Category);
             result.Priority.ShouldBe(updatedEntity.Priority);
             result.Description.ShouldBe(updatedEntity.Description);
-            result.DateTime.ShouldBe(updatedEntity.DateTime);
-
+            result.CreationDateTime.ShouldBe(updatedEntity.CreationDateTime);
+            result.ResolveDateTime.ShouldBe(updatedEntity.ResolveDateTime);
+            result.IsResolved.ShouldBe(updatedEntity.IsResolved);
             //Assert - Database
             var storedEntity = dbContext.TourIssue.FirstOrDefault(i => i.Category == "Travel problem");
             storedEntity.ShouldNotBeNull();
@@ -108,7 +116,9 @@ namespace Explorer.Stakeholders.Tests.Integration.TourExecution
                 Category = "Required",
                 Description = "Required",
                 Priority = 4,
-                DateTime = DateTime.Now.ToUniversalTime()
+                CreationDateTime = DateTime.Now.ToUniversalTime(),
+                ResolveDateTime = null,
+                IsResolved = false,
             };
 
             //Act 
