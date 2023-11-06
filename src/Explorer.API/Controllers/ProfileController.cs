@@ -53,11 +53,11 @@ namespace Explorer.API.Controllers
             return CreateResponse(result);
         }
         [HttpPut("follow/{followerId:long}")]
-        public ActionResult<PagedResult<PersonDto>> FollowProfile(long followerId, [FromBody] PersonDto followed)
+        public ActionResult<PagedResult<PersonDto>> Follow(long followerId, [FromBody] long followedId)
         {
             try
             {
-                var result = _profileService.Follow(followerId, followed);
+                var result = _profileService.Follow(followerId, followedId);
                 return CreateResponse(result);
             }
             catch (ArgumentException e)
@@ -66,11 +66,11 @@ namespace Explorer.API.Controllers
             }
         }
         [HttpPut("unfollow/{followerId:long}")]
-        public ActionResult<PagedResult<PersonDto>> UnfollowProfile(long followerId, [FromBody] PersonDto followed)
+        public ActionResult<PagedResult<PersonDto>> Unfollow(long followerId, [FromBody] long unfollowedId)
         {
             try
             {
-                var result = _profileService.Unfollow(followerId, followed);
+                var result = _profileService.Unfollow(followerId, unfollowedId);
                 return CreateResponse(result);
             }
             catch (ArgumentException e)

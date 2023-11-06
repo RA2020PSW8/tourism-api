@@ -1,4 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
+using Explorer.BuildingBlocks.Core.UseCases;
+using FluentResults;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Mail;
 
@@ -47,6 +49,22 @@ public class Person : Entity
     public bool IsPersonAlreadyFollowed(long personId)
     {
         return Following.Any(f => f.Id == personId);
+    }
+    public void AddFollowing(Person followed)
+    {
+        if (IsPersonAlreadyFollowed(followed.Id)) throw new ArgumentException("You already follow this person.");
+
+        if (Id == followed.Id) throw new ArgumentException("You can't follow yourself");
+
+        Following.Add(followed);
+    }
+    public void RemoveFollowing(Person followed)
+    {
+        if (!IsPersonAlreadyFollowed(followed.Id)) throw new ArgumentException("You don't follow this person.");
+
+        if (Id == followed.Id) throw new ArgumentException("You can't unfollow yourself");
+
+        Following.Remove(followed);
     }
 
 

@@ -22,7 +22,7 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories
             _dbContext = dbContext;
             _dbSet = dbContext.Set<Person>();
         }
-        public Person GetFollowersAndFollowings(long personId)
+        public Person GetFullProfile(long personId)
         {
             //second method
             /*Person person = _dbContext.People.Where(p => p.Id == personId).FirstOrDefault();

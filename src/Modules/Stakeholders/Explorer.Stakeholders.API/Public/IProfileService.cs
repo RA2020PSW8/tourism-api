@@ -16,7 +16,7 @@ namespace Explorer.Stakeholders.API.Public
         Result<PagedResult<PersonDto>> GetFollowing(long userId);
         Result<PagedResult<PersonDto>> GetUserNonFollowedProfiles(int page, int pageSize, long userId);
         Result<PersonDto> UpdateProfile(PersonDto updatedPerson);
-        Result<PagedResult<PersonDto>> Follow(long followerId, PersonDto followed);
-        Result<PagedResult<PersonDto>> Unfollow(long followerId, PersonDto unfollowed);
+        Result<PagedResult<PersonDto>> Follow(long followerId, long followedId);
+        Result<PagedResult<PersonDto>> Unfollow(long followerId, long unfollowedId);
     }
 }
