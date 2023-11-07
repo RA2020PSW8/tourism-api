@@ -27,12 +27,14 @@ public static class BlogStartup
     {
         services.AddScoped<IBlogService, BlogService>();
         services.AddScoped<IBlogCommentService,BlogCommentService>();
+        services.AddScoped<IBlogStatusService,BlogStatusService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped(typeof(ICrudRepository<Core.Domain.Blog>), typeof(CrudDatabaseRepository<Core.Domain.Blog, BlogContext>));
         services.AddScoped(typeof(ICrudRepository<BlogComment>), typeof(CrudDatabaseRepository<BlogComment, BlogContext>));
+        services.AddScoped(typeof(ICrudRepository<BlogStatus>), typeof(CrudDatabaseRepository<BlogStatus, BlogContext>));
 
         services.AddDbContext<BlogContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("blog"),
