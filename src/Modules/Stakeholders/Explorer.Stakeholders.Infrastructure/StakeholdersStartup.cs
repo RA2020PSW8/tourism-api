@@ -43,6 +43,7 @@ public static class StakeholdersStartup
         services.AddScoped<IApplicationRatingService, ApplicationRatingService>();
         services.AddScoped<ITourIssueService, TourIssueService>();
         services.AddScoped<ITourIssueCommentService, TourIssueCommentService>();
+        services.AddScoped<INotificationService, NotificationService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -58,6 +59,7 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(ITourIssueRepository), typeof(TourIssueDatabaseRepository));
         services.AddScoped(typeof(ICrudRepository<TourIssueComment>), typeof(CrudDatabaseRepository<TourIssueComment, StakeholdersContext>));
         services.AddScoped(typeof(IApplicationRatingRepository), typeof(ApplicationRatingDatabaseRepository));
+        services.AddScoped(typeof(INotificationRepository), typeof(NotificationRepository));
 
         services.AddDbContext<StakeholdersContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("stakeholders"),
