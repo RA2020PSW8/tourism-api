@@ -12,9 +12,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Stakeholders.Core.UseCases
+namespace Explorer.Stakeholders.Core.UseCases.Identity
 {
-    public class ProfileService: CrudService<PersonDto, Person>, IProfileService, IInternalProfileService
+    public class ProfileService : CrudService<PersonDto, Person>, IProfileService, IInternalProfileService
     {
         private readonly IPersonRepository _personRepository;
         private readonly IMapper _mapper;
@@ -31,7 +31,7 @@ namespace Explorer.Stakeholders.Core.UseCases
             foreach (int id in peopleIds)
             {
                 var person = _personRepository.Get(id);
-                if(person != null)
+                if (person != null)
                 {
                     PersonDto newPerson = _mapper.Map<PersonDto>(person);
                     people.Add(newPerson);

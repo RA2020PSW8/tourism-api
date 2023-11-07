@@ -40,6 +40,6 @@ public class StakeholdersContext : DbContext
     }
     /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseLazyLoadingProxy(false);
+        optionsBuilder.UseLazyLoadingProxy(false); //can't configure ask professor
     }*/
 }

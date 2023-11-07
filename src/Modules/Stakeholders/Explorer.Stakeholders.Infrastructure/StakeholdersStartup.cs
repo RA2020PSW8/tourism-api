@@ -17,6 +17,7 @@ using Explorer.Stakeholders.Core.UseCases.TourExecution;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
+using Explorer.Stakeholders.Core.UseCases.Identity;
 
 namespace Explorer.Stakeholders.Infrastructure;
 
@@ -53,7 +54,6 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(IClubJoinRequestRepository), typeof(ClubJoinRequestDatabaseRepository));
         services.AddScoped(typeof(ICrudRepository<User>), typeof(CrudDatabaseRepository<User, StakeholdersContext>));
         services.AddScoped(typeof(ICrudRepository<Club>), typeof(CrudDatabaseRepository<Club, StakeholdersContext>));
-        //services.AddScoped<IUserRepository, UserDatabaseRepository>();
         services.AddScoped(typeof(ICrudRepository<ClubInvitation>), typeof(CrudDatabaseRepository<ClubInvitation, StakeholdersContext>));
         services.AddScoped(typeof(ICrudRepository<TourIssue>), typeof(CrudDatabaseRepository<TourIssue, StakeholdersContext>));
         services.AddScoped(typeof(IPersonRepository), typeof(PersonDatabaseRepository));

@@ -16,8 +16,6 @@ namespace Explorer.Stakeholders.API.Dtos
         public string Biography { get; set; }
         public string Quote { get; set; }
         public string Email { get; set; }
-        //public ICollection<PersonDto> Followers { get; set; }
-        //public ICollection<PersonDto> Following { get; set; }
 
     }
 
