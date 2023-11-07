@@ -72,7 +72,7 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
                     .Take(pageSize)
                     .ToList();
 
-                var pagedResult = new PagedResult<TourDto>(pagedTours, totalPages);
+                var pagedResult = new PagedResult<TourDto>(pagedTours, totalTours);
 
                 return Result.Ok(pagedResult);
             
