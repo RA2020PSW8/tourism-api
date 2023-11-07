@@ -20,7 +20,7 @@ public class StakeholdersContext : DbContext
         modelBuilder.HasDefaultSchema("stakeholders");
 
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
-
+        modelBuilder.Entity<TourIssue>().HasIndex(t => t.UserId).IsUnique(false);
         ConfigureStakeholder(modelBuilder);
     }
 
@@ -30,5 +30,9 @@ public class StakeholdersContext : DbContext
             .HasOne<User>()
             .WithOne()
             .HasForeignKey<Person>(s => s.UserId);
+
+        modelBuilder.Entity<TourIssueComment>().HasOne<TourIssue>().WithMany(t => t.Comments).HasForeignKey(te => te.TourIssueId);
+        modelBuilder.Entity<TourIssueComment>().HasOne<User>().WithMany(u => u.IssueComments).HasForeignKey(t => t.UserId);
+        modelBuilder.Entity<TourIssue>().HasOne<User>().WithMany(u => u.Issues).HasForeignKey(t => t.UserId);
     }
 }

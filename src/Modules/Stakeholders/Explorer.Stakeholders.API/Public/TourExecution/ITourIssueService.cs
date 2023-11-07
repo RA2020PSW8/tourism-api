@@ -16,5 +16,6 @@ namespace Explorer.Stakeholders.API.Public.TourExecution
         public Result<TourIssueDto> Create(TourIssueDto entity);
         public Result<TourIssueDto> Update(TourIssueDto entity);
         public Result Delete(int id);
+        public Result<PagedResult<TourIssueDto>> GetByUserPaged(int page, int pageSize, int id);
     }
 }

@@ -239,7 +239,7 @@ CREATE TABLE IF NOT EXISTS tours."TourReviews"
     "Comment" text COLLATE pg_catalog."default" NOT NULL,
     "VisitDate" timestamp with time zone NOT NULL,
     "RatingDate" timestamp with time zone NOT NULL,
-    "ImageLinks" text COLLATE pg_catalog."default" NOT NULL,
+    "ImageLinks" text[] COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT "PK_TourReviews" PRIMARY KEY ("Id")
 )
 
