@@ -1,9 +1,11 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
 
 namespace Explorer.API.Controllers
 {
@@ -25,23 +27,23 @@ namespace Explorer.API.Controllers
             return CreateResponse(result);
         }
 
-        [HttpGet("all/{userId:int}")]
-        public ActionResult<PagedResult<PersonDto>> GetNonFollowedProfiles([FromQuery] int page, [FromQuery] int pageSize, long userId)
+        [HttpGet("all")]
+        public ActionResult<PagedResult<PersonDto>> GetNonFollowedProfiles([FromQuery] int page, [FromQuery] int pageSize)
         {
-            var result = _profileService.GetUserNonFollowedProfiles(page, pageSize, userId);
+            var result = _profileService.GetUserNonFollowedProfiles(page, pageSize, ClaimsPrincipalExtensions.PersonId(User));
             return CreateResponse(result);
         }
 
-        [HttpGet("followers/{userId:int}")]
-        public ActionResult<PagedResult<PersonDto>> GetFollowers(long userId)
+        [HttpGet("followers")]
+        public ActionResult<PagedResult<PersonDto>> GetFollowers()
         {
-            var result = _profileService.GetFollowers(userId);
+            var result = _profileService.GetFollowers(ClaimsPrincipalExtensions.PersonId(User));
             return CreateResponse(result);
         }
-        [HttpGet("following/{userId:int}")]
-        public ActionResult<PagedResult<PersonDto>> GetFollowing(long userId)
+        [HttpGet("following")]
+        public ActionResult<PagedResult<PersonDto>> GetFollowing()
         {
-            var result = _profileService.GetFollowing(userId);
+            var result = _profileService.GetFollowing(ClaimsPrincipalExtensions.PersonId(User));
             return CreateResponse(result);
         }
 
@@ -53,12 +55,12 @@ namespace Explorer.API.Controllers
             var result = _profileService.UpdateProfile(updatedPerson);
             return CreateResponse(result);
         }
-        [HttpPut("follow/{followerId:long}")]
-        public ActionResult<PagedResult<PersonDto>> Follow(long followerId, [FromBody] long followedId)
+        [HttpPut("follow")]
+        public ActionResult<PagedResult<PersonDto>> Follow([FromBody] long followedId)
         {
             try
             {
-                var result = _profileService.Follow(followerId, followedId);
+                var result = _profileService.Follow(ClaimsPrincipalExtensions.PersonId(User), followedId);
                 return CreateResponse(result);
             }
             catch (ArgumentException e)
@@ -66,12 +68,12 @@ namespace Explorer.API.Controllers
                 return CreateResponse(Result.Fail(FailureCode.InvalidArgument).WithError(e.Message));
             }
         }
-        [HttpPut("unfollow/{followerId:long}")]
-        public ActionResult<PagedResult<PersonDto>> Unfollow(long followerId, [FromBody] long unfollowedId)
+        [HttpPut("unfollow")]
+        public ActionResult<PagedResult<PersonDto>> Unfollow([FromBody] long unfollowedId)
         {
             try
             {
-                var result = _profileService.Unfollow(followerId, unfollowedId);
+                var result = _profileService.Unfollow(ClaimsPrincipalExtensions.PersonId(User), unfollowedId);
                 return CreateResponse(result);
             }
             catch (ArgumentException e)
