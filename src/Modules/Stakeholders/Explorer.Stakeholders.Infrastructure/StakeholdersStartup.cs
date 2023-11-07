@@ -16,6 +16,8 @@ using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.UseCases.TourExecution;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Explorer.Tours.API.Internal;
+using Explorer.Tours.Core.UseCases.TourAuthoring;
 
 namespace Explorer.Stakeholders.Infrastructure;
 
@@ -44,6 +46,7 @@ public static class StakeholdersStartup
         services.AddScoped<ITourIssueService, TourIssueService>();
         services.AddScoped<ITourIssueCommentService, TourIssueCommentService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IInternalTourService, TourService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)

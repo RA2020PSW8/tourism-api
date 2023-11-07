@@ -10,10 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
+using Explorer.Tours.API.Internal;
 
 namespace Explorer.Tours.Core.UseCases.TourAuthoring
 {
-    public class TourService : CrudService<TourDto, Domain.Tour>, ITourService
+    public class TourService : CrudService<TourDto, Domain.Tour>, ITourService, IInternalTourService
     {
         protected readonly ITourRepository _tourRepository;
 

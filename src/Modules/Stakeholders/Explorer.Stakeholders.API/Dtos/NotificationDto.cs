@@ -7,6 +7,8 @@ namespace Explorer.Stakeholders.API.Dtos
         public int UserId { get; set; }
         public String Content {  get; set; }
         public String? ActionURL { get; set; }
+        public DateTime CreationDateTime { get; set; }
         public bool IsRead { get; set; }
+
     }
 }
