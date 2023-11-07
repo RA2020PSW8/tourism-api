@@ -5,10 +5,10 @@ using Explorer.Stakeholders.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Explorer.API.Controllers.Tourist.TourExecution
+namespace Explorer.API.Controllers.Author.TourExecution
 {
-    [Authorize(Policy = "touristPolicy")]
-    [Route("api/tourexecution/tourissuecomment")]
+    [Authorize(Policy = "authorPolicy")]
+    [Route("api/author/tourexecution/tourissuecomment")]
     public class TourIssueCommentController : BaseApiController
     {
         private readonly ITourIssueCommentService _tourIssueCommentService;
