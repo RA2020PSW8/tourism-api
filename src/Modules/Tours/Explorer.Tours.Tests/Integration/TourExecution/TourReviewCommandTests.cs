@@ -31,7 +31,7 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
                 Comment = "It was amazing!",
                 VisitDate = DateTime.Now.ToUniversalTime(),
                 RatingDate = DateTime.Now.ToUniversalTime(),
-                ImageLinks = "test.jpg",
+                ImageLinks = new List<string>() { "test" },
             };
 
             //Act
@@ -81,7 +81,7 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
                 Comment = "awesome",
                 VisitDate = DateTime.Now.ToUniversalTime(),
                 RatingDate = DateTime.Now.ToUniversalTime(),
-                ImageLinks = "image2"
+                ImageLinks = new List<string> { "image2.jpg" }
             };
 
             //Act

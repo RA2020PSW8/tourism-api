@@ -44,6 +44,7 @@ public static class StakeholdersStartup
         services.AddScoped<IInternalProfileService, ProfileService>();
         services.AddScoped<IApplicationRatingService, ApplicationRatingService>();
         services.AddScoped<ITourIssueService, TourIssueService>();
+        services.AddScoped<ITourIssueCommentService, TourIssueCommentService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -57,6 +58,8 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(ICrudRepository<ClubInvitation>), typeof(CrudDatabaseRepository<ClubInvitation, StakeholdersContext>));
         services.AddScoped(typeof(ICrudRepository<TourIssue>), typeof(CrudDatabaseRepository<TourIssue, StakeholdersContext>));
         services.AddScoped(typeof(IPersonRepository), typeof(PersonDatabaseRepository));
+        services.AddScoped(typeof(ITourIssueRepository), typeof(TourIssueDatabaseRepository));
+        services.AddScoped(typeof(ICrudRepository<TourIssueComment>), typeof(CrudDatabaseRepository<TourIssueComment, StakeholdersContext>));
         services.AddScoped(typeof(IApplicationRatingRepository), typeof(ApplicationRatingDatabaseRepository));
         services.AddControllers().AddJsonOptions(options => {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
