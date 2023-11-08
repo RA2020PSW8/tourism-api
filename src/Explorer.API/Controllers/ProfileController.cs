@@ -27,7 +27,7 @@ namespace Explorer.API.Controllers
             return CreateResponse(result);
         }
 
-        [HttpGet("all")]
+        [HttpGet("not-followed")]
         public ActionResult<PagedResult<PersonDto>> GetNonFollowedProfiles([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _profileService.GetUserNonFollowedProfiles(page, pageSize, ClaimsPrincipalExtensions.PersonId(User));

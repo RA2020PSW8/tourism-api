@@ -13,10 +13,7 @@ public class StakeholdersContext : DbContext
     public DbSet<ClubInvitation> ClubInvitations { get; set; }
     public DbSet<Club> Clubs { get; set; }
 
-    public StakeholdersContext(DbContextOptions<StakeholdersContext> options) : base(options) 
-    {
-       //options.LazyLoadingEnabled = false; ask professor about it
-    }
+    public StakeholdersContext(DbContextOptions<StakeholdersContext> options) : base(options)  { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

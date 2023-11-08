@@ -22,7 +22,6 @@ namespace Explorer.Stakeholders.Tests.Integration.Identity
         [InlineData(-21, -22, 400, 1)]
         public void Follow(int followerId, int followedId, int expectedResponseCode, int expectedFollowingsCount)
         {
-            var userId = -1;
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope, followerId);
             var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
