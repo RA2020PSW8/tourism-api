@@ -19,7 +19,6 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories
         public PersonDatabaseRepository(StakeholdersContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
-            _dbSet = dbContext.Set<Person>();
         }
         public Person GetFullProfile(long personId)
         { 
