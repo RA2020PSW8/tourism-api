@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace Explorer.API.Controllers.Tourist.TourExecution
 {
-    //[Authorize(Policy = "touristPolicy")]
+    [Authorize(Policy = "touristPolicy")]
     [Route("api/tourexecution/")]
     public class TourLifecycleController : BaseApiController
     {
@@ -22,7 +22,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
         [HttpGet("activeTour")]
         public ActionResult<TourProgressDto> GetActiveByUser()
         {
-            var result = _tourLifecycleService.GetActive(ClaimsPrincipalExtensions.PersonId(User));
+            var result = _tourLifecycleService.GetActiveByUser(ClaimsPrincipalExtensions.PersonId(User));
             return CreateResponse(result);
         }
 

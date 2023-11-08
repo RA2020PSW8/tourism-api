@@ -27,7 +27,7 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
             _tourProgressRepository = tourProgressRepository;
         }
 
-        public Result<TourProgressDto> GetActive(long userId)
+        public Result<TourProgressDto> GetActiveByUser(long userId)
         {
             try
             {
