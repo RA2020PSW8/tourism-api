@@ -14,10 +14,10 @@ public class TourController : BaseApiController
     private readonly ITourService _tourService;
    
 
-    public TourController(ITourService tourService/*, ITourFilteringService filteringService*/)
+    public TourController(ITourService tourService)
     {
         _tourService = tourService;
-        //_filteringService = filteringService;
+        
     }
     
     [HttpGet]
@@ -27,11 +27,5 @@ public class TourController : BaseApiController
         return CreateResponse(result);
     }
 
-    /*[HttpGet]
-    public ActionResult<PagedResult<TourDto>> GetFilteredTours([FromQuery] int page, [FromQuery] int pageSize, [FromBody] TourFilterCriteriaDto filter)
-    {
-        var result = _filteringService.GetFilteredTours(page, pageSize, filter);
-        return CreateResponse(result);
-    }
-    */
+    
 }

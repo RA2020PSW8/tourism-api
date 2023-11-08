@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.UseCases.MarketPlace
 {
-    public class TourFilteringService :CrudService<TourDto, Tour>, ITourFilteringService
+    public class TourFilteringService :BaseService<TourDto, Tour>, ITourFilteringService
     {
         protected readonly ITourRepository _tourRepository;
 
-        public TourFilteringService(ITourRepository tourRepository, IMapper mapper) : base(tourRepository, mapper) 
+        public TourFilteringService(ITourRepository tourRepository, IMapper mapper) : base( mapper) 
         {
             _tourRepository = tourRepository;
         }
