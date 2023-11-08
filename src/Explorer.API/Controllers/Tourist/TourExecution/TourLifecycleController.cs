@@ -19,7 +19,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
             _tourLifecycleService = tourLifecycleService;
         }
 
-        [HttpGet]
+        [HttpGet("activeTour")]
         public ActionResult<TourProgressDto> GetActiveByUser()
         {
             var result = _tourLifecycleService.GetActive(ClaimsPrincipalExtensions.PersonId(User));
@@ -33,7 +33,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
             return CreateResponse(result);
         }
 
-        [HttpPost("abandonActive")]
+        [HttpPut("abandonActive")]
         public ActionResult<TourProgressDto> AbandonActiveTour()
         {
             var result = _tourLifecycleService.AbandonActiveTour(ClaimsPrincipalExtensions.PersonId(User));
