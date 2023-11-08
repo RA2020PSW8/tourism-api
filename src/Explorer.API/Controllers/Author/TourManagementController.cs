@@ -26,7 +26,8 @@ namespace Explorer.API.Controllers.Author
             var result = _tourService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
-        
+
+        [AllowAnonymous]
         [HttpGet("{tourId:int}")]
         public ActionResult<TourDto> GetById([FromRoute] int tourId)
         {
