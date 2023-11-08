@@ -21,8 +21,6 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
         {
             _tourRepository = tourRepository;
         }
-
-
       
         public Result<PagedResult<TourDto>> GetFilteredTours(int page, int pageSize, TourFilterCriteriaDto filter)
         {
@@ -37,22 +35,22 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
 
                 var totalTours = nearbyTours.Count();
                 var totalPages = (int)Math.Ceiling(totalTours / (double)pageSize);
-
-                var pagedTours = nearbyTours.Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
+                var pagedTours = nearbyTours;
+                if (page != 0 && pageSize != 0)
+                {
+                    pagedTours = nearbyTours.Skip((page - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToList();
+                }
 
                 var pagedResult = new PagedResult<TourDto>(pagedTours, totalTours);
 
                 return Result.Ok(pagedResult);
-            
             }
             catch (Exception e)
             {
                 return Result.Fail<PagedResult<TourDto>>(e.Message);
             }
         }
-
-      
     }
 }
