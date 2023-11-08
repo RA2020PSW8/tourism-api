@@ -1,4 +1,4 @@
-﻿using Explorer.API.Controllers.Tourist;
+﻿using Explorer.API.Controllers;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
 using Microsoft.AspNetCore.Mvc;
