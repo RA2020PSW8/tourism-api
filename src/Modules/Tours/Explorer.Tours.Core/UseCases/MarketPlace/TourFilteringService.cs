@@ -23,37 +23,7 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
         }
 
 
-        private double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
-        {
-            const double earthRadius = 6371; 
-
-            
-            double lat1Rad = DegreesToRadians(lat1);
-            double lon1Rad = DegreesToRadians(lon1);
-            double lat2Rad = DegreesToRadians(lat2);
-            double lon2Rad = DegreesToRadians(lon2);
-
-            
-            double dLat = lat2Rad - lat1Rad;
-            double dLon = lon2Rad - lon1Rad;
-
-            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                       Math.Cos(lat1Rad) * Math.Cos(lat2Rad) *
-                       Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
-
-            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-
-            
-            double distance = earthRadius * c;
-
-            return distance;
-        }
-
-        private double DegreesToRadians(double degrees)
-        {
-            return degrees * (Math.PI / 180.0);
-        }
-        
+      
         public Result<PagedResult<TourDto>> GetFilteredTours(int page, int pageSize, TourFilterCriteriaDto filter)
         {
             try
@@ -61,8 +31,8 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
                 var nearbyTours = _tourRepository.GetPublishedPaged(page, pageSize).Results
                 .Where(tour =>
                     tour.Keypoints.Any(keyPoint =>
-                        CalculateDistance(filter.CurrentLatitude, filter.CurrentLongitude, keyPoint.Latitude, keyPoint.Longitude) <= filter.FilterRadius))
-                .Select(tour => MapToDto(tour)) 
+                        DistanceCalculator.CalculateDistance(filter.CurrentLatitude, filter.CurrentLongitude, keyPoint.Latitude, keyPoint.Longitude) <= filter.FilterRadius))
+                .Select(tour => MapToDto(tour))
                 .ToList();
 
                 var totalTours = nearbyTours.Count();
