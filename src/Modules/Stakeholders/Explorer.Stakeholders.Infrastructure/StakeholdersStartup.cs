@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using Explorer.Stakeholders.Core.UseCases.Identity;
+using Explorer.Stakeholders.API.Public.Identity;
 
 namespace Explorer.Stakeholders.Infrastructure;
 
@@ -45,6 +46,7 @@ public static class StakeholdersStartup
         services.AddScoped<IApplicationRatingService, ApplicationRatingService>();
         services.AddScoped<ITourIssueService, TourIssueService>();
         services.AddScoped<ITourIssueCommentService, TourIssueCommentService>();
+        services.AddScoped<IChatMessageService, ChatMessageService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -61,6 +63,7 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(ITourIssueRepository), typeof(TourIssueDatabaseRepository));
         services.AddScoped(typeof(ICrudRepository<TourIssueComment>), typeof(CrudDatabaseRepository<TourIssueComment, StakeholdersContext>));
         services.AddScoped(typeof(IApplicationRatingRepository), typeof(ApplicationRatingDatabaseRepository));
+        services.AddScoped(typeof(IChatMessageRepository), typeof(ChatMessageDatabaseRepository));
         services.AddControllers().AddJsonOptions(options => {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             options.JsonSerializerOptions.WriteIndented = true;

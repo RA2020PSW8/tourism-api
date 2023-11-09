@@ -12,6 +12,7 @@ public class StakeholdersContext : DbContext
     public DbSet<TourIssue> TourIssue { get; set; }
     public DbSet<ClubInvitation> ClubInvitations { get; set; }
     public DbSet<Club> Clubs { get; set; }
+    public DbSet<ChatMessage> ChatMessages { get; set; }
 
     public StakeholdersContext(DbContextOptions<StakeholdersContext> options) : base(options)  { }
 
@@ -39,5 +40,20 @@ public class StakeholdersContext : DbContext
         modelBuilder.Entity<TourIssueComment>().HasOne<User>().WithMany(u => u.IssueComments).HasForeignKey(t => t.UserId);
         modelBuilder.Entity<TourIssue>().HasOne<User>().WithMany(u => u.Issues).HasForeignKey(t => t.UserId);
 
+        modelBuilder.Entity<ChatMessage>()
+            .HasOne(cm => cm.Sender)
+            .WithMany()
+            .HasForeignKey(cm => cm.SenderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ChatMessage>()
+            .HasOne(cm => cm.Receiver)
+            .WithMany()
+            .HasForeignKey(cm => cm.ReceiverId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ChatMessage>()
+            .Property(e => e.Id)
+            .ValueGeneratedOnAdd();
     }
 }
