@@ -19,6 +19,15 @@ namespace Explorer.Blog.Core.Domain
 
         public BlogStatus(string name, int requiredPoints)
         {
+            if(requiredPoints < 0)
+            {
+                throw new ArgumentException("Required points must be positive");
+            }
+            if(name == "")
+            {
+                throw new ArgumentException("Name cannot be empty");
+            }
+
             Name = name;
             RequiredPoints = requiredPoints;
         }
