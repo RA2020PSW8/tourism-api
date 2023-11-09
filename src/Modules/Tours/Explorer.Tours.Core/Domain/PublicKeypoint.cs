@@ -10,8 +10,6 @@ namespace Explorer.Tours.Core.Domain
 {
     public class PublicKeypoint : Entity
     {
-        public long TourId { get; init; } //mby delete, so that it doesn't have tour, but only to exist as template to create new (private) keypoint... or add ICollection<tour> or ids of tours 
-        public Tour Tour { get; init; } //mby delete
         public string Name { get; init; }
         public double Latitude { get; init; }
         public double Longitude { get; init; }
@@ -24,11 +22,10 @@ namespace Explorer.Tours.Core.Domain
 
         }
 
-        public PublicKeypoint(long tourId, string name, double latitude, double longitude, string? description, int? position, string? image)
+        public PublicKeypoint(string name, double latitude, double longitude, string? description, int? position, string? image)
         {
             Validate(name, latitude, longitude, position);
 
-            TourId = tourId;
             Name = name;
             Latitude = latitude;
             Longitude = longitude;

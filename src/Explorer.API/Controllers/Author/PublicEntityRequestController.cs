@@ -1,6 +1,8 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Dtos.Enums;
+using Explorer.Tours.API.Public.TourAuthoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +20,7 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpGet]
-        public ActionResult<PagedResult<PublicEntityRequestDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize) //TODO: get only with pending status or on frontend
+        public ActionResult<PagedResult<PublicEntityRequestDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize) 
         {
             var result = _publicEntityRequestService.GetPaged(page, pageSize);
             return CreateResponse(result);
@@ -34,6 +36,7 @@ namespace Explorer.API.Controllers.Author
         [HttpPost]
         public ActionResult<PublicEntityRequestDto> Create([FromBody] PublicEntityRequestDto publicEntityRequestDto)
         {
+            publicEntityRequestDto.UserId = ClaimsPrincipalExtensions.PersonId(User);
             var result = _publicEntityRequestService.Create(publicEntityRequestDto);
             return CreateResponse(result);
         }
@@ -44,5 +47,28 @@ namespace Explorer.API.Controllers.Author
             var result = _publicEntityRequestService.Delete(id);
             return  CreateResponse(result);
         }
+
+        /*[HttpGet("/entity/{entityId:int}")]
+        public ActionResult<PublicEntityRequestDto> GetByEntityId([FromRoute]int entityId, [FromQuery]int entityType)
+        {
+            var result = _publicEntityRequestService.GetByEntityId(entityId, (EntityType)entityType);
+            return CreateResponse(result);
+        }*/
+
+
+        /* [HttpGet("/entity")]
+        public ActionResult<PublicEntityRequestDto> GetByEntityId([FromQuery] int entityId, [FromQuery] int entityType)
+        {
+            var result = _publicEntityRequestService.GetByEntityId(entityId, (EntityType)entityType);
+            return CreateResponse(result);
+        }  radi, ali da probam ovo */
+
+        [HttpGet("entity/{entityId}/{entityType}")]
+        public ActionResult<PublicEntityRequestDto> GetByEntityId( [FromRoute]int entityId, [FromRoute]int entityType)
+        {
+            var result = _publicEntityRequestService.GetByEntityId(entityId, (EntityType)entityType);
+            return CreateResponse(result);
+        }
+
     }
 }

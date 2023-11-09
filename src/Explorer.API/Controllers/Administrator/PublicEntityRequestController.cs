@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.TourAuthoring;
 using Microsoft.AspNetCore.Mvc;
 namespace Explorer.API.Controllers.Administrator
 {
@@ -17,7 +17,7 @@ namespace Explorer.API.Controllers.Administrator
         }
 
         [HttpGet]
-        public ActionResult<PagedResult<PublicEntityRequestDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize) //TODO: get only with pending status or on frontend
+        public ActionResult<PagedResult<PublicEntityRequestDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize) 
         {
             var result = _publicEntityRequestService.GetPaged(page, pageSize);
             return CreateResponse(result);

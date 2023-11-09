@@ -2,7 +2,6 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Dtos.Enums;
-using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.TourAuthoring;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
@@ -52,13 +51,11 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring
                 if (publicEntityRequestDto.EntityType is EntityType.KEYPOINT)
                 {
                     var keypoint = _keypointRepository.Get(publicEntityRequestDto.EntityId);
-                    var keypointDto = _mapper.Map<KeypointDto>(keypoint);
 
                     if (keypoint != null)
                     {
                         var publicKeypoint = new PublicKeypoint
                         {
-                            TourId = keypoint.TourId,
                             Name = keypoint.Name,
                             Latitude = keypoint.Latitude,
                             Longitude = keypoint.Longitude,
@@ -91,72 +88,6 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring
             return Result.Fail("Invalid request status.");
         }
 
-
-        /*public Result<PublicEntityRequestDto> Approve(int id)
-        {
-            var request = _publicEntityRequestRepository.Get(id);
-            var requestDto = _mapper.Map<PublicEntityRequestDto>(request);
-
-            if (request == null)
-            {
-                return Result.Fail("Request not found.");
-            }
-
-            if (request.Status is (Domain.Enum.PublicEntityRequestStatus)PublicEntityRequestStatus.APPROVED or (Domain.Enum.PublicEntityRequestStatus)PublicEntityRequestStatus.DECLINED)
-            {
-                return Result.Fail("Request already approved or declined.");
-            }
-
-            if (request.Status is (Domain.Enum.PublicEntityRequestStatus)PublicEntityRequestStatus.PENDING)
-            {
-
-                if (request.EntityType is (Domain.Enum.EntityType)EntityType.KEYPOINT)
-                {
-
-                    var keypoint = _keypointRepository.Get(request.EntityId);
-                    var keypointDto = _mapper.Map<KeypointDto>(keypoint);
-
-                    if (keypoint != null)
-                    {
-                        var publicKeypoint = new PublicKeypoint
-                        {
-                            TourId = keypoint.TourId,
-                            Name = keypoint.Name,
-                            Latitude = keypoint.Latitude,
-                            Longitude = keypoint.Longitude,
-                            Description = keypoint.Description,
-                            Position = keypoint.Position,
-                            Image = keypoint.Image                        };
-
-                        _publicKeypointRepository.Create(publicKeypoint);
-                    }
-                }
-                else if (request.EntityType is (Domain.Enum.EntityType)EntityType.OBJECT)
-                {
-                    var tourObject = _objectRepository.Get(request.EntityId);
-                    if (tourObject != null)
-                    {
-                        var objectForUpdate = new Domain.Object(
-                            tourObject.Name, 
-                            tourObject.Description, 
-                            tourObject.Image, 
-                            tourObject.Category, 
-                            Domain.Enum.ObjectStatus.PUBLIC
-                        ); 
-                        _objectRepository.Update(objectForUpdate);
-                    }
-                }
-                requestDto.Status = PublicEntityRequestStatus.APPROVED;
-                request = MapToDomain(requestDto);
-                _publicEntityRequestRepository.Update(request);
-
-                return Result.Ok(_mapper.Map<PublicEntityRequestDto>(request));
-            }
-            return Result.Fail("Invalid request status.");
-        } */
-
-        
-
         public Result<PublicEntityRequestDto> Decline(PublicEntityRequestDto publicEntityRequestDto)
         {
             if (publicEntityRequestDto == null)
@@ -179,6 +110,12 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring
                 return Result.Fail("Request already approved or declined.");
             }
             return Result.Fail("Invalid request status.");
+        }
+
+        public Result<PublicEntityRequestDto> GetByEntityId(int entityId, EntityType entityType)
+        {
+            var result = _publicEntityRequestRepository.GetByEntityId(entityId, entityType);
+            return MapToDto(result);
         }
     }
 }

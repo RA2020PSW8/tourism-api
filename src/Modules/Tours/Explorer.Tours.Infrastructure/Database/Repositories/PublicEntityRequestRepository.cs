@@ -1,4 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Infrastructure.Database;
+using Explorer.Tours.API.Dtos.Enums;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,24 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
         public PublicEntityRequestRepository(ToursContext dbContext) : base(dbContext)
         {
             _dbSet = dbContext.Set<PublicEntityRequest>();
+        }
+
+        public PublicEntityRequest GetByEntityId(int entityId, EntityType entityType)
+        {
+            if (entityType == EntityType.KEYPOINT)
+            {
+                var publicEntityRequest = _dbSet.AsNoTracking()
+                .FirstOrDefault(r => r.EntityId == entityId && r.EntityType == (Core.Domain.Enum.EntityType)EntityType.KEYPOINT);
+                return publicEntityRequest;
+            } else if (entityType == EntityType.OBJECT)
+            {
+                var publicEntityRequest = _dbSet.AsNoTracking()
+                .FirstOrDefault(r => r.EntityId == entityId && r.EntityType == (Core.Domain.Enum.EntityType)EntityType.OBJECT);
+                return publicEntityRequest;
+            }
+            return null;
+            
+
         }
     }
 }
