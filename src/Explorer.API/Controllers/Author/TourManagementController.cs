@@ -66,6 +66,19 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
+        [AllowAnonymous]
+        [HttpPut("disable/{id:int}")]
+        public ActionResult<TourDto> Disable([FromBody] TourDto tour)
+        {
+            if (User.IsInRole("administrator"))
+            {
+                tour.UserId = ClaimsPrincipalExtensions.PersonId(User);
+                var result = _tourService.Update(tour);
+                return CreateResponse(result);
+            }
+            else
+                return null;
+        }
     }
 }
 

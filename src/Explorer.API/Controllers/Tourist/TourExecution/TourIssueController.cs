@@ -19,6 +19,11 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
             _tourIssueService = tourIssueService;
         }
 
+        private int GenerateId()
+        {
+            return _tourIssueService.GetPaged(0, 0).Value.Results.Max(ti => ti.Id) + 1;
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public ActionResult<PagedResult<TourIssueDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize) 
@@ -36,9 +41,9 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
         }
 
         [HttpPost]
-        public ActionResult<TourIssueDto> Create([FromBody] TourIssueDto issue) 
+        public ActionResult<TourIssueDto> Create([FromBody] TourIssueDto issue)
         {
-            issue.Id = _tourIssueService.GetPaged(0, 0).Value.TotalCount + 1;
+            issue.Id = GenerateId();
             issue.UserId = User.PersonId();
             var result = _tourIssueService.Create(issue);
             return CreateResponse(result);
@@ -55,6 +60,18 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
         public ActionResult<TourIssueDto> Resolve([FromBody] TourIssueDto issue)
         {
             if (issue.UserId == User.PersonId())
+            {
+                var result = _tourIssueService.Update(issue);
+                return CreateResponse(result);
+            }
+            else
+                return null;
+        }
+
+        [HttpPut("setresolvedate/{id:int}")]
+        public ActionResult<TourIssueDto> SetResolvedDateTime([FromBody] TourIssueDto issue)
+        {
+            if (User.IsInRole("administrator"))
             {
                 var result = _tourIssueService.Update(issue);
                 return CreateResponse(result);

@@ -10,6 +10,7 @@ namespace Explorer.Tours.Core.Domain.Enum
     {
         DRAFT,
         PUBLISHED,
-        ARCHIVED
+        ARCHIVED,
+        DISABLED
     }
 }

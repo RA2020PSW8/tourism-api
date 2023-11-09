@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public.TourExecution;
+using Explorer.Stakeholders.Core.UseCases.TourExecution;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,11 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
         public TourIssueCommentController(ITourIssueCommentService tourIssueCommentService)
         {
             _tourIssueCommentService = tourIssueCommentService;
+        }
+
+        private int GenerateId()
+        {
+            return _tourIssueCommentService.GetPaged(0, 0).Value.Results.Max(ti => ti.Id) + 1;
         }
 
         [HttpGet]
@@ -35,7 +41,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
         [HttpPost]
         public ActionResult<TourIssueCommentDto> Create([FromBody] TourIssueCommentDto comment)
         {
-            comment.Id = _tourIssueCommentService.GetPaged(0, 0).Value.TotalCount + 1;
+            comment.Id = GenerateId();
             comment.UserId = User.PersonId();
             var result = _tourIssueCommentService.Create(comment);
             return CreateResponse(result);
