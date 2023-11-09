@@ -35,13 +35,13 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
             // Assert - Response
             result.ShouldNotBeNull();
             result.Id.ShouldNotBe(0);
-            result.Status.ShouldBe(TourExecutionStatus.IN_PROGRESS.ToString());
+            result.Status.ShouldBe(TourProgressStatus.IN_PROGRESS.ToString());
             result.CurrentKeyPoint.ShouldBe(1);
 
             // Assert - Database
             var storedEntity = dbContext.TourProgresses.FirstOrDefault(tp => tp.Id == result.Id);
             storedEntity.ShouldNotBeNull();
-            storedEntity.Status.ShouldBeEquivalentTo(TourExecutionStatus.IN_PROGRESS);
+            storedEntity.Status.ShouldBeEquivalentTo(TourProgressStatus.IN_PROGRESS);
             storedEntity.CurrentKeyPoint.ShouldBe(1);
         }
 
@@ -60,13 +60,13 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
             // Assert - Response
             result.ShouldNotBeNull();
             result.Id.ShouldBe(-2);
-            result.Status.ShouldBe(TourExecutionStatus.ABANDONED.ToString());
+            result.Status.ShouldBe(TourProgressStatus.ABANDONED.ToString());
             result.CurrentKeyPoint.ShouldBe(3);
 
             // Assert - Database
             var storedEntity = dbContext.TourProgresses.FirstOrDefault(tp => tp.Id == result.Id);
             storedEntity.ShouldNotBeNull();
-            storedEntity.Status.ShouldBeEquivalentTo(TourExecutionStatus.ABANDONED);
+            storedEntity.Status.ShouldBeEquivalentTo(TourProgressStatus.ABANDONED);
             storedEntity.CurrentKeyPoint.ShouldBe(3);
         }
 

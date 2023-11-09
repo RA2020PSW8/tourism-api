@@ -1,5 +1,4 @@
 using Explorer.BuildingBlocks.Core.UseCases;
-using FluentResults;
 
 namespace Explorer.Tours.Core.Domain.RepositoryInterfaces;
 

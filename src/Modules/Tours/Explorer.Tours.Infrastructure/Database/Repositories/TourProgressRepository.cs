@@ -23,7 +23,11 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
 
         public TourProgress GetActiveByUser(long userId)
         {
-            var tourProgress = _dbSet.Include(tp => tp.TouristPosition).Include(tp => tp.Tour).ThenInclude(t => t.Keypoints).FirstOrDefault(tp => tp.TouristPosition.UserId == userId && tp.Status == TourExecutionStatus.IN_PROGRESS);
+            var tourProgress = _dbSet
+                .Include(tp => tp.TouristPosition)
+                .Include(tp => tp.Tour)
+                .ThenInclude(t => t.Keypoints)
+                .FirstOrDefault(tp => tp.TouristPosition.UserId == userId && tp.Status == TourProgressStatus.IN_PROGRESS);
             if (tourProgress == null) throw new KeyNotFoundException("Not found: " + userId);
             return tourProgress;
         }

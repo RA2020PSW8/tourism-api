@@ -32,7 +32,7 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
             // Assert
             result.ShouldNotBeNull();
             result.CurrentKeyPoint.ShouldBe(3);
-            result.Status.ShouldBe(TourExecutionStatus.IN_PROGRESS.ToString());
+            result.Status.ShouldBe(TourProgressStatus.IN_PROGRESS.ToString());
             result.TouristPosition.UserId.ShouldBe(userId);
         }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.Domain.Enum
 {
-    public enum TourExecutionStatus
+    public enum TourProgressStatus
     {
         IN_PROGRESS,
         ABANDONED,

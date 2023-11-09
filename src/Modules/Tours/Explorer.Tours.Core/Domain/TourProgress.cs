@@ -14,12 +14,12 @@ namespace Explorer.Tours.Core.Domain
         public TouristPosition TouristPosition { get; set; }
         public long TourId { get; init; }
         public Tour Tour { get; set; }
-        public TourExecutionStatus Status { get; private set; }
+        public TourProgressStatus Status { get; private set; }
         public DateTime StartTime { get; init; }
         public DateTime LastActivity { get; private set; }
         public int CurrentKeyPoint { get; init; }
 
-        public bool IsInProgress => (Status == TourExecutionStatus.IN_PROGRESS);
+        public bool IsInProgress => (Status == TourProgressStatus.IN_PROGRESS);
 
         public TourProgress()
         {
@@ -30,7 +30,7 @@ namespace Explorer.Tours.Core.Domain
         {
             TouristPositionId = touristPositionId;
             TourId = tourId;
-            Status = TourExecutionStatus.IN_PROGRESS;
+            Status = TourProgressStatus.IN_PROGRESS;
             StartTime = DateTime.UtcNow;
             LastActivity = DateTime.UtcNow;
             CurrentKeyPoint = 1;
@@ -38,7 +38,7 @@ namespace Explorer.Tours.Core.Domain
 
         public void Abandon()
         {
-            this.Status = TourExecutionStatus.ABANDONED;
+            this.Status = TourProgressStatus.ABANDONED;
             this.LastActivity = DateTime.UtcNow;
         }
     }
