@@ -12,12 +12,10 @@ namespace Explorer.API.Controllers.Tourist.Marketplace;
 public class TourController : BaseApiController
 {
     private readonly ITourService _tourService;
-   
 
     public TourController(ITourService tourService)
     {
         _tourService = tourService;
-        
     }
     
     [HttpGet]
@@ -26,6 +24,4 @@ public class TourController : BaseApiController
         var result = _tourService.GetPublishedPaged(page, pageSize);
         return CreateResponse(result);
     }
-
-    
 }
