@@ -15,14 +15,14 @@ namespace Explorer.Tours.Core.Domain
         //public Tour Tour {  get; init; } 
         public DateTime VisitDate { get; init; }
         public DateTime RatingDate { get; init; }
-        public string ImageLinks { get; init; }
+        public List<string>? ImageLinks { get; init; }
 
         public TourReview() 
         { 
         
         }
 
-        public TourReview(int rating, string comment, DateTime visitDate, DateTime ratingDate, string imageLinks)
+        public TourReview(int rating, string comment, DateTime visitDate, DateTime ratingDate, List<string> imageLinks)
         {
             if (rating < 1 || rating > 5)
             {
