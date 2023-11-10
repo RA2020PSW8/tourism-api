@@ -32,6 +32,8 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
                 VisitDate = DateTime.Now.ToUniversalTime(),
                 RatingDate = DateTime.Now.ToUniversalTime(),
                 ImageLinks = new List<string>() { "test" },
+                UserId = 1,
+                TourId = -1
             };
 
             //Act
