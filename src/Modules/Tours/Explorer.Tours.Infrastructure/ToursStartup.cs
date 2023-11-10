@@ -45,6 +45,10 @@ public static class ToursStartup
         services.AddScoped<ITouristPositionService, TouristPositionService>();
         services.AddScoped<IPublicEntityRequestService, PublicEntityRequestService>();
         services.AddScoped<IPublicKeypointService, PublicKeypointService>();
+        services.AddScoped<ITourLifecycleService, TourLifecycleService>();
+        services.AddScoped<ITourFilteringService, TourFilteringService>();
+        services.AddScoped<IOrderItemService, OrderItemService>();
+        services.AddScoped<IShoppingCartService, ShoppingCartService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -64,6 +68,9 @@ public static class ToursStartup
         services.AddScoped(typeof(IPublicEntityRequestRepository), typeof(PublicEntityRequestRepository));
         services.AddScoped(typeof(IPublicKeypointRepository), typeof(PublicKeypointRepository));
         services.AddScoped(typeof(IObjectRepository), typeof(ObjectRepository));
+        services.AddScoped(typeof(ITourProgressRepository), typeof(TourProgressRepository));
+        services.AddScoped(typeof(IOrderItemRepository), typeof(OrderItemRepository));
+        services.AddScoped(typeof(IShoppingCartRepository), typeof(ShoppingCartRepository));
 
         services.AddDbContext<ToursContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),

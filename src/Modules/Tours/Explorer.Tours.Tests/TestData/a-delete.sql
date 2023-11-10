@@ -9,3 +9,5 @@ DELETE FROM tours."Tours";
 DELETE FROM tours."PublicEntityRequests";
 DELETE FROM tours."TouristPositions";
 DELETE FROM tours."PublicKeyPoints";
+DELETE FROM tours."TouristPositions";
+DELETE FROM tours."OrderItems";

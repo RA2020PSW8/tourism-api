@@ -51,5 +51,12 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
             var result = _tourIssueService.Delete(id);
             return CreateResponse(result);
         }
+
+        [HttpGet("user/{userId:int}")]
+        public ActionResult<PagedResult<TourIssueDto>> GetByUserAll([FromQuery] int page, [FromQuery] int pageSize, int userId)
+        {
+            var result = _tourIssueService.GetByUserPaged(page, pageSize, userId);
+            return CreateResponse(result);
+        }
     }
 }
