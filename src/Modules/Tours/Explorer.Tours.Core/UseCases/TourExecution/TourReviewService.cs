@@ -4,6 +4,8 @@ using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.TourExecution;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.RepositoryInterfaces;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +16,31 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
 {
     public class TourReviewService : CrudService<TourReviewDto, TourReview>, ITourReviewService
     {
-        public TourReviewService(ICrudRepository<TourReview> crudRepository, IMapper mapper) : base(crudRepository, mapper)
+        ICrudRepository<TourReview> _crudRepository;
+        ITourProgressRepository _tourProgressRepository;
+        public TourReviewService(ICrudRepository<TourReview> crudRepository, ITourProgressRepository tourProgressRepository, IMapper mapper) : base(crudRepository, mapper)
         {
+            _crudRepository = crudRepository;
+            _tourProgressRepository = tourProgressRepository;
+        }
+
+        public override Result<TourReviewDto> Create(TourReviewDto review)
+        {
+            try
+            {
+                TourProgress? progress = _tourProgressRepository.GetByUser((long)review.UserId);
+                TimeSpan timeSpan = DateTime.UtcNow - progress.LastActivity;
+                if (progress!=null && ((double)progress.CurrentKeyPoint / (double)progress.Tour.Keypoints.Count) > 0.35 && timeSpan.Days < 7)
+                {
+                    var result = CrudRepository.Create(MapToDomain(review));
+                    return MapToDto(result);
+                }
+                throw new ArgumentException("Tourist is not in tour or did not pass 35%!");
+            }
+            catch (ArgumentException e)
+            {
+                return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
+            }
         }
     }
 }

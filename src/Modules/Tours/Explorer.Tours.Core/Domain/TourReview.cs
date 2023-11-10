@@ -11,7 +11,7 @@ namespace Explorer.Tours.Core.Domain
     {
         public int Rating { get; init; }
         public string Comment { get; init; }
-        //public Tourist Tourist { get; init; }
+        public long? UserId { get; init; }
         //public Tour Tour {  get; init; } 
         public DateTime VisitDate { get; init; }
         public DateTime RatingDate { get; init; }
