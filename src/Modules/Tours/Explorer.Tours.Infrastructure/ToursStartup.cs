@@ -43,6 +43,7 @@ public static class ToursStartup
         services.AddScoped<IObjectService, ObjectService>();
         services.AddScoped<ITourEquipmentService, TourEquipmentService>();
         services.AddScoped<ITouristPositionService, TouristPositionService>();
+        services.AddScoped<ITourFilteringService, TourFilteringService>();
         services.AddScoped<IOrderItemService, OrderItemService>();
         services.AddScoped<IShoppingCartService, ShoppingCartService>();
     }
