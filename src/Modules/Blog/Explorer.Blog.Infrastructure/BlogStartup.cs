@@ -9,6 +9,8 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Explorer.Blog.Core.Domain.RepositoryInterfaces;
+using Explorer.Blog.Infrastructure.Database.Repositories;
 
 namespace Explorer.Blog.Infrastructure;
 
@@ -32,7 +34,7 @@ public static class BlogStartup
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
-        services.AddScoped(typeof(ICrudRepository<Core.Domain.Blog>), typeof(CrudDatabaseRepository<Core.Domain.Blog, BlogContext>));
+        services.AddScoped(typeof(IBlogRepository), typeof(BlogDatabaseRepository));
         services.AddScoped(typeof(ICrudRepository<BlogComment>), typeof(CrudDatabaseRepository<BlogComment, BlogContext>));
         services.AddScoped(typeof(ICrudRepository<BlogStatus>), typeof(CrudDatabaseRepository<BlogStatus, BlogContext>));
 

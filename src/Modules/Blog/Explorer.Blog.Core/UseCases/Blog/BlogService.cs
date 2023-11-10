@@ -13,6 +13,7 @@ using FluentResults;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.Core.Domain;
+using Explorer.Blog.Core.Domain.RepositoryInterfaces;
 
 namespace Explorer.Blog.Core.UseCases.Blog
 {
@@ -20,9 +21,9 @@ namespace Explorer.Blog.Core.UseCases.Blog
     {
         private readonly IProfileService _profileService;
         private readonly IUserService _userService;
-        private readonly ICrudRepository<Domain.Blog> _repository;
+        private readonly IBlogRepository _repository;
         private readonly IMapper _mapper;
-        public BlogService(ICrudRepository<Domain.Blog> crudRepository, IMapper mapper, 
+        public BlogService(IBlogRepository crudRepository, IMapper mapper, 
             IUserService userService, IProfileService profileService) : base(mapper)
         {
             _repository = crudRepository;
@@ -113,6 +114,18 @@ namespace Explorer.Blog.Core.UseCases.Blog
                 LoadPersonInformation(dto);
             }
 
+            PagedResult<BlogDto> res = new(dtos, dtos.Count);
+            return res;
+        }
+
+        public PagedResult<BlogDto> GetWithStatuses(int page, int pageSize)
+        {
+            var result = _repository.GetWithStatuses(page, pageSize).Results;
+            List<BlogDto> dtos = new();
+            foreach (var item in result)
+            {
+                dtos.Add(MapToDto(item));
+            }
             PagedResult<BlogDto> res = new(dtos, dtos.Count);
             return res;
         }
