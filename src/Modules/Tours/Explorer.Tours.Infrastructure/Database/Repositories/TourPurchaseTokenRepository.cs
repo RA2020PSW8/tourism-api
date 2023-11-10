@@ -25,5 +25,10 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
             DbContext.SaveChanges();
         }
 
+        public TourPurchaseToken GetByTourAndTourist (int tourId, int touristId)
+        {
+            return DbContext.TourPurchaseTokens.FirstOrDefault(t => t.TourId == tourId && t.TouristId == touristId);
+        }
+
     }
 }

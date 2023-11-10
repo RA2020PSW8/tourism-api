@@ -29,7 +29,7 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             
 
             // Act
-            var result = ((OkResult)controller.BuyShoppingCart(-1));
+            var result = ((ObjectResult)controller.BuyShoppingCart(-1));
 
             // Assert - Response
             result.ShouldNotBeNull();
@@ -43,19 +43,49 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
 
         }
 
-        
-        public void Create_fails_invalid_data()
+        [Fact]
+        public void Create_fails_invalid_data_shopping_cart()
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
 
             // Act
-            var result = ((OkResult)controller.BuyShoppingCart(-111));
+            var result = ((ObjectResult)controller.BuyShoppingCart(-111));
 
             // Assert
             result.ShouldNotBeNull();
-            result.StatusCode.ShouldBe(400);
+            result.StatusCode.ShouldBe(404);
+        }
+
+        [Fact]
+        public void Create_fails_invalid_data_order_item()
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+
+            // Act
+            var result = ((ObjectResult)controller.BuyShoppingCart(-1));
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.StatusCode.ShouldBe(404);
+        }
+
+        [Fact]
+        public void Create_fails_invalid_data_token_exists()
+        {
+            // Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+
+            // Act
+            var result = ((ObjectResult)controller.BuyShoppingCart(-1));
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.StatusCode.ShouldBe(404);
         }
 
         private static TourPurchaseTokenController CreateController(IServiceScope scope)

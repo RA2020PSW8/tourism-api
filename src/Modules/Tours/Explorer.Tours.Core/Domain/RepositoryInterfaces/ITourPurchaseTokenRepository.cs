@@ -10,5 +10,7 @@ namespace Explorer.Tours.Core.Domain.RepositoryInterfaces
     public interface ITourPurchaseTokenRepository : ICrudRepository<TourPurchaseToken>
     {
         void AddRange(List<TourPurchaseToken> tokens);
+        TourPurchaseToken GetByTourAndTourist(int TourId, int TouristId);
+
     }
 }

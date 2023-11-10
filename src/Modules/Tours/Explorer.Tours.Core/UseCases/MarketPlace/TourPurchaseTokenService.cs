@@ -30,26 +30,50 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
 
         public Result BuyShoppingCart(int shoppingCartId)
         {
-            ShoppingCart shoppingCart = _shoppingCartRepository.Get(shoppingCartId);
-            if (shoppingCart == null)
+            ShoppingCart shoppingCart = null;
+            try
             {
-                return Result.Fail("");
+                shoppingCart = _shoppingCartRepository.Get(shoppingCartId);
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError("");
             }
 
             List<TourPurchaseToken> tokens = new List<TourPurchaseToken>();
             foreach(int orderId in shoppingCart.OrdersId)
             {
-                OrderItem orderItem = _orderItemRepository.Get(orderId);
-                if(orderItem == null)
+                OrderItem orderItem = null;
+                try
                 {
-                    return Result.Fail("");
+                    orderItem = _orderItemRepository.Get(orderId);
                 }
-                
+                catch (Exception ex)
+                {
+                    return Result.Fail(FailureCode.NotFound).WithError("");
+                }
+
+                if (_tourPurchaseTokenRepository.GetByTourAndTourist(orderItem.TourId, shoppingCart.UserId) != null)
+                {
+                    return Result.Fail(FailureCode.NotFound).WithError("");
+                }
+
                 TourPurchaseToken token = new TourPurchaseToken() { TourId = orderItem.TourId, TouristId = shoppingCart.UserId };
                 tokens.Add(token);
+
             }
 
-            _tourPurchaseTokenRepository.AddRange(tokens);
+            if(tokens.Count > 0)
+            {
+                _tourPurchaseTokenRepository.AddRange(tokens);
+            }
+
+            
+            foreach (int orderId in shoppingCart.OrdersId)
+            {
+                _orderItemRepository.Delete(orderId);
+            }
+            _shoppingCartRepository.Delete(shoppingCartId); 
 
             return Result.Ok();
         }
