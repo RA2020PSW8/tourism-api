@@ -16,6 +16,8 @@ using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.UseCases.TourExecution;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Explorer.Tours.API.Internal;
+using Explorer.Tours.Core.UseCases.TourAuthoring;
 using System.Text.Json.Serialization;
 using Explorer.Stakeholders.Core.UseCases.Identity;
 
@@ -45,6 +47,8 @@ public static class StakeholdersStartup
         services.AddScoped<IApplicationRatingService, ApplicationRatingService>();
         services.AddScoped<ITourIssueService, TourIssueService>();
         services.AddScoped<ITourIssueCommentService, TourIssueCommentService>();
+        services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IInternalTourService, TourService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -61,10 +65,14 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(ITourIssueRepository), typeof(TourIssueDatabaseRepository));
         services.AddScoped(typeof(ICrudRepository<TourIssueComment>), typeof(CrudDatabaseRepository<TourIssueComment, StakeholdersContext>));
         services.AddScoped(typeof(IApplicationRatingRepository), typeof(ApplicationRatingDatabaseRepository));
+        services.AddScoped(typeof(INotificationRepository), typeof(NotificationRepository));
+
+
         services.AddControllers().AddJsonOptions(options => {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             options.JsonSerializerOptions.WriteIndented = true;
         });
+
         services.AddDbContext<StakeholdersContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("stakeholders"),
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "stakeholders")));
