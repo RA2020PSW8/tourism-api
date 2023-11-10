@@ -13,18 +13,19 @@ namespace Explorer.Blog.Core.Domain
         public int CreatorId { get; init; }
         public required string Title { get; init; }
         public required string Description { get; init; }
-        public Enum.BlogStatus Status { get; init; }
+        public BlogSystemStatus SystemStatus { get; init; }
         public DateOnly CreationDate { get; init; }
         public List<string>? ImageLinks { get; init; }
+        public ICollection<BlogStatus>? BlogStatuses { get; init; }
 
         public Blog()
         {
 
         }
 
-        public Blog(string title, string description, DateOnly creationDate, List<string> imageLinks, Enum.BlogStatus status)
+        public Blog(string title, string description, DateOnly creationDate, List<string> imageLinks, BlogSystemStatus systemStatus, List<BlogStatus> blogStatuses)
         {
-            if(string.IsNullOrWhiteSpace(title))
+            if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Title cannot be empty.");
             if (string.IsNullOrWhiteSpace(description))
                 throw new ArgumentException("Description cannot be empty.");
@@ -33,7 +34,8 @@ namespace Explorer.Blog.Core.Domain
             Description = description;
             CreationDate = creationDate;
             ImageLinks = imageLinks;
-            Status = status;
+            SystemStatus = systemStatus;
+            BlogStatuses = blogStatuses;
         }
     }
 }

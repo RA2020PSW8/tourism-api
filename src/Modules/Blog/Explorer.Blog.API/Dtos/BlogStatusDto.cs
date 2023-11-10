@@ -8,8 +8,8 @@ namespace Explorer.Blog.API.Dtos
 {
     public class BlogStatusDto
     {
+        public long BlogId { get; set; }
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int RequiredPoints { get; set; }
+        public required string Name { get; set; }
     }
 }

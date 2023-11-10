@@ -151,5 +151,10 @@ namespace Explorer.Blog.Core.UseCases.Blog
                 dto.CreatorRole = user.Role;
             }
         }
+
+        public void UpdateStatuses()
+        {
+
+        }
     }
 }

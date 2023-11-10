@@ -1,4 +1,5 @@
 ﻿using Explorer.Blog.Core.Domain;
+using Explorer.Stakeholders.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Explorer.Blog.Infrastructure.Database;
@@ -14,5 +15,11 @@ public class BlogContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("blog");
+        ConfigureBlog(modelBuilder);
+    }
+
+    private static void ConfigureBlog(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<BlogStatus>().HasOne<Core.Domain.Blog>().WithMany(b => b.BlogStatuses).HasForeignKey(bs => bs.BlogId);
     }
 }

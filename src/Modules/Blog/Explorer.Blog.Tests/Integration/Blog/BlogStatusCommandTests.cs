@@ -27,8 +27,8 @@ namespace Explorer.Blog.Tests.Integration.Blog
             var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
             var newEntity = new BlogStatusDto
             {
+                BlogId = -1,
                 Name = "famous",
-                RequiredPoints = 98,
             };
 
             //Act
@@ -54,7 +54,6 @@ namespace Explorer.Blog.Tests.Integration.Blog
             var updatedEntity = new BlogStatusDto
             {
                 Name = "",
-                RequiredPoints = -77
             };
 
             //Act
@@ -75,8 +74,8 @@ namespace Explorer.Blog.Tests.Integration.Blog
             var updatedEntity = new BlogStatusDto
             {
                 Id = -2,
+                BlogId = -1,
                 Name = "active",
-                RequiredPoints = 50,
             };
 
             //Act
@@ -86,12 +85,10 @@ namespace Explorer.Blog.Tests.Integration.Blog
             result.ShouldNotBeNull();
             result.Id.ShouldBe(-2);
             result.Name.ShouldBe("active");
-            result.RequiredPoints.ShouldBe(50);
 
             //Assert - Database
             var storedEntity = dbContext.BlogStatuses.FirstOrDefault(i => i.Name == "active");
             storedEntity.ShouldNotBeNull();
-            storedEntity.RequiredPoints.ShouldBe(updatedEntity.RequiredPoints);
             var oldEntity = dbContext.BlogStatuses.FirstOrDefault(i => i.Name == "famous");
             oldEntity.ShouldBeNull();
         }
@@ -105,8 +102,8 @@ namespace Explorer.Blog.Tests.Integration.Blog
             var updatedEntity = new BlogStatusDto
             {
                 Id = -87,
+                BlogId = -1,
                 Name = "active",
-                RequiredPoints = 36,
             };
 
             //Act

@@ -1,9 +1,9 @@
 ﻿INSERT INTO blog."BlogStatuses"(
-	"Id", "Name", "RequiredPoints") 
-	VALUES(-1, 'very famous', -550);
+	"Id", "Name", "BlogId") 
+	VALUES(-1, 'very famous', -1);
 INSERT INTO blog."BlogStatuses"(
-	"Id", "Name", "RequiredPoints") 
-	VALUES(-2, 'active', -67);
+	"Id", "Name", "BlogId") 
+	VALUES(-2, 'active', -2);
 INSERT INTO blog."BlogStatuses"(
-	"Id", "Name", "RequiredPoints") 
-	VALUES(-3, 'hot', -678);
+	"Id", "Name", "BlogId") 
+	VALUES(-3, 'hot', -3);

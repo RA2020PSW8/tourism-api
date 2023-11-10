@@ -9,27 +9,22 @@ namespace Explorer.Blog.Core.Domain
 {
     public class BlogStatus : Entity
     {
-        public string Name { get; init; }
-        public int RequiredPoints { get; init; }
+        public long BlogId { get; init; }
+        public required string Name { get; init; }
 
         public BlogStatus()
         {
 
         }
 
-        public BlogStatus(string name, int requiredPoints)
+        public BlogStatus(string name)
         {
-            if(requiredPoints < 0)
-            {
-                throw new ArgumentException("Required points must be positive");
-            }
             if(name == "")
             {
                 throw new ArgumentException("Name cannot be empty");
             }
 
             Name = name;
-            RequiredPoints = requiredPoints;
         }
     }
 }
