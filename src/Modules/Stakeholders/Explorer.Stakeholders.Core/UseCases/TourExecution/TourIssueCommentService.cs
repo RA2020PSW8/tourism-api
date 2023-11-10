@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.API.Dtos.Enums;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.API.Public.TourExecution;
 using Explorer.Stakeholders.Core.Domain;
@@ -40,19 +41,14 @@ namespace Explorer.Stakeholders.Core.UseCases.TourExecution
             {
                 return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
             }
+          
+            var result = CrudRepository.Create(MapToDomain(entity));
 
             int notificationUserId = _userService.Get(entity.UserId).Value.Role == 1 ? tourIssue.UserId : tour.UserId;
+            String url = "url"; //figure out this later
+            String additionalMessage = "'" + tour.Name + "'.";
+            _notificationService.Generate(notificationUserId, NotificationType.ISSUE_COMMENT, url, DateTime.UtcNow, additionalMessage);
 
-            NotificationDto notification = new NotificationDto();
-            notification.UserId = notificationUserId;
-            notification.Content = "A new comment has been added to the tour issue for the tour named '" + tour.Name + "'.";
-            notification.ActionURL = "url"; //figure out this later
-            notification.CreationDateTime = DateTime.UtcNow;
-            notification.IsRead = false;
-
-            _notificationService.Create(notification);
-
-            var result = CrudRepository.Create(MapToDomain(entity));
             return MapToDto(result);
         }
         

@@ -27,9 +27,9 @@ namespace Explorer.API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult<NotificationDto> Update([FromBody] NotificationDto notification)
+        public ActionResult MarkAsRead(int id)
         {
-            var result = _notificationService.Update(notification);
+            var result = _notificationService.MarkAsRead(id);
             return CreateResponse(result);
         }
 

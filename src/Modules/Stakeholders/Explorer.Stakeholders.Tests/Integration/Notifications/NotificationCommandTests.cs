@@ -21,56 +21,36 @@ namespace Explorer.Stakeholders.Tests.Integration.Notifications
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
-            var updatedEntity = new NotificationDto
-            {
-                Id = -1,
-                UserId = 1,
-                Content = "New notification has been updated",
-                ActionURL = "url",
-                CreationDateTime = DateTime.UtcNow,
-                IsRead = false
-            };
 
             // Act
-            var result = ((ObjectResult)controller.Update(updatedEntity).Result)?.Value as NotificationDto;
+            var result = (OkResult)controller.MarkAsRead(-1);
 
             // Assert - Response
             result.ShouldNotBeNull();
-            result.Id.ShouldBe(-1);
-            result.IsRead.ShouldBe(updatedEntity.IsRead);
-            result.Content.ShouldBe(updatedEntity.Content);
+            result.StatusCode.ShouldBe(200);
+
 
             // Assert - Database
-            var storedEntity = dbContext.Notifications.FirstOrDefault(n => n.CreationDateTime == updatedEntity.CreationDateTime);
+            var storedEntity = dbContext.Notifications.FirstOrDefault(n => n.Id == -1);
             storedEntity.ShouldNotBeNull();
-            storedEntity.IsRead.ShouldBe(updatedEntity.IsRead);
-            storedEntity.Content.ShouldBe(updatedEntity.Content);          
+            storedEntity.IsRead.ShouldBe(true);         
         }
-
+        
         [Fact]
         public void Update_fails_invalid_id()
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            var updatedEntity = new NotificationDto
-            {
-                Id = -1000,
-                UserId = 1,
-                Content = "New notification has been updated",
-                ActionURL = "url",
-                CreationDateTime = DateTime.UtcNow,
-                IsRead = false
-            };
 
             // Act
-            var result = (ObjectResult)controller.Update(updatedEntity).Result;
+            var result = (ObjectResult)controller.MarkAsRead(-1000);
 
             // Assert
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(404);
         }
-
+        
         [Fact]
         public void Deletes()
         {
@@ -87,7 +67,7 @@ namespace Explorer.Stakeholders.Tests.Integration.Notifications
             result.StatusCode.ShouldBe(200);
 
             // Assert - Database
-            var storedCourse = dbContext.Notifications.FirstOrDefault(i => i.Id == -3);
+            var storedCourse = dbContext.Notifications.FirstOrDefault(n => n.Id == -3);
             storedCourse.ShouldBeNull();
         }
 
