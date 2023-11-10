@@ -16,6 +16,7 @@ public class ToursContext : DbContext
     public DbSet<Object> Objects { get; set; }
     public DbSet<TourEquipment> TourEquipments { get; set; }
     public DbSet<TouristPosition> TouristPositions { get; set; }
+    public DbSet<TourProgress> TourProgresses { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
@@ -26,6 +27,7 @@ public class ToursContext : DbContext
         modelBuilder.HasDefaultSchema("tours");
 
         ConfigureTour(modelBuilder);
+        ConfigureTourProgress(modelBuilder);
     }
 
     private static void ConfigureTour(ModelBuilder modelBuilder)
@@ -38,5 +40,18 @@ public class ToursContext : DbContext
         modelBuilder.Entity<TourEquipment>().HasKey(te => new { te.TourId, te.EquipmentId });
         modelBuilder.Entity<TourEquipment>().HasOne<Tour>().WithMany(t => t.TourEquipments).HasForeignKey(te => te.TourId);
         modelBuilder.Entity<TourEquipment>().HasOne<Equipment>().WithMany(e => e.TourEquipments).HasForeignKey(te => te.EquipmentId);
+    }
+
+    private static void ConfigureTourProgress(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<TourProgress>()
+            .HasOne(tp => tp.TouristPosition)
+            .WithMany()
+            .HasForeignKey(tp => tp.TouristPositionId);
+
+        modelBuilder.Entity<TourProgress>()
+            .HasOne(tp => tp.Tour)
+            .WithMany()
+            .HasForeignKey(tp => tp.TourId);
     }
 }
