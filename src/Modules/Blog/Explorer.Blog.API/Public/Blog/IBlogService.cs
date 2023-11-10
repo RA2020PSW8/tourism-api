@@ -16,5 +16,6 @@ namespace Explorer.Blog.API.Public.Blog
         public Result<PagedResult<BlogDto>> GetPaged(int page, int pageSize);
         public Result<BlogDto> Update(BlogDto blog);
         public Result Delete(int id);
+        public void UpdateStatuses();
     }
 }
