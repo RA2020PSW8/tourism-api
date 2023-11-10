@@ -14,7 +14,7 @@ public class StakeholdersContext : DbContext
     public DbSet<Club> Clubs { get; set; }
     public DbSet<Notification> Notifications { get; set; }
 
-    public StakeholdersContext(DbContextOptions<StakeholdersContext> options) : base(options) {}
+    public StakeholdersContext(DbContextOptions<StakeholdersContext> options) : base(options)  { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,8 +32,13 @@ public class StakeholdersContext : DbContext
             .WithOne()
             .HasForeignKey<Person>(s => s.UserId);
 
+        modelBuilder.Entity<Person>()
+            .HasMany(u => u.Followers)
+            .WithMany(u => u.Following);
+
         modelBuilder.Entity<TourIssueComment>().HasOne<TourIssue>().WithMany(t => t.Comments).HasForeignKey(te => te.TourIssueId);
         modelBuilder.Entity<TourIssueComment>().HasOne<User>().WithMany(u => u.IssueComments).HasForeignKey(t => t.UserId);
         modelBuilder.Entity<TourIssue>().HasOne<User>().WithMany(u => u.Issues).HasForeignKey(t => t.UserId);
+
     }
 }

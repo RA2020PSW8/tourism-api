@@ -1,4 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
+using Explorer.BuildingBlocks.Core.UseCases;
+using FluentResults;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Mail;
 
 namespace Explorer.Stakeholders.Core.Domain;
@@ -13,6 +16,12 @@ public class Person : Entity
     public string Biography { get; init; }
     public string Quote { get; init; }
 
+    [InverseProperty(nameof(Person.Following))]
+    public List<Person> Followers { get; } = new();
+
+    [InverseProperty(nameof(Person.Followers))]
+    public List<Person> Following { get; } = new();
+
     public Person(long userId, string name, string surname, string email, string profileImage, string biography, string quote)
     {
         UserId = userId;
@@ -22,6 +31,8 @@ public class Person : Entity
         ProfileImage = profileImage;
         Biography = biography;
         Quote = quote;
+        Followers = new List<Person>();
+        Following = new List<Person>();
         Validate();
     }
 
@@ -34,6 +45,26 @@ public class Person : Entity
         if (string.IsNullOrWhiteSpace(ProfileImage)) throw new ArgumentException("Invalid ProfileImage");
         if (string.IsNullOrWhiteSpace(Biography)) throw new ArgumentException("Invalid Biography");
         if (string.IsNullOrWhiteSpace(Quote)) throw new ArgumentException("Invalid Quote");
+    }
+    public bool IsPersonAlreadyFollowed(long personId)
+    {
+        return Following.Any(f => f.Id == personId);
+    }
+    public void AddFollowing(Person followed)
+    {
+        if (IsPersonAlreadyFollowed(followed.Id)) throw new ArgumentException("You already follow this person.");
+
+        if (Id == followed.Id) throw new ArgumentException("You can't follow yourself");
+
+        Following.Add(followed);
+    }
+    public void RemoveFollowing(Person followed)
+    {
+        if (!IsPersonAlreadyFollowed(followed.Id)) throw new ArgumentException("You don't follow this person.");
+
+        if (Id == followed.Id) throw new ArgumentException("You can't unfollow yourself");
+
+        Following.Remove(followed);
     }
 
 

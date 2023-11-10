@@ -34,5 +34,10 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring
             var result = _tourRepository.GetPublishedPaged(page, pageSize);
             return MapToDto(result);
         }
+        public TourDto GetById(int id)
+        {
+            var tour = _tourRepository.Get(id);
+            return MapToDto(tour);
+        }
     }
 }
