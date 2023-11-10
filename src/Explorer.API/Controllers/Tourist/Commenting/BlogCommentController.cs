@@ -21,16 +21,16 @@ namespace Explorer.API.Controllers.Tourist.Commenting
         }
 
         [HttpGet]
-        public ActionResult<PagedResult<BlogCommentDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        public ActionResult<PagedResult<BlogCommentDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize,[FromQuery] long blogId)
         {
-            var result = _blogCommentService.GetPaged(page, pageSize);
+            var result = _blogCommentService.GetPaged(page, pageSize,blogId);
             return CreateResponse(result);
         }
 
         [HttpGet("{id:int}")]
         public ActionResult<BlogCommentDto> Get(int id)
         {
-            var result = _blogCommentService.Get(id);
+            var result = _blogCommentService.Get(id, User.PersonId());
             return CreateResponse(result);
         }
 
@@ -45,6 +45,7 @@ namespace Explorer.API.Controllers.Tourist.Commenting
         [HttpPut("{id:int}")]
         public ActionResult<BlogCommentDto> Update([FromBody] BlogCommentDto comment)
         {
+            comment.UserId = User.PersonId();
             var result = _blogCommentService.Update(comment);
             return CreateResponse(result);
         }

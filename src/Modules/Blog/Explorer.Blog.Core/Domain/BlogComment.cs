@@ -11,7 +11,7 @@ namespace Explorer.Blog.Core.Domain
     public class BlogComment : Entity
     {
         public int BlogId { get; private set; }
-        public int? UserId { get; private set; }  
+        public long UserId { get; private set; }  
         public string Comment { get; private set; }
         public DateTime PostTime { get; private set; }  
         public DateTime LastEditTime { get; private set; }
@@ -22,7 +22,7 @@ namespace Explorer.Blog.Core.Domain
 
         }
 
-        public BlogComment(int blogId, int? userId, string comment,DateTime postTime,DateTime lastEditTime,bool isDeleted)
+        public BlogComment(int blogId, long userId, string comment,DateTime postTime,DateTime lastEditTime,bool isDeleted)
         {
             BlogId = blogId;
             UserId = userId;
