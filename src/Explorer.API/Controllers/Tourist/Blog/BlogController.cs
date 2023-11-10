@@ -1,6 +1,7 @@
 ﻿using Explorer.Blog.API.Dtos;
 using Explorer.Blog.API.Public.Blog;
 using Explorer.BuildingBlocks.Core.UseCases;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,13 @@ namespace Explorer.API.Controllers.Tourist.Blog
         {
             var result = _blogService.GetPaged(page, pageSize);
             return CreateResponse(result);
+        }
+
+        [HttpGet("/status")]
+        public ActionResult<PagedResult<BlogDto>> GetWithStatuses([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var result = _blogService.GetWithStatuses(page, pageSize);
+            return CreateResponse(result.ToResult());
         }
 
         [HttpGet("{id:int}")]
