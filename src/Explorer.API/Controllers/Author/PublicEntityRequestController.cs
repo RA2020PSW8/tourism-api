@@ -48,21 +48,6 @@ namespace Explorer.API.Controllers.Author
             return  CreateResponse(result);
         }
 
-        /*[HttpGet("/entity/{entityId:int}")]
-        public ActionResult<PublicEntityRequestDto> GetByEntityId([FromRoute]int entityId, [FromQuery]int entityType)
-        {
-            var result = _publicEntityRequestService.GetByEntityId(entityId, (EntityType)entityType);
-            return CreateResponse(result);
-        }*/
-
-
-        /* [HttpGet("/entity")]
-        public ActionResult<PublicEntityRequestDto> GetByEntityId([FromQuery] int entityId, [FromQuery] int entityType)
-        {
-            var result = _publicEntityRequestService.GetByEntityId(entityId, (EntityType)entityType);
-            return CreateResponse(result);
-        }  radi, ali da probam ovo */
-
         [HttpGet("entity/{entityId}/{entityType}")]
         public ActionResult<PublicEntityRequestDto> GetByEntityId( [FromRoute]int entityId, [FromRoute]int entityType)
         {

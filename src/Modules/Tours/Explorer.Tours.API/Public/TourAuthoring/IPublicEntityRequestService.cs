@@ -12,12 +12,12 @@ namespace Explorer.Tours.API.Public.TourAuthoring
 {
     public interface IPublicEntityRequestService
     {
-        public Result<PagedResult<PublicEntityRequestDto>> GetPaged(int page, int pageSize);
-        public Result<PublicEntityRequestDto> Get(int id);
-        public Result<PublicEntityRequestDto> Create(PublicEntityRequestDto publicEntityRequestDto);
-        public Result Delete(int id);
-        public Result<PublicEntityRequestDto> Approve(PublicEntityRequestDto publicEntityRequestDto);
-        public Result<PublicEntityRequestDto> Decline(PublicEntityRequestDto publicEntityRequestDto);
+         Result<PagedResult<PublicEntityRequestDto>> GetPaged(int page, int pageSize);
+         Result<PublicEntityRequestDto> Get(int id);
+         Result<PublicEntityRequestDto> Create(PublicEntityRequestDto publicEntityRequestDto);
+         Result Delete(int id);
+         Result<PublicEntityRequestDto> Approve(PublicEntityRequestDto publicEntityRequestDto);
+         Result<PublicEntityRequestDto> Decline(PublicEntityRequestDto publicEntityRequestDto);
         Result<PublicEntityRequestDto> GetByEntityId(int entityId, EntityType entityType);
 
     }

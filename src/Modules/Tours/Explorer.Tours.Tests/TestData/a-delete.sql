@@ -8,3 +8,4 @@ DELETE FROM tours."TouristEquipment";
 DELETE FROM tours."Tours";
 DELETE FROM tours."PublicEntityRequests";
 DELETE FROM tours."TouristPositions";
+DELETE FROM tours."PublicKeyPoints";

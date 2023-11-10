@@ -60,7 +60,6 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring
                             Latitude = keypoint.Latitude,
                             Longitude = keypoint.Longitude,
                             Description = keypoint.Description,
-                            Position = keypoint.Position,
                             Image = keypoint.Image
                         };
 
