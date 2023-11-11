@@ -20,12 +20,14 @@ namespace Explorer.API.Controllers
         {
             _chatService = chatService;
         }
+        
         [HttpGet("{participantId:long}")]
         public ActionResult<PagedResult<ChatMessageDto>> GetConversation(long participantId)
         {
             var result = _chatService.GetConversation(ClaimsPrincipalExtensions.PersonId(User), participantId);
             return CreateResponse(result);
         }
+        
         [HttpPut("")]
         public ActionResult<ChatMessageDto> MarkAsRead([FromBody] long messageId)
         {
@@ -43,6 +45,7 @@ namespace Explorer.API.Controllers
                 return CreateResponse(Result.Fail(FailureCode.InvalidArgument).WithError(e.Message));
             }
         }
+        
         [HttpPost]
         public ActionResult<ChatMessageDto> Create([FromBody] MessageDto message)
         {
@@ -59,6 +62,13 @@ namespace Explorer.API.Controllers
             {
                 return CreateResponse(Result.Fail(FailureCode.InvalidArgument).WithError(e.Message));
             }
+        }
+
+        [HttpGet("preview")]
+        public ActionResult<List<ChatMessageDto>> GetPreviewMessages()
+        {
+            var result = _chatService.GetPreviewMessages(ClaimsPrincipalExtensions.PersonId(User));
+            return CreateResponse(result);
         }
     }
 }

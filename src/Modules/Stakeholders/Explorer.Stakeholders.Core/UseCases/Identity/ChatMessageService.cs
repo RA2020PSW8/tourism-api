@@ -34,6 +34,12 @@ namespace Explorer.Stakeholders.Core.UseCases.Identity
             return MapToDto(result);
         }
 
+        public Result<List<ChatMessageDto>> GetPreviewMessages(long userId)
+        {
+            var results = _chatRepository.GetPreviewMessages(userId);
+            return MapToDto(results.ToList());
+        }
+
         public Result<PagedResult<ChatMessageDto>> GetConversation(long firstParticipantId, long secondpParticipantId)
         {
             var results = _chatRepository.GetConversation(firstParticipantId, secondpParticipantId);

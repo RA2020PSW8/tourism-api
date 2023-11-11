@@ -29,13 +29,14 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories
             return new PagedResult<ChatMessage>(chatMessages, chatMessages.Count);
         }
 
-        public IEnumerable<ChatMessage> GetMessagesForPreview(long userId)
+        public IEnumerable<ChatMessage> GetPreviewMessages(long userId)
         {
             var chatMessages = _dbSet
                 .AsNoTracking()
-                .DistinctBy(c => new { c.SenderId, c.ReceiverId })
                 .Where(c => c.SenderId == userId || c.ReceiverId == userId)
-                .OrderBy(c => new { c.SenderId, c.ReceiverId, c.CreationDateTime });
+                .OrderBy(c => c.SenderId).ThenBy(c => c.ReceiverId).ThenByDescending(c => c.CreationDateTime)
+                .Include("Sender")
+                .Include("Receiver").ToList();
 
             return RemovePreviewDuplicates(chatMessages);
         }
@@ -43,20 +44,43 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories
         private IEnumerable<ChatMessage> RemovePreviewDuplicates(IEnumerable<ChatMessage> messages)
         {
             List<ChatMessage> reducedMessages = new List<ChatMessage>();
-            foreach (var chatm in messages)
+            List<ChatMessage> distinctMessages = messages.DistinctBy(c => new {c.SenderId, c.ReceiverId}).ToList();
+            foreach (var chatm in distinctMessages)
             {
-                if (reducedMessages.FirstOrDefault(m => m.SenderId == chatm.ReceiverId || m.ReceiverId == chatm.SenderId) != null)
+                if(IsReverseMessageOrIdentical(reducedMessages, chatm))
                     continue;
-                
-                reducedMessages.Add(
-                    messages
-                        .Where(m => m.SenderId == chatm.ReceiverId || m.ReceiverId == chatm.SenderId)
-                        .OrderBy(m => m.CreationDateTime)
-                        .FirstOrDefault()
-                    );
+
+                var newerMessage = GetNewerMessage(distinctMessages, chatm);
+                reducedMessages.Add(newerMessage);
             }
 
             return reducedMessages;
+        }
+
+        private bool IsReverseMessageOrIdentical(List<ChatMessage> reducedMessages, ChatMessage chatm)
+        {
+            if (reducedMessages.Count > 0)
+            {
+                if (reducedMessages.FirstOrDefault(m => (m.SenderId == chatm.ReceiverId && m.ReceiverId == chatm.SenderId) || m.Id == chatm.Id) != null)
+                    return true;
+            }
+            return false;
+        }
+
+        private ChatMessage GetNewerMessage(List<ChatMessage> distinctMessages, ChatMessage chatm)
+        {
+            var potentialReverseMessage = distinctMessages
+                .Where(m => m.SenderId == chatm.ReceiverId && m.ReceiverId == chatm.SenderId)
+                .OrderByDescending(m => m.CreationDateTime)
+                .FirstOrDefault();
+            if (potentialReverseMessage != null)
+            {
+                if (DateTime.Compare(potentialReverseMessage.CreationDateTime, chatm.CreationDateTime) > 0)
+                {
+                    return potentialReverseMessage;
+                }
+            }
+            return chatm;
         }
     }
 }

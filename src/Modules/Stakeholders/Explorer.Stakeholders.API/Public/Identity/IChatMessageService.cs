@@ -14,5 +14,6 @@ namespace Explorer.Stakeholders.API.Public.Identity
         Result<PagedResult<ChatMessageDto>> GetConversation(long firstParticipantId, long secondParticipant2Id);
         Result<ChatMessageDto> MarkAsRead(long recieverId, long messageId);
         Result<ChatMessageDto> Create(long senderId, MessageDto message);
+        Result<List<ChatMessageDto>> GetPreviewMessages(long userId);
     }
 }

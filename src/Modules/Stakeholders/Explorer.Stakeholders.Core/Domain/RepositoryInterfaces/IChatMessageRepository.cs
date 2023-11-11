@@ -10,6 +10,6 @@ namespace Explorer.Stakeholders.Core.Domain.RepositoryInterfaces
     public interface IChatMessageRepository: ICrudRepository<ChatMessage>
     {
         PagedResult<ChatMessage> GetConversation(long firstParticipantId, long secondParticipantId);
-        IEnumerable<ChatMessage> GetMessagesForPreview(long userId);
+        IEnumerable<ChatMessage> GetPreviewMessages(long userId);
     }
 }
