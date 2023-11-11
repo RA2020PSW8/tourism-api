@@ -10,7 +10,7 @@ namespace Explorer.Tours.Core.Domain
 {
     public class TourPreference : Entity
     {
-        public long UserId { get; init; } // we are actually using PersonId, needs checking
+        public long UserId { get; init; }
         public TourDifficulty? Difficulty { get; init; }
         public TransportType? TransportType { get; init; }
         public List<string> Tags { get; init; }
@@ -26,13 +26,6 @@ namespace Explorer.Tours.Core.Domain
             Difficulty = difficulty;
             TransportType = transportType;
             Tags = tags;
-
-            Validate();
-        }
-
-        private void Validate()
-        {
-            if (UserId <= 0) throw new ArgumentException("Invalid UserId");
         }
     }
 }

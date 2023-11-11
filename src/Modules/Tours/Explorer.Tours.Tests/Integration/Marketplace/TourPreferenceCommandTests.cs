@@ -22,10 +22,9 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
         public void Creates()
         {
             // Arrange
-            int userId = 2;
+            int userId = -2;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var newEntity = new TourPreferenceDto
             {
@@ -51,10 +50,9 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
         public void Create_fails_preference_exists()
         {
             // Arrange
-            int userId = 3;
+            int userId = -3;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
+            var controller = CreateController(scope, userId);
             var updatedEntity = new TourPreferenceDto
             {
                 Difficulty = API.Dtos.Enums.TourDifficulty.EASY
@@ -72,10 +70,9 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
         public void Updates()
         {
             // Arrange
-            int userId = 3;
+            int userId = -3;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var updatedEntity = new TourPreferenceDto
             {
@@ -107,10 +104,9 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
         public void Update_fails_preference_missing()
         {
             // Arrange
-            int userId = 4;
+            int userId = -4;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var updatedEntity = new TourPreferenceDto
             {
@@ -131,11 +127,10 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
         public void Deletes()
         {
             // Arrange
-            int userId = 1;
+            int userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-            controller.ControllerContext = BuildContext(userId.ToString());
 
             // Act
             var result = (OkResult)controller.Delete();
@@ -149,25 +144,11 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             storedCourse.ShouldBeNull();
         }
 
-        private static TourPreferenceController CreateController(IServiceScope scope)
+        private static TourPreferenceController CreateController(IServiceScope scope, int userId)
         {
             return new TourPreferenceController(scope.ServiceProvider.GetRequiredService<ITourPreferenceService>())
             {
-                ControllerContext = BuildContext("-1")
-            };
-        }
-
-        new private static ControllerContext BuildContext(string id)
-        {
-            return new ControllerContext()
-            {
-                HttpContext = new DefaultHttpContext()
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new[]
-                    {
-                    new Claim("personId", id)
-                }))
-                }
+                ControllerContext = BuildContext(userId.ToString())
             };
         }
     }

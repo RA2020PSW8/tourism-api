@@ -25,10 +25,9 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
         public void Retrieves()
         {
             // Arrange
-            int userId = 3;
+            int userId = -3;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
+            var controller = CreateController(scope, userId);
 
             // Act
             var result = ((ObjectResult)controller.GetByUser().Result)?.Value as TourPreferenceDto;
@@ -38,17 +37,15 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             result.UserId.ShouldBe(userId);
             result.Difficulty.ShouldBe(API.Dtos.Enums.TourDifficulty.MEDIUM);
             result.TransportType.ShouldBe(API.Dtos.Enums.TransportType.BIKE);
-            // result.Tags.ShouldBe(); // ????
         }
 
         [Fact]
         public void Retrieves_fails()
         {
             // Arrange
-            int userId = 10;
+            int userId = -10;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
+            var controller = CreateController(scope, userId);
 
             // Act
             var result = (ObjectResult)controller.GetByUser().Result;
@@ -58,25 +55,11 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             result.StatusCode.ShouldBe(404);
         }
 
-        private static TourPreferenceController CreateController(IServiceScope scope)
+        private static TourPreferenceController CreateController(IServiceScope scope, int userId)
         {
             return new TourPreferenceController(scope.ServiceProvider.GetRequiredService<ITourPreferenceService>())
             {
-                ControllerContext = BuildContext("-1")
-            };
-        }
-
-        new private static ControllerContext BuildContext(string id)
-        {
-            return new ControllerContext()
-            {
-                HttpContext = new DefaultHttpContext()
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new[]
-                    {
-                    new Claim("personId", id)
-                }))
-                }
+                ControllerContext = BuildContext(userId.ToString())
             };
         }
     }
