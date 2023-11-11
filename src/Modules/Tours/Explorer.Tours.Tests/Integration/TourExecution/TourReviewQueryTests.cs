@@ -33,6 +33,21 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
             result.TotalCount.ShouldBe(3);
         }
 
+        public void Retrieves_by_tourId()
+        {
+            //Arrange
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope);
+
+            //Act
+            var result = ((ObjectResult)controller.GetByTourId(-1, 0, 0).Result)?.Value as PagedResult<TourReviewDto>;
+
+            //Assert
+            result.ShouldNotBeNull();
+            result.Results.Count.ShouldBe(3);
+            result.TotalCount.ShouldBe(3);
+        }
+
         private static Explorer.API.Controllers.Tourist.TourExecution.TourReviewController CreateController(IServiceScope scope)
         {
             return new Explorer.API.Controllers.Tourist.TourExecution.TourReviewController(scope.ServiceProvider.GetRequiredService<ITourReviewService>())

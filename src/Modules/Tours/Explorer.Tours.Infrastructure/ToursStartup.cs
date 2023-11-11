@@ -66,6 +66,7 @@ public static class ToursStartup
         services.AddScoped(typeof(ITourProgressRepository), typeof(TourProgressRepository));
         services.AddScoped(typeof(IOrderItemRepository), typeof(OrderItemRepository));
         services.AddScoped(typeof(IShoppingCartRepository), typeof(ShoppingCartRepository));
+        services.AddScoped(typeof(ITourReviewRepository), typeof(TourReviewRepository));
 
         services.AddDbContext<ToursContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
