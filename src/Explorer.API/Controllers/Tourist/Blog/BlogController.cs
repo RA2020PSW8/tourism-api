@@ -27,7 +27,7 @@ namespace Explorer.API.Controllers.Tourist.Blog
             return CreateResponse(result);
         }
 
-        [HttpGet("/status")]
+        [HttpGet("status")]
         public ActionResult<PagedResult<BlogDto>> GetWithStatuses([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _blogService.GetWithStatuses(page, pageSize);
