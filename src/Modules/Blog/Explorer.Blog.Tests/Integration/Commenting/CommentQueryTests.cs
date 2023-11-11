@@ -26,7 +26,7 @@ namespace Explorer.Blog.Tests.Integration.Commenting
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
 
-            var result = ((ObjectResult)controller.GetAll(0, 0).Result)?.Value as PagedResult<BlogCommentDto>;
+            var result = ((ObjectResult)controller.GetAll(0, 0,1).Result)?.Value as PagedResult<BlogCommentDto>;
 
             result.ShouldNotBeNull();
             result.Results.Count.ShouldBe(3);
