@@ -1,5 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
-using Explorer.Tours.Core.Domain.Enums;
+using Explorer.Tours.Core.Domain.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;

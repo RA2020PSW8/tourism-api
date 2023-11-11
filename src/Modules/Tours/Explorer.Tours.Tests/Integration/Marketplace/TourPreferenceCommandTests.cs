@@ -3,7 +3,7 @@ using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.MarketPlace;
-using Explorer.Tours.Core.Domain.Enums;
+using Explorer.Tours.Core.Domain.Enum;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,8 +28,8 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var newEntity = new TourPreferenceDto
             {
-                Difficulty = API.Dtos.Enums.TourDifficulty.EASY,
-                TransportType = API.Dtos.Enums.TransportType.WALK,
+                Difficulty = "EASY",
+                TransportType = "WALK",
                 Tags = new List<string> { "River Side" }
             };
 
@@ -55,7 +55,7 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             var controller = CreateController(scope, userId);
             var updatedEntity = new TourPreferenceDto
             {
-                Difficulty = API.Dtos.Enums.TourDifficulty.EASY
+                Difficulty = "EASY"
             };
 
             // Act
@@ -76,8 +76,8 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var updatedEntity = new TourPreferenceDto
             {
-                Difficulty = API.Dtos.Enums.TourDifficulty.EASY,
-                TransportType = API.Dtos.Enums.TransportType.WALK,
+                Difficulty = "EASY",
+                TransportType = "WALK",
                 Tags = new List<string> { "River Side" }
             };
 
@@ -95,8 +95,10 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             var storedEntity = dbContext.TourPreference.FirstOrDefault(tp => tp.UserId == userId);
             storedEntity.ShouldNotBeNull();
             storedEntity.Id.ShouldBe(result.Id);
-            storedEntity.Difficulty.ShouldBe((TourDifficulty)updatedEntity.Difficulty);
-            storedEntity.TransportType.ShouldBe((TransportType)updatedEntity.TransportType);
+            Enum.TryParse(updatedEntity.Difficulty, out TourDifficulty tourDifficulty);
+            storedEntity.Difficulty.ShouldBe(tourDifficulty);
+            Enum.TryParse(updatedEntity.TransportType, out TransportType transportType);
+            storedEntity.TransportType.ShouldBe(transportType);
             storedEntity.Tags.ShouldBe(updatedEntity.Tags);
         }
 
@@ -110,8 +112,8 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var updatedEntity = new TourPreferenceDto
             {
-                Difficulty = API.Dtos.Enums.TourDifficulty.EASY,
-                TransportType = API.Dtos.Enums.TransportType.WALK,
+                Difficulty = "EASY",
+                TransportType = "WALK",
                 Tags = new List<string> { "River Side" }
             };
 

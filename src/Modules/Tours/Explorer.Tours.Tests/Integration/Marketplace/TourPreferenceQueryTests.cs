@@ -6,7 +6,7 @@ using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.MarketPlace;
-using Explorer.Tours.Core.Domain.Enums;
+using Explorer.Tours.Core.Domain.Enum;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,8 +35,8 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             // Assert
             result.ShouldNotBeNull();
             result.UserId.ShouldBe(userId);
-            result.Difficulty.ShouldBe(API.Dtos.Enums.TourDifficulty.MEDIUM);
-            result.TransportType.ShouldBe(API.Dtos.Enums.TransportType.BIKE);
+            result.Difficulty.ShouldBe("MEDIUM");
+            result.TransportType.ShouldBe("BIKE");
         }
 
         [Fact]
