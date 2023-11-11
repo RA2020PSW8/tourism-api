@@ -8,6 +8,7 @@ using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using FluentResults;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,11 +32,50 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring
             _mapper = mapper;
         }
 
+        public Result<PublicEntityRequestDto> CreateKeypointRequest(PublicEntityRequestDto publicEntityRequestDto)
+        {
+            try
+            {
+                var request = new PublicEntityRequestDto
+                {
+                    UserId = publicEntityRequestDto.UserId,
+                    EntityId = publicEntityRequestDto.EntityId,
+                    EntityType = EntityType.KEYPOINT,
+                    Comment = publicEntityRequestDto.Comment,
+                    Status = PublicEntityRequestStatus.PENDING
+                };
+                var result = CrudRepository.Create(MapToDomain(request));
+                return MapToDto(result);
+            }
+            catch(ArgumentException ex)
+            {
+                return Result.Fail(FailureCode.InvalidArgument).WithError(ex.Message);
+            }
+        }
+
+        public Result<PublicEntityRequestDto> CreateObjectRequest(PublicEntityRequestDto publicEntityRequestDto)
+        {
+            try
+            {
+                var request = new PublicEntityRequestDto
+                {
+                    UserId = publicEntityRequestDto.UserId,
+                    EntityId = publicEntityRequestDto.EntityId,
+                    EntityType = EntityType.OBJECT,
+                    Comment = publicEntityRequestDto.Comment,
+                    Status = PublicEntityRequestStatus.PENDING
+                };
+                var result = CrudRepository.Create(MapToDomain(request));
+                return MapToDto(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return Result.Fail(FailureCode.InvalidArgument).WithError(ex.Message);
+            }
+        }
+
         public Result<PublicEntityRequestDto> Approve(PublicEntityRequestDto publicEntityRequestDto)
         {
-            // var request = _publicEntityRequestRepository.Get(id);
-            //var requestDto = _mapper.Map<PublicEntityRequestDto>(request);
-
             if (publicEntityRequestDto == null)
             {
                 return Result.Fail("Request not found.");
@@ -65,14 +105,23 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring
 
                         _publicKeypointRepository.Create(publicKeypoint);
                     }
+                    else
+                    {
+                        return Result.Fail(FailureCode.NotFound).WithError("Keypoint is null.");
+                    }
                 }
                 else if (publicEntityRequestDto.EntityType is EntityType.OBJECT)
                 {
                     var tourObject = _objectRepository.Get(publicEntityRequestDto.EntityId);
+
                     if (tourObject != null)
                     {
                         tourObject.Status = Domain.Enum.ObjectStatus.PUBLIC;
                         _objectRepository.Update(tourObject);
+                    }
+                    else
+                    {
+                        return Result.Fail(FailureCode.NotFound).WithError("Object is null.");
                     }
                 }
 

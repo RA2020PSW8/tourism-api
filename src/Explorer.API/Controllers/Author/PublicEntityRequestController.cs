@@ -33,11 +33,19 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
-        [HttpPost]
-        public ActionResult<PublicEntityRequestDto> Create([FromBody] PublicEntityRequestDto publicEntityRequestDto)
+        [HttpPost("createKeypointRequest")]
+        public ActionResult<PublicEntityRequestDto> CreateKeypointRequest([FromBody] PublicEntityRequestDto publicEntityRequestDto)
         {
             publicEntityRequestDto.UserId = ClaimsPrincipalExtensions.PersonId(User);
-            var result = _publicEntityRequestService.Create(publicEntityRequestDto);
+            var result = _publicEntityRequestService.CreateKeypointRequest(publicEntityRequestDto);
+            return CreateResponse(result);
+        }
+
+        [HttpPost("createObjectRequest")]
+        public ActionResult<PublicEntityRequestDto> CreateObjectRequest([FromBody] PublicEntityRequestDto publicEntityRequestDto)
+        {
+            publicEntityRequestDto.UserId = ClaimsPrincipalExtensions.PersonId(User);
+            var result = _publicEntityRequestService.CreateObjectRequest(publicEntityRequestDto);
             return CreateResponse(result);
         }
 
