@@ -18,7 +18,8 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
     {
         ICrudRepository<TourReview> _crudRepository;
         ITourProgressRepository _tourProgressRepository;
-        public TourReviewService(ICrudRepository<TourReview> crudRepository, ITourProgressRepository tourProgressRepository, IMapper mapper) : base(crudRepository, mapper)
+        protected readonly ITourReviewRepository _tourReviewRepository;
+        public TourReviewService(ICrudRepository<TourReview> crudRepository, ITourProgressRepository tourProgressRepository, ITourReviewRepository tourReviewRepository, IMapper mapper) : base(crudRepository, mapper)
         {
             _crudRepository = crudRepository;
             _tourProgressRepository = tourProgressRepository;
@@ -30,7 +31,7 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
             {
                 TourProgress? progress = _tourProgressRepository.GetByUser((long)review.UserId);
                 TimeSpan timeSpan = DateTime.UtcNow - progress.LastActivity;
-                if (progress!=null && ((double)progress.CurrentKeyPoint / (double)progress.Tour.Keypoints.Count) > 0.35 && timeSpan.Days < 7)
+                if (progress != null && ((double)progress.CurrentKeyPoint / (double)progress.Tour.Keypoints.Count) > 0.35 && timeSpan.Days < 7)
                 {
                     var result = CrudRepository.Create(MapToDomain(review));
                     return MapToDto(result);
@@ -41,6 +42,13 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
             {
                 return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
             }
+
+        }
+
+        public Result<PagedResult<TourReviewDto>> GetByTourId(long tourId, int page, int pageSize)
+        {
+            var result = _tourReviewRepository.GetByTourId(tourId, page, pageSize);
+            return MapToDto(result);
         }
     }
 }

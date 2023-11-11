@@ -54,5 +54,12 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
             var result = _tourReviewService.Delete(id);
             return CreateResponse(result);
         }
+
+        [HttpGet("tour/{tourId:long}")]
+        public ActionResult<PagedResult<TourReviewDto>> GetByTourId(long tourId, [FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var result = _tourReviewService.GetByTourId(tourId, page, pageSize);
+            return CreateResponse(result);
+        }
     }
 }

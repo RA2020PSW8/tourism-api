@@ -3,7 +3,7 @@ using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.MarketPlace;
-using Explorer.Tours.Core.Domain.Enums;
+using Explorer.Tours.Core.Domain.Enum;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,15 +22,14 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
         public void Creates()
         {
             // Arrange
-            int userId = 2;
+            int userId = -2;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var newEntity = new TourPreferenceDto
             {
-                Difficulty = API.Dtos.Enums.TourDifficulty.EASY,
-                TransportType = API.Dtos.Enums.TransportType.WALK,
+                Difficulty = "EASY",
+                TransportType = "WALK",
                 Tags = new List<string> { "River Side" }
             };
 
@@ -51,17 +50,16 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
         public void Create_fails_preference_exists()
         {
             // Arrange
-            int userId = 3;
+            int userId = -3;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
-            var updatedEntity = new TourPreferenceDto
+            var controller = CreateController(scope, userId);
+            var newEntity = new TourPreferenceDto
             {
-                Difficulty = API.Dtos.Enums.TourDifficulty.EASY
+                Difficulty = "EASY"
             };
 
             // Act
-            var result = (ObjectResult)controller.Create(updatedEntity).Result;
+            var result = (ObjectResult)controller.Create(newEntity).Result;
 
             // Assert
             result.ShouldNotBeNull();
@@ -72,15 +70,14 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
         public void Updates()
         {
             // Arrange
-            int userId = 3;
+            int userId = -3;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var updatedEntity = new TourPreferenceDto
             {
-                Difficulty = API.Dtos.Enums.TourDifficulty.EASY,
-                TransportType = API.Dtos.Enums.TransportType.WALK,
+                Difficulty = "EASY",
+                TransportType = "WALK",
                 Tags = new List<string> { "River Side" }
             };
 
@@ -98,8 +95,10 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             var storedEntity = dbContext.TourPreference.FirstOrDefault(tp => tp.UserId == userId);
             storedEntity.ShouldNotBeNull();
             storedEntity.Id.ShouldBe(result.Id);
-            storedEntity.Difficulty.ShouldBe((TourDifficulty)updatedEntity.Difficulty);
-            storedEntity.TransportType.ShouldBe((TransportType)updatedEntity.TransportType);
+            Enum.TryParse(updatedEntity.Difficulty, out TourDifficulty tourDifficulty);
+            storedEntity.Difficulty.ShouldBe(tourDifficulty);
+            Enum.TryParse(updatedEntity.TransportType, out TransportType transportType);
+            storedEntity.TransportType.ShouldBe(transportType);
             storedEntity.Tags.ShouldBe(updatedEntity.Tags);
         }
 
@@ -107,15 +106,14 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
         public void Update_fails_preference_missing()
         {
             // Arrange
-            int userId = 4;
+            int userId = -4;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
-            controller.ControllerContext = BuildContext(userId.ToString());
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var updatedEntity = new TourPreferenceDto
             {
-                Difficulty = API.Dtos.Enums.TourDifficulty.EASY,
-                TransportType = API.Dtos.Enums.TransportType.WALK,
+                Difficulty = "EASY",
+                TransportType = "WALK",
                 Tags = new List<string> { "River Side" }
             };
 
@@ -131,11 +129,10 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
         public void Deletes()
         {
             // Arrange
-            int userId = 1;
+            int userId = -1;
             using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope);
+            var controller = CreateController(scope, userId);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-            controller.ControllerContext = BuildContext(userId.ToString());
 
             // Act
             var result = (OkResult)controller.Delete();
@@ -149,25 +146,11 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             storedCourse.ShouldBeNull();
         }
 
-        private static TourPreferenceController CreateController(IServiceScope scope)
+        private static TourPreferenceController CreateController(IServiceScope scope, int userId)
         {
             return new TourPreferenceController(scope.ServiceProvider.GetRequiredService<ITourPreferenceService>())
             {
-                ControllerContext = BuildContext("-1")
-            };
-        }
-
-        new private static ControllerContext BuildContext(string id)
-        {
-            return new ControllerContext()
-            {
-                HttpContext = new DefaultHttpContext()
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new[]
-                    {
-                    new Claim("personId", id)
-                }))
-                }
+                ControllerContext = BuildContext(userId.ToString())
             };
         }
     }

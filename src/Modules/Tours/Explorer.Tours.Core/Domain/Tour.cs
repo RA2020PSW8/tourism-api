@@ -23,6 +23,7 @@ namespace Explorer.Tours.Core.Domain
         public List<String>? Tags { get; init; }
         public ICollection<TourEquipment> TourEquipments { get; set; }
         public ICollection<Keypoint>? Keypoints { get; set; }
+        public ICollection<TourReview>? TourReviews { get; set; }
 
         public Tour()
         {
