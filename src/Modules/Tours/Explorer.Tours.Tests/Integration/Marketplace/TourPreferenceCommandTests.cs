@@ -53,13 +53,13 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             int userId = -3;
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope, userId);
-            var updatedEntity = new TourPreferenceDto
+            var newEntity = new TourPreferenceDto
             {
                 Difficulty = "EASY"
             };
 
             // Act
-            var result = (ObjectResult)controller.Create(updatedEntity).Result;
+            var result = (ObjectResult)controller.Create(newEntity).Result;
 
             // Assert
             result.ShouldNotBeNull();

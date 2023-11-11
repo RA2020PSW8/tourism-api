@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Infrastructure.Database.Repositories
 {
-    public class TourPreferenceDatabaseRepository : CrudDatabaseRepository<TourPreference, ToursContext>, ITourPreferenceRepository
+    public class TourPreferenceRepository : CrudDatabaseRepository<TourPreference, ToursContext>, ITourPreferenceRepository
     {
         private readonly DbSet<TourPreference> _dbSet;
 
-        public TourPreferenceDatabaseRepository(ToursContext dbContext) : base(dbContext)
+        public TourPreferenceRepository(ToursContext dbContext) : base(dbContext)
         {
             _dbSet = DbContext.Set<TourPreference>();
         }
