@@ -1,5 +1,4 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
-using Explorer.Stakeholders.Infrastructure.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;

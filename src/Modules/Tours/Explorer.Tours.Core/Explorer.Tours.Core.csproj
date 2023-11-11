@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Stakeholders\Explorer.Stakeholders.Infrastructure\Explorer.Stakeholders.Infrastructure.csproj" />
     <ProjectReference Include="..\Explorer.Tours.API\Explorer.Tours.API.csproj" />
   </ItemGroup>
 
