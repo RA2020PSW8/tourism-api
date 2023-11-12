@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
+using Explorer.Stakeholders.API.Public;
+using Explorer.BuildingBlocks.Core.Domain;
+using Explorer.Tours.Core.Domain;
+using Explorer.Stakeholders.API.Dtos.Enums;
 
 namespace Explorer.Stakeholders.Core.UseCases.Identity
 {
@@ -17,10 +21,16 @@ namespace Explorer.Stakeholders.Core.UseCases.Identity
     {
         protected readonly IChatMessageRepository _chatRepository;
         protected readonly IPersonRepository _personRepository;
-        public ChatMessageService(IChatMessageRepository chatRepository, IPersonRepository personRepository, IMapper mapper) : base(chatRepository, mapper)
+        protected readonly IUserService _userService;
+        private readonly INotificationService _notificationService;
+
+        public ChatMessageService(IChatMessageRepository chatRepository, IPersonRepository personRepository, IMapper mapper,
+            IUserService userService, INotificationService notificationService) : base(chatRepository, mapper)
         {
             _chatRepository = chatRepository;
             _personRepository = personRepository;
+            _userService = userService;
+            _notificationService = notificationService;
         }
 
         public Result<ChatMessageDto> Create(long senderId, MessageDto message)
@@ -30,6 +40,12 @@ namespace Explorer.Stakeholders.Core.UseCases.Identity
 
             var newMessage = new ChatMessage(senderId, message.ReceiverId, message.Content, DateTime.UtcNow, false);
             var result = _chatRepository.Create(newMessage);
+
+            String url = "/profile";
+            int receiver = Convert.ToInt32(message.ReceiverId);
+            int sender = Convert.ToInt32(senderId);
+            String additionalMessage = _userService.Get(sender).Value.Username;
+            _notificationService.Generate(receiver, NotificationType.MESSAGE, url, DateTime.UtcNow, additionalMessage);
 
             return MapToDto(result);
         }

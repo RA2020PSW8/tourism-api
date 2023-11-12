@@ -46,7 +46,7 @@ namespace Explorer.Stakeholders.Core.UseCases.TourExecution
 
             int notificationUserId = _userService.Get(entity.UserId).Value.Role == 1 ? tourIssue.UserId : tour.UserId;
             String url = "url"; //figure out this later
-            String additionalMessage = "'" + tour.Name + "'.";
+            String additionalMessage = tour.Name;
             _notificationService.Generate(notificationUserId, NotificationType.ISSUE_COMMENT, url, DateTime.UtcNow, additionalMessage);
 
             return MapToDto(result);
