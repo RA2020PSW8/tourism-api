@@ -21,12 +21,12 @@ namespace Explorer.Stakeholders.Core.Domain
 
         public TourIssueComment(string comment, DateTime creationDateTime, int tourIssueId, int userId)
         {
+            if(string.IsNullOrWhiteSpace(comment))
+                throw new ArgumentNullException("Comment must not be empty!");
             Comment = comment;
             CreationDateTime = creationDateTime;
             TourIssueId = tourIssueId;
-            //TourIssue = tourIssue;
             UserId = userId;
-            //User = user;
         }
     }
 }

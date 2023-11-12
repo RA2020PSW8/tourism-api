@@ -10,6 +10,7 @@ public class StakeholdersContext : DbContext
     public DbSet<ApplicationRating> ApplicationRatings { get; set; }
     public DbSet<ClubJoinRequest> ClubJoinRequests { get; set; }
     public DbSet<TourIssue> TourIssue { get; set; }
+    public DbSet<TourIssueComment> TourIssueComments { get; set; }
     public DbSet<ClubInvitation> ClubInvitations { get; set; }
     public DbSet<Club> Clubs { get; set; }
 
@@ -21,6 +22,7 @@ public class StakeholdersContext : DbContext
 
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
         modelBuilder.Entity<TourIssue>().HasIndex(t => t.UserId).IsUnique(false);
+        modelBuilder.Entity<TourIssueComment>().HasIndex(t => t.TourIssueId).IsUnique(false);
         ConfigureStakeholder(modelBuilder);
     }
 
