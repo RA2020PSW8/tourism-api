@@ -37,7 +37,7 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
             }
             catch (Exception ex)
             {
-                return Result.Fail(FailureCode.NotFound).WithError("");
+                return Result.Fail(FailureCode.NotFound).WithError("Shopping cart does not exist!");
             }
 
             List<TourPurchaseToken> tokens = new List<TourPurchaseToken>();
@@ -50,15 +50,15 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
                 }
                 catch (Exception ex)
                 {
-                    return Result.Fail(FailureCode.NotFound).WithError("");
+                    return Result.Fail(FailureCode.NotFound).WithError("Order item does not exist!");
                 }
 
                 if (_tourPurchaseTokenRepository.GetByTourAndTourist(orderItem.TourId, shoppingCart.UserId) != null)
                 {
-                    return Result.Fail(FailureCode.NotFound).WithError("");
+                    return Result.Fail(FailureCode.NotFound).WithError("Token already exists!");
                 }
 
-                TourPurchaseToken token = new TourPurchaseToken() { TourId = orderItem.TourId, TouristId = shoppingCart.UserId };
+                TourPurchaseToken token = new TourPurchaseToken(orderItem.TourId, shoppingCart.UserId);
                 tokens.Add(token);
 
             }
