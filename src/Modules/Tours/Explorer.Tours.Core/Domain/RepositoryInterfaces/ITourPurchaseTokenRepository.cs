@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.Domain.RepositoryInterfaces
 {
-    public interface IOrderItemRepository: ICrudRepository<OrderItem>
+    public interface ITourPurchaseTokenRepository : ICrudRepository<TourPurchaseToken>
     {
-        public PagedResult<OrderItem> GetByUser(int page, int pageSize, int userId);
+        void AddRange(List<TourPurchaseToken> tokens);
+        TourPurchaseToken GetByTourAndTourist(int tourId, int touristId);
 
-        public void RemoveRange(List<int> orderIds);
     }
 }
