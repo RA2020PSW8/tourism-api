@@ -1,7 +1,9 @@
-﻿using Explorer.Blog.Core.Domain.RepositoryInterfaces;
+﻿using Explorer.Blog.Core.Domain;
+using Explorer.Blog.Core.Domain.RepositoryInterfaces;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Stakeholders.Core.Domain;
+using FluentResults;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,12 +19,17 @@ namespace Explorer.Blog.Infrastructure.Database.Repositories
         public BlogDatabaseRepository(BlogContext dbContext) : base(dbContext)
         {
             _dbSet = dbContext.Set<Core.Domain.Blog>();
+            foreach(var blog in _dbSet)
+            {
+                dbContext.Entry(blog).Collection(b => b.BlogRatings).Load();
+            }
         }
+
         public PagedResult<Core.Domain.Blog> GetWithStatuses(int page, int pageSize)
         {
-            var task = _dbSet.Include(b => b.BlogStatuses).GetPaged(page,pageSize);
-            task.Wait();
-            return task.Result;
+           var task = _dbSet.Include(b => b.BlogStatuses).GetPaged(page,pageSize);
+           task.Wait();
+           return task.Result;
         }
     }
 }

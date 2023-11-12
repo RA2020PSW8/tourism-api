@@ -61,5 +61,12 @@ namespace Explorer.API.Controllers.Tourist.Blog
             var result = _blogService.Delete(id);
             return CreateResponse(result);
         }
+
+        [HttpPost("rate")]
+        public ActionResult<BlogDto> AddRating([FromBody] BlogRatingDto blogRatingDto)
+        {
+           var result = _blogService.AddRating(blogRatingDto);
+            return CreateResponse(result);
+        }
     }
 }

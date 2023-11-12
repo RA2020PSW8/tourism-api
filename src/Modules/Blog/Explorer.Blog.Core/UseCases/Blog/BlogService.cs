@@ -14,6 +14,7 @@ using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Blog.Core.Domain.RepositoryInterfaces;
+using Explorer.Blog.Core.Domain.Enums;
 
 namespace Explorer.Blog.Core.UseCases.Blog
 {
@@ -168,6 +169,14 @@ namespace Explorer.Blog.Core.UseCases.Blog
         public void UpdateStatuses()
         {
 
+        }
+
+        public Result<BlogDto> AddRating(BlogRatingDto blogRatingDto)
+        {
+            var blog = _repository.Get((int)blogRatingDto.BlogId);
+            var rating = new BlogRating(blogRatingDto.BlogId, blogRatingDto.UserId, blogRatingDto.CreationTime,Enum.Parse<Rating>(blogRatingDto.Rating));
+            blog.AddRating(rating);
+            return Update(MapToDto(blog));
         }
     }
 }

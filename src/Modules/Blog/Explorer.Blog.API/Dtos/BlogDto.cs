@@ -20,5 +20,6 @@ namespace Explorer.Blog.API.Dtos
         public DateOnly CreationDate { get; set; }
         public List<string>? ImageLinks { get; set; }
         public List<BlogStatusDto>? BlogStatuses { get; set; }
+        public List<BlogRatingDto>? BlogRatings { get; set; }
     }
 }

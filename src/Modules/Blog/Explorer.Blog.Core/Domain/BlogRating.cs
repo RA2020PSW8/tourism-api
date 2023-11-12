@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Explorer.Blog.Core.Domain
@@ -15,7 +16,7 @@ namespace Explorer.Blog.Core.Domain
     {
         public long BlogId { get; private set; }
         public long UserId { get; private set; }
-        public double Rating { get; private set; }
+        public Rating Rating { get; private set; }
         public DateTime CreationTime { get; private set; }
 
         public BlogRating()
@@ -23,7 +24,8 @@ namespace Explorer.Blog.Core.Domain
 
         }
 
-        public BlogRating(long blogId,long userId,double rating,DateTime creationTime)
+        [JsonConstructor]
+        public BlogRating(long blogId,long userId, DateTime creationTime, Rating rating)
         {
             BlogId = blogId;
             UserId = userId;
@@ -38,7 +40,6 @@ namespace Explorer.Blog.Core.Domain
         {
             return BlogId == rating.BlogId &&
                     UserId == rating.UserId &&
-                    Rating == rating.Rating &&
                     CreationTime == rating.CreationTime;
         }
 
