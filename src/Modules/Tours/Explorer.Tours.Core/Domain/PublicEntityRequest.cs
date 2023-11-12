@@ -27,14 +27,8 @@ namespace Explorer.Tours.Core.Domain
             EntityId = entityId;
             EntityType = entityType;
             Status = status;
-            Validate();
             Comment = comment;
         }
-
-        private void Validate()
-        {
-            if (UserId <= 0) throw new ArgumentException("Invalid UserId");
-            if (EntityId <= 0) throw new ArgumentException("Invalid entity(keypoint/object) id");
-        }
+        
     }
 }

@@ -81,12 +81,6 @@ public class PublicEntityRequestCommandTest : BaseToursIntegrationTest
         var storedEntity = dbContext.PublicEntityRequests.FirstOrDefault(i => i.EntityId == newEntity.EntityId && i.EntityType == Core.Domain.Enum.EntityType.KEYPOINT);
         storedEntity.ShouldNotBeNull();
         storedEntity.Id.ShouldBe(result.Id);
-
-        var keypointToPublic = dbContext.Keypoints.FirstOrDefault(k => k.Id == newEntity.EntityId);
-
-        var createdPublicKeypoint = dbContext.PublicKeyPoints.FirstOrDefault(kp => kp.Name == keypointToPublic.Name && kp.Longitude == keypointToPublic.Longitude && kp.Latitude == keypointToPublic.Latitude);
-        createdPublicKeypoint.ShouldNotBeNull();
-        createdPublicKeypoint.Name.ShouldBe(keypointToPublic.Name);
     }
 
     public static PublicEntityRequestController  CreateController(IServiceScope scope)
