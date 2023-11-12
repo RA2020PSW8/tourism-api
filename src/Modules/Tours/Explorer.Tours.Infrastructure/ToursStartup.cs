@@ -47,6 +47,7 @@ public static class ToursStartup
         services.AddScoped<ITourFilteringService, TourFilteringService>();
         services.AddScoped<IOrderItemService, OrderItemService>();
         services.AddScoped<IShoppingCartService, ShoppingCartService>();
+        services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -66,6 +67,7 @@ public static class ToursStartup
         services.AddScoped(typeof(ITourProgressRepository), typeof(TourProgressRepository));
         services.AddScoped(typeof(IOrderItemRepository), typeof(OrderItemRepository));
         services.AddScoped(typeof(IShoppingCartRepository), typeof(ShoppingCartRepository));
+        services.AddScoped(typeof(ITourPurchaseTokenRepository), typeof(TourPurchaseTokenRepository));
         services.AddScoped(typeof(ITourReviewRepository), typeof(TourReviewRepository));
 
         services.AddDbContext<ToursContext>(opt =>
