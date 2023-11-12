@@ -30,4 +30,13 @@ public class TourRepository : CrudDatabaseRepository<Tour, ToursContext>, ITourR
         task.Wait();
         return task.Result;
     }
+
+    public PagedResult<Tour> GetArchivedAndPublishedPaged(int page, int pageSize)
+    {
+        var task = _dbSet.Where(t => t.Status == TourStatus.PUBLISHED || t.Status == TourStatus.ARCHIVED)
+            .Include(t => t.Keypoints)
+            .GetPagedById(page, pageSize);
+        task.Wait();
+        return task.Result;
+    }
 }
