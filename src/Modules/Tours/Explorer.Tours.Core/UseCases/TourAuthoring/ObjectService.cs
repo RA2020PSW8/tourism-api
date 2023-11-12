@@ -13,11 +13,6 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring
 {
     public class ObjectService : CrudService<ObjectDto, Domain.Object>, IObjectService
     {
-        /*public ObjectService(ICrudRepository<Domain.Object> crudRepository, IMapper mapper) : base(crudRepository, mapper)
-        {
-
-        }*/
-
         protected readonly IObjectRepository _objectRepository;
         protected readonly IMapper _mapper;
 

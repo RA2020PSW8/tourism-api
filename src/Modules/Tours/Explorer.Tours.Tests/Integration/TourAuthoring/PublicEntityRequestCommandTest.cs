@@ -36,7 +36,7 @@ public class PublicEntityRequestCommandTest : BaseToursIntegrationTest
         };
 
         // Act
-        var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as PublicEntityRequestDto;
+        var result = ((ObjectResult)controller.CreateObjectRequest(newEntity).Result)?.Value as PublicEntityRequestDto;
 
         // Assert - Response
         result.ShouldNotBeNull();
@@ -68,7 +68,7 @@ public class PublicEntityRequestCommandTest : BaseToursIntegrationTest
         };
 
         // Act
-        var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as PublicEntityRequestDto;
+        var result = ((ObjectResult)controller.CreateKeypointRequest(newEntity).Result)?.Value as PublicEntityRequestDto;
 
         // Assert - Response
         result.ShouldNotBeNull();
@@ -87,30 +87,6 @@ public class PublicEntityRequestCommandTest : BaseToursIntegrationTest
         var createdPublicKeypoint = dbContext.PublicKeyPoints.FirstOrDefault(kp => kp.Name == keypointToPublic.Name && kp.Longitude == keypointToPublic.Longitude && kp.Latitude == keypointToPublic.Latitude);
         createdPublicKeypoint.ShouldNotBeNull();
         createdPublicKeypoint.Name.ShouldBe(keypointToPublic.Name);
-    }
-
-    [Fact]
-    public void Accepts_keypoint_request()
-    {
-
-    }
-
-    [Fact]
-    public void Accepts_object_request()
-    {
-
-    }
-
-    [Fact]
-    public void Declines_keypoint_request()
-    {
-
-    }
-
-    [Fact]
-    public void Declines_object_request()
-    {
-
     }
 
     public static PublicEntityRequestController  CreateController(IServiceScope scope)
