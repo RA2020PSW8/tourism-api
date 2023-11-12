@@ -25,8 +25,8 @@ namespace Explorer.Stakeholders.Core.UseCases.Identity
 
         public Result<ChatMessageDto> Create(long senderId, MessageDto message)
         {
-            var reciever = _personRepository.Get(message.ReceiverId);
-            var sender = _personRepository.Get(senderId);
+            if(!_personRepository.Exists(message.ReceiverId)) return Result.Fail(FailureCode.NotFound).WithError("Reciever doesn't exist");
+            if (!_personRepository.Exists(senderId)) return Result.Fail(FailureCode.NotFound).WithError("Sender doesn't exist");
 
             var newMessage = new ChatMessage(senderId, message.ReceiverId, message.Content, DateTime.UtcNow, false);
             var result = _chatRepository.Create(newMessage);
@@ -47,11 +47,19 @@ namespace Explorer.Stakeholders.Core.UseCases.Identity
         }
         public Result<ChatMessageDto> MarkAsRead(long recieverId, long messageId)
         {
-            var message = _chatRepository.Get(messageId);
-            message.MarkAsRead(recieverId);
-            var result = _chatRepository.Update(message);
+            try
+            {
+                var message = _chatRepository.Get(messageId);
+                message.MarkAsRead(recieverId);
+                var result = _chatRepository.Update(message);
 
-            return MapToDto(result);
+                return MapToDto(result);
+
+            }
+            catch(KeyNotFoundException e)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+            }
         }
     }
 }

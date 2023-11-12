@@ -31,37 +31,15 @@ namespace Explorer.API.Controllers
         [HttpPut("")]
         public ActionResult<ChatMessageDto> MarkAsRead([FromBody] long messageId)
         {
-            try
-            {
-                var result = _chatService.MarkAsRead(ClaimsPrincipalExtensions.PersonId(User), messageId);
-                return CreateResponse(result);
-            }
-            catch (ArgumentException e)
-            {
-                return CreateResponse(Result.Fail(FailureCode.InvalidArgument).WithError(e.Message));
-            }
-            catch (KeyNotFoundException e)
-            {
-                return CreateResponse(Result.Fail(FailureCode.InvalidArgument).WithError(e.Message));
-            }
+            var result = _chatService.MarkAsRead(ClaimsPrincipalExtensions.PersonId(User), messageId);
+            return CreateResponse(result);
         }
         
         [HttpPost]
         public ActionResult<ChatMessageDto> Create([FromBody] MessageDto message)
         {
-            try
-            {
-                var result = _chatService.Create(ClaimsPrincipalExtensions.PersonId(User), message);
-                return CreateResponse(result);
-            }
-            catch (ArgumentException e)
-            {
-                return CreateResponse(Result.Fail(FailureCode.InvalidArgument).WithError(e.Message));
-            }
-            catch (KeyNotFoundException e)
-            {
-                return CreateResponse(Result.Fail(FailureCode.InvalidArgument).WithError(e.Message));
-            }
+            var result = _chatService.Create(ClaimsPrincipalExtensions.PersonId(User), message);
+            return CreateResponse(result);
         }
 
         [HttpGet("preview")]

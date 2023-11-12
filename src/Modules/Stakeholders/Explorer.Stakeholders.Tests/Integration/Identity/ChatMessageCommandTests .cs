@@ -21,7 +21,7 @@ namespace Explorer.Stakeholders.Tests.Integration.Identity
 
         [Theory]
         [InlineData(-22, -21, "Pozdrav", 200, 2)]
-        [InlineData(-21, -25, "Pozdrav", 400, 0)]
+        [InlineData(-21, -25, "Pozdrav", 404, 0)]
         public void Create(int senderId, int receiverId, string content, int expectedResponseCode, int expectedchatMessagesCount)
         {
             using var scope = Factory.Services.CreateScope();
@@ -43,7 +43,7 @@ namespace Explorer.Stakeholders.Tests.Integration.Identity
         }
 
         [Theory]
-        [InlineData(-22, 0, 400)]
+        [InlineData(-22, 0, 404)]
         public void MarkAsRead(int recieverId, int messageId, int expectedResponseCode)
         {
             using var scope = Factory.Services.CreateScope();
