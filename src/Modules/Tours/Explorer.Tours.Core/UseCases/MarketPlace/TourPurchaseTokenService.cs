@@ -68,11 +68,7 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
                 _tourPurchaseTokenRepository.AddRange(tokens);
             }
 
-            
-            foreach (int orderId in shoppingCart.OrdersId)
-            {
-                _orderItemRepository.Delete(orderId);
-            }
+            _orderItemRepository.RemoveRange(shoppingCart.OrdersId);
             _shoppingCartRepository.Delete(shoppingCartId); 
 
             return Result.Ok();
