@@ -21,7 +21,7 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories
                 .AsNoTracking()
                 .Where(cm => (cm.SenderId == firstParticipantId && cm.ReceiverId == secondParticipantId) ||
                              (cm.SenderId == secondParticipantId && cm.ReceiverId == firstParticipantId))
-                .OrderBy(cm => cm.CreationDateTime)
+                .OrderByDescending(cm => cm.CreationDateTime)
                 .Include("Sender")
                 .Include("Receiver")
                 .ToList();
@@ -54,7 +54,7 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories
                 reducedMessages.Add(newerMessage);
             }
 
-            return reducedMessages;
+            return reducedMessages.OrderByDescending(m => m.CreationDateTime);
         }
 
         private bool IsReverseMessageOrIdentical(List<ChatMessage> reducedMessages, ChatMessage chatm)
