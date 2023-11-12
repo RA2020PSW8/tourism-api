@@ -18,8 +18,8 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
     public class TourPurchaseTokenCommandTests: BaseToursIntegrationTest
     {
         public TourPurchaseTokenCommandTests(ToursTestFactory factory) : base(factory) { }
-        [Fact]
 
+        [Fact]
         public void Creates()
         {
             // Arrange
