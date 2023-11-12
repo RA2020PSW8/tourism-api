@@ -21,7 +21,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
 
         private int GenerateId()
         {
-            return _tourIssueCommentService.GetPaged(0, 0).Value.Results.Max(ti => ti.Id) + 1;
+            return _tourIssueCommentService.GetPaged(0, 0).Value.Results.Count == 0 ? 1: _tourIssueCommentService.GetPaged(0, 0).Value.Results.Max(ti => ti.Id) + 1;
         }
 
         [HttpGet]
