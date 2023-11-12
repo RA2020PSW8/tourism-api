@@ -2,17 +2,11 @@
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.API.Public.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
 using Explorer.Stakeholders.API.Public;
-using Explorer.BuildingBlocks.Core.Domain;
-using Explorer.Tours.Core.Domain;
+
 using Explorer.Stakeholders.API.Dtos.Enums;
 
 namespace Explorer.Stakeholders.Core.UseCases.Identity
