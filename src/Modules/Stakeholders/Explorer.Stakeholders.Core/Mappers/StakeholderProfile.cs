@@ -1,8 +1,6 @@
 using AutoMapper;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.Core.Domain;
-using Explorer.Stakeholders.API.Dtos;
-using Explorer.Stakeholders.Core.Domain;
 
 namespace Explorer.Stakeholders.Core.Mappers;
 
@@ -19,5 +17,6 @@ public class StakeholderProfile : Profile
         CreateMap<TourIssueDto, TourIssue>().ReverseMap();
         CreateMap<TourIssueCommentDto, TourIssueComment>().ReverseMap();
         CreateMap<ChatMessageDto, ChatMessage>().ReverseMap();
+        CreateMap<NotificationDto,  Notification>().ReverseMap();
     }
 }
