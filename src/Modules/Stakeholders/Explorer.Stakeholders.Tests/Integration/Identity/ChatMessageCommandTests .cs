@@ -41,20 +41,6 @@ namespace Explorer.Stakeholders.Tests.Integration.Identity
             var recieverMessages = dbContext.ChatMessages.Where(i => i.ReceiverId == receiverId).ToList();
             recieverMessages.Count.ShouldBe(expectedchatMessagesCount);
         }
-
-        [Theory]
-        [InlineData(-22, 0, 404)]
-        public void MarkAsRead(int recieverId, int messageId, int expectedResponseCode)
-        {
-            using var scope = Factory.Services.CreateScope();
-            var controller = CreateController(scope, recieverId);
-            var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
-
-            var result = ((ObjectResult)controller.MarkAsRead(messageId).Result);
-
-            result.ShouldNotBeNull();
-            result.StatusCode.ShouldBe(expectedResponseCode);
-        }
         private static ChatController CreateController(IServiceScope scope, int userId)
         {
             return new ChatController(scope.ServiceProvider.GetRequiredService<IChatMessageService>())

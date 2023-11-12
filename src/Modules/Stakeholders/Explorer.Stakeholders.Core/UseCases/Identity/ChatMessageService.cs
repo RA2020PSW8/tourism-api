@@ -40,26 +40,16 @@ namespace Explorer.Stakeholders.Core.UseCases.Identity
             return MapToDto(results.ToList());
         }
 
-        public Result<PagedResult<ChatMessageDto>> GetConversation(long firstParticipantId, long secondpParticipantId)
+        public Result<PagedResult<ChatMessageDto>> GetConversation(long firstParticipantId, long secondParticipantId)
         {
-            var results = _chatRepository.GetConversation(firstParticipantId, secondpParticipantId);
+            foreach(ChatMessage message in _chatRepository.GetChatUnreadMessages(secondParticipantId, firstParticipantId))
+            {
+                message.MarkAsRead();
+                _chatRepository.Update(message);
+            }
+            var results = _chatRepository.GetConversation(firstParticipantId, secondParticipantId);
+            
             return MapToDto(results);
-        }
-        public Result<ChatMessageDto> MarkAsRead(long recieverId, long messageId)
-        {
-            try
-            {
-                var message = _chatRepository.Get(messageId);
-                message.MarkAsRead(recieverId);
-                var result = _chatRepository.Update(message);
-
-                return MapToDto(result);
-
-            }
-            catch(KeyNotFoundException e)
-            {
-                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
-            }
         }
     }
 }

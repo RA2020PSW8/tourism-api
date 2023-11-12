@@ -26,10 +26,8 @@ namespace Explorer.Stakeholders.Core.Domain
             CreationDateTime = creationDateTime;
             IsRead = isRead;
         }
-        public void MarkAsRead(long recieverId)
+        public void MarkAsRead()
         {
-            if (recieverId != ReceiverId) throw new ArgumentException("You don't have premission to change status.");
-
             if (IsRead) throw new ArgumentException("Message is already read");
 
             IsRead = true;

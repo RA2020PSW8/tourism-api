@@ -11,8 +11,7 @@ namespace Explorer.Stakeholders.API.Public.Identity
 {
     public interface IChatMessageService
     {
-        Result<PagedResult<ChatMessageDto>> GetConversation(long firstParticipantId, long secondParticipant2Id);
-        Result<ChatMessageDto> MarkAsRead(long recieverId, long messageId);
+        Result<PagedResult<ChatMessageDto>> GetConversation(long firstParticipantId, long secondParticipantId);
         Result<ChatMessageDto> Create(long senderId, MessageDto message);
         Result<List<ChatMessageDto>> GetPreviewMessages(long userId);
     }

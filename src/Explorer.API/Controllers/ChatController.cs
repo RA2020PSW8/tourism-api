@@ -28,13 +28,6 @@ namespace Explorer.API.Controllers
             return CreateResponse(result);
         }
         
-        [HttpPut("")]
-        public ActionResult<ChatMessageDto> MarkAsRead([FromBody] long messageId)
-        {
-            var result = _chatService.MarkAsRead(ClaimsPrincipalExtensions.PersonId(User), messageId);
-            return CreateResponse(result);
-        }
-        
         [HttpPost]
         public ActionResult<ChatMessageDto> Create([FromBody] MessageDto message)
         {

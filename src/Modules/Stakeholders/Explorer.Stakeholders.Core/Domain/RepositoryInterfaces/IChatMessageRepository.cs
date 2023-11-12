@@ -11,5 +11,6 @@ namespace Explorer.Stakeholders.Core.Domain.RepositoryInterfaces
     {
         PagedResult<ChatMessage> GetConversation(long firstParticipantId, long secondParticipantId);
         IEnumerable<ChatMessage> GetPreviewMessages(long userId);
+        IEnumerable<ChatMessage> GetChatUnreadMessages(long senderId, long receiverId);
     }
 }

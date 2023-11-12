@@ -82,5 +82,14 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories
             }
             return chatm;
         }
+        public IEnumerable<ChatMessage> GetChatUnreadMessages(long senderId, long receiverId)
+        {
+            var chatMessages = _dbSet
+                .AsNoTracking()
+                .Where(cm => ( cm.SenderId == senderId && cm.ReceiverId == receiverId && cm.IsRead == false))
+                .ToList();
+
+            return chatMessages;
+        }
     }
 }
