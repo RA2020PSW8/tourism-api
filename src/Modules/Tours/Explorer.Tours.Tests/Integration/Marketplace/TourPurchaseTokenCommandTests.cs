@@ -29,7 +29,7 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             
 
             // Act
-            var result = ((ObjectResult)controller.BuyShoppingCart(-1));
+            var result = ((OkResult)controller.BuyShoppingCart(-1));
 
             // Assert - Response
             result.ShouldNotBeNull();
