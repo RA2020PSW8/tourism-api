@@ -35,6 +35,21 @@ namespace Explorer.Stakeholders.Tests.Integration.Identity
                 result.Results.Count.ShouldBe(3);
                 result.TotalCount.ShouldBe(3);
             }
+            
+            [Fact]
+            public void Retrieves_previews()
+            {
+                // Arrange
+                using var scope = Factory.Services.CreateScope();
+                var controller = CreateController(scope);
+
+                // Act
+                var result = ((ObjectResult)controller.GetPreviewMessages().Result)?.Value as List<ChatMessageDto>;
+
+                // Assert
+                result.ShouldNotBeNull();
+                result.Count.ShouldBe(1);
+            }
 
             private static ChatController CreateController(IServiceScope scope)
             {
