@@ -6,4 +6,5 @@ DELETE FROM stakeholders."PersonPerson";
 DELETE FROM stakeholders."People";
 DELETE FROM stakeholders."Users";
 DELETE FROM stakeholders."TourIssue";
+DELETE FROM stakeholders."ChatMessages";
 DELETE FROM stakeholders."Notifications";
