@@ -13,6 +13,5 @@ namespace Explorer.Tours.API.Public.TourExecution
         Result<TouristPositionDto> GetByUser(long userId); 
         Result<TouristPositionDto> Create(TouristPositionDto touristPosition);
         Result<TouristPositionDto> Update(TouristPositionDto touristPosition);
-
     }
 }

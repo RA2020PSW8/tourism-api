@@ -21,5 +21,6 @@ namespace Explorer.Tours.API.Dtos
         public List<String>? Tags { get; set; }
         public DateTime StatusUpdateTime { get; set; }
         public List<KeypointDto>? Keypoints { get; set; }
+        public List<TourReviewDto>? TourReviews { get; set;}
     }
 }

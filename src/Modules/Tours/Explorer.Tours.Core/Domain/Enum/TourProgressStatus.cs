@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.API.Dtos.Enums
+namespace Explorer.Tours.Core.Domain.Enum
 {
-    public enum TourDifficulty
+    public enum TourProgressStatus
     {
-        EASY,
-        MEDIUM,
-        HARD,
-        EXTREME
+        IN_PROGRESS,
+        ABANDONED,
+        COMPLETED
     }
 }
