@@ -27,12 +27,12 @@ namespace Explorer.Tours.Tests.Integration.TourExecution
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
             var newEntity = new TourReviewDto
             {
+                UserId = -1,
                 Rating = 4,
                 Comment = "It was amazing!",
                 VisitDate = DateTime.Now.ToUniversalTime(),
                 RatingDate = DateTime.Now.ToUniversalTime(),
                 ImageLinks = new List<string>() { "test" },
-                UserId = 1,
                 TourId = -1
             };
 
