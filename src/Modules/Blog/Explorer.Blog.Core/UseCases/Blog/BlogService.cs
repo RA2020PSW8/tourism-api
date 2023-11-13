@@ -191,7 +191,7 @@ namespace Explorer.Blog.Core.UseCases.Blog
         {
 
         }
-
+        //mislim da ovo treba da ima povratnu vrednost BlogRatingDto
         public Result<BlogDto> AddRating(BlogRatingDto blogRatingDto)
         {
             var blog = _repository.GetBlog(Convert.ToInt32(blogRatingDto.BlogId));
