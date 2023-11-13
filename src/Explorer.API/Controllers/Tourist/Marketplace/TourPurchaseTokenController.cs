@@ -5,6 +5,7 @@ using Explorer.Tours.API.Public.TourAuthoring;
 using Microsoft.AspNetCore.Authorization;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
+using Explorer.Tours.Core.UseCases.TourAuthoring;
 
 namespace Explorer.API.Controllers.Tourist.Marketplace
 {
@@ -23,6 +24,13 @@ namespace Explorer.API.Controllers.Tourist.Marketplace
         public ActionResult BuyShoppingCart(int id)
         {
             var result = _tourPurchaseTokenService.BuyShoppingCart(id);
+            return CreateResponse(result);
+        }
+
+        [HttpGet]
+        public ActionResult<PagedResult<TourPurchaseTokenDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var result = _tourPurchaseTokenService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
     }

@@ -23,6 +23,7 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
         {
             _crudRepository = crudRepository;
             _tourProgressRepository = tourProgressRepository;
+            _tourReviewRepository = tourReviewRepository;
         }
 
         public override Result<TourReviewDto> Create(TourReviewDto review)
