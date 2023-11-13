@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist.TourExecution
 {
-    [Authorize(Policy = "touristAdminPolicy")]
+    [Authorize(Policy = "userPolicy")]
     [Route("api/tourexecution/tourissue")]
     public class TourIssueController : BaseApiController
     {

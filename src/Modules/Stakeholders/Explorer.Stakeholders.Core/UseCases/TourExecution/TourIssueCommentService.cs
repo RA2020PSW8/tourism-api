@@ -37,10 +37,11 @@ namespace Explorer.Stakeholders.Core.UseCases.TourExecution
 
                 TourIssueDto tourIssue = _tourIssueService.Get(comment.TourIssueId).Value;
                 TourDto tour = _tourService.Get(tourIssue.TourId).Value;          
-                String url = "/tourissue/" + tourIssue.Id;
-                String additionalMessage = tour.Name;
-
-                GenerateNotifications(comment.UserId, tourIssue.UserId, tour.UserId, url, additionalMessage);
+                
+                int notificationUserId = _userService.Get(comment.UserId).Value.Role == 1 ? tourIssue.UserId : tour.UserId;
+                String url = "url"; //figure out this later
+                String additionalMessage = "'" + tour.Name + "'.";
+                _notificationService.Generate(notificationUserId, NotificationType.ISSUE_COMMENT, url, DateTime.UtcNow, additionalMessage);
 
                 return MapToDto(result);
             }
