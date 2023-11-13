@@ -21,13 +21,15 @@ namespace Explorer.Blog.Core.UseCases.Blog
 {
     public class BlogService : BaseService<BlogDto,Domain.Blog>, IBlogService
     {
+        private readonly IBlogStatusService _blogStatusService;
         private readonly IProfileService _profileService;
         private readonly IUserService _userService;
         private readonly IBlogRepository _repository;
         private readonly IMapper _mapper;
-        public BlogService(IBlogRepository crudRepository, IMapper mapper, 
+        public BlogService(IBlogStatusService blogStatusService,IBlogRepository crudRepository, IMapper mapper, 
             IUserService userService, IProfileService profileService) : base(mapper)
         {
+            _blogStatusService = blogStatusService;
             _repository = crudRepository;
             _mapper = mapper;
             _userService = userService;
@@ -191,15 +193,29 @@ namespace Explorer.Blog.Core.UseCases.Blog
 
         public void UpdateStatuses()
         {
+            var result = _repository.GetPaged(0, 0).Results;
 
+            foreach(var blog in result)
+            {
+                var upvotes = blog.BlogRatings.Count(b => b.Rating == Rating.UPVOTE);
+                var downvotes = blog.BlogRatings.Count(b => b.Rating == Rating.DOWNVOTE);
+                if (upvotes - downvotes < 0)
+                {
+                    blog.CloseBlog();
+                }
+                else 
+                {
+                    _blogStatusService.Generate(blog.Id,"POPULAR");
+                }
+            }
         }
-        //mislim da ovo treba da ima povratnu vrednost BlogRatingDto
-        public Result<BlogDto> AddRating(BlogRatingDto blogRatingDto)
+        
+        public Result<BlogDto> AddRating(BlogRatingDto blogRatingDto,long userId)
         {
             var blog = _repository.GetBlog(Convert.ToInt32(blogRatingDto.BlogId));
-            var rating = new BlogRating(blogRatingDto.BlogId, blogRatingDto.UserId, blogRatingDto.CreationTime,Enum.Parse<Rating>(blogRatingDto.Rating));
+            var rating = new BlogRating(blogRatingDto.BlogId, userId, blogRatingDto.CreationTime,Enum.Parse<Rating>(blogRatingDto.Rating));
             blog.AddRating(rating);
-            
+            //UpdateStatuses();
             return Update(MapToDto(blog));
         }
 

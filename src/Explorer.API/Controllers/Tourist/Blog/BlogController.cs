@@ -65,7 +65,7 @@ namespace Explorer.API.Controllers.Tourist.Blog
         [HttpPost("rate")]
         public ActionResult<BlogDto> AddRating([FromBody] BlogRatingDto blogRatingDto)
         {
-           var result = _blogService.AddRating(blogRatingDto);
+           var result = _blogService.AddRating(blogRatingDto,User.PersonId());
             return CreateResponse(result);
         }
     }

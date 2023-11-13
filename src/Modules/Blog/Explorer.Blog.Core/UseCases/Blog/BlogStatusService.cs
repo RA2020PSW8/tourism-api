@@ -16,8 +16,14 @@ namespace Explorer.Blog.Core.UseCases.Blog
     public class BlogStatusService : CrudService<BlogStatusDto, BlogStatus>, IBlogStatusService
     {
        public BlogStatusService(ICrudRepository<BlogStatus> crudRepository, IMapper mapper) : base(crudRepository, mapper)
-        {
+       {
 
+       }
+
+        public Result<BlogStatusDto> Generate(long blogId,string name) 
+        {
+            BlogStatus blogStatus = new BlogStatus(blogId,name);
+            return Create(MapToDto(blogStatus));
         }
     }
 }

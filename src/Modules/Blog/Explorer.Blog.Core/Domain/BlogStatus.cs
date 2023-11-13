@@ -10,21 +10,22 @@ namespace Explorer.Blog.Core.Domain
     public class BlogStatus : Entity
     {
         public long BlogId { get; init; }
-        public required string Name { get; init; }
+        public string Name { get; init; }
 
         public BlogStatus()
         {
 
         }
 
-        public BlogStatus(string name)
+        public BlogStatus(long blogId,string name)
         {
-            if(name == "")
+            BlogId = blogId;
+            Name = name;
+
+            if (name == "")
             {
                 throw new ArgumentException("Name cannot be empty");
             }
-
-            Name = name;
         }
     }
 }

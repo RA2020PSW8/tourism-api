@@ -13,7 +13,7 @@ namespace Explorer.Blog.Core.Domain
         public int CreatorId { get; init; }
         public required string Title { get; init; }
         public required string Description { get; init; }
-        public BlogSystemStatus SystemStatus { get; init; }
+        public BlogSystemStatus SystemStatus { get; set; }
         public DateOnly CreationDate { get; init; }
         public List<string>? ImageLinks { get; init; }
         public ICollection<BlogStatus>? BlogStatuses { get; init; }
@@ -21,7 +21,7 @@ namespace Explorer.Blog.Core.Domain
 
         public Blog()
         {
-          
+            
         }
 
         public Blog(string title, string description, DateOnly creationDate, List<string> imageLinks, BlogSystemStatus systemStatus, List<BlogStatus> blogStatuses,List<BlogRating> blogRatings)
@@ -42,15 +42,22 @@ namespace Explorer.Blog.Core.Domain
 
         public void AddRating(BlogRating blogRating)
         {
-            var foundRating = BlogRatings.FirstOrDefault(r => r.UserId == blogRating.UserId);
+            var foundRating = BlogRatings.FirstOrDefault(r => r.UserId == blogRating.UserId && r.BlogId == blogRating.BlogId);
             if (foundRating != null)
             {
-                foundRating = blogRating;
+                BlogRatings.RemoveAt(BlogRatings.IndexOf(foundRating));
+               // BlogRatings.Remove(BlogRatings.First(r => r.BlogId == foundRating.BlogId && r.Rating == foundRating.Rating));
+                BlogRatings.Add(blogRating);
             }
             else
             {
                 BlogRatings.Add(blogRating);
             }
+        }
+
+        public void CloseBlog() 
+        {
+            SystemStatus = BlogSystemStatus.CLOSED;
         }
     }
 }

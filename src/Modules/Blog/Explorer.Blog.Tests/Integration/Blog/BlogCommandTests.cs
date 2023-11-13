@@ -33,7 +33,8 @@ namespace Explorer.Blog.Tests.Integration.Blog
                 Description = "Simply breathtaking.",
                 CreationDate = DateOnly.FromDateTime(DateTime.Now.ToUniversalTime()),
                 ImageLinks = new List<string>() { "test" },
-                SystemStatus = BlogSystemStatus.DRAFT.ToString()
+                SystemStatus = BlogSystemStatus.DRAFT.ToString(),
+                BlogRatings = new List<BlogRatingDto>(),
             };
 
             //Act

@@ -50,7 +50,7 @@ namespace Explorer.Blog.Core.UseCases.Commenting
                 _repository.Delete(id);
                 return Result.Ok();
             }
-            catch(ArgumentException e)
+            catch(KeyNotFoundException e)
             {
                 return Result.Fail(FailureCode.NotFound).WithError(e.Message);
             }
