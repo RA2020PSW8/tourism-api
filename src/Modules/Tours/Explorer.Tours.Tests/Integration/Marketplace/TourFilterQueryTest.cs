@@ -28,7 +28,7 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             var controller = CreateController(scope);
 
             // Act
-            TourFilterCriteriaDto criteria = new TourFilterCriteriaDto();
+            FilterCriteriaDto criteria = new FilterCriteriaDto();
             criteria.CurrentLatitude = 20;
             criteria.CurrentLongitude = -10;
             criteria.FilterRadius = 1500;
@@ -48,7 +48,7 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             var controller = CreateController(scope);
 
             // Act
-            TourFilterCriteriaDto criteria = new TourFilterCriteriaDto();
+            FilterCriteriaDto criteria = new FilterCriteriaDto();
             criteria.CurrentLatitude = 180;
             criteria.CurrentLongitude = -10;
             criteria.FilterRadius = 10;

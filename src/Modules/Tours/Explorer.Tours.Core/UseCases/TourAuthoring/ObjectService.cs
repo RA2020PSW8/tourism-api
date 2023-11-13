@@ -3,6 +3,7 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.TourAuthoring;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,12 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring
         {
             _objectRepository = objectRepository;
             _mapper = mapper;   
+        }
+
+        public Result<PagedResult<ObjectDto>> GetPublicPagedInRange(int page, int pageSize, FilterCriteriaDto filter)
+        {
+            var result = _objectRepository.GetPublicPagedInRange(page, pageSize, filter.CurrentLongitude, filter.CurrentLatitude, filter.FilterRadius);
+            return MapToDto(result);
         }
     }
 }
