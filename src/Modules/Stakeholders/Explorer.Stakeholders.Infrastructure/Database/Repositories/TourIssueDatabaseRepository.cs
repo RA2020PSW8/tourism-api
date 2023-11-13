@@ -24,5 +24,19 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories
             task.Wait();
             return task.Result;
         }
+
+        public PagedResult<TourIssue> GetByTourId(int page, int pageSize, int tourId) 
+        {
+            var task = _dbSet.Where(t => t.TourId == tourId).Include(t => t.Comments).GetPagedById(page, pageSize);
+            task.Wait();
+            return task.Result;
+        }
+
+        public PagedResult<TourIssue> GetByTourIssueId(int page, int pageSize, int tourIssueId)
+        {
+            var task = _dbSet.Where(t => t.Id == tourIssueId).Include(t => t.Comments).GetPagedById(page, pageSize);
+            task.Wait();
+            return task.Result;
+        }
     }
 }

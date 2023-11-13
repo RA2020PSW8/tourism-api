@@ -26,7 +26,8 @@ namespace Explorer.API.Controllers.Author
             var result = _tourService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
-        
+
+        [AllowAnonymous]
         [HttpGet("{tourId:int}")]
         [Authorize(Roles = "author")]
         public ActionResult<TourDto> GetById([FromRoute] int tourId)
@@ -70,6 +71,19 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
+        [AllowAnonymous]
+        [HttpPut("disable/{id:int}")]
+        public ActionResult<TourDto> Disable([FromBody] TourDto tour)
+        {
+            if (User.IsInRole("administrator"))
+            {
+                tour.UserId = ClaimsPrincipalExtensions.PersonId(User);
+                var result = _tourService.Update(tour);
+                return CreateResponse(result);
+            }
+            else
+                return null;
+        }
     }
 }
 

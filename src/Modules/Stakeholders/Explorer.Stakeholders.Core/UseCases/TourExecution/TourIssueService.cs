@@ -27,5 +27,17 @@ namespace Explorer.Stakeholders.Core.UseCases.TourExecution
             var result = _repo.GetByUserPaged(page, pageSize, id);
             return MapToDto(result);
         }
+
+        public Result<PagedResult<TourIssueDto>> GetByTourId(int page, int pageSize, int tourId)
+        {
+            var result = _repo.GetByTourId(page, pageSize, tourId);
+            return MapToDto(result);
+        }
+
+        public Result<PagedResult<TourIssueDto>> GetByTourIssueId(int page, int pageSize, int tourIssueId)
+        {
+            var result = _repo.GetByTourIssueId(page, pageSize, tourIssueId);
+            return MapToDto(result);
+        }
     }
 }
