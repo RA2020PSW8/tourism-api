@@ -82,6 +82,16 @@ namespace Explorer.Blog.Core.UseCases.Blog
                     }
 
                     LoadPersonInformation(newDto);
+
+                    foreach (var ratingDto in newDto.BlogRatings)
+                    {
+                       var user = _userService.GetPaged(0, 0).Value.Results.Find(u => u.Id == ratingDto.UserId);
+                         if (user != null)
+                          {
+                              ratingDto.Username = user.Username;
+                          }
+                    }
+                    
                 }
                 return newDto;
             }
@@ -113,6 +123,17 @@ namespace Explorer.Blog.Core.UseCases.Blog
             foreach(BlogDto dto in dtos)
             {
                 LoadPersonInformation(dto);
+            }
+
+            foreach (BlogDto dto in dtos) { 
+                foreach(var ratingDto in dto.BlogRatings)
+                {
+                    var user = _userService.GetPaged(0,0).Value.Results.Find(u => u.Id == ratingDto.UserId);
+                    if(user != null)
+                    {
+                        ratingDto.Username = user.Username;
+                    }
+                }
             }
 
             PagedResult<BlogDto> res = new(dtos, dtos.Count);
@@ -173,9 +194,10 @@ namespace Explorer.Blog.Core.UseCases.Blog
 
         public Result<BlogDto> AddRating(BlogRatingDto blogRatingDto)
         {
-            var blog = _repository.GetDN(Convert.ToInt32(blogRatingDto.BlogId));
+            var blog = _repository.GetBlog(Convert.ToInt32(blogRatingDto.BlogId));
             var rating = new BlogRating(blogRatingDto.BlogId, blogRatingDto.UserId, blogRatingDto.CreationTime,Enum.Parse<Rating>(blogRatingDto.Rating));
             blog.AddRating(rating);
+            
             return Update(MapToDto(blog));
         }
     }

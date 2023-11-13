@@ -29,7 +29,7 @@ namespace Explorer.Blog.Infrastructure.Database.Repositories
            return task.Result;
         }
 
-        public Core.Domain.Blog GetDN(long id) 
+        public Core.Domain.Blog GetBlog(long id) 
         {
             var entity = _dbSet.AsNoTracking().FirstOrDefault(f => f.Id == id);
             if (entity == null) throw new KeyNotFoundException("Not found: " + id);
