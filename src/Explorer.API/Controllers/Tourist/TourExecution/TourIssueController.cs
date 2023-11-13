@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist.TourExecution
 {
-    [Authorize(Policy = "touristAdminPolicy")]
+    [Authorize(Policy = "userPolicy")]
     [Route("api/tourexecution/tourissue")]
     public class TourIssueController : BaseApiController
     {
@@ -73,7 +73,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
         {
             if (User.IsInRole("administrator"))
             {
-                var result = _tourIssueService.Update(issue);
+                var result = _tourIssueService.SetResolvedDateTime(issue);
                 return CreateResponse(result);
             }
             else
