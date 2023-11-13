@@ -56,6 +56,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
         }
 
         [HttpGet("tour/{tourId:long}")]
+        [AllowAnonymous]
         public ActionResult<PagedResult<TourReviewDto>> GetByTourId(long tourId, [FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _tourReviewService.GetByTourId(tourId, page, pageSize);

@@ -20,6 +20,13 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories
         {
             _dbContext = dbContext;
         }
+
+        public bool Exists(long personId)
+        {
+            return DbContext.People.Any(person => person.Id == personId);
+                                                
+        }
+
         public Person GetFullProfile(long personId)
         { 
             Person person = _dbContext.People.Where(b => b.Id == personId)

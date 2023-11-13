@@ -27,5 +27,10 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
             task.Wait();
             return task.Result;
         }
+
+        public void RemoveRange(List<int> orderIds)
+        {
+            _dbSet.RemoveRange(_dbSet.Where(r => orderIds.Contains(Convert.ToInt32(r.Id))));
+        }
     }
 }

@@ -20,6 +20,7 @@ using Explorer.Tours.API.Internal;
 using Explorer.Tours.Core.UseCases.TourAuthoring;
 using System.Text.Json.Serialization;
 using Explorer.Stakeholders.Core.UseCases.Identity;
+using Explorer.Stakeholders.API.Public.Identity;
 
 namespace Explorer.Stakeholders.Infrastructure;
 
@@ -47,6 +48,7 @@ public static class StakeholdersStartup
         services.AddScoped<IApplicationRatingService, ApplicationRatingService>();
         services.AddScoped<ITourIssueService, TourIssueService>();
         services.AddScoped<ITourIssueCommentService, TourIssueCommentService>();
+        services.AddScoped<IChatMessageService, ChatMessageService>();
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IInternalTourService, TourService>();
     }
@@ -65,8 +67,8 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(ITourIssueRepository), typeof(TourIssueDatabaseRepository));
         services.AddScoped(typeof(ICrudRepository<TourIssueComment>), typeof(CrudDatabaseRepository<TourIssueComment, StakeholdersContext>));
         services.AddScoped(typeof(IApplicationRatingRepository), typeof(ApplicationRatingDatabaseRepository));
+        services.AddScoped(typeof(IChatMessageRepository), typeof(ChatMessageDatabaseRepository));
         services.AddScoped(typeof(INotificationRepository), typeof(NotificationRepository));
-
 
         services.AddControllers().AddJsonOptions(options => {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;

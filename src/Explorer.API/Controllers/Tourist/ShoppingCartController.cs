@@ -25,9 +25,9 @@ namespace Explorer.API.Controllers.Tourist
 
         }
         [HttpGet("byUser")]
-        public ActionResult<PagedResult<ShoppingCartDto>> GetByUser(int userId)
+        public ActionResult<PagedResult<ShoppingCartDto>> GetByUser()
         {
-            var result = _cartService.GetByUser(userId);
+            var result = _cartService.GetByUser(ClaimsPrincipalExtensions.PersonId(User));
             var resultValue = Result.Ok(result);
             return CreateResponse(resultValue);
         }

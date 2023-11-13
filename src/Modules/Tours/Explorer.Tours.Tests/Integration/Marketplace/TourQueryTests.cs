@@ -2,6 +2,7 @@ using Explorer.API.Controllers.Tourist.Marketplace;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.TourAuthoring;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -23,6 +24,19 @@ public class TourQueryTests : BaseToursIntegrationTest
         var result = ((ObjectResult)controller.GetPublished(0, 0).Result)?.Value as PagedResult<TourDto>;
 
         // Assert
+        result.ShouldNotBeNull();
+        result.Results.Count.ShouldBe(3);
+        result.TotalCount.ShouldBe(3);
+    }
+
+    [Fact]
+    public void Retrieves_all_archived_and_published()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+
+        var result = ((ObjectResult)controller.GetArchivedAndPublishedPaged(0, 0).Result)?.Value as PagedResult<TourDto>;
+
         result.ShouldNotBeNull();
         result.Results.Count.ShouldBe(3);
         result.TotalCount.ShouldBe(3);
