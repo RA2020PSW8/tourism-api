@@ -27,5 +27,17 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
             var result = _tourReviewRepository.GetByTourId(tourId, page, pageSize);
             return MapToDto(result);
         }
+
+        public Result<double> CalculateAverageRate(List<TourReviewDto> tourReviews)
+        {
+            if (tourReviews == null || !tourReviews.Any())
+            {
+                return Result.Fail<double>("There are no tour reviews!");
+            }
+
+            double averageRate = tourReviews.Average(r => r.Rating);
+
+            return Result.Ok(averageRate);
+        }
     }
 }

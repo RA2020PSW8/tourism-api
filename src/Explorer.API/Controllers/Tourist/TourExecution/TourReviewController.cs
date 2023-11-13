@@ -59,5 +59,13 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
             var result = _tourReviewService.GetByTourId(tourId, page, pageSize);
             return CreateResponse(result);
         }
+
+        [HttpPost("averageRate")]
+        [AllowAnonymous]
+        public ActionResult<double> CalculateAverageRate([FromBody] List<TourReviewDto> reviews)
+        {
+            var result = _tourReviewService.CalculateAverageRate(reviews);
+            return CreateResponse(result);
+        }
     }
 }
