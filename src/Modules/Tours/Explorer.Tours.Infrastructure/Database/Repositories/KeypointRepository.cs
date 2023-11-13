@@ -27,7 +27,7 @@ public class KeypointRepository : CrudDatabaseRepository<Keypoint, ToursContext>
     }
     public IEnumerable<int?> GetNextPositions(long tourId, int? currentPosition)
     {
-        return _dbSet.Where(k => k.TourId == tourId && k.Position > currentPosition).Select(k => k.Position);
+        return _dbSet.Where(k => k.TourId == tourId && k.Position > currentPosition).Select(k => k.Position).OrderBy(p => p);
     }
     
 }
