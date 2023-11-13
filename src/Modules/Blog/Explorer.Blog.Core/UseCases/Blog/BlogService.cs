@@ -173,7 +173,7 @@ namespace Explorer.Blog.Core.UseCases.Blog
 
         public Result<BlogDto> AddRating(BlogRatingDto blogRatingDto)
         {
-            var blog = _repository.Get((int)blogRatingDto.BlogId);
+            var blog = _repository.GetDN(Convert.ToInt32(blogRatingDto.BlogId));
             var rating = new BlogRating(blogRatingDto.BlogId, blogRatingDto.UserId, blogRatingDto.CreationTime,Enum.Parse<Rating>(blogRatingDto.Rating));
             blog.AddRating(rating);
             return Update(MapToDto(blog));

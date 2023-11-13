@@ -11,5 +11,6 @@ namespace Explorer.Blog.Core.Domain.RepositoryInterfaces
     public interface IBlogRepository : ICrudRepository<Core.Domain.Blog>
     {
         public PagedResult<Blog> GetWithStatuses(int page, int pageSize);
+        Core.Domain.Blog GetDN(long id);
     }
 }

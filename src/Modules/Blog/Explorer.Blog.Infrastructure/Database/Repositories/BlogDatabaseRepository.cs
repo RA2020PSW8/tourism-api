@@ -19,17 +19,21 @@ namespace Explorer.Blog.Infrastructure.Database.Repositories
         public BlogDatabaseRepository(BlogContext dbContext) : base(dbContext)
         {
             _dbSet = dbContext.Set<Core.Domain.Blog>();
-            foreach(var blog in _dbSet)
-            {
-                dbContext.Entry(blog).Collection(b => b.BlogRatings).Load();
-            }
         }
 
         public PagedResult<Core.Domain.Blog> GetWithStatuses(int page, int pageSize)
         {
-           var task = _dbSet.Include(b => b.BlogStatuses).GetPaged(page,pageSize);
+           var task = _dbSet.AsNoTracking().Include(b => b.BlogStatuses)
+                        .Include(b => b.BlogRatings).GetPaged(page,pageSize);
            task.Wait();
            return task.Result;
+        }
+
+        public Core.Domain.Blog GetDN(long id) 
+        {
+            var entity = _dbSet.AsNoTracking().FirstOrDefault(f => f.Id == id);
+            if (entity == null) throw new KeyNotFoundException("Not found: " + id);
+            return entity;
         }
     }
 }
