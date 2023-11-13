@@ -2,6 +2,7 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
+using FluentResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace Explorer.Tours.Infrastructure.Database.Repositories;
@@ -20,6 +21,13 @@ public class KeypointRepository : CrudDatabaseRepository<Keypoint, ToursContext>
         var task = _dbSet.Where(k => k.TourId == tourId).GetPagedById(page, pageSize);
         task.Wait();
         return task.Result;
+    }
+    public IEnumerable<Keypoint> GetByTourAndPosition(long tourId, int? currentPosition) {
+       return _dbSet.Where(k => k.TourId == tourId && k.Position == currentPosition); 
+    }
+    public IEnumerable<int?> GetNextPositions(long tourId, int? currentPosition)
+    {
+        return _dbSet.Where(k => k.TourId == tourId && k.Position > currentPosition).Select(k => k.Position);
     }
     
 }

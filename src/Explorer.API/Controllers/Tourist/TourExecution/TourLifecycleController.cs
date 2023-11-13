@@ -39,5 +39,12 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
             var result = _tourLifecycleService.AbandonActiveTour(ClaimsPrincipalExtensions.PersonId(User));
             return CreateResponse(result);
         }
+
+        [HttpPut("updateActive")]
+        public ActionResult<TourProgressDto> UpdateActiveTour()
+        {
+            var result = _tourLifecycleService.UpdateActiveTour(ClaimsPrincipalExtensions.PersonId(User)); 
+            return CreateResponse(result);
+        }
     }
 }
