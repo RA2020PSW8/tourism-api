@@ -1,4 +1,5 @@
 using Explorer.BuildingBlocks.Core.Domain;
+using Explorer.Tours.Core.Domain.Enum;
 
 namespace Explorer.Tours.Core.Domain;
 
@@ -12,6 +13,7 @@ public class Keypoint : Entity
     public string? Description { get; init; }
     public int? Position { get; init; }
     public string? Image { get; set; }
+
 
     public Keypoint()
     {

@@ -8,4 +8,4 @@ INSERT INTO tours."TourReviews"(
 
 INSERT INTO tours."TourReviews"(
 	"Id", "Rating", "Comment", "UserId", "TourId", "VisitDate", "RatingDate", "ImageLinks")
-	VALUES (-3, 5, 'the best', 1, -1, '01-15-2023', '10-11-2023', ARRAY[('test5.jpg', 'test6.jpg')]);
+	VALUES (-3, 5, 'the best', 1, -1, '01-12-2023', '10-11-2023', ARRAY[('test5.jpg', 'test6.jpg')]);

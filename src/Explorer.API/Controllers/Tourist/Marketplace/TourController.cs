@@ -24,4 +24,13 @@ public class TourController : BaseApiController
         var result = _tourService.GetPublishedPaged(page, pageSize);
         return CreateResponse(result);
     }
+
+    [HttpGet("arhived-published")]
+    [AllowAnonymous]
+    public ActionResult<PagedResult<TourDto>> GetArchivedAndPublishedPaged([FromQuery] int page, [FromQuery] int pageSize)
+    {
+        var result = _tourService.GetArchivedAndPublishedPaged(page, pageSize);
+        return CreateResponse(result);
+    }
+
 }

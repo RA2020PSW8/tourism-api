@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Explorer.Tours.API.Dtos.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,6 @@ namespace Explorer.Tours.API.Dtos
         public string? Description { get; set; }
         public string? Image { get; set; }
         public string Category { get; set; }
-
+        public ObjectStatus Status { get; set; }
     }
 }
