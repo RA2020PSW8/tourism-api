@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.Enum;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -40,6 +41,8 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
             // I've come to talk with you againnnnn
             var task = _dbSet
                 .Where(o => 
+                    o.Status == ObjectStatus.PUBLIC
+                    &&
                     2 * earthRadius *
                     Math.Atan2 (
                         Math.Sqrt(
