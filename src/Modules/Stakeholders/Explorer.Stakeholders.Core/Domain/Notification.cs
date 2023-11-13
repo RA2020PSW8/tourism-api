@@ -39,19 +39,19 @@ namespace Explorer.Stakeholders.Core.Domain
             switch (Type)
             {
                 case NotificationType.ISSUE_COMMENT:
-                    Content = "A new comment has been added to the tour issue for the tour named " + additionalMessage;
+                    Content = "A new comment has been added to the tour issue for the tour named '" + additionalMessage + "'.";
                     break;
                 case NotificationType.ISSUE_DEADLINE:
                     Content = "The deadline for resolving the tour issue has been set to " + additionalMessage;
                     break;
                 case NotificationType.MESSAGE:
-                    Content = "You have received a new message from " + additionalMessage;
+                    Content = "You have received a new message from " + additionalMessage + '.';
                     break;
                 case NotificationType.REQUEST_ACCEPTED:
-                    Content = "The request for public site registration " + additionalMessage + "has been accepted.";
+                    Content = "The request for public site registration '" + additionalMessage + "' has been accepted.";
                     break;
                 case NotificationType.REQUEST_DECLINED:
-                    Content = "The request for public site registration " + additionalMessage + "has been declined.";
+                    Content = "The request for public site registration '" + additionalMessage + "' has been declined.";
                     break;
                 default:
                     throw new Exception("Invalid Notification Type");
