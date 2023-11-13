@@ -1,9 +1,16 @@
+<<<<<<< HEAD
 ﻿using Explorer.Blog.Core.Domain;
 using Explorer.Blog.Core.Domain.RepositoryInterfaces;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Stakeholders.Core.Domain;
 using FluentResults;
+=======
+﻿using Explorer.Blog.Core.Domain.RepositoryInterfaces;
+using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.BuildingBlocks.Infrastructure.Database;
+using Explorer.Stakeholders.Core.Domain;
+>>>>>>> 78ed5ce4a46f0acdaebe9b26059dc20fe493fec4
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,6 +27,7 @@ namespace Explorer.Blog.Infrastructure.Database.Repositories
         {
             _dbSet = dbContext.Set<Core.Domain.Blog>();
         }
+<<<<<<< HEAD
 
         public PagedResult<Core.Domain.Blog> GetWithStatuses(int page, int pageSize)
         {
@@ -34,6 +42,13 @@ namespace Explorer.Blog.Infrastructure.Database.Repositories
             var entity = _dbSet.AsNoTracking().FirstOrDefault(f => f.Id == id);
             if (entity == null) throw new KeyNotFoundException("Not found: " + id);
             return entity;
+=======
+        public PagedResult<Core.Domain.Blog> GetWithStatuses(int page, int pageSize)
+        {
+            var task = _dbSet.Include(b => b.BlogStatuses).GetPaged(page,pageSize);
+            task.Wait();
+            return task.Result;
+>>>>>>> 78ed5ce4a46f0acdaebe9b26059dc20fe493fec4
         }
     }
 }

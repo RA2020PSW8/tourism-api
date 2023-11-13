@@ -16,6 +16,7 @@ using Explorer.Stakeholders.Core.Domain;
 using Explorer.Blog.Core.Domain.RepositoryInterfaces;
 using Explorer.Blog.Core.Domain.Enums;
 
+
 namespace Explorer.Blog.Core.UseCases.Blog
 {
     public class BlogService : BaseService<BlogDto,Domain.Blog>, IBlogService
@@ -152,6 +153,7 @@ namespace Explorer.Blog.Core.UseCases.Blog
             return res;
         }
 
+
         public Result<BlogDto> Update(BlogDto blog)
         {
             try
@@ -200,5 +202,6 @@ namespace Explorer.Blog.Core.UseCases.Blog
             
             return Update(MapToDto(blog));
         }
+
     }
 }
