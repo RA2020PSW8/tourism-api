@@ -17,7 +17,7 @@ namespace Explorer.Tours.Core.Domain
         public TourProgressStatus Status { get; private set; }
         public DateTime StartTime { get; init; }
         public DateTime LastActivity { get; private set; }
-        public int CurrentKeyPoint { get; init; }
+        public int CurrentKeyPoint { get; private set; }
 
         public bool IsInProgress => (Status == TourProgressStatus.IN_PROGRESS);
 
@@ -36,10 +36,26 @@ namespace Explorer.Tours.Core.Domain
             CurrentKeyPoint = 1;
         }
 
+        public void UpdateActivityTime()
+        {
+            this.LastActivity = DateTime.UtcNow;
+        }
+
         public void Abandon()
         {
             this.Status = TourProgressStatus.ABANDONED;
             this.LastActivity = DateTime.UtcNow;
+        }
+        public void Complete()
+        {
+            this.Status = TourProgressStatus.COMPLETED; 
+            this.LastActivity = DateTime.UtcNow;
+        }
+        
+        public void MoveToNextKeypoint(int nextKeypoint)
+        {
+            CurrentKeyPoint = nextKeypoint;
+            this.LastActivity = DateTime.UtcNow; 
         }
     }
 }
