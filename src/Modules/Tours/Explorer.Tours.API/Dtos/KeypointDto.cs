@@ -11,5 +11,7 @@ public class KeypointDto
     public double Longitude { get; set; }
     public string? Description { get; set; }
     public int? Position { get; set; }
+
+    public string? Secret { get; set; }
     public string? Image { get; set; }
 }
