@@ -1,4 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.TourExecution;
 using Microsoft.AspNetCore.Authorization;
@@ -34,6 +35,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
         [HttpPost]
         public ActionResult<TourReviewDto> Create([FromBody] TourReviewDto tourReview)
         {
+            tourReview.UserId = User.PersonId();
             var result = _tourReviewService.Create(tourReview);
             return CreateResponse(result);
         }
@@ -41,6 +43,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
         [HttpPut("{id:int}")]
         public ActionResult<TourReviewDto> Update([FromBody] TourReviewDto tourReview)
         {
+            tourReview.UserId = User.PersonId();
             var result = _tourReviewService.Update(tourReview);
             return CreateResponse(result);
         }
@@ -53,6 +56,7 @@ namespace Explorer.API.Controllers.Tourist.TourExecution
         }
 
         [HttpGet("tour/{tourId:long}")]
+        [AllowAnonymous]
         public ActionResult<PagedResult<TourReviewDto>> GetByTourId(long tourId, [FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _tourReviewService.GetByTourId(tourId, page, pageSize);

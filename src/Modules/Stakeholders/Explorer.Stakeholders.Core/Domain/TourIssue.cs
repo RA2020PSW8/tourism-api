@@ -24,31 +24,6 @@ namespace Explorer.Stakeholders.Core.Domain
             Comments = new List<TourIssueComment>();
         }
 
-        public void Resolve()
-        {
-            IsResolved = true;
-            ResolveDateTime = DateTime.Now;
-        }
-
-        public void UndoResolve()
-        {
-            IsResolved = true;
-            ResolveDateTime = null;
-        }
-
-        public void AddComment(TourIssueComment comment)
-        {
-            //Validation logic here...
-            Comments.Add(comment);
-        }
-
-        public void RemoveComment(TourIssueComment comment)
-        {
-            //Validation logic here...
-            TourIssueComment oldComment = Comments.FirstOrDefault(c => c.CreationDateTime == comment.CreationDateTime);
-            Comments.Remove(oldComment);
-        }
-
         public TourIssue(string category, uint priority, string description, DateTime creationDateTime, DateTime? resolveDateTime, bool isResolved, int tourId, List<TourIssueComment>? comments, int userId)
         {
             if (string.IsNullOrWhiteSpace(category)) throw new ArgumentNullException("Category must be filled.");

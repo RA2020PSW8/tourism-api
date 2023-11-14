@@ -16,10 +16,33 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
 {
     public class TourReviewService : CrudService<TourReviewDto, TourReview>, ITourReviewService
     {
+        ICrudRepository<TourReview> _crudRepository;
+        ITourProgressRepository _tourProgressRepository;
         protected readonly ITourReviewRepository _tourReviewRepository;
-        public TourReviewService(ICrudRepository<TourReview> crudRepository, IMapper mapper, ITourReviewRepository tourReviewRepository) : base(crudRepository, mapper)
+        public TourReviewService(ICrudRepository<TourReview> crudRepository, ITourProgressRepository tourProgressRepository, ITourReviewRepository tourReviewRepository, IMapper mapper) : base(crudRepository, mapper)
         {
-            _tourReviewRepository = tourReviewRepository;
+            _crudRepository = crudRepository;
+            _tourProgressRepository = tourProgressRepository;
+        }
+
+        public override Result<TourReviewDto> Create(TourReviewDto review)
+        {
+            try
+            {
+                TourProgress? progress = _tourProgressRepository.GetByUser((long)review.UserId);
+                TimeSpan timeSpan = DateTime.UtcNow - progress.LastActivity;
+                if (progress != null && ((double)progress.CurrentKeyPoint / (double)progress.Tour.Keypoints.Count) > 0.35 && timeSpan.Days < 7)
+                {
+                    var result = CrudRepository.Create(MapToDomain(review));
+                    return MapToDto(result);
+                }
+                throw new ArgumentException("Tourist is not in tour or did not pass 35%!");
+            }
+            catch (ArgumentException e)
+            {
+                return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
+            }
+
         }
 
         public Result<PagedResult<TourReviewDto>> GetByTourId(long tourId, int page, int pageSize)

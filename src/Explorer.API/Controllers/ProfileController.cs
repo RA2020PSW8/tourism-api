@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 
 namespace Explorer.API.Controllers
 {
-    [Authorize(Policy = "personPolicy")]
+    [Authorize(Policy = "userPolicy")]
     [Route("api/profile")]
     public class ProfileController : BaseApiController
     {

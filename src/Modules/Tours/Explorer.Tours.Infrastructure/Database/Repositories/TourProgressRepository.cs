@@ -31,5 +31,16 @@ namespace Explorer.Tours.Infrastructure.Database.Repositories
             if (tourProgress == null) throw new KeyNotFoundException("Not found: " + userId);
             return tourProgress;
         }
+
+        public TourProgress GetByUser(long userId)
+        {
+            var tourProgress = _dbSet
+                .Include(tp => tp.TouristPosition)
+                .Include(tp => tp.Tour)
+                .ThenInclude(t => t.Keypoints)
+                .FirstOrDefault(tp => tp.TouristPosition.UserId == userId);
+            if (tourProgress == null) throw new KeyNotFoundException("Not found: " + userId);
+            return tourProgress;
+        }
     }
 }

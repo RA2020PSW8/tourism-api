@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.Core.Domain.Enums
+namespace Explorer.Tours.API.Dtos.Enums
 {
-    public enum TourDifficulty
+    public enum PublicEntityRequestStatus
     {
-        EASY,
-        MEDIUM,
-        HARD,
-        EXTREME
+        PENDING,
+        APPROVED,
+        DECLINED
     }
 }

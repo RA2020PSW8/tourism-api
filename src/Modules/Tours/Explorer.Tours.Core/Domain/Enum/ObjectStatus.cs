@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Tours.API.Dtos.Enums
+namespace Explorer.Tours.Core.Domain.Enum
 {
-    public enum TransportType
+    public enum ObjectStatus
     {
-        WALK,
-        BIKE,
-        CAR,
-        BOAT
+        PRIVATE,
+        PUBLIC
     }
 }

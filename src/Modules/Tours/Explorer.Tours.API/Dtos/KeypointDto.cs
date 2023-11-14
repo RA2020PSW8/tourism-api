@@ -1,3 +1,5 @@
+using Explorer.Tours.API.Dtos.Enums;
+
 namespace Explorer.Tours.API.Dtos;
 
 public class KeypointDto

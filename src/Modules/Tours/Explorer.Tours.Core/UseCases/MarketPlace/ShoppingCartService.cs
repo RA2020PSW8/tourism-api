@@ -26,7 +26,7 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
         {
             try
             {
-                var existingShoppingCart = _shoppingCartRepository.Get(updatedShoppingCart.UserId);
+                var existingShoppingCart = _shoppingCartRepository.Get(updatedShoppingCart.Id);
 
                 if (existingShoppingCart == null)
                 {

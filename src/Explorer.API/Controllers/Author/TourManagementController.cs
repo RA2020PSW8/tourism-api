@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Author
 {
-    [Authorize(Policy = "authorPolicy")]
     [Route("api/author/tours/")]
     public class TourManagementController : BaseApiController
     {
@@ -21,13 +20,16 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpGet]
+        [Authorize(Roles = "author, tourist")]
         public ActionResult<PagedResult<TourDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _tourService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
-        
+
+        [AllowAnonymous]
         [HttpGet("{tourId:int}")]
+        [Authorize(Roles = "author")]
         public ActionResult<TourDto> GetById([FromRoute] int tourId)
         {
             var result = _tourService.Get(tourId);
@@ -35,6 +37,7 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpPost]
+        [Authorize(Roles = "author")]
         public ActionResult<TourDto> Create([FromBody] TourDto tour)
         {
             tour.UserId = ClaimsPrincipalExtensions.PersonId(User);
@@ -43,6 +46,7 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpPut("{id:int}")]
+        [Authorize(Roles = "author")]
         public ActionResult<TourDto> Update([FromBody] TourDto tour)
         {
             tour.UserId = ClaimsPrincipalExtensions.PersonId(User);
@@ -51,6 +55,7 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "author")]
         public ActionResult Delete(int id)
         {
             var result = _tourService.Delete(id);
@@ -58,6 +63,7 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpGet("author")]
+        [Authorize(Roles = "author")]
         public ActionResult<PagedResult<TourDto>> GetByAuthor([FromQuery] int page, [FromQuery] int pageSize)
         {
             var authorId = ClaimsPrincipalExtensions.PersonId(User);
@@ -65,6 +71,19 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
+        [AllowAnonymous]
+        [HttpPut("disable/{id:int}")]
+        public ActionResult<TourDto> Disable([FromBody] TourDto tour)
+        {
+            if (User.IsInRole("administrator"))
+            {
+                tour.UserId = ClaimsPrincipalExtensions.PersonId(User);
+                var result = _tourService.Update(tour);
+                return CreateResponse(result);
+            }
+            else
+                return null;
+        }
     }
 }
 
