@@ -12,7 +12,7 @@ namespace Explorer.Tours.Core.Domain
         public long UserId { get; init; }
         public double Latitude { get; init; }
         public double Longitude { get; init; }
-        public DateTime UpdatedAt { get; init; }
+        public DateTime UpdatedAt { get; private set; }
 
         public TouristPosition()
         {
@@ -27,6 +27,10 @@ namespace Explorer.Tours.Core.Domain
             Latitude = latitude;
             Longitude = longitude;
             UpdatedAt = DateTime.Now;
+        }
+        public void UpdateTime()
+        {
+            UpdatedAt = DateTime.UtcNow; 
         }
 
         private static void Validate(double latitude, double longitude)

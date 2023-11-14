@@ -4,6 +4,7 @@ using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.TourExecution;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
+using Explorer.Tours.Core.UseCases.MarketPlace;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,14 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
         protected readonly ITourRepository _tourRepository; 
         protected readonly ITouristPositionRepository _touristPositionRepository;
         protected readonly ITourProgressRepository _tourProgressRepository;
+        protected readonly IKeypointRepository _keypointRepository;
 
-        public TourLifecycleService(ITourProgressRepository tourProgressRepository, ITourRepository tourRepository, ITouristPositionRepository touristPositionRepository, IMapper mapper) : base(mapper)
+        public TourLifecycleService(ITourProgressRepository tourProgressRepository, ITourRepository tourRepository, ITouristPositionRepository touristPositionRepository,IKeypointRepository keypointRepository, IMapper mapper) : base(mapper)
         {
             _tourRepository = tourRepository;
             _touristPositionRepository = touristPositionRepository;
             _tourProgressRepository = tourProgressRepository;
+            _keypointRepository = keypointRepository;
         }
 
         public Result<TourProgressDto> GetActiveByUser(long userId)
@@ -34,7 +37,7 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
                 var tourProgress = _tourProgressRepository.GetActiveByUser(userId);
                 return MapToDto(tourProgress);
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException e)  
             {
                 return Result.Fail(FailureCode.NotFound).WithError("You don't have any started tours.");
             }
@@ -91,5 +94,59 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
                 return Result.Fail(FailureCode.NotFound).WithError("You cannot abandon tour that is not in progress.");
             }
         }
+
+        public Result<TourProgressDto> UpdateActiveTour(long userId)
+        {
+            try
+            {
+                var tourProgress = _tourProgressRepository.GetActiveByUser(userId);
+                try
+                {
+                    var currentKeypoint = _keypointRepository.GetByTourAndPosition(tourProgress.TourId, tourProgress.CurrentKeyPoint).FirstOrDefault();
+
+                    var touristPosition = tourProgress.TouristPosition;
+
+
+                    double dist = DistanceCalculator.CalculateDistance(touristPosition.Latitude, touristPosition.Longitude, currentKeypoint.Latitude, currentKeypoint.Longitude);
+
+                    if (dist <= 0.1)
+                    {
+
+                        List<int?> result = _keypointRepository.GetNextPositions(tourProgress.TourId, currentKeypoint.Position).ToList();
+                        if (result.Count() == 0)
+                        {
+                            tourProgress.Complete();
+
+                        }   
+                        else
+                        {
+
+                            tourProgress.MoveToNextKeypoint(result[0] ?? 0);
+
+                        }
+                        touristPosition.UpdateTime();
+
+
+                    }
+
+                    tourProgress.UpdateActivityTime();
+                    _tourProgressRepository.Update(tourProgress);
+                    _touristPositionRepository.Update(touristPosition);
+                    return MapToDto(tourProgress);
+                }
+                catch(KeyNotFoundException e)
+                {
+                    return Result.Fail(FailureCode.NotFound).WithError("Current keypoint not found.");
+                }
+
+            }
+            catch(KeyNotFoundException e)
+            {
+                return Result.Fail(FailureCode.NotFound).WithError("You cannot update tour that is not in progress."); 
+            }
+
+        }
+
+       
     }
 }

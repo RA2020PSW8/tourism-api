@@ -19,7 +19,7 @@ namespace Explorer.API.Controllers.Tourist.Marketplace
         }
 
         [HttpGet]
-        public ActionResult<PagedResult<TourDto>> GetFilteredTours([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] TourFilterCriteriaDto filter)
+        public ActionResult<PagedResult<TourDto>> GetFilteredTours([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] FilterCriteriaDto filter)
         {
             var result = _filteringService.GetFilteredTours(page, pageSize, filter);
             return CreateResponse(result);

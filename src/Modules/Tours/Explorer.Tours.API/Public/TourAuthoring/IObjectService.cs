@@ -15,5 +15,6 @@ namespace Explorer.Tours.API.Public.TourAuthoring
         Result<ObjectDto> Create(ObjectDto equipment);
         Result<ObjectDto> Update(ObjectDto equipment);
         Result Delete(int id);
+        Result<PagedResult<ObjectDto>> GetPublicPagedInRange(int page, int pageSize, FilterCriteriaDto filter);
     }
 }

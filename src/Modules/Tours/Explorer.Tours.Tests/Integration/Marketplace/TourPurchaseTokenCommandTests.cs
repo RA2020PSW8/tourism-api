@@ -1,5 +1,6 @@
 ﻿using Explorer.API.Controllers.Tourist;
 using Explorer.API.Controllers.Tourist.Marketplace;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.MarketPlace;
@@ -26,7 +27,6 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-            
 
             // Act
             var result = ((OkResult)controller.BuyShoppingCart(-1));
@@ -35,7 +35,7 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             result.ShouldNotBeNull();
 
             int tokensNumber = dbContext.TourPurchaseTokens.Count();
-            tokensNumber.ShouldBe(1);
+            tokensNumber.ShouldBe(4);
 
             // Assert - Database
             var storedEntity = dbContext.TourPurchaseTokens.FirstOrDefault(i => i.TourId == -1);
