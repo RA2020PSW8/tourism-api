@@ -46,7 +46,6 @@ namespace Explorer.Blog.Core.Domain
             if (foundRating != null)
             {
                 BlogRatings.RemoveAt(BlogRatings.IndexOf(foundRating));
-               // BlogRatings.Remove(BlogRatings.First(r => r.BlogId == foundRating.BlogId && r.Rating == foundRating.Rating));
                 BlogRatings.Add(blogRating);
             }
             else

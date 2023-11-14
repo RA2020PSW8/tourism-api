@@ -21,14 +21,6 @@ namespace Explorer.Blog.Infrastructure.Database.Repositories
             _dbSet = dbContext.Set<Core.Domain.Blog>();
         }
 
-        /*public PagedResult<Core.Domain.Blog> GetWithStatuses(int page, int pageSize)
-        {
-           var task = _dbSet.AsNoTracking().Include(b => b.BlogStatuses)
-                        .Include(b => b.BlogRatings).GetPaged(page,pageSize);
-           task.Wait();
-           return task.Result;
-        }*/
-
         public Core.Domain.Blog GetBlog(long id)
         {
             var entity = _dbSet.AsNoTracking().FirstOrDefault(f => f.Id == id);
