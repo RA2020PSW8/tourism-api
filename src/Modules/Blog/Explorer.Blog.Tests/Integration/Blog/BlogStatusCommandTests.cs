@@ -1,6 +1,6 @@
-﻿using Explorer.API.Controllers.Tourist.Commenting;
+﻿using Explorer.API.Controllers.Tourist.Blog;
 using Explorer.Blog.API.Dtos;
-using Explorer.Blog.API.Public.Commenting;
+using Explorer.Blog.API.Public.Blog;
 using Explorer.Blog.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,36 +11,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Blog.Tests.Integration.Commenting
+namespace Explorer.Blog.Tests.Integration.Blog
 {
     [Collection("Sequential")]
-    public class CommentCommandTests : BaseBlogIntegrationTest
+    public class BlogStatusCommandTests : BaseBlogIntegrationTest
     {
-        public CommentCommandTests(BlogTestFactory factory) : base(factory){}
+        public BlogStatusCommandTests(BlogTestFactory factory) : base(factory) { }
 
         [Fact]
         public void Creates()
         {
+            //Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
-            var newEntity = new BlogCommentDto
+            var newEntity = new BlogStatusDto
             {
-                BlogId = 1,
-                Username = "steva",
-                Comment = "test komentar",
-                PostTime = DateTime.Now.ToUniversalTime(),
-                LastEditTime = DateTime.Now.ToUniversalTime(),
-                IsDeleted = false
+                BlogId = -1,
+                Name = "famous",
             };
 
-            var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as BlogCommentDto;
+            //Act
+            var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as BlogStatusDto;
 
+            //Assert - Response
             result.ShouldNotBeNull();
             result.Id.ShouldNotBe(0);
             result.Id.ShouldBe(result.Id);
 
-            var storedEntity = dbContext.ForumComments.FirstOrDefault(i => i.Comment == newEntity.Comment);
+            //Assert - Database
+            var storedEntity = dbContext.BlogStatuses.FirstOrDefault(i => i.Name == newEntity.Name);
             storedEntity.ShouldNotBeNull();
             storedEntity.Id.ShouldBe(result.Id);
         }
@@ -48,70 +48,68 @@ namespace Explorer.Blog.Tests.Integration.Commenting
         [Fact]
         public void Create_fails_invalid_data()
         {
-            // Arrange
+            //Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            var updatedEntity = new BlogCommentDto
+            var updatedEntity = new BlogStatusDto
             {
-                Comment = string.Empty
+                Name = "",
             };
 
-            // Act
+            //Act
             var result = (ObjectResult)controller.Create(updatedEntity).Result;
 
-            // Assert
+            //Assert
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(400);
         }
 
         [Fact]
-        public void Update()
+        public void Updates()
         {
+            //Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
-            var updatedEntity = new BlogCommentDto
+            var updatedEntity = new BlogStatusDto
             {
-                Id = -1,
-                BlogId = 1,
-                Username = "steva",
-                Comment = "novi komentar",
-                PostTime = DateTime.Now.ToUniversalTime(),
-                LastEditTime = DateTime.Now.ToUniversalTime(),
-                IsDeleted = false
+                Id = -2,
+                BlogId = -1,
+                Name = "active",
             };
 
-            var result = ((ObjectResult)controller.Update(updatedEntity).Result)?.Value as BlogCommentDto;
+            //Act
+            var result = ((ObjectResult)controller.Update(updatedEntity).Result)?.Value as BlogStatusDto;
 
+            //Assert - Response
             result.ShouldNotBeNull();
-            result.Id.ShouldBe(-1);
-            result.BlogId.ShouldBe(updatedEntity.BlogId);
-            result.Comment.ShouldBe(updatedEntity.Comment);
-            result.PostTime.ShouldBe(updatedEntity.PostTime);
-            result.LastEditTime.ShouldBe(updatedEntity.LastEditTime);
-            result.IsDeleted.ShouldBe(updatedEntity.IsDeleted);
+            result.Id.ShouldBe(-2);
+            result.Name.ShouldBe("active");
 
-            var storedEntity = dbContext.ForumComments.FirstOrDefault(i => i.Comment == updatedEntity.Comment);
+            //Assert - Database
+            var storedEntity = dbContext.BlogStatuses.FirstOrDefault(i => i.Name == "active");
             storedEntity.ShouldNotBeNull();
-            storedEntity.Comment.ShouldBe(updatedEntity.Comment);
-            var oldEntity = dbContext.ForumComments.FirstOrDefault(i => i.Comment == "komentar 1");
+            var oldEntity = dbContext.BlogStatuses.FirstOrDefault(i => i.Name == "famous");
             oldEntity.ShouldBeNull();
-
         }
 
         [Fact]
         public void Update_fails_invalid_id()
         {
+            //Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            var updatedEntity = new BlogCommentDto
+            var updatedEntity = new BlogStatusDto
             {
-                Id = -69,
-                Comment = "nesto ovde ne valja"
+                Id = -87,
+                BlogId = -1,
+                Name = "active",
             };
 
+            //Act
             var result = (ObjectResult)controller.Update(updatedEntity).Result;
 
+            //Assert
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(404);
         }
@@ -119,34 +117,41 @@ namespace Explorer.Blog.Tests.Integration.Commenting
         [Fact]
         public void Deletes()
         {
+            //Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
 
+            //Act
             var result = (OkResult)controller.Delete(-1);
 
+            //Assert - Response
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(200);
 
-            var storedCourse = dbContext.ForumComments.FirstOrDefault(i => i.Id == -1);
-            storedCourse.ShouldBeNull();
+            //Assert - Database
+            var deletedEntity = dbContext.BlogStatuses.FirstOrDefault(i => i.Id == -1);
+            deletedEntity.ShouldBeNull();
         }
 
         [Fact]
         public void Delete_fails_invalid_id()
         {
+            //Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
 
-            var result = (ObjectResult)controller.Delete(-1000);
+            //Act
+            var result = (ObjectResult)controller.Delete(-97);
 
+            //Assert
             result.ShouldNotBeNull();
             result.StatusCode.ShouldBe(404);
         }
 
-        private static BlogCommentController CreateController(IServiceScope scope)
+        private static BlogStatusController CreateController(IServiceScope scope)
         {
-            return new BlogCommentController(scope.ServiceProvider.GetRequiredService<IBlogCommentService>())
+            return new BlogStatusController(scope.ServiceProvider.GetRequiredService<IBlogStatusService>())
             {
                 ControllerContext = BuildContext("-1")
             };

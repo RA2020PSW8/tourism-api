@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Blog.API.Dtos.Enums
+namespace Explorer.Blog.Core.Domain.Enums
 {
-    public enum BlogStatus { DRAFT, PUBLISHED, CLOSED }
+    public enum Rating { UPVOTE, DOWNVOTE}
 }

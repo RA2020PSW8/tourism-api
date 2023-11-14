@@ -13,18 +13,23 @@ using FluentResults;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.Core.Domain;
+using Explorer.Blog.Core.Domain.RepositoryInterfaces;
+using Explorer.Blog.Core.Domain.Enums;
+
 
 namespace Explorer.Blog.Core.UseCases.Blog
 {
     public class BlogService : BaseService<BlogDto,Domain.Blog>, IBlogService
     {
+        private readonly IBlogStatusService _blogStatusService;
         private readonly IProfileService _profileService;
         private readonly IUserService _userService;
-        private readonly ICrudRepository<Domain.Blog> _repository;
+        private readonly IBlogRepository _repository;
         private readonly IMapper _mapper;
-        public BlogService(ICrudRepository<Domain.Blog> crudRepository, IMapper mapper, 
+        public BlogService(IBlogStatusService blogStatusService,IBlogRepository crudRepository, IMapper mapper, 
             IUserService userService, IProfileService profileService) : base(mapper)
         {
+            _blogStatusService = blogStatusService;
             _repository = crudRepository;
             _mapper = mapper;
             _userService = userService;
@@ -80,6 +85,16 @@ namespace Explorer.Blog.Core.UseCases.Blog
                     }
 
                     LoadPersonInformation(newDto);
+
+                    foreach (var ratingDto in newDto.BlogRatings)
+                    {
+                       var user = _userService.GetPaged(0, 0).Value.Results.Find(u => u.Id == ratingDto.UserId);
+                         if (user != null)
+                          {
+                              ratingDto.Username = user.Username;
+                          }
+                    }
+                    
                 }
                 return newDto;
             }
@@ -113,9 +128,33 @@ namespace Explorer.Blog.Core.UseCases.Blog
                 LoadPersonInformation(dto);
             }
 
+            foreach (BlogDto dto in dtos) { 
+                foreach(var ratingDto in dto.BlogRatings)
+                {
+                    var user = _userService.GetPaged(0,0).Value.Results.Find(u => u.Id == ratingDto.UserId);
+                    if(user != null)
+                    {
+                        ratingDto.Username = user.Username;
+                    }
+                }
+            }
+
             PagedResult<BlogDto> res = new(dtos, dtos.Count);
             return res;
         }
+
+        public PagedResult<BlogDto> GetWithStatuses(int page, int pageSize)
+        {
+            var result = _repository.GetWithStatuses(page, pageSize).Results;
+            List<BlogDto> dtos = new();
+            foreach (var item in result)
+            {
+                dtos.Add(MapToDto(item));
+            }
+            PagedResult<BlogDto> res = new(dtos, dtos.Count);
+            return res;
+        }
+
 
         public Result<BlogDto> Update(BlogDto blog)
         {
@@ -151,5 +190,34 @@ namespace Explorer.Blog.Core.UseCases.Blog
                 dto.CreatorRole = user.Role;
             }
         }
+
+        public void UpdateStatuses()
+        {
+            var result = _repository.GetPaged(0, 0).Results;
+
+            foreach(var blog in result)
+            {
+                var upvotes = blog.BlogRatings.Count(b => b.Rating == Rating.UPVOTE);
+                var downvotes = blog.BlogRatings.Count(b => b.Rating == Rating.DOWNVOTE);
+                if (upvotes - downvotes < 0)
+                {
+                    blog.CloseBlog();
+                }
+                else 
+                {
+                    _blogStatusService.Generate(blog.Id,"POPULAR");
+                }
+            }
+        }
+        
+        public Result<BlogDto> AddRating(BlogRatingDto blogRatingDto,long userId)
+        {
+            var blog = _repository.GetBlog(Convert.ToInt32(blogRatingDto.BlogId));
+            var rating = new BlogRating(blogRatingDto.BlogId, userId, blogRatingDto.CreationTime,Enum.Parse<Rating>(blogRatingDto.Rating));
+            blog.AddRating(rating);
+            //UpdateStatuses();
+            return Update(MapToDto(blog));
+        }
+
     }
 }

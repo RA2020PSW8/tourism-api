@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Explorer.Blog.Core.Domain.Enum
 {
-    public enum BlogStatus { DRAFT, PUBLISHED, CLOSED }
+    public enum BlogSystemStatus { DRAFT, PUBLISHED, CLOSED }
 }
