@@ -14,16 +14,20 @@ using System.Threading.Tasks;
 
 namespace Explorer.Tours.Core.UseCases.MarketPlace
 {
-    public class TourFilteringService :BaseService<TourDto, Tour>, ITourFilteringService
+    public class TourFilteringService : BaseService<TourDto, Tour>, ITourFilteringService
     {
         protected readonly ITourRepository _tourRepository;
+        protected readonly IPublicKeypointRepository _publicKeypointRepository;
+        protected readonly IObjectRepository _objectRepository;
 
-        public TourFilteringService(ITourRepository tourRepository, IMapper mapper) : base( mapper) 
+        public TourFilteringService(ITourRepository tourRepository, IPublicKeypointRepository publicKeypointRepository, IObjectRepository objectRepository, IMapper mapper) : base( mapper) 
         {
             _tourRepository = tourRepository;
+            _publicKeypointRepository = publicKeypointRepository;
+            _objectRepository = objectRepository;
         }
       
-        public Result<PagedResult<TourDto>> GetFilteredTours(int page, int pageSize, TourFilterCriteriaDto filter)
+        public Result<PagedResult<TourDto>> GetFilteredTours(int page, int pageSize, FilterCriteriaDto filter)
         {
             try
             {

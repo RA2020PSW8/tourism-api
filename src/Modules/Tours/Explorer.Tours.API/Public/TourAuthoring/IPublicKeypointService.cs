@@ -15,5 +15,6 @@ namespace Explorer.Tours.API.Public.TourAuthoring
         Result<PublicKeypointDto> Create(PublicKeypointDto publicKeypoint);
         Result<PublicKeypointDto> Update(PublicKeypointDto publicKeypoint);
         Result Delete(int id);
+        Result<PagedResult<PublicKeypointDto>> GetPagedInRange(int page, int pageSize, FilterCriteriaDto filter);
     }
 }
