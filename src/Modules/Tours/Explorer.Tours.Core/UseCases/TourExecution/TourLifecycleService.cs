@@ -21,13 +21,15 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
         protected readonly ITouristPositionRepository _touristPositionRepository;
         protected readonly ITourProgressRepository _tourProgressRepository;
         protected readonly IKeypointRepository _keypointRepository;
+        protected readonly ITourPurchaseTokenRepository _tourPurchaseTokenRepository;
 
-        public TourLifecycleService(ITourProgressRepository tourProgressRepository, ITourRepository tourRepository, ITouristPositionRepository touristPositionRepository,IKeypointRepository keypointRepository, IMapper mapper) : base(mapper)
+        public TourLifecycleService(ITourProgressRepository tourProgressRepository, ITourRepository tourRepository, ITouristPositionRepository touristPositionRepository,IKeypointRepository keypointRepository, ITourPurchaseTokenRepository tourPurchaseTokenRepository, IMapper mapper) : base(mapper)
         {
             _tourRepository = tourRepository;
             _touristPositionRepository = touristPositionRepository;
             _tourProgressRepository = tourProgressRepository;
             _keypointRepository = keypointRepository;
+            _tourPurchaseTokenRepository = tourPurchaseTokenRepository;
         }
 
         public Result<TourProgressDto> GetActiveByUser(long userId)
@@ -45,13 +47,10 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
 
         public Result<TourProgressDto> StartTour(long tourId, long userId)
         {
-            try
+            var boughtTour = _tourPurchaseTokenRepository.GetByTourAndTourist((int)tourId, (int)userId);
+            if (boughtTour == null)
             {
-                var tour = _tourRepository.Get(tourId);
-            }
-            catch (KeyNotFoundException e)
-            {
-                return Result.Fail(FailureCode.NotFound).WithError("Tour you want to start doesn't exist.");
+                return Result.Fail(FailureCode.NotFound).WithError("You have to buy tour before you can start it");
             }
 
             // try to remove nested try-catch
