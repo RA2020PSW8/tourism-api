@@ -1,5 +1,6 @@
 ﻿using Explorer.API.Controllers.Tourist.Blog;
 using Explorer.Blog.API.Dtos;
+using Explorer.Blog.API.Dtos.Enums;
 using Explorer.Blog.API.Public.Blog;
 using Explorer.Blog.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
@@ -27,11 +28,13 @@ namespace Explorer.Blog.Tests.Integration.Blog
             var dbContext = scope.ServiceProvider.GetRequiredService<BlogContext>();
             var newEntity = new BlogDto
             {
+                CreatorId = -11,
                 Title = "Breathtaking visit to Dubai",
                 Description = "Simply breathtaking.",
-                CreationDate = DateTime.Now.ToUniversalTime(),
-                ImageLinks = "image1.jpg",
-                Status = BlogDto.BlogStatus.DRAFT
+                CreationDate = DateOnly.FromDateTime(DateTime.Now.ToUniversalTime()),
+                ImageLinks = new List<string>() { "test" },
+                SystemStatus = BlogSystemStatus.DRAFT.ToString(),
+                BlogRatings = new List<BlogRatingDto>(),
             };
 
             //Act
@@ -57,7 +60,8 @@ namespace Explorer.Blog.Tests.Integration.Blog
             var updatedEntity = new BlogDto
             {
                 Title = "",
-                Description = ""
+                Description = "",
+                SystemStatus = ""
             };
 
             //Act
@@ -78,12 +82,12 @@ namespace Explorer.Blog.Tests.Integration.Blog
             var updatedEntity = new BlogDto
             {
                 Id = -1,
+                CreatorId = -1,
                 Title = "Spectacular visit to Russia",
                 Description = "Spectacular!",
-                CreationDate = DateTime.Now.ToUniversalTime(),
-                //ImageLinks = new List<string>() { "www.google.com" },
-                ImageLinks = "www.google.com",
-                Status = BlogDto.BlogStatus.DRAFT
+                CreationDate = DateOnly.FromDateTime(DateTime.Now.ToUniversalTime()),
+                ImageLinks = new List<string> { "img1.jpg"},
+                SystemStatus = BlogSystemStatus.DRAFT.ToString()
             };
 
             //Act
@@ -96,7 +100,7 @@ namespace Explorer.Blog.Tests.Integration.Blog
             result.Description.ShouldBe(updatedEntity.Description);
             result.CreationDate.ShouldBe(updatedEntity.CreationDate);
             result.ImageLinks.ShouldBe(updatedEntity.ImageLinks);
-            result.Status.ShouldBe(updatedEntity.Status);
+            result.SystemStatus.ShouldBe(updatedEntity.SystemStatus);
 
             //Assert - Database
             var storedEntity = dbContext.Blogs.FirstOrDefault(i => i.Description == "Spectacular!");
@@ -116,7 +120,8 @@ namespace Explorer.Blog.Tests.Integration.Blog
             {
                 Id = -420,
                 Title = "Invalid update",
-                Description = "Cannot happen"
+                Description = "Cannot happen",
+                SystemStatus = ""
             };
 
             //Act

@@ -11,18 +11,20 @@ namespace Explorer.Tours.Core.Domain
     {
         public int Rating { get; init; }
         public string Comment { get; init; }
-        //public Tourist Tourist { get; init; }
+        public long? UserId { get; init; }
         //public Tour Tour {  get; init; } 
+        public long TourId { get; init; }
+        public Tour Tour {  get; init; } 
         public DateTime VisitDate { get; init; }
         public DateTime RatingDate { get; init; }
-        public string ImageLinks { get; init; }
+        public List<string>? ImageLinks { get; init; }
 
         public TourReview() 
         { 
         
         }
 
-        public TourReview(int rating, string comment, DateTime visitDate, DateTime ratingDate, string imageLinks)
+        public TourReview(int rating, string comment, DateTime visitDate, DateTime ratingDate, List<string> imageLinks, long userId, long tourId)
         {
             if (rating < 1 || rating > 5)
             {
@@ -34,6 +36,8 @@ namespace Explorer.Tours.Core.Domain
             VisitDate = visitDate;
             RatingDate = ratingDate;
             ImageLinks = imageLinks;
+            UserId = userId;
+            TourId = tourId;
         }
     }
 }

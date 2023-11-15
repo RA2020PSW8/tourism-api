@@ -10,8 +10,8 @@ namespace Explorer.Blog.Core.Domain
 {
     public class BlogComment : Entity
     {
-        public int ForumId { get; private set; }
-        public string? Username { get; private set; }  
+        public int BlogId { get; private set; }
+        public long UserId { get; private set; }  
         public string Comment { get; private set; }
         public DateTime PostTime { get; private set; }  
         public DateTime LastEditTime { get; private set; }
@@ -22,10 +22,10 @@ namespace Explorer.Blog.Core.Domain
 
         }
 
-        public BlogComment(int forumId, string? username, string comment,DateTime postTime,DateTime lastEditTime,bool isDeleted)
+        public BlogComment(int blogId, long userId, string comment,DateTime postTime,DateTime lastEditTime,bool isDeleted)
         {
-            ForumId = forumId;
-            Username = username;
+            BlogId = blogId;
+            UserId = userId;
             if (string.IsNullOrWhiteSpace(comment)) throw new ArgumentException("Invalid comment");
             
             Comment = comment;

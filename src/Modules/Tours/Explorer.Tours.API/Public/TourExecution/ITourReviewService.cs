@@ -16,5 +16,7 @@ namespace Explorer.Tours.API.Public.TourExecution
         public Result<PagedResult<TourReviewDto>> GetPaged(int page, int pageSize);
         public Result<TourReviewDto> Update(TourReviewDto review);
         public Result Delete(int id);
+        public Result<PagedResult<TourReviewDto>> GetByTourId(long tourId, int page, int pageSize);
+        public Result<double> CalculateAverageRate(List<TourReviewDto> tourReviews);
     }
 }

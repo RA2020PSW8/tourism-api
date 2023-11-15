@@ -41,7 +41,7 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
             {
                 return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
             }
-            catch (KeyNotFoundException e) // reversed logic, mby bad, check
+            catch (KeyNotFoundException e)
             {
                 var result = CrudRepository.Create(MapToDomain(entity));
                 return MapToDto(result);
