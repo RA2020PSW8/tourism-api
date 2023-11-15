@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers 
 {
-    [Authorize(Policy = "userPolicy")]
+    [Authorize(Policy = "personPolicy")]
     [Route("api/notification")]
     public class NotificationController : BaseApiController
     {
