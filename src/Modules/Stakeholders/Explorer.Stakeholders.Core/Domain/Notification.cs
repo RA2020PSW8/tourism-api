@@ -45,7 +45,7 @@ namespace Explorer.Stakeholders.Core.Domain
                     Content = "The deadline for resolving the tour issue has been set to " + additionalMessage;
                     break;
                 case NotificationType.MESSAGE:
-                    Content = "You have received a new message from " + additionalMessage + '.';
+                    Content = "You have received a new message from " + additionalMessage;
                     break;
                 case NotificationType.REQUEST_ACCEPTED:
                     Content = "The request for public site registration '" + additionalMessage + "' has been accepted.";
