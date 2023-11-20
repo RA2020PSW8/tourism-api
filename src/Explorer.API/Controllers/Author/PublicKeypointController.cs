@@ -18,7 +18,7 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpGet]
-        public ActionResult<PagedResult<PublicKeypointDto>> GetPagedInRange([FromQuery] int page, [FromQuery] int pageSize)
+        public ActionResult<PagedResult<PublicKeypointDto>> GetPaged([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _publicKeypointService.GetPaged(page, pageSize);
             return CreateResponse(result);
