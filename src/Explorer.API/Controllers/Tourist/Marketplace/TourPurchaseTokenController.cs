@@ -1,6 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.MarketPlace;
+using Explorer.Payments.API.Dtos;
+using Explorer.Payments.API.Public;
 using Explorer.Tours.API.Public.TourAuthoring;
 using Microsoft.AspNetCore.Authorization;
 using FluentResults;

@@ -1,20 +1,14 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.MarketPlace;
-using Explorer.Tours.API.Public.TourAuthoring;
-using Explorer.Tours.Core.Domain;
-using Explorer.Tours.Core.Domain.RepositoryInterfaces;
+using Explorer.Payments.API.Dtos;
+using Explorer.Payments.API.Public;
+using Explorer.Payments.Core.Domain;
+using Explorer.Payments.Core.Domain.RepositoryInterfaces;
 using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Explorer.Tours.Core.UseCases.MarketPlace
-{
-    public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPurchaseToken>, ITourPurchaseTokenService
+namespace Explorer.Payments.Core.UseCases;
+
+public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPurchaseToken>, ITourPurchaseTokenService
     {
         protected readonly ITourPurchaseTokenRepository _tourPurchaseTokenRepository;
         protected readonly IShoppingCartRepository _shoppingCartRepository;
@@ -69,9 +63,8 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
             }
 
             _orderItemRepository.RemoveRange(shoppingCart.OrdersId);
-            _shoppingCartRepository.Delete(shoppingCartId); 
+            _shoppingCartRepository.Delete(shoppingCartId);
 
             return Result.Ok();
         }
     }
-}

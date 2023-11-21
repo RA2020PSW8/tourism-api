@@ -1,32 +1,26 @@
-﻿using Explorer.API.Controllers.Tourist;
-using Explorer.Stakeholders.API.Dtos;
-using Explorer.Stakeholders.API.Public.Tourist;
-using Explorer.Stakeholders.Infrastructure.Database;
-using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.MarketPlace;
+using Explorer.API.Controllers.Tourist;
+using Explorer.Payments.API.Dtos;
+using Explorer.Payments.API.Public;
+using Explorer.Payments.Infrastructure.Database;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Xunit;
 
-namespace Explorer.Tours.Tests.Integration.Marketplace
-{
-    [Collection("Sequential")]
-    public class OrderItemCommandTests : BaseToursIntegrationTest
+namespace Explorer.Payments.Tests.Integration;
+
+[Collection("Sequential")]
+    public class OrderItemCommandTests : BasePaymentsIntegrationTest
     {
-        public OrderItemCommandTests(ToursTestFactory factory) : base(factory) { }
+        public OrderItemCommandTests(PaymentsTestFactory factory) : base(factory) { }
         [Fact]
         public void Creates()
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
             var newEntity = new OrderItemDto
             {
                 TourId = -1,
@@ -48,14 +42,14 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             storedEntity.ShouldNotBeNull();
             storedEntity.Id.ShouldBe(result.Id);
         }
-        
+
         [Fact]
         public void Updates()
         {
             // Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
             var updatedEntity = new OrderItemDto
             {
                 Id = -1,
@@ -115,4 +109,3 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             };
         }
     }
-}

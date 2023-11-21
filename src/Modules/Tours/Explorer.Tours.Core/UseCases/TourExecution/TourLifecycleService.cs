@@ -21,15 +21,15 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
         protected readonly ITouristPositionRepository _touristPositionRepository;
         protected readonly ITourProgressRepository _tourProgressRepository;
         protected readonly IKeypointRepository _keypointRepository;
-        protected readonly ITourPurchaseTokenRepository _tourPurchaseTokenRepository;
+        //protected readonly ITourPurchaseTokenRepository _tourPurchaseTokenRepository;
 
-        public TourLifecycleService(ITourProgressRepository tourProgressRepository, ITourRepository tourRepository, ITouristPositionRepository touristPositionRepository,IKeypointRepository keypointRepository, ITourPurchaseTokenRepository tourPurchaseTokenRepository, IMapper mapper) : base(mapper)
+        public TourLifecycleService(ITourProgressRepository tourProgressRepository, ITourRepository tourRepository, ITouristPositionRepository touristPositionRepository,IKeypointRepository keypointRepository, /*ITourPurchaseTokenRepository tourPurchaseTokenRepository, */IMapper mapper) : base(mapper)
         {
             _tourRepository = tourRepository;
             _touristPositionRepository = touristPositionRepository;
             _tourProgressRepository = tourProgressRepository;
             _keypointRepository = keypointRepository;
-            _tourPurchaseTokenRepository = tourPurchaseTokenRepository;
+            //_tourPurchaseTokenRepository = tourPurchaseTokenRepository;
         }
 
         public Result<TourProgressDto> GetActiveByUser(long userId)
@@ -47,7 +47,7 @@ namespace Explorer.Tours.Core.UseCases.TourExecution
 
         public Result<TourProgressDto> StartTour(long tourId, long userId)
         {
-            var boughtTour = _tourPurchaseTokenRepository.GetByTourAndTourist((int)tourId, (int)userId);
+            var boughtTour = new Tour(); //_tourPurchaseTokenRepository.GetByTourAndTourist((int)tourId, (int)userId);
             if (boughtTour == null)
             {
                 return Result.Fail(FailureCode.NotFound).WithError("You have to buy tour before you can start it");

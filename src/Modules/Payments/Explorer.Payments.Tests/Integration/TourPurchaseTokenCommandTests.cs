@@ -1,24 +1,17 @@
-﻿using Explorer.API.Controllers.Tourist;
 using Explorer.API.Controllers.Tourist.Marketplace;
-using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Stakeholders.API.Dtos;
-using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.MarketPlace;
+using Explorer.Payments.API.Public;
+using Explorer.Payments.Infrastructure.Database;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Xunit;
 
-namespace Explorer.Tours.Tests.Integration.Marketplace
-{
-    public class TourPurchaseTokenCommandTests: BaseToursIntegrationTest
+namespace Explorer.Payments.Tests.Integration;
+
+public class TourPurchaseTokenCommandTests: BasePaymentsIntegrationTest
     {
-        public TourPurchaseTokenCommandTests(ToursTestFactory factory) : base(factory) { }
+        public TourPurchaseTokenCommandTests(PaymentsTestFactory factory) : base(factory) { }
 
         [Fact]
         public void Creates()
@@ -26,7 +19,7 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             // Arrange
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
-            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
 
             // Act
             var result = ((OkResult)controller.BuyShoppingCart(-1));
@@ -96,4 +89,3 @@ namespace Explorer.Tours.Tests.Integration.Marketplace
             };
         }
     }
-}
