@@ -1,12 +1,11 @@
 using Explorer.BuildingBlocks.Tests;
-using Explorer.Payments.Infrastructure;
 using Explorer.Payments.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Explorer.Payments.Tests;
 
-public class PaymentsTestFactory: BaseTestFactory<PaymentsContext>
+public class PaymentsTestFactory : BaseTestFactory<PaymentsContext>
 {
     protected override IServiceCollection ReplaceNeededDbContexts(IServiceCollection services)
     {

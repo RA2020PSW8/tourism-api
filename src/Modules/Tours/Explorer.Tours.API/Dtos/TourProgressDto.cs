@@ -1,22 +1,14 @@
-﻿using Explorer.BuildingBlocks.Core.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Explorer.Tours.API.Dtos;
 
-namespace Explorer.Tours.API.Dtos
+public class TourProgressDto
 {
-    public class TourProgressDto
-    {
-        public long Id { get; set; }
-        public long TouristPositionId { get; set; }
-        public TouristPositionDto? TouristPosition { get; set; } 
-        public long TourId { get; set; }
-        public TourDto? Tour { get; set; }
-        public string Status { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime LastActivity { get; set; }
-        public int CurrentKeyPoint { get; set; }
-    }
+    public long Id { get; set; }
+    public long TouristPositionId { get; set; }
+    public TouristPositionDto? TouristPosition { get; set; }
+    public long TourId { get; set; }
+    public TourDto? Tour { get; set; }
+    public string Status { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime LastActivity { get; set; }
+    public int CurrentKeyPoint { get; set; }
 }

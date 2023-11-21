@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Explorer.Payments.Infrastructure.Database.Repositories;
 
-public class OrderItemRepository: CrudDatabaseRepository<OrderItem, PaymentsContext>, IOrderItemRepository
+public class OrderItemRepository : CrudDatabaseRepository<OrderItem, PaymentsContext>, IOrderItemRepository
 {
     protected readonly PaymentsContext _dbContext;
     private readonly DbSet<OrderItem> _dbSet;
@@ -16,6 +16,7 @@ public class OrderItemRepository: CrudDatabaseRepository<OrderItem, PaymentsCont
         _dbContext = dbContext;
         _dbSet = dbContext.Set<OrderItem>();
     }
+
     public PagedResult<OrderItem> GetByUser(int page, int pageSize, int userId)
     {
         var task = _dbSet.Where(k => k.UserId == userId).GetPagedById(page, pageSize);

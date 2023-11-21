@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Explorer.Payments.Infrastructure.Database.Repositories;
 
-public class TourPurchaseTokenRepository : CrudDatabaseRepository<TourPurchaseToken, PaymentsContext>, ITourPurchaseTokenRepository
+public class TourPurchaseTokenRepository : CrudDatabaseRepository<TourPurchaseToken, PaymentsContext>,
+    ITourPurchaseTokenRepository
 {
     private readonly DbSet<TourPurchaseToken> _dbSet;
 
@@ -20,9 +21,8 @@ public class TourPurchaseTokenRepository : CrudDatabaseRepository<TourPurchaseTo
         DbContext.SaveChanges();
     }
 
-    public TourPurchaseToken GetByTourAndTourist (int tourId, int touristId)
+    public TourPurchaseToken GetByTourAndTourist(int tourId, int touristId)
     {
         return DbContext.TourPurchaseTokens.FirstOrDefault(t => t.TourId == tourId && t.TouristId == touristId);
     }
-
 }

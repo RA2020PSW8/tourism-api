@@ -12,7 +12,10 @@ namespace Explorer.Payments.Tests.Integration;
 [Collection("Sequential")]
 public class OrderItemQueryTests : BasePaymentsIntegrationTest
 {
-    public OrderItemQueryTests(PaymentsTestFactory factory) : base(factory) { }
+    public OrderItemQueryTests(PaymentsTestFactory factory) : base(factory)
+    {
+    }
+
     [Fact]
     public void Retrieves_all()
     {

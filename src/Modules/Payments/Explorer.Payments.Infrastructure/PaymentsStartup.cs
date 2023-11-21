@@ -1,4 +1,3 @@
-using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Payments.API.Public;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;

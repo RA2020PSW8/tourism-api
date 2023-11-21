@@ -12,10 +12,7 @@ public class BaseArchitecturalTests
     public BaseArchitecturalTests()
     {
         var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        foreach (var dll in Directory.GetFiles(path, "Explorer.*.dll"))
-        {
-            Assembly.LoadFile(dll);
-        }
+        foreach (var dll in Directory.GetFiles(path, "Explorer.*.dll")) Assembly.LoadFile(dll);
 
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 

@@ -8,25 +8,23 @@ using FluentResults;
 
 namespace Explorer.Payments.Core.UseCases;
 
-public class ShoppingCartService: CrudService<ShoppingCartDto, ShoppingCart>, IShoppingCartService
+public class ShoppingCartService : CrudService<ShoppingCartDto, ShoppingCart>, IShoppingCartService
 {
     protected readonly IShoppingCartRepository _shoppingCartRepository;
+
     public ShoppingCartService(IShoppingCartRepository repository, IMapper mapper) : base(repository, mapper)
     {
         _shoppingCartRepository = repository;
     }
 
 
-    override public Result<ShoppingCartDto> Update(ShoppingCartDto updatedShoppingCart)
+    public override Result<ShoppingCartDto> Update(ShoppingCartDto updatedShoppingCart)
     {
         try
         {
             var existingShoppingCart = _shoppingCartRepository.Get(updatedShoppingCart.Id);
 
-            if (existingShoppingCart == null)
-            {
-                return Result.Fail("Shopping cart not found.");
-            }
+            if (existingShoppingCart == null) return Result.Fail("Shopping cart not found.");
 
             existingShoppingCart.OrdersId = updatedShoppingCart.OrdersId;
             existingShoppingCart.Price = updatedShoppingCart.Price;
@@ -43,16 +41,15 @@ public class ShoppingCartService: CrudService<ShoppingCartDto, ShoppingCart>, IS
         }
     }
 
-    override public Result<ShoppingCartDto> Create(ShoppingCartDto entity)
+    public override Result<ShoppingCartDto> Create(ShoppingCartDto entity)
     {
         var result = _shoppingCartRepository.Create(MapToDomain(entity));
         return MapToDto(result);
     }
+
     public ShoppingCartDto GetByUser(int userId)
     {
         var cart = _shoppingCartRepository.GetByUser(userId);
         return MapToDto(cart);
     }
-
-
 }

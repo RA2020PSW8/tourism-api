@@ -4,58 +4,52 @@ using Explorer.Stakeholders.API.Public.Tourist;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Explorer.API.Controllers.Tourist
+namespace Explorer.API.Controllers.Tourist;
+
+[Authorize(Policy = "touristPolicy")]
+[Route("api/tourist/clubJoinRequest")]
+public class ClubJoinRequestController : BaseApiController
 {
-    [Authorize(Policy = "touristPolicy")]
-    [Route("api/tourist/clubJoinRequest")]
-    public class ClubJoinRequestController: BaseApiController
+    private readonly IClubJoinRequestService _requestService;
+
+    public ClubJoinRequestController(IClubJoinRequestService requestService)
     {
-        private readonly IClubJoinRequestService _requestService;
+        _requestService = requestService;
+    }
 
-        public ClubJoinRequestController(IClubJoinRequestService requestService)
-        {
+    [HttpGet("all")]
+    public ActionResult<PagedResult<ClubJoinRequestDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+    {
+        var result = _requestService.GetPaged(page, pageSize);
+        return CreateResponse(result);
+    }
 
-            _requestService = requestService;
+    [HttpGet]
+    public ActionResult<ClubJoinRequestDto> GetAllByUser()
+    {
+        var result = _requestService.GetAllByUser(User.PersonId());
+        return CreateResponse(result);
+    }
 
-        }
-        [HttpGet("all")]
-        public ActionResult<PagedResult<ClubJoinRequestDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
-        {
+    [HttpGet("{clubId}")]
+    public ActionResult<PagedResult<ClubJoinRequestDto>> GetAllByClub([FromRoute] int clubId)
+    {
+        var result = _requestService.GetAllByClub(clubId);
+        return CreateResponse(result);
+    }
 
-            var result = _requestService.GetPaged(page, pageSize);
-            return CreateResponse(result);
+    [HttpPost]
+    public ActionResult<ClubJoinRequestDto> Create([FromBody] ClubDto club)
+    {
+        var result = _requestService.Create(club, User.PersonId());
+        return CreateResponse(result);
+    }
 
-        }
-        [HttpGet]
-        public ActionResult<ClubJoinRequestDto> GetAllByUser()
-        {
-            var result = _requestService.GetAllByUser(ClaimsPrincipalExtensions.PersonId(User));
-            return CreateResponse(result);
-        }
-        [HttpGet("{clubId}")]
-        public ActionResult<PagedResult<ClubJoinRequestDto>> GetAllByClub([FromRoute] int clubId)
-        {
-
-            var result = _requestService.GetAllByClub(clubId);
-            return CreateResponse(result);
-
-        }
-
-        [HttpPost]
-        public ActionResult<ClubJoinRequestDto> Create([FromBody] ClubDto club)
-        {
-            var result = _requestService.Create(club, ClaimsPrincipalExtensions.PersonId(User));
-            return CreateResponse(result);
-        }
-
-        [HttpPut]
-        public ActionResult<ClubJoinRequestDto> Update([FromBody] ClubJoinRequestDto request)
-        {
-            var result = _requestService.Update(request);
-            return CreateResponse(result);
-        }
-
+    [HttpPut]
+    public ActionResult<ClubJoinRequestDto> Update([FromBody] ClubJoinRequestDto request)
+    {
+        var result = _requestService.Update(request);
+        return CreateResponse(result);
     }
 }

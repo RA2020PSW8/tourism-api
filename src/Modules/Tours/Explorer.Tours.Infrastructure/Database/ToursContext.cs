@@ -1,14 +1,17 @@
 ﻿using Explorer.Tours.Core.Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Object = Explorer.Tours.Core.Domain.Object;
 
 namespace Explorer.Tours.Infrastructure.Database;
 
 public class ToursContext : DbContext
 {
+    public ToursContext(DbContextOptions<ToursContext> options) : base(options)
+    {
+    }
+
     public DbSet<Equipment> Equipment { get; set; }
-    public DbSet<TouristEquipment> TouristEquipment { get; set; }   
+    public DbSet<TouristEquipment> TouristEquipment { get; set; }
     public DbSet<TourReview> TourReviews { get; set; }
     public DbSet<TourPreference> TourPreference { get; set; }
     public DbSet<Tour> Tours { get; set; }
@@ -19,8 +22,6 @@ public class ToursContext : DbContext
     public DbSet<TouristPosition> TouristPositions { get; set; }
     public DbSet<PublicKeypoint> PublicKeyPoints { get; set; }
     public DbSet<TourProgress> TourProgresses { get; set; }
-
-    public ToursContext(DbContextOptions<ToursContext> options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,7 +37,7 @@ public class ToursContext : DbContext
             .HasOne(k => k.Tour)
             .WithMany(t => t.Keypoints)
             .HasForeignKey(k => k.TourId);
-        
+
         modelBuilder.Entity<TourEquipment>()
             .HasKey(te => new { te.TourId, te.EquipmentId });
 

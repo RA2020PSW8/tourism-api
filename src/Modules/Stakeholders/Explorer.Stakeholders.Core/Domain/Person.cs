@@ -1,28 +1,13 @@
-﻿using Explorer.BuildingBlocks.Core.Domain;
-using Explorer.BuildingBlocks.Core.UseCases;
-using FluentResults;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Mail;
+using Explorer.BuildingBlocks.Core.Domain;
 
 namespace Explorer.Stakeholders.Core.Domain;
 
 public class Person : Entity
 {
-    public long UserId { get; init; }
-    public string Name { get; init; }
-    public string Surname { get; init; }
-    public string Email { get; init; }
-    public string ProfileImage { get; init; }
-    public string Biography { get; init; }
-    public string Quote { get; init; }
-
-    [InverseProperty(nameof(Person.Following))]
-    public List<Person> Followers { get; } = new();
-
-    [InverseProperty(nameof(Person.Followers))]
-    public List<Person> Following { get; } = new();
-
-    public Person(long userId, string name, string surname, string email, string profileImage, string biography, string quote)
+    public Person(long userId, string name, string surname, string email, string profileImage, string biography,
+        string quote)
     {
         UserId = userId;
         Name = name;
@@ -36,6 +21,18 @@ public class Person : Entity
         Validate();
     }
 
+    public long UserId { get; init; }
+    public string Name { get; init; }
+    public string Surname { get; init; }
+    public string Email { get; init; }
+    public string ProfileImage { get; init; }
+    public string Biography { get; init; }
+    public string Quote { get; init; }
+
+    [InverseProperty(nameof(Following))] public List<Person> Followers { get; } = new();
+
+    [InverseProperty(nameof(Followers))] public List<Person> Following { get; } = new();
+
     private void Validate()
     {
         if (UserId == 0) throw new ArgumentException("Invalid UserId");
@@ -46,10 +43,12 @@ public class Person : Entity
         if (string.IsNullOrWhiteSpace(Biography)) throw new ArgumentException("Invalid Biography");
         if (string.IsNullOrWhiteSpace(Quote)) throw new ArgumentException("Invalid Quote");
     }
+
     public bool IsPersonAlreadyFollowed(long personId)
     {
         return Following.Any(f => f.Id == personId);
     }
+
     public void AddFollowing(Person followed)
     {
         if (IsPersonAlreadyFollowed(followed.Id)) throw new ArgumentException("You already follow this person.");
@@ -58,6 +57,7 @@ public class Person : Entity
 
         Following.Add(followed);
     }
+
     public void RemoveFollowing(Person followed)
     {
         if (!IsPersonAlreadyFollowed(followed.Id)) throw new ArgumentException("You don't follow this person.");
@@ -66,6 +66,4 @@ public class Person : Entity
 
         Following.Remove(followed);
     }
-
-
 }

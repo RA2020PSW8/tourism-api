@@ -11,7 +11,9 @@ namespace Explorer.Payments.Tests.Integration;
 
 public class TourPurchaseTokenIntegrationQueryTest : BasePaymentsIntegrationTest
 {
-    public TourPurchaseTokenIntegrationQueryTest(PaymentsTestFactory factory) : base(factory) { }
+    public TourPurchaseTokenIntegrationQueryTest(PaymentsTestFactory factory) : base(factory)
+    {
+    }
 
     [Fact]
     public void Retrieves_all()
