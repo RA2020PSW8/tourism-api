@@ -22,9 +22,4 @@ DELETE
 FROM tours."PublicKeyPoints";
 DELETE
 FROM tours."TouristPositions";
-DELETE
-FROM tours."OrderItems";
-DELETE
-FROM tours."ShoppingCarts";
-DELETE
-FROM tours."TourPurchaseTokens";
+
