@@ -55,7 +55,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Explorer.Payments.Core", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Explorer.Payments.Infrastructure", "Modules\Payments\Explorer.Payments.Infrastructure\Explorer.Payments.Infrastructure.csproj", "{41D1BBF2-BA9D-43C5-93AA-CD8B0B80DFA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Explorer.Payments.Tests", "Modules\Payments\Explorer.Payments.Tests\Explorer.Payments.Tests.csproj", "{B8B6DA87-D48E-4271-A5B2-F9613898BD9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Explorer.Payments.Tests", "Modules\Payments\Explorer.Payments.Tests\Explorer.Payments.Tests.csproj", "{7A90BF55-2140-430F-9173-AB5CD0F9D856}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,10 +143,10 @@ Global
 		{41D1BBF2-BA9D-43C5-93AA-CD8B0B80DFA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41D1BBF2-BA9D-43C5-93AA-CD8B0B80DFA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41D1BBF2-BA9D-43C5-93AA-CD8B0B80DFA5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8B6DA87-D48E-4271-A5B2-F9613898BD9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8B6DA87-D48E-4271-A5B2-F9613898BD9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8B6DA87-D48E-4271-A5B2-F9613898BD9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8B6DA87-D48E-4271-A5B2-F9613898BD9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A90BF55-2140-430F-9173-AB5CD0F9D856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A90BF55-2140-430F-9173-AB5CD0F9D856}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A90BF55-2140-430F-9173-AB5CD0F9D856}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A90BF55-2140-430F-9173-AB5CD0F9D856}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,7 +174,7 @@ Global
 		{8F6C9F0C-0C6E-4988-802B-FFB669A0FA9F} = {8E1625C4-A249-48F0-87AF-CFD72EA1985A}
 		{38EFEB20-2AC8-4699-B956-6DDE3EF0D21C} = {8E1625C4-A249-48F0-87AF-CFD72EA1985A}
 		{41D1BBF2-BA9D-43C5-93AA-CD8B0B80DFA5} = {8E1625C4-A249-48F0-87AF-CFD72EA1985A}
-		{B8B6DA87-D48E-4271-A5B2-F9613898BD9E} = {8E1625C4-A249-48F0-87AF-CFD72EA1985A}
+		{7A90BF55-2140-430F-9173-AB5CD0F9D856} = {8E1625C4-A249-48F0-87AF-CFD72EA1985A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C378FE87-3A2E-4BB0-8E39-FB8767789244}
