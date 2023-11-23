@@ -1,10 +1,12 @@
 using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Payments.API.Dtos;
 using Explorer.Payments.API.Public;
 using Explorer.Payments.Core.Domain;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;
+using Explorer.Tours.API.Internal;
 using FluentResults;
+using OrderItemDto = Explorer.Payments.API.Dtos.OrderItemDto;
+using ShoppingCartDto = Explorer.Payments.API.Dtos.ShoppingCartDto;
 
 namespace Explorer.Payments.Core.UseCases;
 
@@ -13,21 +15,22 @@ public class OrderItemService : CrudService<OrderItemDto, OrderItem>, IOrderItem
     protected readonly IOrderItemRepository _orderItemRepository;
 
     protected readonly IShoppingCartService _shoppingCartService;
-    //protected readonly ITourService _tourService;
+    protected readonly IInternalTourService _tourService;
 
 
     public OrderItemService(IOrderItemRepository repository, IMapper mapper,
-        IShoppingCartService shoppingCartService /* ITourService tourService*/) : base(repository, mapper)
+        IShoppingCartService shoppingCartService, IInternalTourService tourService) : base(repository, mapper)
     {
         _orderItemRepository = repository;
-        _shoppingCartService = shoppingCartService; //_tourService = tourService;
+        _shoppingCartService = shoppingCartService;
+        _tourService = tourService;
     }
 
     public override Result<OrderItemDto> Create(OrderItemDto entity)
     {
         try
         {
-            var shoppingCart = new ShoppingCartDto(); //_shoppingCartService.GetByUser(entity.UserId);
+            var shoppingCart = _shoppingCartService.GetByUser(entity.UserId);
             if (shoppingCart != null)
             {
                 foreach (var orderId in shoppingCart.OrdersId)
@@ -39,19 +42,19 @@ public class OrderItemService : CrudService<OrderItemDto, OrderItem>, IOrderItem
                 }
 
                 shoppingCart.OrdersId.Add(entity.Id);
-                //TourDto tour = _tourService.GetById(entity.TourId);
-                shoppingCart.Price += 1; //tour.Price;
+                var price = _tourService.Get(entity.TourId).Value.Price;
+                shoppingCart.Price += price;
                 _shoppingCartService.Update(shoppingCart);
             }
             else
             {
-                //TourDto tour = new TourDto(); //_tourService.GetById(entity.TourId);
+                var price = _tourService.Get(entity.TourId).Value.Price;
 
                 var newShoppingCart = new ShoppingCartDto
                 {
                     Id = 1,
                     UserId = entity.UserId,
-                    Price = 5, //tour.Price,
+                    Price = price,
                     OrdersId = new List<int> { entity.Id }
                 };
                 _shoppingCartService.Create(newShoppingCart);
