@@ -25,8 +25,8 @@ public class User : Entity
     }
 
     public string Username { get; }
-    public string Password { get; }
-    public UserRole Role { get; }
+    public string Password { get; init; }
+    public UserRole Role { get; set; }
     public bool IsActive { get; set; }
     public string Email { get; private set; }
     public bool IsBlocked { get; set; }

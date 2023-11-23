@@ -1,5 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Infrastructure.Database;
-using Explorer.Tours.API.Dtos.Enums;
+using Explorer.Tours.Core.Domain.Enum;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;

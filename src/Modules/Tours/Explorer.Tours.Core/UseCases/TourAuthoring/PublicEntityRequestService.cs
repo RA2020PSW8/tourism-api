@@ -152,7 +152,8 @@ public class PublicEntityRequestService : CrudService<PublicEntityRequestDto, Pu
 
     public Result<PublicEntityRequestDto> GetByEntityId(int entityId, EntityType entityType)
     {
-        var result = _publicEntityRequestRepository.GetByEntityId(entityId, entityType);
+        var coreEntityType = (Core.Domain.Enum.EntityType)Enum.Parse(typeof(Core.Domain.Enum.EntityType), entityType.ToString());
+        var result = _publicEntityRequestRepository.GetByEntityId(entityId, coreEntityType);
         return MapToDto(result);
     }
 }

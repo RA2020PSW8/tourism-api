@@ -1,5 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Tours.API.Dtos.Enums;
+using Explorer.Tours.Core.Domain.Enum;
 
 namespace Explorer.Tours.Core.Domain.RepositoryInterfaces;
 

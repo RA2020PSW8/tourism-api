@@ -59,7 +59,7 @@ public class TourPurchaseTokenCommandTests : BasePaymentsIntegrationTest
         var controller = CreateController(scope);
 
         // Act
-        var result = (ObjectResult)controller.BuyShoppingCart(-1);
+        var result = ((ObjectResult)controller.BuyShoppingCart(-3));
 
         // Assert
         result.ShouldNotBeNull();
