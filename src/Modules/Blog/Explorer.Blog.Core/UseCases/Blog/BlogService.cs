@@ -203,7 +203,7 @@ namespace Explorer.Blog.Core.UseCases.Blog
 
         public void DetermineStatus(Domain.Blog blog)
         {
-            string status = "";
+            string status;
             var upvotes = blog.BlogRatings.Count(b => b.Rating == Rating.UPVOTE);
             var downvotes = blog.BlogRatings.Count(b => b.Rating == Rating.DOWNVOTE);
             var commentNumber = _blogCommentService.GetPaged(0, 0, blog.Id).Value.Results.Count();
@@ -212,6 +212,7 @@ namespace Explorer.Blog.Core.UseCases.Blog
             if (score < 0)
             {
                 blog.CloseBlog();
+                status = "CLOSED";
             }
             else if (score > 35 || commentNumber >= 2)
             {
@@ -220,6 +221,9 @@ namespace Explorer.Blog.Core.UseCases.Blog
             else if (score > 2 || commentNumber >= 1)
             {
                 status = "OPENED";
+            }
+            else {
+                status = "NEW";
             }
 
             UpdateStatuses(MapToDto(blog),status);
