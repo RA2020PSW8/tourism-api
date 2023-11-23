@@ -195,7 +195,7 @@ namespace Explorer.Blog.Core.UseCases.Blog
 
         public void UpdateStatuses(BlogDto blogDto,string status)
         {
-            if (blogDto.BlogStatuses.Find(s => s.Name == status) == null)
+            if (_blogStatusService.GetPaged(0, 0).Value.Results.Find((s => s.Name == status && s.BlogId == blogDto.Id)) == null)
             {
                 _blogStatusService.Generate(blogDto.Id, status);
             }
@@ -203,7 +203,7 @@ namespace Explorer.Blog.Core.UseCases.Blog
 
         public void DetermineStatus(Domain.Blog blog)
         {
-            string status = "OPENED";
+            string status = "";
             var upvotes = blog.BlogRatings.Count(b => b.Rating == Rating.UPVOTE);
             var downvotes = blog.BlogRatings.Count(b => b.Rating == Rating.DOWNVOTE);
             var commentNumber = _blogCommentService.GetPaged(0, 0, blog.Id).Value.Results.Count();
@@ -213,13 +213,13 @@ namespace Explorer.Blog.Core.UseCases.Blog
             {
                 blog.CloseBlog();
             }
-            else if(score > 5 || commentNumber > 2)
+            else if (score > 35 || commentNumber >= 2)
             {
                 status = "ACTIVE";
             }
-            else if(score > 35 && commentNumber > 15)
+            else if (score > 2 || commentNumber >= 1)
             {
-                status = "FAMOUS";
+                status = "OPENED";
             }
 
             UpdateStatuses(MapToDto(blog),status);
