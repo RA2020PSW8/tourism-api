@@ -26,41 +26,80 @@ public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPu
 
     public Result BuyShoppingCart(int shoppingCartId)
     {
-        ShoppingCart shoppingCart = null;
-        try
-        {
-            shoppingCart = _shoppingCartRepository.Get(shoppingCartId);
-        }
-        catch (Exception ex)
-        {
+        ShoppingCart shoppingCart = GetShoppingCart(shoppingCartId);
+
+        if(shoppingCart == null)
             return Result.Fail(FailureCode.NotFound).WithError("Shopping cart does not exist!");
-        }
+
 
         var tokens = new List<TourPurchaseToken>();
+
         foreach (var orderId in shoppingCart.OrdersId)
         {
-            OrderItem orderItem = null;
-            try
-            {
-                orderItem = _orderItemRepository.Get(orderId);
-            }
-            catch (Exception ex)
-            {
-                return Result.Fail(FailureCode.NotFound).WithError("Order item does not exist!");
-            }
+            OrderItem orderItem = GetOrderItem(orderId);
 
-            if (_tourPurchaseTokenRepository.GetByTourAndTourist(orderItem.TourId, shoppingCart.UserId) != null)
+            if (orderItem == null)
+                return Result.Fail(FailureCode.NotFound).WithError("Order item does not exist!");
+
+
+            if (TokenAlreadyExists(orderItem.TourId, shoppingCart.UserId))
                 return Result.Fail(FailureCode.NotFound).WithError("Token already exists!");
 
             var token = new TourPurchaseToken(orderItem.TourId, shoppingCart.UserId);
             tokens.Add(token);
         }
 
-        if (tokens.Count > 0) _tourPurchaseTokenRepository.AddRange(tokens);
-
-        _orderItemRepository.RemoveRange(shoppingCart.OrdersId);
-        _shoppingCartRepository.Delete(shoppingCartId);
+        AddTokensToRepository(tokens);
+        RemoveOrderItems(shoppingCart.OrdersId);
+        DeleteShoppingCart(shoppingCartId);
 
         return Result.Ok();
+    }
+
+    private ShoppingCart GetShoppingCart(int shoppingCartId)
+    {
+        try
+        {
+            return _shoppingCartRepository.Get(shoppingCartId);
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    private OrderItem GetOrderItem(int orderId)
+    {
+        try
+        {
+            return _orderItemRepository.Get(orderId);
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    private bool TokenAlreadyExists(int tourId, int userId)
+    {
+        return _tourPurchaseTokenRepository.GetByTourAndTourist(tourId, userId) != null;
+    }
+
+    private void RemoveOrderItems(List<int> orderIds)
+    {
+        _orderItemRepository.RemoveRange(orderIds);
+    }
+
+    private void DeleteShoppingCart(int shoppingCartId)
+    {
+        _shoppingCartRepository.Delete(shoppingCartId);
+    }
+
+    private void AddTokensToRepository(List<TourPurchaseToken> tokens)
+    {
+        if (tokens.Count > 0)
+        {
+            _tourPurchaseTokenRepository.AddRange(tokens);
+        }
     }
 }
