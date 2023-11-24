@@ -23,7 +23,7 @@ public class TourPurchaseTokenCommandTests : BasePaymentsIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
 
         // Act
-        var result = (OkResult)controller.BuyShoppingCart(-1);
+        var result = (ObjectResult)controller.BuyShoppingCart(-1);
 
         // Assert - Response
         result.ShouldNotBeNull();

@@ -31,33 +31,21 @@ public class OrderItemService : CrudService<OrderItemDto, OrderItem>, IOrderItem
         try
         {
             var shoppingCart = _shoppingCartService.GetByUser(entity.UserId);
-            if (shoppingCart != null)
-            {
-                foreach (var orderId in shoppingCart.OrdersId)
-                {
-                    var item = _orderItemRepository.Get(orderId);
-                    if (item.TourId == entity.TourId)
-                        return Result.Fail(FailureCode.Conflict)
-                            .WithError("This tour is already in the shopping cart!");
-                }
 
-                shoppingCart.OrdersId.Add(entity.Id);
-                var price = _tourService.Get(entity.TourId).Value.Price;
-                shoppingCart.Price += price;
-                _shoppingCartService.Update(shoppingCart);
+            if (shoppingCart == null)
+            {
+                CreateNewShoppingCart(entity);
             }
             else
             {
-                var price = _tourService.Get(entity.TourId).Value.Price;
-
-                var newShoppingCart = new ShoppingCartDto
+                if (IsTourAlreadyInCart(shoppingCart, entity.TourId))
                 {
-                    Id = 1,
-                    UserId = entity.UserId,
-                    Price = price,
-                    OrdersId = new List<int> { entity.Id }
-                };
-                _shoppingCartService.Create(newShoppingCart);
+                    return Result.Fail(FailureCode.Conflict)
+                                 .WithError("This tour is already in the shopping cart!");
+                }
+
+                AddItemToShoppingCart(shoppingCart, entity);
+                _shoppingCartService.Update(shoppingCart);
             }
 
             var result = CrudRepository.Create(MapToDomain(entity));
@@ -69,39 +57,68 @@ public class OrderItemService : CrudService<OrderItemDto, OrderItem>, IOrderItem
         }
     }
 
+    private void CreateNewShoppingCart(OrderItemDto entity)
+    {
+        var price = _tourService.Get(entity.TourId).Value.Price;
+
+        var newShoppingCart = new ShoppingCartDto
+        {
+            Id = 1,
+            UserId = entity.UserId,
+            Price = price,
+            OrdersId = new List<int> { entity.Id }
+        };
+        _shoppingCartService.Create(newShoppingCart);
+    }
+
+    private bool IsTourAlreadyInCart(ShoppingCartDto shoppingCart, int tourId)
+    {
+        return shoppingCart.OrdersId.Any(orderId =>
+               _orderItemRepository.Get(orderId).TourId == tourId);
+    }
+
+    private void AddItemToShoppingCart(ShoppingCartDto shoppingCart, OrderItemDto entity)
+    {
+        shoppingCart.OrdersId.Add(entity.Id);
+        var price = _tourService.Get(entity.TourId).Value.Price;
+        shoppingCart.Price += price;
+    }
+
+
 
     public PagedResult<OrderItemDto> GetAllByUser(int page, int pageSize, int currentUserId)
     {
         var shoppingCart = _shoppingCartService.GetByUser(currentUserId);
         var result = GetPaged(page, pageSize);
-        var filteredItems = new List<OrderItemDto>();
 
-        foreach (var order in result.ValueOrDefault.Results)
-            if (shoppingCart != null)
-                foreach (var id in shoppingCart.OrdersId)
-                    if (order.UserId == currentUserId && order.Id == id)
-                        filteredItems.Add(order);
+        var filteredItems = result
+            .ValueOrDefault
+            .Results
+            .Where(order => shoppingCart != null &&
+                            shoppingCart.OrdersId.Contains(order.Id) &&
+                            order.UserId == currentUserId)
+            .ToList();
+
         return new PagedResult<OrderItemDto>(filteredItems, filteredItems.Count);
     }
 
+
     public override Result Delete(int id)
     {
-        var orderItem = _orderItemRepository.Get(id);
-        var shoppingCart = _shoppingCartService.GetByUser(orderItem.UserId);
         try
         {
-            for (var i = shoppingCart.OrdersId.Count - 1; i >= 0; i--)
+            var orderItem = _orderItemRepository.Get(id);
+            var shoppingCart = _shoppingCartService.GetByUser(orderItem.UserId);
+
+            RemoveOrderFromShoppingCart(id, shoppingCart);
+
+            if (shoppingCart.OrdersId.Count == 0)
             {
-                var orderId = shoppingCart.OrdersId[i];
-                if (id == orderId)
-                {
-                    shoppingCart.OrdersId.RemoveAt(i);
-                    _shoppingCartService.Update(shoppingCart);
-                }
+                _shoppingCartService.Delete(shoppingCart.Id);
             }
 
-            if (shoppingCart.OrdersId.Count == 0) _shoppingCartService.Delete(shoppingCart.Id);
             _orderItemRepository.Delete(id);
+
             return Result.Ok();
         }
         catch (KeyNotFoundException e)
@@ -109,4 +126,17 @@ public class OrderItemService : CrudService<OrderItemDto, OrderItem>, IOrderItem
             return Result.Fail(FailureCode.NotFound).WithError(e.Message);
         }
     }
+
+    private void RemoveOrderFromShoppingCart(int orderId, ShoppingCartDto shoppingCart)
+    {
+        for (var i = shoppingCart.OrdersId.Count - 1; i >= 0; i--)
+        {
+            if (orderId == shoppingCart.OrdersId[i])
+            {
+                shoppingCart.OrdersId.RemoveAt(i);
+                _shoppingCartService.Update(shoppingCart);
+            }
+        }
+    }
+
 }
