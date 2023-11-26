@@ -11,6 +11,7 @@ namespace Explorer.Tours.Core.Domain.Enum
         DRAFT,
         PUBLISHED,
         ARCHIVED,
-        DISABLED
+        DISABLED,
+        CUSTOM
     }
 }

@@ -84,6 +84,13 @@ namespace Explorer.API.Controllers.Author
             else
                 return null;
         }
+        
+        [HttpPost("custom")]
+        public ActionResult<TourDto> CreateCustomTour([FromBody] TourDto tourDto)
+        {   
+            // tour.UserId = ClaimsPrincipalExtensions.PersonId(User);    
+            throw new NotImplementedException();
+        }
     }
 }
 

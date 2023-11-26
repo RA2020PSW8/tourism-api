@@ -183,6 +183,43 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring
             result.StatusCode.ShouldBe(404);
         }
 
+        [Fact]
+        public void Creates_custom()
+        {
+            // Arrange
+            var userId = -1;
+            using var scope = Factory.Services.CreateScope();
+            var controller = CreateController(scope, userId);
+            var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+            var newEntity = new TourDto()
+            {
+                UserId = 0,
+                Name = "Custom tour 1",
+                Description = "This is my custom tour",
+                Price = 0,
+                Duration = 100,
+                Distance = 2.1,
+                Difficulty = "MEDIUM",
+                TransportType = "WALK",
+                Status = "CUSTOM",
+                Tags = new(),
+                StatusUpdateTime = DateTime.Now.ToUniversalTime()
+            };
+        
+            // Act
+            var result = ((ObjectResult)controller.CreateCustomTour(newEntity).Result)?.Value as TourDto;
+
+            // Assert - Response
+            result.ShouldNotBeNull();
+            result.Id.ShouldNotBe(0);
+            result.Name.ShouldBe(newEntity.Name);
+
+            // Assert - Database
+            var storedEntity = dbContext.Tours.FirstOrDefault(i => i.Name == newEntity.Name);
+            storedEntity.ShouldNotBeNull();
+            storedEntity.Id.ShouldBe(result.Id);
+        }
+        
         private static TourManagementController CreateController(IServiceScope scope, int userId)
         {
             return new TourManagementController(scope.ServiceProvider.GetRequiredService<ITourService>())
