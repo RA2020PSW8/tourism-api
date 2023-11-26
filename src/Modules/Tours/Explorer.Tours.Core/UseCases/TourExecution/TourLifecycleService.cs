@@ -45,10 +45,6 @@ public class TourLifecycleService : BaseService<TourProgressDto, TourProgress>, 
 
     public Result<TourProgressDto> StartTour(long tourId, long userId)
     {
-        var boughtTour = new Tour(); //_tourPurchaseTokenRepository.GetByTourAndTourist((int)tourId, (int)userId);
-        if (boughtTour == null)
-            return Result.Fail(FailureCode.NotFound).WithError("You have to buy tour before you can start it");
-
         // try to remove nested try-catch
         try
         {
@@ -61,7 +57,7 @@ public class TourLifecycleService : BaseService<TourProgressDto, TourProgress>, 
             }
             catch (KeyNotFoundException e)
             {
-                var tourProgress = new TourProgress(touristPosition.Id, tourId);
+                TourProgress tourProgress = new TourProgress(touristPosition.Id, tourId);
                 _tourProgressRepository.Create(tourProgress);
 
                 return MapToDto(tourProgress);
@@ -69,8 +65,7 @@ public class TourLifecycleService : BaseService<TourProgressDto, TourProgress>, 
         }
         catch (KeyNotFoundException e)
         {
-            return Result.Fail(FailureCode.NotFound)
-                .WithError("You can't start tour without setting your current location first.");
+            return Result.Fail(FailureCode.NotFound).WithError("You can't start tour without setting your current location first.");
         }
     }
 
