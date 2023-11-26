@@ -1,15 +1,11 @@
 ﻿using Explorer.API.Controllers.Author;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Dtos.Enums;
 using Explorer.Tours.API.Public.TourAuthoring;
 using Explorer.Tours.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Explorer.Tours.Tests.Integration.TourAuthoring;
 
@@ -26,11 +22,11 @@ public class PublicEntityRequestCommandTest : BaseToursIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-        var newEntity = new PublicEntityRequestDto()
+        var newEntity = new PublicEntityRequestDto
         {
             UserId = -11,
             EntityId = -3,
-            EntityType = (API.Dtos.Enums.EntityType)1, //object
+            EntityType = (EntityType)1, //object
             Status = 0,
             Comment = ""
         };
@@ -46,7 +42,8 @@ public class PublicEntityRequestCommandTest : BaseToursIntegrationTest
 
 
         // Assert - Database
-        var storedEntity = dbContext.PublicEntityRequests.FirstOrDefault(i => i.EntityId == newEntity.EntityId && i.EntityType == Core.Domain.Enum.EntityType.OBJECT);
+        var storedEntity = dbContext.PublicEntityRequests.FirstOrDefault(i =>
+            i.EntityId == newEntity.EntityId && i.EntityType == Core.Domain.Enum.EntityType.OBJECT);
         storedEntity.ShouldNotBeNull();
         storedEntity.Id.ShouldBe(result.Id);
     }
@@ -58,17 +55,18 @@ public class PublicEntityRequestCommandTest : BaseToursIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-        var newEntity = new PublicEntityRequestDto()
+        var newEntity = new PublicEntityRequestDto
         {
             UserId = -11,
             EntityId = -3,
-            EntityType = (API.Dtos.Enums.EntityType)0, //keypoint
+            EntityType = 0, //keypoint
             Status = 0,
             Comment = ""
         };
 
         // Act
-        var result = ((ObjectResult)controller.CreateKeypointRequest(newEntity).Result)?.Value as PublicEntityRequestDto;
+        var result =
+            ((ObjectResult)controller.CreateKeypointRequest(newEntity).Result)?.Value as PublicEntityRequestDto;
 
         // Assert - Response
         result.ShouldNotBeNull();
@@ -78,20 +76,18 @@ public class PublicEntityRequestCommandTest : BaseToursIntegrationTest
 
 
         // Assert - Database
-        var storedEntity = dbContext.PublicEntityRequests.FirstOrDefault(i => i.EntityId == newEntity.EntityId && i.EntityType == Core.Domain.Enum.EntityType.KEYPOINT);
+        var storedEntity = dbContext.PublicEntityRequests.FirstOrDefault(i =>
+            i.EntityId == newEntity.EntityId && i.EntityType == Core.Domain.Enum.EntityType.KEYPOINT);
         storedEntity.ShouldNotBeNull();
         storedEntity.Id.ShouldBe(result.Id);
     }
 
-    public static PublicEntityRequestController  CreateController(IServiceScope scope)
+    public static PublicEntityRequestController CreateController(IServiceScope scope)
     {
-        return new PublicEntityRequestController(scope.ServiceProvider.GetRequiredService<IPublicEntityRequestService>())
+        return new PublicEntityRequestController(
+            scope.ServiceProvider.GetRequiredService<IPublicEntityRequestService>())
         {
             ControllerContext = BuildContext("-1")
         };
     }
-
 }
-
-
-

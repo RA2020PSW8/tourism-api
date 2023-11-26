@@ -1,26 +1,15 @@
 using Explorer.BuildingBlocks.Core.Domain;
-using Explorer.Tours.Core.Domain.Enum;
 
 namespace Explorer.Tours.Core.Domain;
 
 public class Keypoint : Entity
 {
-    public long TourId { get; }
-    public Tour Tour { get; }
-    public string Name { get; init; }
-    public double Latitude { get; init; }
-    public double Longitude { get; init; }
-    public string? Description { get; init; }
-    public int? Position { get; init; }
-    public string? Image { get; set; }
-    public string? Secret { get; set; }
-
     public Keypoint()
     {
-        
     }
-    
-    public Keypoint(long tourId, string name, double latitude, double longitude, string? description, int? position, string? image, string? secret)
+
+    public Keypoint(long tourId, string name, double latitude, double longitude, string? description, int? position,
+        string? image, string? secret)
     {
         Validate(name, latitude, longitude, position);
 
@@ -33,6 +22,16 @@ public class Keypoint : Entity
         Image = image;
         Secret = secret;
     }
+
+    public long TourId { get; }
+    public Tour Tour { get; }
+    public string Name { get; init; }
+    public double Latitude { get; init; }
+    public double Longitude { get; init; }
+    public string? Description { get; init; }
+    public int? Position { get; init; }
+    public string? Image { get; set; }
+    public string? Secret { get; set; }
 
     private static void Validate(string name, double latitude, double longitude, int? position)
     {

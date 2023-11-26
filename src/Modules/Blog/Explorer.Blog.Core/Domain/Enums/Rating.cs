@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Explorer.Blog.Core.Domain.Enums;
 
-namespace Explorer.Blog.Core.Domain.Enums
+public enum Rating
 {
-    public enum Rating { UPVOTE, DOWNVOTE}
+    UPVOTE,
+    DOWNVOTE
 }

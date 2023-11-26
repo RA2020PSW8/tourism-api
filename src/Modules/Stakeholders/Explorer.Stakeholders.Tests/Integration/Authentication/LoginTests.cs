@@ -1,17 +1,19 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Shouldly;
 using Explorer.API.Controllers;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 
 namespace Explorer.Stakeholders.Tests.Integration.Authentication;
 
 [Collection("Sequential")]
 public class LoginTests : BaseStakeholdersIntegrationTest
 {
-    public LoginTests(StakeholdersTestFactory factory) : base(factory) { }
+    public LoginTests(StakeholdersTestFactory factory) : base(factory)
+    {
+    }
 
     [Fact]
     public void Successfully_logs_in()
@@ -22,7 +24,8 @@ public class LoginTests : BaseStakeholdersIntegrationTest
         var loginSubmission = new CredentialsDto { Username = "turista1@gmail.com", Password = "turista1" };
 
         // Act
-        var authenticationResponse = ((ObjectResult)controller.Login(loginSubmission).Result).Value as AuthenticationTokensDto;
+        var authenticationResponse =
+            ((ObjectResult)controller.Login(loginSubmission).Result).Value as AuthenticationTokensDto;
 
         // Assert
         authenticationResponse.ShouldNotBeNull();

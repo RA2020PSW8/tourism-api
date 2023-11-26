@@ -1,6 +1,6 @@
-﻿using FluentResults;
+﻿using System.Text;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
 
 namespace Explorer.API.Controllers;
 
@@ -34,7 +34,7 @@ public class BaseApiController : ControllerBase
         {
             sb.Append(error);
             error.Metadata.TryGetValue("subCode", out var subCode);
-            if(subCode != null)
+            if (subCode != null)
             {
                 sb.Append(';');
                 sb.Append(subCode);
@@ -42,6 +42,7 @@ public class BaseApiController : ControllerBase
 
             sb.AppendLine();
         }
+
         return Problem(statusCode: code, detail: sb.ToString());
     }
 

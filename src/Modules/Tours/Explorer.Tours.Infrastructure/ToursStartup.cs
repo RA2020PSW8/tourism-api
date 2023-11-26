@@ -2,22 +2,21 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Tours.API.Public;
 using Explorer.Tours.API.Public.Administration;
+using Explorer.Tours.API.Public.MarketPlace;
 using Explorer.Tours.API.Public.TourAuthoring;
 using Explorer.Tours.API.Public.TourExecution;
-using Explorer.Tours.API.Public.MarketPlace;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.Core.Mappers;
 using Explorer.Tours.Core.UseCases;
 using Explorer.Tours.Core.UseCases.Administration;
 using Explorer.Tours.Core.UseCases.MarketPlace;
-using Explorer.Tours.Core.UseCases.TourExecution;
 using Explorer.Tours.Core.UseCases.TourAuthoring;
+using Explorer.Tours.Core.UseCases.TourExecution;
 using Explorer.Tours.Infrastructure.Database;
 using Explorer.Tours.Infrastructure.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Object = Explorer.Tours.Core.Domain.Object;
 
 namespace Explorer.Tours.Infrastructure;
 
@@ -31,7 +30,7 @@ public static class ToursStartup
         SetupInfrastructure(services);
         return services;
     }
-    
+
     private static void SetupCore(IServiceCollection services)
     {
         services.AddScoped<IEquipmentService, EquipmentService>();
@@ -47,18 +46,17 @@ public static class ToursStartup
         services.AddScoped<IPublicKeypointService, PublicKeypointService>();
         services.AddScoped<ITourLifecycleService, TourLifecycleService>();
         services.AddScoped<ITourFilteringService, TourFilteringService>();
-        services.AddScoped<IOrderItemService, OrderItemService>();
-        services.AddScoped<IShoppingCartService, ShoppingCartService>();
-        services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped(typeof(ICrudRepository<Equipment>), typeof(CrudDatabaseRepository<Equipment, ToursContext>));
-        services.AddScoped(typeof(ICrudRepository<TouristEquipment>), typeof(CrudDatabaseRepository<TouristEquipment, ToursContext>));
+        services.AddScoped(typeof(ICrudRepository<TouristEquipment>),
+            typeof(CrudDatabaseRepository<TouristEquipment, ToursContext>));
         services.AddScoped<ITouristEquipmentRepository, TouristEquipmentRepository>();
         services.AddScoped<IEquipmentRepository, EquipmentRepository>();
-        services.AddScoped(typeof(ICrudRepository<TourReview>), typeof(CrudDatabaseRepository<TourReview, ToursContext>));
+        services.AddScoped(typeof(ICrudRepository<TourReview>),
+            typeof(CrudDatabaseRepository<TourReview, ToursContext>));
         services.AddScoped(typeof(ITourPreferenceRepository), typeof(TourPreferenceRepository));
         services.AddScoped(typeof(IKeypointRepository), typeof(KeypointRepository));
         services.AddScoped(typeof(ITourRepository), typeof(TourRepository));
@@ -70,9 +68,6 @@ public static class ToursStartup
         services.AddScoped(typeof(IPublicKeypointRepository), typeof(PublicKeypointRepository));
         services.AddScoped(typeof(IObjectRepository), typeof(ObjectRepository));
         services.AddScoped(typeof(ITourProgressRepository), typeof(TourProgressRepository));
-        services.AddScoped(typeof(IOrderItemRepository), typeof(OrderItemRepository));
-        services.AddScoped(typeof(IShoppingCartRepository), typeof(ShoppingCartRepository));
-        services.AddScoped(typeof(ITourPurchaseTokenRepository), typeof(TourPurchaseTokenRepository));
         services.AddScoped(typeof(ITourReviewRepository), typeof(TourReviewRepository));
 
         services.AddDbContext<ToursContext>(opt =>

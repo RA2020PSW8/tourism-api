@@ -1,6 +1,5 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.MarketPlace;
 using Explorer.Tours.API.Public.TourAuthoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +16,7 @@ public class TourController : BaseApiController
     {
         _tourService = tourService;
     }
-    
+
     [HttpGet]
     public ActionResult<PagedResult<TourDto>> GetPublished([FromQuery] int page, [FromQuery] int pageSize)
     {
@@ -27,10 +26,10 @@ public class TourController : BaseApiController
 
     [HttpGet("arhived-published")]
     [AllowAnonymous]
-    public ActionResult<PagedResult<TourDto>> GetArchivedAndPublishedPaged([FromQuery] int page, [FromQuery] int pageSize)
+    public ActionResult<PagedResult<TourDto>> GetArchivedAndPublishedPaged([FromQuery] int page,
+        [FromQuery] int pageSize)
     {
         var result = _tourService.GetArchivedAndPublishedPaged(page, pageSize);
         return CreateResponse(result);
     }
-
 }

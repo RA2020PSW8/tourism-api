@@ -1,10 +1,9 @@
 ﻿using Explorer.Tours.API.Dtos;
 using FluentResults;
 
-namespace Explorer.Tours.API.Internal
+namespace Explorer.Tours.API.Internal;
+
+public interface IInternalTourService
 {
-    public interface IInternalTourService
-    {
-        Result<TourDto> Get(int id);
-    }
+    Result<TourDto> Get(int id);
 }

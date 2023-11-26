@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Explorer.API;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Explorer.API;
 
 namespace Explorer.BuildingBlocks.Tests;
 
@@ -16,7 +16,7 @@ public abstract class BaseTestFactory<TDbContext> : WebApplicationFactory<Progra
         builder.ConfigureServices(services =>
         {
             using var scope = BuildServiceProvider(services).CreateScope();
-            var scopedServices = scope.ServiceProvider;  
+            var scopedServices = scope.ServiceProvider;
             var db = scopedServices.GetRequiredService<TDbContext>();
             var logger = scopedServices.GetRequiredService<ILogger<BaseTestFactory<TDbContext>>>();
 
@@ -67,7 +67,8 @@ public abstract class BaseTestFactory<TDbContext> : WebApplicationFactory<Progra
         var integratedSecurity = Environment.GetEnvironmentVariable("DATABASE_INTEGRATED_SECURITY") ?? "false";
         var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
 
-        var connectionString = $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};Include Error Detail=True";
+        var connectionString =
+            $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};Include Error Detail=True";
 
         return opt => opt.UseNpgsql(connectionString);
     }

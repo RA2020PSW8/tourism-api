@@ -4,5 +4,7 @@ namespace Explorer.Blog.Tests;
 
 public class BaseBlogIntegrationTest : BaseWebIntegrationTest<BlogTestFactory>
 {
-    public BaseBlogIntegrationTest(BlogTestFactory factory) : base(factory) { }
+    public BaseBlogIntegrationTest(BlogTestFactory factory) : base(factory)
+    {
+    }
 }

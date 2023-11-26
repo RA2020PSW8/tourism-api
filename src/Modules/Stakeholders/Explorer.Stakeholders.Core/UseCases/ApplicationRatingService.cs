@@ -5,79 +5,73 @@ using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Explorer.Stakeholders.Core.UseCases
+namespace Explorer.Stakeholders.Core.UseCases;
+
+public class ApplicationRatingService : CrudService<ApplicationRatingDto, ApplicationRating>, IApplicationRatingService
 {
-    public class ApplicationRatingService : CrudService<ApplicationRatingDto, ApplicationRating>, IApplicationRatingService
+    protected readonly IApplicationRatingRepository _applicationRatingRepository;
+
+    public ApplicationRatingService(IApplicationRatingRepository repository, IMapper mapper) : base(repository, mapper)
     {
-        protected readonly IApplicationRatingRepository _applicationRatingRepository;
+        _applicationRatingRepository = repository;
+    }
 
-        public ApplicationRatingService(IApplicationRatingRepository repository, IMapper mapper) : base(repository, mapper) 
-        { 
-            _applicationRatingRepository = repository;
-        }
-
-        public Result<ApplicationRatingDto> GetByUser(int userId)
+    public Result<ApplicationRatingDto> GetByUser(int userId)
+    {
+        try
         {
-            try
-            {
-                var result = _applicationRatingRepository.GetByUser(userId);
-                return MapToDto(result);
-            }
-            catch (KeyNotFoundException e)
-            {
-                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
-            }
+            var result = _applicationRatingRepository.GetByUser(userId);
+            return MapToDto(result);
         }
-
-        override public Result<ApplicationRatingDto> Create(ApplicationRatingDto entity)
+        catch (KeyNotFoundException e)
         {
-            try
-            {
-                var existingApplicationRating = _applicationRatingRepository.GetByUser(entity.UserId);
-                return Result.Fail(FailureCode.Conflict).WithError("Application rating for this user already exists.");
-            }
-            catch (ArgumentException e)
-            {
-                return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
-            }
-            catch (KeyNotFoundException e)
-            {
-                var result = CrudRepository.Create(MapToDomain(entity));
-                return MapToDto(result);
-            }
+            return Result.Fail(FailureCode.NotFound).WithError(e.Message);
         }
+    }
 
-        override public Result<ApplicationRatingDto> Update(ApplicationRatingDto entity)
+    public override Result<ApplicationRatingDto> Create(ApplicationRatingDto entity)
+    {
+        try
         {
-            try
-            {
-                var foundApplicationRating = _applicationRatingRepository.GetByUser(entity.UserId);
-                entity.Id = (int)foundApplicationRating.Id;
-                return base.Update(entity);
-            }
-            catch (KeyNotFoundException e)
-            {
-                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
-            }
+            var existingApplicationRating = _applicationRatingRepository.GetByUser(entity.UserId);
+            return Result.Fail(FailureCode.Conflict).WithError("Application rating for this user already exists.");
         }
-
-        override public Result Delete(int userId)
+        catch (ArgumentException e)
         {
-            try
-            {
-                int id = (int)_applicationRatingRepository.GetByUser(userId).Id;
-                return base.Delete(id);
-            }
-            catch (KeyNotFoundException e)
-            {
-                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
-            }
+            return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
+        }
+        catch (KeyNotFoundException e)
+        {
+            var result = CrudRepository.Create(MapToDomain(entity));
+            return MapToDto(result);
+        }
+    }
+
+    public override Result<ApplicationRatingDto> Update(ApplicationRatingDto entity)
+    {
+        try
+        {
+            var foundApplicationRating = _applicationRatingRepository.GetByUser(entity.UserId);
+            entity.Id = (int)foundApplicationRating.Id;
+            return base.Update(entity);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+        }
+    }
+
+    public override Result Delete(int userId)
+    {
+        try
+        {
+            var id = (int)_applicationRatingRepository.GetByUser(userId).Id;
+            return base.Delete(id);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return Result.Fail(FailureCode.NotFound).WithError(e.Message);
         }
     }
 }
