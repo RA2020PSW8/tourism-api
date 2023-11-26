@@ -1,4 +1,4 @@
-﻿using Explorer.Blog.API.Dtos;
+using Explorer.Blog.API.Dtos;
 using Explorer.BuildingBlocks.Core.UseCases;
 using FluentResults;
 
@@ -13,5 +13,5 @@ public interface IBlogService
     public Result Delete(int id);
     public PagedResult<BlogDto> GetWithStatuses(int page, int pageSize);
     public Result<BlogDto> AddRating(BlogRatingDto blogRatingDto, long userId);
-    public void UpdateStatuses();
+    public void UpdateStatuses(BlogDto blogDto, string status);
 }
