@@ -15,7 +15,7 @@ using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Blog.Core.Domain.RepositoryInterfaces;
 using Explorer.Blog.Core.Domain.Enums;
-
+using Explorer.Blog.API.Public.Commenting;
 
 namespace Explorer.Blog.Core.UseCases.Blog
 {
@@ -24,16 +24,18 @@ namespace Explorer.Blog.Core.UseCases.Blog
         private readonly IBlogStatusService _blogStatusService;
         private readonly IProfileService _profileService;
         private readonly IUserService _userService;
+        private readonly IBlogCommentService _blogCommentService;
         private readonly IBlogRepository _repository;
         private readonly IMapper _mapper;
         public BlogService(IBlogStatusService blogStatusService,IBlogRepository crudRepository, IMapper mapper, 
-            IUserService userService, IProfileService profileService) : base(mapper)
+            IUserService userService, IProfileService profileService,IBlogCommentService blogCommentService) : base(mapper)
         {
             _blogStatusService = blogStatusService;
             _repository = crudRepository;
             _mapper = mapper;
             _userService = userService;
             _profileService = profileService;
+            _blogCommentService = blogCommentService;
         }
 
         public Result<BlogDto> Create(BlogDto blog)
@@ -191,33 +193,50 @@ namespace Explorer.Blog.Core.UseCases.Blog
             }
         }
 
-        public void UpdateStatuses()
+        public void UpdateStatuses(BlogDto blogDto,string status)
         {
-            var result = _repository.GetPaged(0, 0).Results;
-
-            foreach(var blog in result)
+            if (_blogStatusService.GetPaged(0, 0).Value.Results.Find((s => s.Name == status && s.BlogId == blogDto.Id)) == null)
             {
-                var upvotes = blog.BlogRatings.Count(b => b.Rating == Rating.UPVOTE);
-                var downvotes = blog.BlogRatings.Count(b => b.Rating == Rating.DOWNVOTE);
-                if (upvotes - downvotes < 0)
-                {
-                    blog.CloseBlog();
-                }
-                else 
-                {
-                    _blogStatusService.Generate(blog.Id,"POPULAR");
-                }
+                _blogStatusService.Generate(blogDto.Id, status);
             }
         }
-        
+
+        public void DetermineStatus(Domain.Blog blog)
+        {
+            string status;
+            var upvotes = blog.BlogRatings.Count(b => b.Rating == Rating.UPVOTE);
+            var downvotes = blog.BlogRatings.Count(b => b.Rating == Rating.DOWNVOTE);
+            var commentNumber = _blogCommentService.GetPaged(0, 0, blog.Id).Value.Results.Count();
+            
+            double score = (upvotes - downvotes) * (commentNumber + 1);
+            if (score < 0)
+            {
+                blog.CloseBlog();
+                status = "CLOSED";
+            }
+            else if (score > 35 || commentNumber >= 2)
+            {
+                status = "ACTIVE";
+            }
+            else if (score > 2 || commentNumber >= 1)
+            {
+                status = "OPENED";
+            }
+            else {
+                status = "NEW";
+            }
+
+            UpdateStatuses(MapToDto(blog),status);
+        }
+
         public Result<BlogDto> AddRating(BlogRatingDto blogRatingDto,long userId)
         {
             var blog = _repository.GetBlog(Convert.ToInt32(blogRatingDto.BlogId));
+            if(blog.SystemStatus == Domain.Enum.BlogSystemStatus.CLOSED) { return Result.Fail("Blog is closed"); }
             var rating = new BlogRating(blogRatingDto.BlogId, userId, blogRatingDto.CreationTime,Enum.Parse<Rating>(blogRatingDto.Rating));
             blog.AddRating(rating);
-            //UpdateStatuses();
+            DetermineStatus(blog);
             return Update(MapToDto(blog));
         }
-
     }
 }
