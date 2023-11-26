@@ -4,10 +4,10 @@ using Explorer.Tours.API.Public.TourAuthoring;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Explorer.API.Controllers.Tourist.Marketplace
+namespace Explorer.API.Controllers.Author
 {
-    [Authorize(Policy = "touristPolicy")]
-    [Route("api/tourist/publicKeypoint")]
+    [Authorize(Policy = "authorPolicy")]
+    [Route("api/author/publicKeypoints")]
     public class PublicKeypointController : BaseApiController
     {
         private readonly IPublicKeypointService _publicKeypointService;
@@ -17,10 +17,10 @@ namespace Explorer.API.Controllers.Tourist.Marketplace
             _publicKeypointService = publicKeypointService;
         }
 
-        [HttpGet("filtered")]
-        public ActionResult<PagedResult<PublicKeypointDto>> GetPagedInRange([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] FilterCriteriaDto filter)
+        [HttpGet]
+        public ActionResult<PagedResult<PublicKeypointDto>> GetPaged([FromQuery] int page, [FromQuery] int pageSize)
         {
-            var result = _publicKeypointService.GetPagedInRange(page, pageSize, filter);
+            var result = _publicKeypointService.GetPaged(page, pageSize);
             return CreateResponse(result);
         }
     }
