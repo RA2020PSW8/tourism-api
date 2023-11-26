@@ -42,7 +42,7 @@ public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPu
                 return Result.Fail(FailureCode.NotFound).WithError("Order item does not exist!");
 
 
-            if (TokenAlreadyExists(orderItem.TourId, shoppingCart.UserId))
+            if (CheckIfPurchased(orderItem.TourId, shoppingCart.UserId).Value)
                 return Result.Fail(FailureCode.NotFound).WithError("Token already exists!");
 
             var token = new TourPurchaseToken(orderItem.TourId, shoppingCart.UserId);
@@ -101,5 +101,10 @@ public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPu
         {
             _tourPurchaseTokenRepository.AddRange(tokens);
         }
+    }
+
+    public Result<bool> CheckIfPurchased(long tourId, long userId)
+    {
+        return _tourPurchaseTokenRepository.CheckIfPurchased(tourId, userId);
     }
 }

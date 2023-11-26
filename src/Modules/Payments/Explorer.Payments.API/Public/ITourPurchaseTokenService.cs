@@ -8,4 +8,5 @@ public interface ITourPurchaseTokenService
 {
     Result BuyShoppingCart(int shoppingCartId);
     Result<PagedResult<TourPurchaseTokenDto>> GetPaged(int page, int pageSize);
+    Result<bool> CheckIfPurchased(long userId, long tourId);
 }

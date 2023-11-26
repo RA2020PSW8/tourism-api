@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Payments.API.Dtos;
 using Explorer.Payments.API.Public;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,5 +30,12 @@ public class TourPurchaseTokenController : BaseApiController
     {
         var result = _tourPurchaseTokenService.GetPaged(page, pageSize);
         return CreateResponse(result);
+    }
+
+    [HttpGet("check-purchase/{tourId:int}")]
+    public ActionResult<bool> CheckIfPurchased([FromRoute] int tourId)
+    {
+        return _tourPurchaseTokenService.CheckIfPurchased(tourId, User.PersonId()).Value;
+
     }
 }

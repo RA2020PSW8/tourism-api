@@ -6,4 +6,5 @@ public interface ITourPurchaseTokenRepository : ICrudRepository<TourPurchaseToke
 {
     void AddRange(List<TourPurchaseToken> tokens);
     TourPurchaseToken GetByTourAndTourist(int tourId, int touristId);
+    bool CheckIfPurchased(long tourId, long touristId);
 }

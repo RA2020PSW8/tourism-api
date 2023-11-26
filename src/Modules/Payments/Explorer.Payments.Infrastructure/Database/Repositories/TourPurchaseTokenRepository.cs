@@ -25,4 +25,9 @@ public class TourPurchaseTokenRepository : CrudDatabaseRepository<TourPurchaseTo
     {
         return DbContext.TourPurchaseTokens.FirstOrDefault(t => t.TourId == tourId && t.TouristId == touristId);
     }
+
+    public bool CheckIfPurchased(long tourId, long touristId)
+    {
+        return DbContext.TourPurchaseTokens.Any(t => t.TourId == tourId && t.TouristId == touristId);
+    }
 }
