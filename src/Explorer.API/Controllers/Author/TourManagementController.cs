@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Author
 {
+    [Authorize(Policy = "personPolicy")]
     [Route("api/author/tours/")]
     public class TourManagementController : BaseApiController
     {
@@ -88,8 +89,9 @@ namespace Explorer.API.Controllers.Author
         [HttpPost("custom")]
         public ActionResult<TourDto> CreateCustomTour([FromBody] TourDto tourDto)
         {   
-            // tour.UserId = ClaimsPrincipalExtensions.PersonId(User);    
-            throw new NotImplementedException();
+            tourDto.UserId = ClaimsPrincipalExtensions.PersonId(User);
+            var result = _tourService.CreateCustom(tourDto);
+            return CreateResponse(result);
         }
     }
 }

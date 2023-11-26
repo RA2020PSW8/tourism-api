@@ -45,5 +45,12 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring
             var result = _tourRepository.GetArchivedAndPublishedPaged(page, pageSize);
             return MapToDto(result);
         }
+
+        public Result<TourDto> CreateCustom(TourDto tour)
+        {
+            tour.Status = "CUSTOM"; 
+            var result = _tourRepository.Create(MapToDomain(tour));
+            return MapToDto(result);
+        }
     }
 }
