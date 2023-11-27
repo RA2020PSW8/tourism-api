@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.API.Dtos;
 using Explorer.Encounters.API.Public;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,7 @@ namespace Explorer.API.Controllers.Administrator
         [HttpPost]
         public ActionResult<EncounterDto> Create([FromBody] EncounterDto encounter)
         {
+            encounter.UserId = ClaimsPrincipalExtensions.PersonId(User);
             var result = _encounterService.Create(encounter);
             return CreateResponse(result);
         }

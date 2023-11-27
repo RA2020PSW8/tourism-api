@@ -1,6 +1,4 @@
-﻿using Explorer.Encounters.API.Dtos.Enums;
-
-namespace Explorer.Encounters.API.Dtos
+﻿namespace Explorer.Encounters.API.Dtos
 {
     public class EncounterDto
     {
@@ -11,7 +9,7 @@ namespace Explorer.Encounters.API.Dtos
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public int Xp { get; set; }
-        public EncounterStatus Status { get; set; }
-        public EncounterType Type { get; set; }
+        public string Status { get; set; }
+        public string Type { get; set; }
     }
 }
