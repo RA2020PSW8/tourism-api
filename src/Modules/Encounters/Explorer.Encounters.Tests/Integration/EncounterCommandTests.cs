@@ -28,8 +28,8 @@ namespace Explorer.Encounters.Tests.Integration
                 Latitude = 54.34,
                 Longitude = 34.56,
                 Xp = 4,
-                Status = API.Dtos.Enums.EncounterStatus.DRAFT,
-                Type = API.Dtos.Enums.EncounterType.SOCIAL
+                Status = "DRAFT",
+                Type = "SOCIAL"
             };
 
             // Act
@@ -62,8 +62,8 @@ namespace Explorer.Encounters.Tests.Integration
                 Latitude = 55.55,
                 Longitude = 55.55,
                 Xp = 5,
-                Status = API.Dtos.Enums.EncounterStatus.ACTIVE,
-                Type = API.Dtos.Enums.EncounterType.MISC
+                Status = "ACTIVE",
+                Type = "MISC"
             };
 
             // Act
