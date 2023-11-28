@@ -18,13 +18,6 @@ public class TourIssueController : BaseApiController
         _tourIssueService = tourIssueService;
     }
 
-    private int GenerateId()
-    {
-        return _tourIssueService.GetPaged(0, 0).Value.Results.Count == 0
-            ? 1
-            : _tourIssueService.GetPaged(0, 0).Value.Results.Max(ti => ti.Id) + 1;
-    }
-
     [AllowAnonymous]
     [HttpGet]
     public ActionResult<PagedResult<TourIssueDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
@@ -44,7 +37,6 @@ public class TourIssueController : BaseApiController
     [HttpPost]
     public ActionResult<TourIssueDto> Create([FromBody] TourIssueDto issue)
     {
-        issue.Id = GenerateId();
         issue.UserId = User.PersonId();
         var result = _tourIssueService.Create(issue);
         return CreateResponse(result);
