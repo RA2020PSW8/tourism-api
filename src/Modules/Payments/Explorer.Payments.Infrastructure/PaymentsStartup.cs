@@ -1,5 +1,7 @@
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Payments.API.Public;
+using Explorer.Payments.Core.Domain;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;
 using Explorer.Payments.Core.Mappers;
 using Explorer.Payments.Core.UseCases;
@@ -26,6 +28,7 @@ public static class PaymentsStartup
         services.AddScoped<IOrderItemService, OrderItemService>();
         services.AddScoped<IShoppingCartService, ShoppingCartService>();
         services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
+        services.AddScoped<ITourBundleService, TourBundleService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -33,6 +36,8 @@ public static class PaymentsStartup
         services.AddScoped(typeof(IOrderItemRepository), typeof(OrderItemRepository));
         services.AddScoped(typeof(IShoppingCartRepository), typeof(ShoppingCartRepository));
         services.AddScoped(typeof(ITourPurchaseTokenRepository), typeof(TourPurchaseTokenRepository));
+        services.AddScoped(typeof(ITourBundleRepository), typeof(TourBundleRepository));
+        
 
         services.AddDbContext<PaymentsContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
