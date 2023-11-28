@@ -19,9 +19,10 @@ namespace Explorer.Encounters.Core.Domain
 
         public EncounterCompletion() { }
 
-        public EncounterCompletion(long userId, int xp, EncounterCompletionStatus status)
+        public EncounterCompletion(long userId, long encounterId, int xp, EncounterCompletionStatus status)
         {
             UserId = userId;
+            EncounterId = encounterId;
             CompletionTime = DateTime.UtcNow;
             Xp = xp;
             Status = status;

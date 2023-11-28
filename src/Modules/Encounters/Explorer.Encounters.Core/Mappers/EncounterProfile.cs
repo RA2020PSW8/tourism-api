@@ -9,7 +9,7 @@ namespace Explorer.Encounters.Core.Mappers
         public EncounterProfile()
         {
             CreateMap<EncounterDto, Encounter>().ReverseMap();
-
+            CreateMap<EncounterCompletionDto, EncounterCompletion>().ReverseMap();
         }
     }
 }

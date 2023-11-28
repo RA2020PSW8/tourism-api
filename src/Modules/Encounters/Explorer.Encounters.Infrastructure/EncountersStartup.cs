@@ -29,6 +29,7 @@ namespace Explorer.Encounters.Infrastructure
         private static void SetupInfrastructure(IServiceCollection services)
         {
             services.AddScoped(typeof(IEncounterRepository), typeof(EncounterRepository));
+            services.AddScoped(typeof(IEncounterCompletionRepository), typeof(EncounterCompletionRepository));
 
             services.AddDbContext<EncountersContext>(opt =>
                 opt.UseNpgsql(DbConnectionStringBuilder.Build("encounters"),
