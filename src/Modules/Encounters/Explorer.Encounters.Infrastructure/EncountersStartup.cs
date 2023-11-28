@@ -24,6 +24,7 @@ namespace Explorer.Encounters.Infrastructure
         private static void SetupCore(IServiceCollection services)
         {
             services.AddScoped<IEncounterService, EncounterService>();
+            services.AddScoped<IEncounterCompletionService, EncounterCompletionService>();
         }
 
         private static void SetupInfrastructure(IServiceCollection services)
