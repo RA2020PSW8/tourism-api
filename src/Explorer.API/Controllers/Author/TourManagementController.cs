@@ -47,7 +47,6 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpPut("{id:int}")]
-        [Authorize(Roles = "author")]
         public ActionResult<TourDto> Update([FromBody] TourDto tour)
         {
             tour.UserId = ClaimsPrincipalExtensions.PersonId(User);

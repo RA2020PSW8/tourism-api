@@ -1,4 +1,5 @@
 using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.MarketPlace;
 using Explorer.Tours.API.Public.TourAuthoring;
@@ -30,6 +31,14 @@ public class TourController : BaseApiController
     public ActionResult<PagedResult<TourDto>> GetArchivedAndPublishedPaged([FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _tourService.GetArchivedAndPublishedPaged(page, pageSize);
+        return CreateResponse(result);
+    }
+    
+    [HttpGet("custom")]
+    public ActionResult<PagedResult<TourDto>> GetCustomByUser([FromQuery] int page, [FromQuery] int pageSize)
+    {
+        var touristId = ClaimsPrincipalExtensions.PersonId(User);
+        var result = _tourService.GetCustomByUserPaged(touristId, page, pageSize);
         return CreateResponse(result);
     }
 

@@ -39,4 +39,13 @@ public class TourRepository : CrudDatabaseRepository<Tour, ToursContext>, ITourR
         task.Wait();
         return task.Result;
     }
+    
+    public PagedResult<Tour> GetCustomByUserPaged(int userId, int page, int pageSize)
+    {
+        var task = _dbSet.Where(t => t.Status == TourStatus.CUSTOM && t.UserId == userId)
+            .Include(t => t.Keypoints)
+            .GetPagedById(page, pageSize);
+        task.Wait();
+        return task.Result;
+    }
 }

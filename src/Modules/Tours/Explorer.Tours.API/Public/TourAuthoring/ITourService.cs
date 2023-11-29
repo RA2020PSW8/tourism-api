@@ -21,5 +21,6 @@ namespace Explorer.Tours.API.Public.TourAuthoring
         public Result<PagedResult<TourDto>> GetPublishedPaged(int page, int pageSize);
         public Result<PagedResult<TourDto>> GetArchivedAndPublishedPaged(int page, int pageSize);
         Result<TourDto> CreateCustom(TourDto equipment);
+        public  Result<PagedResult<TourDto>> GetCustomByUserPaged(int userId, int page, int pageSize);
     }
 }
