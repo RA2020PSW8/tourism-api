@@ -1,12 +1,10 @@
-﻿
-namespace Explorer.Stakeholders.API.Dtos.Enums
+﻿namespace Explorer.Stakeholders.API.Dtos.Enums;
+
+public enum NotificationType
 {
-    public enum NotificationType
-    {
-        ISSUE_COMMENT,
-        ISSUE_DEADLINE,
-        MESSAGE,
-        REQUEST_ACCEPTED,
-        REQUEST_DECLINED
-    }
+    ISSUE_COMMENT,
+    ISSUE_DEADLINE,
+    MESSAGE,
+    REQUEST_ACCEPTED,
+    REQUEST_DECLINED
 }

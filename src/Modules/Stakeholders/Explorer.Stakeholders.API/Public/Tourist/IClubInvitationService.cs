@@ -2,12 +2,11 @@
 using Explorer.Stakeholders.API.Dtos;
 using FluentResults;
 
-namespace Explorer.Stakeholders.API.Public.Tourist
+namespace Explorer.Stakeholders.API.Public.Tourist;
+
+public interface IClubInvitationService
 {
-    public interface IClubInvitationService
-    {
-        Result<PagedResult<ClubInvitationDto>> GetPaged(int page, int pageSize);
-        Result<ClubInvitationDto> Create(ClubInvitationDto invitation);
-        Result<ClubInvitationDto> Update(ClubInvitationDto invitation);
-    }
+    Result<PagedResult<ClubInvitationDto>> GetPaged(int page, int pageSize);
+    Result<ClubInvitationDto> Create(ClubInvitationDto invitation);
+    Result<ClubInvitationDto> Update(ClubInvitationDto invitation);
 }

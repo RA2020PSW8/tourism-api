@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace Explorer.API.Startup;
 
@@ -38,9 +38,7 @@ public static class AuthConfiguration
                     OnAuthenticationFailed = context =>
                     {
                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                        {
                             context.Response.Headers.Add("AuthenticationTokens-Expired", "true");
-                        }
 
                         return Task.CompletedTask;
                     }

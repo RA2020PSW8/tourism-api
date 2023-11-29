@@ -1,62 +1,57 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Tours.API.Dtos;
+using Explorer.Tours.API.Internal;
 using Explorer.Tours.API.Public.TourAuthoring;
 using Explorer.Tours.Core.Domain;
-using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
-using Explorer.Tours.API.Internal;
+using FluentResults;
 
-namespace Explorer.Tours.Core.UseCases.TourAuthoring
+namespace Explorer.Tours.Core.UseCases.TourAuthoring;
+
+public class TourService : CrudService<TourDto, Tour>, ITourService, IInternalTourService
 {
-    public class TourService : CrudService<TourDto, Domain.Tour>, ITourService, IInternalTourService
+    protected readonly ITourRepository _tourRepository;
+    
+    public TourService(ITourRepository tourRepository, IMapper mapper) : base(tourRepository, mapper)
     {
-        protected readonly ITourRepository _tourRepository;
+        _tourRepository = tourRepository;
+    }
 
-        public TourService(ITourRepository tourRepository, IMapper mapper) : base(tourRepository, mapper)
-        {
-            _tourRepository = tourRepository;
-        }
+    public Result<PagedResult<TourDto>> GetByAuthor(int page, int pageSize, int id)
+    {
+        var result = _tourRepository.GetByAuthorPaged(page, pageSize, id);
+        return MapToDto(result);
+    }
 
-        public Result<PagedResult<TourDto>> GetByAuthor(int page, int pageSize, int id)
-        {
-            var result = _tourRepository.GetByAuthorPaged(page, pageSize, id);
-            return MapToDto(result);
-        }
+    public Result<PagedResult<TourDto>> GetPublishedPaged(int page, int pageSize)
+    {
+        var result = _tourRepository.GetPublishedPaged(page, pageSize);
+        return MapToDto(result);
+    }
 
-        public Result<PagedResult<TourDto>> GetPublishedPaged(int page, int pageSize)
-        {
-            var result = _tourRepository.GetPublishedPaged(page, pageSize);
-            return MapToDto(result);
-        }
-        public TourDto GetById(int id)
-        {
-            var tour = _tourRepository.Get(id);
-            return MapToDto(tour);
-        }
+    public TourDto GetById(int id)
+    {
+        var tour = _tourRepository.Get(id);
+        return MapToDto(tour);
+    }
 
-        public Result<PagedResult<TourDto>> GetArchivedAndPublishedPaged(int page, int pageSize)
-        {
-            var result = _tourRepository.GetArchivedAndPublishedPaged(page, pageSize);
-            return MapToDto(result);
-        }
+    public Result<PagedResult<TourDto>> GetArchivedAndPublishedPaged(int page, int pageSize)
+    {
+        var result = _tourRepository.GetArchivedAndPublishedPaged(page, pageSize);
+        return MapToDto(result);
+    }
 
-        public Result<TourDto> CreateCustom(TourDto tour)
-        {
-            tour.Status = "CUSTOM"; 
-            var result = _tourRepository.Create(MapToDomain(tour));
-            return MapToDto(result);
-        }
+    public Result<TourDto> CreateCustom(TourDto tour)
+    {
+        tour.Status = "CUSTOM";
+        var result = _tourRepository.Create(MapToDomain(tour));
+        return MapToDto(result);
+    }
 
-        public Result<PagedResult<TourDto>> GetCustomByUserPaged(int userId, int page, int pageSize)
-        {
-            var result = _tourRepository.GetCustomByUserPaged(userId, page, pageSize);
-            return MapToDto(result);
-        }
+    public Result<PagedResult<TourDto>> GetCustomByUserPaged(int userId, int page, int pageSize)
+    {
+        var result = _tourRepository.GetCustomByUserPaged(userId, page, pageSize);
+        return MapToDto(result);
     }
 }

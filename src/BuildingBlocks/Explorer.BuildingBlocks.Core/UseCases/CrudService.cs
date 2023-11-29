@@ -5,7 +5,7 @@ using FluentResults;
 namespace Explorer.BuildingBlocks.Core.UseCases;
 
 /// <summary>
-/// A base service class that offers CRUD methods for persisting TDomain objects, based on the passed TDto object.
+///     A base service class that offers CRUD methods for persisting TDomain objects, based on the passed TDto object.
 /// </summary>
 /// <typeparam name="TDto">Type of output data transfer object.</typeparam>
 /// <typeparam name="TDomain">Type of domain object that maps to TDto</typeparam>

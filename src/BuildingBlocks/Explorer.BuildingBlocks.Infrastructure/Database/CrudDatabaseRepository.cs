@@ -8,8 +8,8 @@ public class CrudDatabaseRepository<TEntity, TDbContext> : ICrudRepository<TEnti
     where TEntity : Entity
     where TDbContext : DbContext
 {
-    protected readonly TDbContext DbContext;
     private readonly DbSet<TEntity> _dbSet;
+    protected readonly TDbContext DbContext;
 
     public CrudDatabaseRepository(TDbContext dbContext)
     {
@@ -47,11 +47,9 @@ public class CrudDatabaseRepository<TEntity, TDbContext> : ICrudRepository<TEnti
         }
         catch (DbUpdateException e)
         {
-
-
             throw new KeyNotFoundException(e.Message);
-
         }
+
         return entity;
     }
 

@@ -5,57 +5,52 @@ using Explorer.Tours.API.Public.MarketPlace;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Explorer.Tours.Core.UseCases.MarketPlace
+namespace Explorer.Tours.Core.UseCases.MarketPlace;
+
+public class TourFilteringService : BaseService<TourDto, Tour>, ITourFilteringService
 {
-    public class TourFilteringService : BaseService<TourDto, Tour>, ITourFilteringService
-    {
-        protected readonly ITourRepository _tourRepository;
-        protected readonly IPublicKeypointRepository _publicKeypointRepository;
-        protected readonly IObjectRepository _objectRepository;
+    protected readonly IObjectRepository _objectRepository;
+    protected readonly IPublicKeypointRepository _publicKeypointRepository;
+    protected readonly ITourRepository _tourRepository;
 
-        public TourFilteringService(ITourRepository tourRepository, IPublicKeypointRepository publicKeypointRepository, IObjectRepository objectRepository, IMapper mapper) : base( mapper) 
+    public TourFilteringService(ITourRepository tourRepository, IPublicKeypointRepository publicKeypointRepository,
+        IObjectRepository objectRepository, IMapper mapper) : base(mapper)
+    {
+        _tourRepository = tourRepository;
+        _publicKeypointRepository = publicKeypointRepository;
+        _objectRepository = objectRepository;
+    }
+
+    public Result<PagedResult<TourDto>> GetFilteredTours(int page, int pageSize, FilterCriteriaDto filter)
+    {
+        try
         {
-            _tourRepository = tourRepository;
-            _publicKeypointRepository = publicKeypointRepository;
-            _objectRepository = objectRepository;
-        }
-      
-        public Result<PagedResult<TourDto>> GetFilteredTours(int page, int pageSize, FilterCriteriaDto filter)
-        {
-            try
-            {
-                var nearbyTours = _tourRepository.GetPublishedPaged(0, 0).Results
+            var nearbyTours = _tourRepository.GetPublishedPaged(0, 0).Results
                 .Where(tour =>
                     tour.Keypoints.Any(keyPoint =>
-                        DistanceCalculator.CalculateDistance(filter.CurrentLatitude, filter.CurrentLongitude, keyPoint.Latitude, keyPoint.Longitude) <= filter.FilterRadius))
+                        DistanceCalculator.CalculateDistance(filter.CurrentLatitude, filter.CurrentLongitude,
+                            keyPoint.Latitude, keyPoint.Longitude) <= filter.FilterRadius))
                 .Select(tour => MapToDto(tour))
                 .ToList();
 
-                var totalTours = nearbyTours.Count();
-                var pagedTours = nearbyTours;
-                if (page != 0 && pageSize != 0)
-                {
-                    pagedTours = nearbyTours.Skip((page - 1) * pageSize).ToList();
-                    pagedTours = pagedTours
-                        .Take(pageSize)
-                        .ToList();
-                }
-
-                var pagedResult = new PagedResult<TourDto>(pagedTours, totalTours);
-
-                return Result.Ok(pagedResult);
-            }
-            catch (Exception e)
+            var totalTours = nearbyTours.Count();
+            var pagedTours = nearbyTours;
+            if (page != 0 && pageSize != 0)
             {
-                return Result.Fail<PagedResult<TourDto>>(e.Message);
+                pagedTours = nearbyTours.Skip((page - 1) * pageSize).ToList();
+                pagedTours = pagedTours
+                    .Take(pageSize)
+                    .ToList();
             }
+
+            var pagedResult = new PagedResult<TourDto>(pagedTours, totalTours);
+
+            return Result.Ok(pagedResult);
+        }
+        catch (Exception e)
+        {
+            return Result.Fail<PagedResult<TourDto>>(e.Message);
         }
     }
 }

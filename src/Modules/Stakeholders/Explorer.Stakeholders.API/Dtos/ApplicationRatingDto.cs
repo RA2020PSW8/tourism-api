@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Explorer.Stakeholders.API.Dtos;
 
-namespace Explorer.Stakeholders.API.Dtos
+public class ApplicationRatingDto
 {
-    public class ApplicationRatingDto
-    {
-        public int Id { get; set; }
-        public int Rating { get; set; }
-        public string? Comment { get; set; }
-        public int UserId { get; set; }
-        public DateTime LastModified { get; set; }
-    }
+    public int Id { get; set; }
+    public int Rating { get; set; }
+    public string? Comment { get; set; }
+    public int UserId { get; set; }
+    public DateTime LastModified { get; set; }
 }
