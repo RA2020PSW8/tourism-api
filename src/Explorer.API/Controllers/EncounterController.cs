@@ -48,7 +48,7 @@ namespace Explorer.API.Controllers
             return CreateResponse(result);
         }
 
-        [HttpGet("{status:int}")]
+        [HttpGet("status")]
         public ActionResult<PagedResult<EncounterDto>> GetByStatus([FromQuery] string status)
         {
             var result = _encounterService.GetAllByStatus(status);
