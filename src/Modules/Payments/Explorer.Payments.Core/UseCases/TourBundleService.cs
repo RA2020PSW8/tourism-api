@@ -28,12 +28,17 @@ namespace Explorer.Payments.Core.UseCases
         }
 
 
-        Result<PagedResult<TourBundleDto>> GetPaged(int page, int pageSize)
+        public Result<PagedResult<TourBundleDto>> GetPaged(int page, int pageSize)
         {
             var result = _repository.GetPaged(page, pageSize);
             return MapToDto(result);
         }
 
+        public Result<TourBundleDto> Get (long id)
+        {
+            var result = _repository.Get(id);
+            return MapToDto(result);
+        }
         Result<TourBundleDto> Update(TourBundleDto newBundle) 
         {
             var existingTour = _repository.Get(newBundle.Id);

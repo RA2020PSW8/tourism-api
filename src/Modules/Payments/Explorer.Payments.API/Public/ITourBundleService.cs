@@ -14,7 +14,8 @@ namespace Explorer.Payments.API.Public
         Result<PagedResult<TourBundleDto>> GetPaged(int page, int pageSize);
         Result<TourBundleDto> Create(TourBundleDto bundle);
         Result<TourBundleDto> Update(TourBundleDto bundle);
-       
+
+        Result<TourBundleDto> Get(long id);
         Result Delete(int id);
     }
 }

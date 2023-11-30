@@ -28,6 +28,13 @@ namespace Explorer.API.Controllers.Tourist.Shopping
             return CreateResponse(result);
         }
 
+        [HttpGet("{id:int}")]
+        public ActionResult<TourBundleDto> Get(long id)
+        {
+            var result = _service.Get(id);
+            return CreateResponse(result);
+        }
+
         [HttpPut]
         public ActionResult<TourBundleDto> Update ([FromBody ]TourBundleDto bundle) 
         {
