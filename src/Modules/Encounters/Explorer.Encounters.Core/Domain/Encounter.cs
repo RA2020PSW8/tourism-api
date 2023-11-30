@@ -13,10 +13,13 @@ namespace Explorer.Encounters.Core.Domain
         public int Xp {  get; init; }
         public EncounterStatus Status { get; init; }
         public EncounterType Type { get; init; }
+        public double Range { get; init; }
+        public string? Image {  get; init; }
+        public int? PeopleCount { get; init; }
 
         public Encounter() { }
 
-        public Encounter(int userId, string name, string description, double latitude, double longitude, int xp, EncounterStatus status, EncounterType type)
+        public Encounter(int userId, string name, string description, double latitude, double longitude, int xp, EncounterStatus status, EncounterType type, double range, string image, int peopleCount)
         {
             UserId = userId;
             Name = name;
@@ -26,6 +29,9 @@ namespace Explorer.Encounters.Core.Domain
             Xp = xp;
             Status = status;
             Type = type;
+            Range = range;
+            Image = image;
+            PeopleCount = peopleCount;
         }
     }
 }

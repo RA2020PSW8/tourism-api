@@ -11,6 +11,6 @@ namespace Explorer.Encounters.API.Public
         Result<EncounterDto> Create(EncounterDto encounter);
         Result<EncounterDto> Update(EncounterDto encounter);
         Result Delete(int id);
-
+        Result<PagedResult<EncounterDto>> GetAllByStatus(string status);
     }
 }

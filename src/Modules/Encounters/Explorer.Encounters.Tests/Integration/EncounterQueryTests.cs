@@ -1,4 +1,4 @@
-﻿using Explorer.API.Controllers.Administrator;
+﻿using Explorer.API.Controllers;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.API.Dtos;
 using Explorer.Encounters.API.Public;
