@@ -43,6 +43,7 @@ public class Tour : Entity
     public ICollection<TourEquipment> TourEquipments { get; set; }
     public ICollection<Keypoint>? Keypoints { get; set; }
     public ICollection<TourReview>? TourReviews { get; set; }
+    public ICollection<Bundle>? Bundles { get; set; }
 
     private void Validate()
     {

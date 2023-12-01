@@ -1,26 +1,29 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
-using Explorer.Payments.Core.Domain.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Payments.Core.Domain
+namespace Explorer.Tours.Core.Domain
 {
-    public class TourBundle : Entity
+    public class Bundle : Entity
     {
         public string Name { get; init; }
         public double TotalPrice { get; init; }
         public string Status { get; init; }
+        public ICollection<Tour> Tours { get; set; }   
 
-        public TourBundle() { }
+        public Bundle()
+        {
+            Tours = new List<Tour>();
+        }
 
-        public TourBundle(long id, string name,  double totalPrice, string status)
+        public Bundle(long id, string name, string status)
         {
             Id = id;
             Name = name;
-            TotalPrice = totalPrice;
+            
             Status = status;
             Validate();
         }
@@ -28,7 +31,7 @@ namespace Explorer.Payments.Core.Domain
         private void Validate()
         {
             if (string.IsNullOrEmpty(Name)) throw new ArgumentException("Invalid Name");
-            if (TotalPrice < 0) throw new Exception("Invalid total price");
+           
             if (string.IsNullOrEmpty(Status)) throw new ArgumentException("Invalid status");
 
         }
