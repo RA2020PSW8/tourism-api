@@ -36,6 +36,7 @@ public class ProfileService : CrudService<PersonDto, Person>, IProfileService, I
         return people;
     }
 
+
     public Result<PagedResult<PersonDto>> GetUserNonFollowedProfiles(int page, int pageSize, long userId)
     {
         try
