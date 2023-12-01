@@ -8,6 +8,7 @@ using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -88,6 +89,14 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
         }
 
         
-
+        public Result<BundleDto> PublishBundle(BundleDto bundle)
+        {
+           
+            var result = _repository.getFullBundle(bundle.Id);
+            result.Publish(result);
+            return MapToDto(result);
+                
+        }
+       
     }
 }

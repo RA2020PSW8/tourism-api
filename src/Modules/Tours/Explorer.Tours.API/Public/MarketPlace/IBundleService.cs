@@ -4,6 +4,7 @@ using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,8 @@ namespace Explorer.Tours.API.Public.MarketPlace
 
         Result<BundleDto> AddTourToBundle(long tourId, long bundleId);
         Result  RemoveTourFromBundle(long tourId, long bundleId);
+
+        Result<BundleDto> PublishBundle(BundleDto bundle);
 
 
     }

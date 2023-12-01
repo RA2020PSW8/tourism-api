@@ -1,4 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace Explorer.Tours.Core.Domain
     {
         public string Name { get; init; }
         public double TotalPrice { get; init; }
-        public string Status { get; init; }
-        public ICollection<Tour> Tours { get; set; }   
+        public string Status { get; private set; }
+        public ICollection<Tour>? Tours { get; set; }   
 
         public Bundle()
         {
@@ -34,6 +35,20 @@ namespace Explorer.Tours.Core.Domain
            
             if (string.IsNullOrEmpty(Status)) throw new ArgumentException("Invalid status");
 
+        }
+        public Bundle Publish(Bundle bundle)
+        {
+            int count = 0;
+            foreach (var item in bundle.Tours)
+            {
+                if (item.Status == Domain.Enum.TourStatus.PUBLISHED)
+                    count++;
+            }
+            if (count >= 2)
+            {
+                bundle.Status = "PUBLISHED";
+            }
+            return bundle;
         }
     }
 }
