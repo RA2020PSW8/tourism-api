@@ -1,5 +1,5 @@
 ﻿
-namespace Explorer.Encounters.Core.Domain.Enum
+namespace Explorer.Encounters.Core.Domain.Enums
 {
     public enum EncounterStatus
     {

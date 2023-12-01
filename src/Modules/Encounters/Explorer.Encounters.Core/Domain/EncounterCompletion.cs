@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Explorer.BuildingBlocks.Core.Domain;
+﻿using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.Encounters.Core.Domain.Enums;
 
 namespace Explorer.Encounters.Core.Domain
@@ -15,7 +10,7 @@ namespace Explorer.Encounters.Core.Domain
         public long EncounterId { get; }
         public Encounter Encounter { get; }
         public int Xp { get; init; }
-        public EncounterCompletionStatus Status { get; init; }
+        public EncounterCompletionStatus Status { get; private set; }
 
         public EncounterCompletion() { }
 
@@ -25,6 +20,11 @@ namespace Explorer.Encounters.Core.Domain
             EncounterId = encounterId;
             CompletionTime = DateTime.UtcNow;
             Xp = xp;
+            Status = status;
+        }
+
+        public void UpdateStatus(EncounterCompletionStatus status)
+        {
             Status = status;
         }
     }

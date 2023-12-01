@@ -3,9 +3,8 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.API.Dtos;
 using Explorer.Encounters.API.Public;
 using Explorer.Stakeholders.Infrastructure.Authentication;
-using Explorer.Tours.API.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Explorer.Encounters.Core.Domain;
+using FluentResults;
 
 namespace Explorer.API.Controllers.Tourist.Encounters
 {
@@ -27,5 +26,15 @@ namespace Explorer.API.Controllers.Tourist.Encounters
             var result = _encounterCompletionService.GetPagedByUser(page, pageSize, userId);
             return CreateResponse(result);
         }
+
+
+        [HttpPost("updateSocialEncounters")]
+        public ActionResult UpdateSocialEncounters()
+        {
+            _encounterCompletionService.UpdateSocialEncounters();
+            return CreateResponse(Result.Ok());
+        }
+
+
     }
 }

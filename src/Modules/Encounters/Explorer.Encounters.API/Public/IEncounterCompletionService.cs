@@ -14,5 +14,6 @@ namespace Explorer.Encounters.API.Public
         Result<PagedResult<EncounterCompletionDto>> GetPaged(int page, int pageSize);
         Result<PagedResult<EncounterCompletionDto>> GetPagedByUser(int page, int pageSize, int userId);
         EncounterCompletionDto GetByUserAndEncounter(int userId, int encounterId);
+        void UpdateSocialEncounters();
     }
 }
