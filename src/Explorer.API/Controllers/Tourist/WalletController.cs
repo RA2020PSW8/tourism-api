@@ -15,17 +15,13 @@ namespace Explorer.API.Controllers.Tourist
     public class WalletController: BaseApiController
     {
         private readonly IWalletService _walletService;
-        private readonly IProfileService _userService;
 
-        public WalletController(IWalletService walletService, IProfileService userService) { _walletService = walletService; _userService = userService; }
+        public WalletController(IWalletService walletService) { _walletService = walletService; }
 
         [HttpGet("byUser")]
         public ActionResult<PagedResult<WalletDto>> GetByUser()
         {
-            int personId = User.PersonId();
-            var person = _userService.Get(personId);
-            long userId = person.UserId;
-            var result = _walletService.GetByUser((int)userId);
+            var result = _walletService.GetByUser(User.PersonId());
             var resultValue = Result.Ok(result);
             return CreateResponse(resultValue);
         }

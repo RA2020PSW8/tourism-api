@@ -101,7 +101,7 @@ public class WalletCommandTests: BasePaymentsIntegrationTest
 
     private static WalletController CreateController(IServiceScope scope)
     {
-        return new WalletController(scope.ServiceProvider.GetRequiredService<IWalletService>(), scope.ServiceProvider.GetRequiredService<IProfileService>())
+        return new WalletController(scope.ServiceProvider.GetRequiredService<IWalletService>())
         {
             ControllerContext = BuildContext("-1")
         };

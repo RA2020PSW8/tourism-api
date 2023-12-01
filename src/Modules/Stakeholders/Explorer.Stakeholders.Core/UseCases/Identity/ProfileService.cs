@@ -36,10 +36,6 @@ public class ProfileService : CrudService<PersonDto, Person>, IProfileService, I
         return people;
     }
 
-    public PersonDto Get(int id)
-    {
-        return MapToDto(_personRepository.Get(id));
-    }
 
     public Result<PagedResult<PersonDto>> GetUserNonFollowedProfiles(int page, int pageSize, long userId)
     {
