@@ -12,7 +12,7 @@ namespace Explorer.API.Controllers.Tourist
 {
     [Authorize(Policy = "touristPolicy")]
     [Route("api/tourist/wallet")]
-    public class WalletController: BaseApiController
+    public class WalletController : BaseApiController
     {
         private readonly IWalletService _walletService;
 
@@ -22,6 +22,14 @@ namespace Explorer.API.Controllers.Tourist
         public ActionResult<PagedResult<WalletDto>> GetByUser()
         {
             var result = _walletService.GetByUser(User.PersonId());
+            var resultValue = Result.Ok(result);
+            return CreateResponse(resultValue);
+        }
+        [HttpGet("byUser/{userId:int}")]
+        [AllowAnonymous]
+        public ActionResult<PagedResult<WalletDto>> GetByUser(int userId)
+        {
+            var result = _walletService.GetByUser(userId);
             var resultValue = Result.Ok(result);
             return CreateResponse(resultValue);
         }
@@ -39,7 +47,9 @@ namespace Explorer.API.Controllers.Tourist
             var result = _walletService.Create(wallet);
             return CreateResponse(result);
         }
+
         [HttpPut("{id:int}")]
+        [AllowAnonymous]
         public ActionResult<WalletDto> Update([FromBody] WalletDto wallet)
         {
             var result = _walletService.Update(wallet);

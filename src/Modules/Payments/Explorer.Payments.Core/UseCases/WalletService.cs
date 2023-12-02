@@ -29,5 +29,27 @@ namespace Explorer.Payments.Core.UseCases
             var cart = _walletRepository.GetByUser(userId);
             return MapToDto(cart);
         }
+
+        public override Result<WalletDto> Update(WalletDto updatedWalletDto)
+        {
+            try
+        {
+            var existingWallet = _walletRepository.Get(updatedWalletDto.Id);
+
+            if (existingWallet == null) return Result.Fail("Wallet not found.");
+
+                existingWallet.AdventureCoins = updatedWalletDto.AdventureCoins;
+                _walletRepository.Update(existingWallet);
+            return Result.Ok(new WalletDto
+            {
+                UserId = existingWallet.UserId,
+                AdventureCoins = existingWallet.AdventureCoins
+            });
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail($"An error occurred while updating the wallet: {ex.Message}");
+        }
+        }
     }
 }
