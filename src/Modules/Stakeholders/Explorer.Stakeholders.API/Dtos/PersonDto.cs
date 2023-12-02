@@ -10,4 +10,6 @@ public class PersonDto
     public string Biography { get; set; }
     public string Quote { get; set; }
     public string Email { get; set; }
+    public int? XP { get; set; }
+    public int? Level { get; set; }
 }
