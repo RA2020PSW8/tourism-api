@@ -51,7 +51,7 @@ public class TourManagementController : BaseApiController
         var result = _tourService.Update(tour);
         return CreateResponse(result);
     }
-
+    
     [HttpDelete("{id:int}")]
     [Authorize(Roles = "author")]
     public ActionResult Delete(int id)
@@ -79,7 +79,14 @@ public class TourManagementController : BaseApiController
             var result = _tourService.Update(tour);
             return CreateResponse(result);
         }
-
         return null;
+    }
+    
+    [HttpPost("custom")]
+    public ActionResult<TourDto> CreateCustomTour([FromBody] TourDto tourDto)
+    {   
+        tourDto.UserId = ClaimsPrincipalExtensions.PersonId(User);
+        var result = _tourService.CreateCustom(tourDto);
+        return CreateResponse(result);
     }
 }

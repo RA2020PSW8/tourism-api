@@ -16,7 +16,7 @@ namespace Explorer.Payments.Core.UseCases
 {
     public class WalletService: CrudService<WalletDto, Wallet>, IWalletService
     {
-        protected readonly IWalletRepository _walletRepository; 
+        protected readonly IWalletRepository _walletRepository;
         protected readonly IInternalNotificationService _notificationService;
 
         public WalletService(IWalletRepository repository, IMapper mapper, IInternalNotificationService notificationService) : base(repository, mapper)

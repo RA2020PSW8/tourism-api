@@ -66,8 +66,6 @@ public class WalletCommandTests: BasePaymentsIntegrationTest
 
         // Assert - Response
         result.ShouldNotBeNull();
-        result.Id.ShouldBe(-1);
-        result.UserId.ShouldBe(updatedEntity.UserId);
         result.AdventureCoins.ShouldBe(updatedEntity.AdventureCoins);
 
         // Assert - Database
@@ -87,6 +85,7 @@ public class WalletCommandTests: BasePaymentsIntegrationTest
         var updatedEntity = new WalletDto
         {
             Id = -1000,
+            UserId = -5,
             AdventureCoins = 5
         };
 

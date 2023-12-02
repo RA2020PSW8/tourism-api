@@ -10,6 +10,7 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring;
 
 public class TourManagementCommandTests : BaseToursIntegrationTest
 {
+    
     public TourManagementCommandTests(ToursTestFactory factory) : base(factory)
     {
     }
@@ -22,7 +23,7 @@ public class TourManagementCommandTests : BaseToursIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, userId);
         var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-        var newEntity = new TourDto
+        var newEntity = new TourDto()
         {
             UserId = 1,
             Name = "Test",
@@ -33,7 +34,7 @@ public class TourManagementCommandTests : BaseToursIntegrationTest
             Difficulty = "EASY",
             TransportType = "CAR",
             Status = "DRAFT",
-            Tags = new List<string>(),
+            Tags = new(),
             StatusUpdateTime = DateTime.Now.ToUniversalTime()
         };
 
@@ -58,7 +59,7 @@ public class TourManagementCommandTests : BaseToursIntegrationTest
         var userId = -1;
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, userId);
-        var updatedEntity = new TourDto
+        var updatedEntity = new TourDto()
         {
             Description = "Update"
         };
@@ -79,7 +80,7 @@ public class TourManagementCommandTests : BaseToursIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, userId);
         var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
-        var updatedEntity = new TourDto
+        var updatedEntity = new TourDto()
         {
             Id = -1,
             UserId = 1,
@@ -91,7 +92,7 @@ public class TourManagementCommandTests : BaseToursIntegrationTest
             Difficulty = "EASY",
             TransportType = "CAR",
             Status = "DRAFT",
-            Tags = new List<string>(),
+            Tags = new(),
             StatusUpdateTime = DateTime.Now.ToUniversalTime()
         };
 
@@ -123,7 +124,7 @@ public class TourManagementCommandTests : BaseToursIntegrationTest
         var userId = -1;
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, userId);
-        var updatedEntity = new TourDto
+        var updatedEntity = new TourDto()
         {
             Id = 1,
             UserId = 1,
@@ -135,7 +136,7 @@ public class TourManagementCommandTests : BaseToursIntegrationTest
             Difficulty = "EASY",
             TransportType = "CAR",
             Status = "DRAFT",
-            Tags = new List<string>(),
+            Tags = new(),
             StatusUpdateTime = DateTime.Now.ToUniversalTime()
         };
 
@@ -182,6 +183,43 @@ public class TourManagementCommandTests : BaseToursIntegrationTest
         // Assert
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(404);
+    }
+
+    [Fact]
+    public void Creates_custom()
+    {
+        // Arrange
+        var userId = -1;
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, userId);
+        var dbContext = scope.ServiceProvider.GetRequiredService<ToursContext>();
+        var newEntity = new TourDto()
+        {
+            UserId = 0,
+            Name = "Custom tour 1",
+            Description = "This is my custom tour",
+            Price = 0,
+            Duration = 100,
+            Distance = 2.1,
+            Difficulty = "MEDIUM",
+            TransportType = "WALK",
+            Status = "CUSTOM",
+            Tags = new(),
+            StatusUpdateTime = DateTime.Now.ToUniversalTime()
+        };
+
+        // Act
+        var result = ((ObjectResult)controller.CreateCustomTour(newEntity).Result)?.Value as TourDto;
+
+        // Assert - Response
+        result.ShouldNotBeNull();
+        result.Id.ShouldNotBe(0);
+        result.Name.ShouldBe(newEntity.Name);
+
+        // Assert - Database
+        var storedEntity = dbContext.Tours.FirstOrDefault(i => i.Name == newEntity.Name);
+        storedEntity.ShouldNotBeNull();
+        storedEntity.Id.ShouldBe(result.Id);
     }
 
     private static TourManagementController CreateController(IServiceScope scope, int userId)
