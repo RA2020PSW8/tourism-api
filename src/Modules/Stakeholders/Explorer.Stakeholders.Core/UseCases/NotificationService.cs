@@ -32,13 +32,6 @@ public class NotificationService : BaseService<NotificationDto, Notification>, I
         var notification = new Notification(userId, typeDomain, actionURL, date, false, additionalMessage);
         _notificationRepository.Generate(notification);
     }
-    public void GenerateNotification(int userId, NotificationType typeDto, string actionURL, DateTime date,
-        string additionalMessage)
-    {
-        var typeDomain = (Domain.Enums.NotificationType)typeDto;
-        var notification = new Notification(userId, typeDomain, actionURL, date, false, additionalMessage);
-        _notificationRepository.Generate(notification);
-    }
 
     public Result MarkAsRead(int id)
     {
