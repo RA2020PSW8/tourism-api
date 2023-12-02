@@ -7,6 +7,6 @@ namespace Explorer.Encounters.Core.Domain.RepositoryInterfaces
     public interface IEncounterRepository : ICrudRepository<Encounter>
     {
         PagedResult<Encounter> GetAllByStatus(EncounterStatus status);
-        PagedResult<Encounter> GetAllByStatusAndType(EncounterStatus status, EncounterType type);
+        IEnumerable<Encounter> GetAllByStatusAndType(EncounterStatus status, EncounterType type);
     }
 }

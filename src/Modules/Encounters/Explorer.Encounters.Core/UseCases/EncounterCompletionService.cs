@@ -39,43 +39,35 @@ namespace Explorer.Encounters.Core.UseCases
 
         public void UpdateSocialEncounters()
         {
-            List<Encounter> socialEncounters = _encounterRepository.GetAllByStatusAndType(EncounterStatus.ACTIVE, EncounterType.SOCIAL).Results;
+            List<Encounter> socialEncounters = _encounterRepository.GetAllByStatusAndType(EncounterStatus.ACTIVE, EncounterType.SOCIAL).ToList();
             List<TouristPositionDto> touristPositions = _touristPositionService.GetPaged(0, 0).ValueOrDefault.Results;
-            List<long> usersToComplete = new List<long>();
-            List<long> usersToStart = new List<long>();
-            int peopleInRange;
+            List<long> nearbyUserIds = new List<long>();
             
             foreach (var encounter in socialEncounters)
             {
-                peopleInRange = touristPositions.Count(position => IsTouristInRangeAndUpdated(position, encounter));
-
-                usersToStart = touristPositions
+                nearbyUserIds = touristPositions
                         .Where(position => IsTouristInRangeAndUpdated(position, encounter))
                         .Select(position => position.UserId)
                         .Distinct()
-                        .Where(userId => !HasUserStartedEncounter(userId, encounter.Id))
                         .ToList();
 
-                foreach (long userId in usersToStart)
+                foreach (long userId in nearbyUserIds)
                 {
-                    EncounterCompletion encounterCompletion = new EncounterCompletion(userId, encounter.Id, encounter.Xp, EncounterCompletionStatus.STARTED);
-                    _encounterCompletionRepository.Create(encounterCompletion);
-                }
-
-                if (peopleInRange >= encounter.PeopleCount)
-                {
-                    usersToComplete = touristPositions
-                        .Where(position => IsTouristInRangeAndUpdated(position, encounter))
-                        .Select(position => position.UserId)
-                        .Distinct()
-                        .Where(userId => !HasUserCompletedEncounter(userId, encounter.Id))
-                        .ToList();
-
-                    foreach (long userId in usersToComplete)
+                    if (!_encounterCompletionRepository.HasUserStartedEncounter(userId, encounter.Id))
                     {
-                        EncounterCompletion encounterCompletion = _encounterCompletionRepository.GetByUserAndEncounter(userId, encounter.Id);
-                        encounterCompletion.UpdateStatus(EncounterCompletionStatus.COMPLETED);
-                        _encounterCompletionRepository.Update(encounterCompletion);
+                        EncounterCompletion encounterCompletion = new EncounterCompletion(userId, encounter.Id, encounter.Xp, EncounterCompletionStatus.STARTED);
+                        _encounterCompletionRepository.Create(encounterCompletion);
+                    }
+
+                    if (nearbyUserIds.Count >= encounter.PeopleCount)
+                    {
+                        if (!_encounterCompletionRepository.HasUserCompletedEncounter(userId, encounter.Id))
+                        {
+                            EncounterCompletion encounterCompletion = _encounterCompletionRepository.GetByUserAndEncounter(userId, encounter.Id);
+                            encounterCompletion.UpdateStatus(EncounterCompletionStatus.COMPLETED);
+                            _encounterCompletionRepository.Update(encounterCompletion);
+
+                        }
                     }
                 }
             }
@@ -88,32 +80,6 @@ namespace Explorer.Encounters.Core.UseCases
             bool updatedRecently = position.UpdatedAt > DateTime.UtcNow.AddMinutes(-10);
 
             return isInRange && updatedRecently;
-        }
-
-        private bool HasUserCompletedEncounter(long userId, long encounterId)
-        {
-            try 
-            {
-                EncounterCompletion encounterCompletion = _encounterCompletionRepository.GetByUserAndEncounter(userId, encounterId);
-                return encounterCompletion.Status == EncounterCompletionStatus.COMPLETED;
-            }
-            catch(KeyNotFoundException) 
-            {
-                return false;
-            }
-        }
-
-        private bool HasUserStartedEncounter(long userId, long encounterId)
-        {
-            try
-            {
-                _encounterCompletionRepository.GetByUserAndEncounter(userId, encounterId);
-                return true;
-            }
-            catch (KeyNotFoundException)
-            {
-                return false;
-            }
         }
     }
 }

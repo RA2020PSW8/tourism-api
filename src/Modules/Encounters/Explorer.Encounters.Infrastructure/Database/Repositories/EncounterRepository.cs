@@ -21,10 +21,9 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
             return new PagedResult<Encounter>(encounters, encounters.Count);
         }
 
-        public PagedResult<Encounter> GetAllByStatusAndType(EncounterStatus status, EncounterType type)
+        public IEnumerable<Encounter> GetAllByStatusAndType(EncounterStatus status, EncounterType type)
         {
-            var encounters = _dbSet.AsNoTracking().Where(e => e.Status == status && e.Type == type).ToList();
-            return new PagedResult<Encounter>(encounters, encounters.Count);
+            return _dbSet.AsNoTracking().Where(e => e.Status == status && e.Type == type).ToList();
         }
     }
 }

@@ -33,5 +33,17 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
             if (encounterCompletion == null) throw new KeyNotFoundException("Not found: " + userId + " + " + encounterId); 
             return encounterCompletion;
         }
+
+        public bool HasUserStartedEncounter(long userId, long encounterId) 
+        {
+            var encounterCompletion = _dbSet.FirstOrDefault(ec => ec.UserId == userId && ec.EncounterId == encounterId);
+            return encounterCompletion != null ? true : false;
+        }
+
+        public bool HasUserCompletedEncounter(long userId, long encounterId)
+        {
+            var encounterCompletion = _dbSet.FirstOrDefault(ec => ec.UserId == userId && ec.EncounterId == encounterId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED);
+            return encounterCompletion != null ? true : false;
+        }
     }
 }
