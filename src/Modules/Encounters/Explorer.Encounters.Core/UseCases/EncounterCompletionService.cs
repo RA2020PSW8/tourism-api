@@ -42,7 +42,7 @@ namespace Explorer.Encounters.Core.UseCases
             List<Encounter> socialEncounters = _encounterRepository.GetAllByStatusAndType(EncounterStatus.ACTIVE, EncounterType.SOCIAL).ToList();
             List<TouristPositionDto> touristPositions = _touristPositionService.GetPaged(0, 0).ValueOrDefault.Results;
             List<long> nearbyUserIds = new List<long>();
-            
+
             foreach (var encounter in socialEncounters)
             {
                 nearbyUserIds = touristPositions
@@ -72,14 +72,49 @@ namespace Explorer.Encounters.Core.UseCases
                 }
             }
         }
+        public Result StartEncounter(long userId, EncounterDto encounter)
+        {
+            Result<TouristPositionDto> position = _touristPositionService.GetByUser(userId);
+            EncounterCompletion encounterCompletion = new EncounterCompletion(userId, encounter.Id, encounter.Xp, EncounterCompletionStatus.STARTED);
+            if (!_encounterCompletionRepository.HasUserStartedEncounter(userId, encounter.Id) && IsTouristInRange(position.Value, encounter.Longitude, encounter.Latitude, encounter.Range))
+            {
+                try
+                {
+                    _encounterCompletionRepository.Create(encounterCompletion);
+                    return Result.Ok();
+                }
+                catch (KeyNotFoundException e)
+                {
+                    return Result.Fail(FailureCode.Conflict).WithError(e.Message);
+                }
+            }
+            return Result.Fail(FailureCode.Conflict).WithError("This encounter can't be started");
 
+        }
+        public Result FinishEncounter(long userId, EncounterDto encounter)
+        {
+            var encounterCompletion = _encounterCompletionRepository.GetByUserAndEncounter(userId, encounter.Id);
+            if (encounterCompletion == null) return Result.Fail(FailureCode.NotFound).WithError("You didn't started encounter yet");
+
+            encounterCompletion.UpdateStatus(EncounterCompletionStatus.COMPLETED);
+            _encounterCompletionRepository.Update(encounterCompletion);
+
+            return Result.Ok();
+
+        }
         private bool IsTouristInRangeAndUpdated(TouristPositionDto position, Encounter encounter)
         {
-            double touristDistance = DistanceCalculator.CalculateDistance(position.Latitude, position.Longitude, encounter.Latitude, encounter.Longitude);
-            bool isInRange = touristDistance < encounter.Range;
+            bool isInRange = IsTouristInRange(position, encounter.Longitude, encounter.Latitude, encounter.Range);
             bool updatedRecently = position.UpdatedAt > DateTime.UtcNow.AddMinutes(-10);
 
             return isInRange && updatedRecently;
+        }
+
+        private bool IsTouristInRange(TouristPositionDto position, double longitude, double latitude, double range)
+        {
+            double touristDistance = DistanceCalculator.CalculateDistance(position.Latitude, position.Longitude, latitude, longitude);
+            bool isInRange = touristDistance < range;
+            return isInRange;
         }
     }
 }
