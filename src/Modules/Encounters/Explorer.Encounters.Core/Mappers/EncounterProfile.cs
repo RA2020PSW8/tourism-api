@@ -10,6 +10,7 @@ namespace Explorer.Encounters.Core.Mappers
         {
             CreateMap<EncounterDto, Encounter>().ReverseMap();
             CreateMap<EncounterCompletionDto, EncounterCompletion>().ReverseMap();
+            CreateMap<KeypointEncounterDto, KeypointEncounter>().ReverseMap();
         }
     }
 }
