@@ -5,8 +5,8 @@ using FluentResults;
 namespace Explorer.BuildingBlocks.Core.UseCases;
 
 /// <summary>
-/// The base service class that offers methods for mapping TDomain objects to TDto object and vice-versa.
-/// Services that primarily deal with one entity should inherit this service or its derived type.
+///     The base service class that offers methods for mapping TDomain objects to TDto object and vice-versa.
+///     Services that primarily deal with one entity should inherit this service or its derived type.
 /// </summary>
 /// <typeparam name="TDto">Type of output data transfer object.</typeparam>
 /// <typeparam name="TDomain">Type of domain object that maps to TDto</typeparam>

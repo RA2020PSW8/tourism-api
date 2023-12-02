@@ -1,21 +1,20 @@
-﻿using AutoMapper;
-using Explorer.BuildingBlocks.Core.UseCases;
+﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
-using System.Diagnostics;
 
 namespace Explorer.Stakeholders.Core.UseCases;
 
 public class AuthenticationService : IAuthenticationService
 {
+    private readonly ICrudRepository<Person> _personRepository;
     private readonly ITokenGenerator _tokenGenerator;
     private readonly IUserRepository _userRepository;
-    private readonly ICrudRepository<Person> _personRepository;
 
-    public AuthenticationService(IUserRepository userRepository, ICrudRepository<Person> personRepository, ITokenGenerator tokenGenerator)
+    public AuthenticationService(IUserRepository userRepository, ICrudRepository<Person> personRepository,
+        ITokenGenerator tokenGenerator)
     {
         _tokenGenerator = tokenGenerator;
         _userRepository = userRepository;
@@ -38,6 +37,7 @@ public class AuthenticationService : IAuthenticationService
         {
             personId = 0;
         }
+
         return _tokenGenerator.GenerateAccessToken(user, personId);
     }
 
@@ -47,8 +47,10 @@ public class AuthenticationService : IAuthenticationService
 
         try
         {
-            var user = _userRepository.Create(new User(account.Username, account.Password, Domain.UserRole.Tourist, true, account.Email, false));
-            var person = _personRepository.Create(new Person(user.Id, account.Name, account.Surname, account.Email,account.ProfileImage, account.Biography, account.Quote));
+            var user = _userRepository.Create(new User(account.Username, account.Password, UserRole.Tourist, true,
+                account.Email, false));
+            var person = _personRepository.Create(new Person(user.Id, account.Name, account.Surname, account.Email,
+                account.ProfileImage, account.Biography, account.Quote));
 
             return _tokenGenerator.GenerateAccessToken(user, person.Id);
         }

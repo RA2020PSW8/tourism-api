@@ -1,59 +1,60 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.API.Dtos.Enums;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
 
-namespace Explorer.Stakeholders.Core.UseCases
+namespace Explorer.Stakeholders.Core.UseCases;
+
+public class NotificationService : BaseService<NotificationDto, Notification>, INotificationService
 {
-    public class NotificationService : BaseService<NotificationDto, Notification>, INotificationService
+    protected readonly INotificationRepository _notificationRepository;
+
+    public NotificationService(INotificationRepository repository, IMapper mapper) : base(mapper)
     {
-        protected readonly INotificationRepository _notificationRepository;
+        _notificationRepository = repository;
+    }
 
-        public NotificationService(INotificationRepository repository, IMapper mapper) : base(mapper)
-        {
-            _notificationRepository = repository;
-        }
-       
-         public Result<PagedResult<NotificationDto>> GetByUser(int page, int pageSize, int userId)
-        {
-            var result = _notificationRepository.GetByUser(page, pageSize, userId);
-            return MapToDto(result);
-        }
+    public Result<PagedResult<NotificationDto>> GetByUser(int page, int pageSize, int userId)
+    {
+        var result = _notificationRepository.GetByUser(page, pageSize, userId);
+        return MapToDto(result);
+    }
 
-        public void Generate(int userId, API.Dtos.Enums.NotificationType typeDto, String actionURL, DateTime date, String additionalMessage)
-        {
-            Domain.Enums.NotificationType typeDomain = (Domain.Enums.NotificationType)(typeDto);
-            Notification notification = new Notification(userId, typeDomain, actionURL, date, false, additionalMessage);
-            _notificationRepository.Generate(notification);
-        }
+    public void Generate(int userId, NotificationType typeDto, string actionURL, DateTime date,
+        string additionalMessage)
+    {
+        var typeDomain = (Domain.Enums.NotificationType)typeDto;
+        var notification = new Notification(userId, typeDomain, actionURL, date, false, additionalMessage);
+        _notificationRepository.Generate(notification);
+    }
 
-        public Result MarkAsRead(int id)
+    public Result MarkAsRead(int id)
+    {
+        try
         {
-            try
-            {
-                _notificationRepository.MarkAsRead(id);
-                return Result.Ok();
-            }
-            catch (KeyNotFoundException e)
-            {
-                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
-            }                     
+            _notificationRepository.MarkAsRead(id);
+            return Result.Ok();
         }
-
-        public Result Delete(int id)
+        catch (KeyNotFoundException e)
         {
-            try
-            {
-                _notificationRepository.Delete(id);
-                return Result.Ok();
-            }
-            catch (KeyNotFoundException e)
-            {
-                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
-            }
+            return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+        }
+    }
+
+    public Result Delete(int id)
+    {
+        try
+        {
+            _notificationRepository.Delete(id);
+            return Result.Ok();
+        }
+        catch (KeyNotFoundException e)
+        {
+            return Result.Fail(FailureCode.NotFound).WithError(e.Message);
         }
     }
 }

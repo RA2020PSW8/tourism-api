@@ -1,5 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Encounters.Core.Domain.Enum;
+using Explorer.Encounters.Core.Domain.Enums;
 using Explorer.Encounters.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;

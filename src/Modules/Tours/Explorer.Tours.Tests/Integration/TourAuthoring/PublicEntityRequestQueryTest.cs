@@ -5,16 +5,10 @@ using Explorer.Tours.API.Public.TourAuthoring;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Explorer.Tours.Tests.Integration.TourAuthoring;
 
 [Collection("Sequential")]
-
 public class PublicEntityRequestQueryTest : BaseToursIntegrationTest
 {
     public PublicEntityRequestQueryTest(ToursTestFactory factory) : base(factory)
@@ -39,10 +33,10 @@ public class PublicEntityRequestQueryTest : BaseToursIntegrationTest
 
     private static PublicEntityRequestController CreateController(IServiceScope scope)
     {
-        return new PublicEntityRequestController(scope.ServiceProvider.GetRequiredService<IPublicEntityRequestService>())
+        return new PublicEntityRequestController(
+            scope.ServiceProvider.GetRequiredService<IPublicEntityRequestService>())
         {
             ControllerContext = BuildContext("-1")
         };
     }
 }
-

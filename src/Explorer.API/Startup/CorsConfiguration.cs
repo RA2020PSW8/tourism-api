@@ -8,7 +8,7 @@ public static class CorsConfiguration
     {
         services.AddCors(options =>
         {
-            options.AddPolicy(name: corsPolicy,
+            options.AddPolicy(corsPolicy,
                 builder =>
                 {
                     builder.WithOrigins(ParseCorsOrigins())
@@ -23,10 +23,7 @@ public static class CorsConfiguration
     {
         var corsOrigins = new[] { "http://localhost:4200" };
         var corsOriginsPath = Environment.GetEnvironmentVariable("EXPLORER_CORS_ORIGINS");
-        if (File.Exists(corsOriginsPath))
-        {
-            corsOrigins = File.ReadAllLines(corsOriginsPath);
-        }
+        if (File.Exists(corsOriginsPath)) corsOrigins = File.ReadAllLines(corsOriginsPath);
 
         return corsOrigins;
     }

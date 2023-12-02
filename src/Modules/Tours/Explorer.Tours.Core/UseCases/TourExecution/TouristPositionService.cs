@@ -6,68 +6,62 @@ using Explorer.Tours.API.Public.TourExecution;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Explorer.Tours.Core.UseCases.TourExecution
+namespace Explorer.Tours.Core.UseCases.TourExecution;
+
+public class TouristPositionService : CrudService<TouristPositionDto, TouristPosition>, ITouristPositionService, IInternalTouristPositionService
 {
-    public class TouristPositionService : CrudService<TouristPositionDto, TouristPosition>, ITouristPositionService, IInternalTouristPositionService
+    protected readonly ITouristPositionRepository _touristPositionRepository;
+
+    public TouristPositionService(ITouristPositionRepository repository, IMapper mapper) : base(repository, mapper)
     {
-        protected readonly ITouristPositionRepository _touristPositionRepository;
+        _touristPositionRepository = repository;
+    }
 
-        public TouristPositionService(ITouristPositionRepository repository, IMapper mapper) : base(repository, mapper)
+    public Result<TouristPositionDto> GetByUser(long userId)
+    {
+        try
         {
-            _touristPositionRepository = repository;
+            var result = _touristPositionRepository.GetByUser(userId);
+            return MapToDto(result);
         }
-
-        public Result<TouristPositionDto> GetByUser(long userId)
+        catch (KeyNotFoundException e)
         {
-            try
-            {
-                var result = _touristPositionRepository.GetByUser(userId);
-                return MapToDto(result);
-            }
-            catch (KeyNotFoundException e)
-            {
-                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
-            }
+            return Result.Fail(FailureCode.NotFound).WithError(e.Message);
         }
+    }
 
-        override public Result<TouristPositionDto> Create(TouristPositionDto entity)
+    public override Result<TouristPositionDto> Create(TouristPositionDto entity)
+    {
+        try
         {
-            try
-            {
-                var existingTouristPosition = _touristPositionRepository.GetByUser(entity.UserId);
-                return Result.Fail(FailureCode.Conflict).WithError("Tourist position for this user already exists");
-            }
-            catch (ArgumentException e)
-            {
-                return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
-            }
-            catch (KeyNotFoundException e)
-            {
-                entity.UpdatedAt = DateTime.UtcNow;
-                var result = _touristPositionRepository.Create(MapToDomain(entity));
-                return MapToDto(result);
-            }
+            var existingTouristPosition = _touristPositionRepository.GetByUser(entity.UserId);
+            return Result.Fail(FailureCode.Conflict).WithError("Tourist position for this user already exists");
         }
-
-        override public Result<TouristPositionDto> Update(TouristPositionDto entity)
+        catch (ArgumentException e)
         {
-            try
-            {
-                var foundTouristPosition = _touristPositionRepository.GetByUser(entity.UserId);
-                entity.Id = foundTouristPosition.Id;
-                entity.UpdatedAt = DateTime.UtcNow;
-                return base.Update(entity);
-            }
-            catch (KeyNotFoundException e)
-            {
-                return Result.Fail(FailureCode.NotFound).WithError(e.Message);
-            }
+            return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
+        }
+        catch (KeyNotFoundException e)
+        {
+            entity.UpdatedAt = DateTime.UtcNow;
+            var result = _touristPositionRepository.Create(MapToDomain(entity));
+            return MapToDto(result);
+        }
+    }
+
+    public override Result<TouristPositionDto> Update(TouristPositionDto entity)
+    {
+        try
+        {
+            var foundTouristPosition = _touristPositionRepository.GetByUser(entity.UserId);
+            entity.Id = foundTouristPosition.Id;
+            entity.UpdatedAt = DateTime.UtcNow;
+            return base.Update(entity);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return Result.Fail(FailureCode.NotFound).WithError(e.Message);
         }
     }
 }

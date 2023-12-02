@@ -7,5 +7,8 @@ public class ErrorsController : ControllerBase
 {
     [HttpGet]
     [Route("/error")]
-    public IActionResult HandleErrors() => Problem();
+    public IActionResult HandleErrors()
+    {
+        return Problem();
+    }
 }
