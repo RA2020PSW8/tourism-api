@@ -47,13 +47,10 @@ namespace Explorer.Encounters.Core.UseCases
             try
             {
                 var keypointEncounters = _keypointEncounterRepository.GetAllByKeypoint(keypointId);
-                KeypointEncounterDto keypointEncounterDto;
                 foreach (var keypointEncounter in keypointEncounters)
                 {
-                    keypointEncounterDto = MapToDto(keypointEncounter);
-                    keypointEncounterDto.Encounter.Latitude = location.Latitude;
-                    keypointEncounterDto.Encounter.Longitude = location.Longitude;
-                    _encounterRepository.Update(MapToDomain(keypointEncounterDto).Encounter);
+                    keypointEncounter.Encounter.UpdateLocation(location);
+                    _encounterRepository.Update(keypointEncounter.Encounter);
                 }
                 return Result.Ok();
             }

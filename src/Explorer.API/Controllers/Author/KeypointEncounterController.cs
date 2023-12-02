@@ -34,7 +34,7 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
-        [HttpPut()]
+        [HttpPut]
         public ActionResult<KeypointEncounterDto> Update([FromBody] KeypointEncounterDto keypointEncounter)
         {
             var result = _keypointEncounterService.Update(keypointEncounter);
