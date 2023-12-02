@@ -5,6 +5,7 @@ using Explorer.Payments.Core.Mappers;
 using Explorer.Payments.Core.UseCases;
 using Explorer.Payments.Infrastructure.Database;
 using Explorer.Payments.Infrastructure.Database.Repositories;
+using Explorer.Stakeholders.API.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,6 +28,7 @@ public static class PaymentsStartup
         services.AddScoped<IShoppingCartService, ShoppingCartService>();
         services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
         services.AddScoped<IWalletService, WalletService>();
+        
     }
 
     private static void SetupInfrastructure(IServiceCollection services)

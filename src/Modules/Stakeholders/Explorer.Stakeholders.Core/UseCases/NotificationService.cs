@@ -2,6 +2,7 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Dtos.Enums;
+using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
@@ -9,7 +10,7 @@ using FluentResults;
 
 namespace Explorer.Stakeholders.Core.UseCases;
 
-public class NotificationService : BaseService<NotificationDto, Notification>, INotificationService
+public class NotificationService : BaseService<NotificationDto, Notification>, INotificationService, IInternalNotificationService
 {
     protected readonly INotificationRepository _notificationRepository;
 
@@ -25,6 +26,13 @@ public class NotificationService : BaseService<NotificationDto, Notification>, I
     }
 
     public void Generate(int userId, NotificationType typeDto, string actionURL, DateTime date,
+        string additionalMessage)
+    {
+        var typeDomain = (Domain.Enums.NotificationType)typeDto;
+        var notification = new Notification(userId, typeDomain, actionURL, date, false, additionalMessage);
+        _notificationRepository.Generate(notification);
+    }
+    public void GenerateNotification(int userId, NotificationType typeDto, string actionURL, DateTime date,
         string additionalMessage)
     {
         var typeDomain = (Domain.Enums.NotificationType)typeDto;

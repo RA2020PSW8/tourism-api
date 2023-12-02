@@ -4,6 +4,7 @@ using Explorer.Payments.API.Dtos;
 using Explorer.Payments.API.Public;
 using Explorer.Payments.Core.Domain;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.API.Internal;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,13 @@ namespace Explorer.Payments.Core.UseCases
 {
     public class WalletService: CrudService<WalletDto, Wallet>, IWalletService
     {
-        protected readonly IWalletRepository _walletRepository;
+        protected readonly IWalletRepository _walletRepository; 
+        protected readonly IInternalNotificationService _notificationService;
 
-        public WalletService(IWalletRepository repository, IMapper mapper) : base(repository, mapper)
+        public WalletService(IWalletRepository repository, IMapper mapper, IInternalNotificationService notificationService) : base(repository, mapper)
         {
             _walletRepository = repository;
+            _notificationService = notificationService;
         }
 
         
@@ -40,6 +43,8 @@ namespace Explorer.Payments.Core.UseCases
 
                 existingWallet.AdventureCoins = updatedWalletDto.AdventureCoins;
                 _walletRepository.Update(existingWallet);
+                var url = "/wallet/byUser";
+                _notificationService.Generate(updatedWalletDto.UserId,Stakeholders.API.Dtos.Enums.NotificationType.COINS_GIFTED,url, DateTime.UtcNow, "");
             return Result.Ok(new WalletDto
             {
                 UserId = existingWallet.UserId,
