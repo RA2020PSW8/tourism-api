@@ -41,8 +41,8 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
-        [HttpDelete("{id:int}")]
-        public ActionResult Delete(int id)
+        [HttpDelete("{id:long}")]
+        public ActionResult Delete(long id)
         {
             var result = _keypointEncounterService.Delete(id);
             return CreateResponse(result);
@@ -51,6 +51,12 @@ namespace Explorer.API.Controllers.Author
         public ActionResult<KeypointEncounterDto> UpdateEncounterLocation([FromBody] LocationDto location, int keypointId)
         {
             var result  = _keypointEncounterService.UpdateEncountersLocation(location, keypointId);
+            return CreateResponse(result);
+        }
+        [HttpDelete("keypoint/{keypointId:int}")]
+        public ActionResult DeleteKeypointEncounters(int keypointId)
+        {
+            var result = _keypointEncounterService.DeleteKeypointEncounters(keypointId);
             return CreateResponse(result);
         }
     }

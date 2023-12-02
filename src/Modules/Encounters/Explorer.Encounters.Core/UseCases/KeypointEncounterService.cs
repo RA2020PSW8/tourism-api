@@ -5,6 +5,7 @@ using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.Domain;
 using Explorer.Encounters.Core.Domain.Enums;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
+using Explorer.Tours.Core.Domain;
 using FluentResults;
 
 namespace Explorer.Encounters.Core.UseCases
@@ -24,7 +25,7 @@ namespace Explorer.Encounters.Core.UseCases
             var result = _keypointEncounterRepository.GetPagedByKeypoint(page, page, keypointId);
             return MapToDto(result);
         }
-        public Result Delete(int keypointEncounterId)
+        public Result Delete(long keypointEncounterId)
         {
             try
             {
@@ -58,6 +59,16 @@ namespace Explorer.Encounters.Core.UseCases
             {
                 return Result.Fail(FailureCode.Conflict).WithError(e.Message);
             }
+        }
+        public Result DeleteKeypointEncounters(int keypointId)
+        {
+            var keypointEncounters = _keypointEncounterRepository.GetAllByKeypoint(keypointId);
+                foreach (var keypointEncounter in keypointEncounters)
+                {
+                    Delete(keypointEncounter.Id);
+                }
+                
+            return Result.Ok();
         }
     }
 }
