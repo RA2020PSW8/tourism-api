@@ -1,5 +1,4 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
-using Explorer.Encounters.API.Dtos;
 using Explorer.Encounters.Core.Domain.Enums;
 
 namespace Explorer.Encounters.Core.Domain
@@ -34,10 +33,10 @@ namespace Explorer.Encounters.Core.Domain
             Image = image;
             PeopleCount = peopleCount;
         }
-        public void UpdateLocation(LocationDto location)
+        public void UpdateLocation(double latitude, double longitude)
         {
-            Latitude = location.Latitude;
-            Longitude = location.Longitude;
+            Latitude = latitude;
+            Longitude = longitude;
         }
     }
 }

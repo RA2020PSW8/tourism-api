@@ -49,7 +49,7 @@ namespace Explorer.Encounters.Core.UseCases
                 var keypointEncounters = _keypointEncounterRepository.GetAllByKeypoint(keypointId);
                 foreach (var keypointEncounter in keypointEncounters)
                 {
-                    keypointEncounter.Encounter.UpdateLocation(location);
+                    keypointEncounter.Encounter.UpdateLocation(location.Latitude, location.Longitude);
                     _encounterRepository.Update(keypointEncounter.Encounter);
                 }
                 return Result.Ok();
