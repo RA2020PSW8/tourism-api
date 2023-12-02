@@ -9,5 +9,5 @@ public interface ITourLifecycleService
     Result<TourProgressDto> StartTour(long tourId, long userId);
     Result<TourProgressDto> AbandonActiveTour(long userId);
 
-    Result<TourProgressDto> UpdateActiveTour(long userId);
+    Result<TourProgressDto> UpdateActiveTour(long userId, int passedKeypoints);
 }
