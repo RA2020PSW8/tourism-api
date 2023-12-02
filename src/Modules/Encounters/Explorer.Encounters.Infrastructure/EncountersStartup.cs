@@ -6,6 +6,8 @@ using Explorer.Encounters.Core.Mappers;
 using Explorer.Encounters.Core.UseCases;
 using Explorer.Encounters.Infrastructure.Database;
 using Explorer.Encounters.Infrastructure.Database.Repositories;
+using Explorer.Tours.API.Internal;
+using Explorer.Tours.Core.UseCases.TourExecution;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +27,7 @@ namespace Explorer.Encounters.Infrastructure
         {
             services.AddScoped<IEncounterService, EncounterService>();
             services.AddScoped<IEncounterCompletionService, EncounterCompletionService>();
+            services.AddScoped<IInternalTouristPositionService, TouristPositionService>();
         }
 
         private static void SetupInfrastructure(IServiceCollection services)
