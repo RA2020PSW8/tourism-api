@@ -7,7 +7,7 @@ namespace Explorer.Stakeholders.Core.Domain;
 public class Person : Entity
 {
     public Person(long userId, string name, string surname, string email, string profileImage, string biography,
-        string quote)
+        string quote, int xP, int level)
     {
         UserId = userId;
         Name = name;
@@ -16,6 +16,8 @@ public class Person : Entity
         ProfileImage = profileImage;
         Biography = biography;
         Quote = quote;
+        XP = xP;
+        Level = level;
         Followers = new List<Person>();
         Following = new List<Person>();
         Validate();
@@ -28,6 +30,8 @@ public class Person : Entity
     public string ProfileImage { get; init; }
     public string Biography { get; init; }
     public string Quote { get; init; }
+    public int XP { get; set; }
+    public int Level { get; set; }
 
     [InverseProperty(nameof(Following))] public List<Person> Followers { get; } = new();
 
@@ -65,5 +69,11 @@ public class Person : Entity
         if (Id == followed.Id) throw new ArgumentException("You can't unfollow yourself");
 
         Following.Remove(followed);
+    }
+
+    public void AddXp(int xp)
+    {
+        XP += xp;
+        Level = (int)Math.Ceiling(XP / 1000.0);
     }
 }
