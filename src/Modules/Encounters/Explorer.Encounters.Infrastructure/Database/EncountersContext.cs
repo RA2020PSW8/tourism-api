@@ -7,6 +7,7 @@ namespace Explorer.Encounters.Infrastructure.Database
     {
         public DbSet<Encounter> Encounters { get; set; }
         public DbSet<EncounterCompletion> EncounterCompletions { get; set; }
+        public DbSet<KeypointEncounter> KeypointEncounters { get; set; }
 
         public EncountersContext(DbContextOptions<EncountersContext> options) : base(options) { }
 
@@ -23,6 +24,11 @@ namespace Explorer.Encounters.Infrastructure.Database
                 .HasOne(ec => ec.Encounter)
                 .WithMany()
                 .HasForeignKey(ec => ec.EncounterId);
+
+            modelBuilder.Entity<KeypointEncounter>()
+                .HasOne<Encounter>(ec => ec.Encounter)
+                .WithOne()
+                .HasForeignKey<KeypointEncounter>(s => s.EncounterId);
         }
     }
 }

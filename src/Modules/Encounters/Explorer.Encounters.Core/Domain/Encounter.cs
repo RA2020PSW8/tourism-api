@@ -1,4 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
+using Explorer.Encounters.API.Dtos;
 using Explorer.Encounters.Core.Domain.Enums;
 
 namespace Explorer.Encounters.Core.Domain
@@ -8,8 +9,8 @@ namespace Explorer.Encounters.Core.Domain
         public int UserId { get; init; }
         public String Name { get; init; }
         public String Description {  get; init; }
-        public double Latitude {  get; init; }
-        public double Longitude { get; init; }
+        public double Latitude {  get; private set; }
+        public double Longitude { get; private set; }
         public int Xp {  get; init; }
         public EncounterStatus Status { get; init; }
         public EncounterType Type { get; init; }
@@ -32,6 +33,11 @@ namespace Explorer.Encounters.Core.Domain
             Range = range;
             Image = image;
             PeopleCount = peopleCount;
+        }
+        public void UpdateLocation(LocationDto location)
+        {
+            Latitude = location.Latitude;
+            Longitude = location.Longitude;
         }
     }
 }

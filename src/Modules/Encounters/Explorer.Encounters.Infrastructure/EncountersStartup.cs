@@ -27,6 +27,7 @@ namespace Explorer.Encounters.Infrastructure
         {
             services.AddScoped<IEncounterService, EncounterService>();
             services.AddScoped<IEncounterCompletionService, EncounterCompletionService>();
+            services.AddScoped<IKeypointEncounterService, KeypointEncounterService>();
             services.AddScoped<IInternalTouristPositionService, TouristPositionService>();
         }
 
@@ -34,6 +35,7 @@ namespace Explorer.Encounters.Infrastructure
         {
             services.AddScoped(typeof(IEncounterRepository), typeof(EncounterRepository));
             services.AddScoped(typeof(IEncounterCompletionRepository), typeof(EncounterCompletionRepository));
+            services.AddScoped(typeof(IKeypointEncounterRepository), typeof(KeypointEncounterRepository));
 
             services.AddDbContext<EncountersContext>(opt =>
                 opt.UseNpgsql(DbConnectionStringBuilder.Build("encounters"),
