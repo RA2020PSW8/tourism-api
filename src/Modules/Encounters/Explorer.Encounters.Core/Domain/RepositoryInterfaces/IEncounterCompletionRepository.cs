@@ -1,4 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Encounters.Core.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace Explorer.Encounters.Core.Domain.RepositoryInterfaces
     {
         PagedResult<EncounterCompletion> GetPagedByUser(int page, int pageSize, long userId);
         EncounterCompletion GetByUserAndEncounter(long userId, long encounterId);
+        public bool HasUserStartedEncounter(long userId, long encounterId);
+        public bool HasUserCompletedEncounter(long userId, long encounterId);
     }
 }

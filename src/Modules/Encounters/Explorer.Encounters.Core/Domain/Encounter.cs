@@ -1,6 +1,5 @@
 ﻿using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.Encounters.API.Dtos;
-using Explorer.Encounters.Core.Domain.Enum;
 using Explorer.Encounters.Core.Domain.Enums;
 
 namespace Explorer.Encounters.Core.Domain

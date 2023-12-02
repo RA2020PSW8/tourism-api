@@ -22,7 +22,7 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
 
         public PagedResult<EncounterCompletion> GetPagedByUser(int page, int pageSize, long userId)
         {
-            var task = _dbSet.Where(ec => ec.UserId == userId).GetPagedById(page, pageSize);
+            var task = _dbSet.Where(ec => ec.UserId == userId).Include(ec => ec.Encounter).GetPagedById(page, pageSize);
             task.Wait();
             return task.Result;
         }
@@ -30,8 +30,20 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
         public EncounterCompletion GetByUserAndEncounter(long userId, long encounterId)
         {
             var encounterCompletion = _dbSet.FirstOrDefault(ec => ec.UserId == userId && ec.EncounterId == encounterId);
-            if (encounterCompletion == null) throw new KeyNotFoundException("Not found: " + userId + " + " + encounterId);
+            if (encounterCompletion == null) throw new KeyNotFoundException("Not found: " + userId + " + " + encounterId); 
             return encounterCompletion;
+        }
+
+        public bool HasUserStartedEncounter(long userId, long encounterId) 
+        {
+            var encounterCompletion = _dbSet.FirstOrDefault(ec => ec.UserId == userId && ec.EncounterId == encounterId);
+            return encounterCompletion != null ? true : false;
+        }
+
+        public bool HasUserCompletedEncounter(long userId, long encounterId)
+        {
+            var encounterCompletion = _dbSet.FirstOrDefault(ec => ec.UserId == userId && ec.EncounterId == encounterId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED);
+            return encounterCompletion != null ? true : false;
         }
     }
 }
