@@ -35,6 +35,7 @@ public static class PaymentsStartup
         services.AddScoped(typeof(IShoppingCartRepository), typeof(ShoppingCartRepository));
         services.AddScoped(typeof(ITourPurchaseTokenRepository), typeof(TourPurchaseTokenRepository));
         services.AddScoped(typeof(IWalletRepository), typeof(WalletRepository));
+        services.AddScoped(typeof(IPaymentRecordRepository), typeof(PaymentRecordRepository));
 
         services.AddDbContext<PaymentsContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
