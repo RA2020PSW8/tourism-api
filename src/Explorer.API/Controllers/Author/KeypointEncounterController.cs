@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Author
 {
-    [Authorize(Policy = "authorPolicy")]
     [Route("api/author/encounter")]
     public class KeypointEncounterController : BaseApiController
     {
@@ -21,12 +20,14 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpGet("{keypointId:long}")]
+        [Authorize(Roles = "author, tourist")]
         public ActionResult<PagedResult<EncounterCompletionDto>> GetPagedByKeypoint([FromQuery] int page, [FromQuery] int pageSize, long keypointId)
         {
             var result = _keypointEncounterService.GetPagedByKeypoint(page, pageSize, keypointId);
             return CreateResponse(result);
         }
         [HttpPost]
+        [Authorize(Roles = "author")]
         public ActionResult<KeypointEncounterDto> Create([FromBody] KeypointEncounterDto keypointEncounter)
         {
             keypointEncounter.Encounter.UserId = User.PersonId();
@@ -35,6 +36,7 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpPut]
+        [Authorize(Roles = "author")]
         public ActionResult<KeypointEncounterDto> Update([FromBody] KeypointEncounterDto keypointEncounter)
         {
             var result = _keypointEncounterService.Update(keypointEncounter);
@@ -42,18 +44,21 @@ namespace Explorer.API.Controllers.Author
         }
 
         [HttpDelete("{id:long}")]
+        [Authorize(Roles = "author")]
         public ActionResult Delete(long id)
         {
             var result = _keypointEncounterService.Delete(id);
             return CreateResponse(result);
         }
         [HttpPut("{keypointId:int}")]
+        [Authorize(Roles = "author")]
         public ActionResult<KeypointEncounterDto> UpdateEncounterLocation([FromBody] LocationDto location, int keypointId)
         {
             var result  = _keypointEncounterService.UpdateEncountersLocation(location, keypointId);
             return CreateResponse(result);
         }
         [HttpDelete("keypoint/{keypointId:int}")]
+        [Authorize(Roles = "author")]
         public ActionResult DeleteKeypointEncounters(int keypointId)
         {
             var result = _keypointEncounterService.DeleteKeypointEncounters(keypointId);

@@ -86,30 +86,34 @@ public class TourLifecycleService : BaseService<TourProgressDto, TourProgress>, 
         }
     }
 
-    public Result<TourProgressDto> UpdateActiveTour(long userId)
+    public Result<TourProgressDto> UpdateActiveTour(long userId, int passedKeypoints)
     {
         try
         {
             var tourProgress = _tourProgressRepository.GetActiveByUser(userId);
+            var touristPosition = tourProgress.TouristPosition;
+
+
+            if (passedKeypoints == tourProgress.Tour.Keypoints.Count)
+            {
+                tourProgress.Complete();
+                touristPosition.UpdateTime();
+                tourProgress.UpdateActivityTime();
+                _tourProgressRepository.Update(tourProgress);
+                _touristPositionRepository.Update(touristPosition);
+                return MapToDto(tourProgress);
+
+            }
             try
             {
-                var currentKeypoint = _keypointRepository
-                    .GetByTourAndPosition(tourProgress.TourId, tourProgress.CurrentKeyPoint).FirstOrDefault();
+                var currentKeypoint = _keypointRepository.GetByTourAndPosition(tourProgress.TourId, tourProgress.CurrentKeyPoint).FirstOrDefault();
 
-                var touristPosition = tourProgress.TouristPosition;
-
-
-                var dist = DistanceCalculator.CalculateDistance(touristPosition.Latitude, touristPosition.Longitude,
-                    currentKeypoint.Latitude, currentKeypoint.Longitude);
+                var dist = DistanceCalculator.CalculateDistance(touristPosition.Latitude, touristPosition.Longitude, currentKeypoint.Latitude, currentKeypoint.Longitude);
 
                 if (dist <= 0.1)
                 {
-                    var result = _keypointRepository.GetNextPositions(tourProgress.TourId, currentKeypoint.Position)
-                        .ToList();
-                    if (result.Count() == 0)
-                        tourProgress.Complete();
-                    else
-                        tourProgress.MoveToNextKeypoint(result[0] ?? 0);
+                    var result = _keypointRepository.GetNextPositions(tourProgress.TourId, currentKeypoint.Position).ToList();
+                    tourProgress.MoveToNextKeypoint(result[0] ?? 0);
                     touristPosition.UpdateTime();
                 }
 
