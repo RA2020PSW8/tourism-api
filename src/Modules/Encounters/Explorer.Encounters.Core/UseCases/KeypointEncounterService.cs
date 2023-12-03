@@ -5,6 +5,9 @@ using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.Domain;
 using Explorer.Encounters.Core.Domain.Enums;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.API.Internal;
+using Explorer.Stakeholders.Core.Domain;
 using FluentResults;
 
 namespace Explorer.Encounters.Core.UseCases
@@ -13,17 +16,37 @@ namespace Explorer.Encounters.Core.UseCases
     {
         protected IKeypointEncounterRepository _keypointEncounterRepository;
         protected IEncounterRepository _encounterRepository;
+        protected IInternalUserService _userService;
+        protected IInternalProfileService _profileService;
 
-        public KeypointEncounterService(IKeypointEncounterRepository keypointEncounterRepository, IEncounterRepository encounterRepository, IMapper mapper) : base(keypointEncounterRepository, mapper)
+        public KeypointEncounterService(IKeypointEncounterRepository keypointEncounterRepository, IEncounterRepository encounterRepository,
+             IInternalUserService userService, IInternalProfileService profileService, IMapper mapper) : base(keypointEncounterRepository, mapper)
         {
             _keypointEncounterRepository = keypointEncounterRepository;
             _encounterRepository = encounterRepository;
+            _userService = userService;
+            _profileService = profileService;
         }
         public Result<PagedResult<KeypointEncounterDto>> GetPagedByKeypoint(int page, int pageSize, long keypointId)
         {
             var result = _keypointEncounterRepository.GetPagedByKeypoint(page, page, keypointId);
             return MapToDto(result);
         }
+
+        public override Result<KeypointEncounterDto> Create(KeypointEncounterDto keypointEncounter)
+        {
+            try
+            {
+                keypointEncounter.Encounter.ApprovalStatus = EncounterApprovalStatus.SYSTEM_APPROVED.ToString();
+                var result = _keypointEncounterRepository.Create(MapToDomain(keypointEncounter));
+                return MapToDto(result);
+            }
+            catch (Exception e)
+            {
+                return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
+            }
+        }
+
         public Result Delete(int keypointEncounterId)
         {
             try

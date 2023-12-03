@@ -5,6 +5,7 @@ using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.Domain;
 using Explorer.Encounters.Core.Domain.Enums;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.API.Internal;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Internal;
 using FluentResults;
@@ -16,13 +17,15 @@ namespace Explorer.Encounters.Core.UseCases
         protected IEncounterCompletionRepository _encounterCompletionRepository;
         protected IEncounterRepository _encounterRepository;
         protected IInternalTouristPositionService _touristPositionService;
+        protected IInternalProfileService _profileService;
 
         public EncounterCompletionService(IEncounterCompletionRepository encoutnerCompletionRepository, IInternalTouristPositionService touristPositionService,
-            IEncounterRepository encounterRepository, IMapper mapper) : base(encoutnerCompletionRepository, mapper)
+            IEncounterRepository encounterRepository, IInternalProfileService profileService, IMapper mapper) : base(encoutnerCompletionRepository, mapper)
         {
             _encounterCompletionRepository = encoutnerCompletionRepository;
             _touristPositionService = touristPositionService;
             _encounterRepository = encounterRepository;
+            _profileService = profileService;
         }
 
         public Result<PagedResult<EncounterCompletionDto>> GetPagedByUser(int page, int pageSize, int userId)
@@ -39,7 +42,7 @@ namespace Explorer.Encounters.Core.UseCases
 
         public void UpdateSocialEncounters()
         {
-            List<Encounter> socialEncounters = _encounterRepository.GetAllByStatusAndType(EncounterStatus.ACTIVE, EncounterType.SOCIAL).ToList();
+            List<Encounter> socialEncounters = _encounterRepository.GetApprovedByStatusAndType(EncounterStatus.ACTIVE, EncounterType.SOCIAL).ToList();
             List<TouristPositionDto> touristPositions = _touristPositionService.GetPaged(0, 0).ValueOrDefault.Results;
             List<long> nearbyUserIds = new List<long>();
             
@@ -66,6 +69,7 @@ namespace Explorer.Encounters.Core.UseCases
                             EncounterCompletion encounterCompletion = _encounterCompletionRepository.GetByUserAndEncounter(userId, encounter.Id);
                             encounterCompletion.UpdateStatus(EncounterCompletionStatus.COMPLETED);
                             _encounterCompletionRepository.Update(encounterCompletion);
+                            _profileService.AddXP((int)userId, encounter.Xp);
 
                         }
                     }

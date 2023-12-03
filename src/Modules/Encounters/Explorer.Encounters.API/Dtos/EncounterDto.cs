@@ -14,5 +14,6 @@
         public double Range { get; set; }
         public string? Image { get; set; }
         public int? PeopleCount { get; set; }
+        public string ApprovalStatus { get; set; }
     }
 }

@@ -16,10 +16,11 @@ namespace Explorer.Encounters.Core.Domain
         public double Range { get; init; }
         public string? Image {  get; init; }
         public int? PeopleCount { get; init; }
+        public EncounterApprovalStatus ApprovalStatus { get; private set; }
 
         public Encounter() { }
 
-        public Encounter(int userId, string name, string description, double latitude, double longitude, int xp, EncounterStatus status, EncounterType type, double range, string image, int peopleCount)
+        public Encounter(int userId, string name, string description, double latitude, double longitude, int xp, EncounterStatus status, EncounterType type, double range, string image, int peopleCount, EncounterApprovalStatus approvalStatus)
         {
             UserId = userId;
             Name = name;
@@ -32,11 +33,13 @@ namespace Explorer.Encounters.Core.Domain
             Range = range;
             Image = image;
             PeopleCount = peopleCount;
+            ApprovalStatus = approvalStatus;
         }
         public void UpdateLocation(double latitude, double longitude)
         {
             Latitude = latitude;
             Longitude = longitude;
         }
+
     }
 }

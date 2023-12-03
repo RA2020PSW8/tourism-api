@@ -6,6 +6,9 @@ using Explorer.Encounters.Core.Mappers;
 using Explorer.Encounters.Core.UseCases;
 using Explorer.Encounters.Infrastructure.Database;
 using Explorer.Encounters.Infrastructure.Database.Repositories;
+using Explorer.Stakeholders.API.Internal;
+using Explorer.Stakeholders.Core.UseCases;
+using Explorer.Stakeholders.Core.UseCases.Identity;
 using Explorer.Tours.API.Internal;
 using Explorer.Tours.Core.UseCases.TourExecution;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +32,8 @@ namespace Explorer.Encounters.Infrastructure
             services.AddScoped<IEncounterCompletionService, EncounterCompletionService>();
             services.AddScoped<IKeypointEncounterService, KeypointEncounterService>();
             services.AddScoped<IInternalTouristPositionService, TouristPositionService>();
+            services.AddScoped<IInternalUserService, UserService>();
+            services.AddScoped<IInternalProfileService, ProfileService>();
         }
 
         private static void SetupInfrastructure(IServiceCollection services)

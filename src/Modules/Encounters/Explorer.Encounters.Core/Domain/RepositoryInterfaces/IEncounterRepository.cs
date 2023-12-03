@@ -6,7 +6,10 @@ namespace Explorer.Encounters.Core.Domain.RepositoryInterfaces
 {
     public interface IEncounterRepository : ICrudRepository<Encounter>
     {
-        PagedResult<Encounter> GetAllByStatus(EncounterStatus status);
-        IEnumerable<Encounter> GetAllByStatusAndType(EncounterStatus status, EncounterType type);
+        public PagedResult<Encounter> GetApproved(int page, int pageSize);
+        PagedResult<Encounter> GetApprovedByStatus(EncounterStatus status);
+        IEnumerable<Encounter> GetApprovedByStatusAndType(EncounterStatus status, EncounterType type);
+        public PagedResult<Encounter> GetByUser(int page, int pageSize, long userId);
+        public PagedResult<Encounter> GetTouristCreatedEncounters(int page, int pageSize);
     }
 }

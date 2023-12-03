@@ -2,6 +2,7 @@
 using Explorer.Encounters.API.Dtos;
 using Explorer.Encounters.API.Public;
 using Explorer.Stakeholders.Infrastructure.Authentication;
+using Explorer.Tours.API.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,9 +22,9 @@ namespace Explorer.API.Controllers
 
 
         [HttpGet]
-        public ActionResult<PagedResult<EncounterDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+        public ActionResult<PagedResult<EncounterDto>> GetApproved([FromQuery] int page, [FromQuery] int pageSize)
         {
-            var result = _encounterService.GetPaged(page, pageSize);
+            var result = _encounterService.GetApproved(page, pageSize);
             return CreateResponse(result);
         }
 
@@ -50,10 +51,41 @@ namespace Explorer.API.Controllers
         }
 
         [HttpGet("status")]
-        public ActionResult<PagedResult<EncounterDto>> GetByStatus([FromQuery] string status)
+        public ActionResult<PagedResult<EncounterDto>> GetApprovedByStatus([FromQuery] string status)
         {
-            var result = _encounterService.GetAllByStatus(status);
+            var result = _encounterService.GetApprovedByStatus(status);
             return CreateResponse(result);
         }
+
+        [HttpGet("byUser")]
+        public ActionResult<PagedResult<EncounterDto>> GetByUser([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var result = _encounterService.GetByUser(page, pageSize, ClaimsPrincipalExtensions.PersonId(User));
+            return CreateResponse(result);
+        }
+
+        [HttpPut("approve")]
+        [Authorize(Roles = "administrator")]
+        public ActionResult<EncounterDto> Approve(EncounterDto encounter)
+        {
+            var result = _encounterService.Approve(encounter);
+            return CreateResponse(result);
+        }
+
+        [HttpPut("decline")]
+        [Authorize(Roles = "administrator")]
+        public ActionResult<EncounterDto> Decline(EncounterDto encounter)
+        {
+            var result = _encounterService.Decline(encounter);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("touristCreatedEncouters")]
+        public ActionResult<PagedResult<EncounterDto>> GetTouristCreatedEncounters([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var result = _encounterService.GetTouristCreatedEncounters(page, pageSize);
+            return CreateResponse(result);
+        }
+        
     }
 }
