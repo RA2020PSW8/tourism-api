@@ -6,4 +6,5 @@ namespace Explorer.Stakeholders.API.Internal;
 public interface IInternalProfileService
 {
     Result<List<PersonDto>> GetMany(List<int> peopleIds);
+    void AddXP(int userId, int addedXp);
 }
