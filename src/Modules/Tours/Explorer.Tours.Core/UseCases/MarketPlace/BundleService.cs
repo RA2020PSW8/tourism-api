@@ -89,13 +89,22 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
         }
 
         
-        public Result<BundleDto> PublishBundle(BundleDto bundle)
+        public Result<BundleDto> PublishBundle(long bundleId)
         {
            
-            var result = _repository.getFullBundle(bundle.Id);
+            var result = _repository.getFullBundle(bundleId);
             result.Publish(result);
+            _repository.Update(result);
             return MapToDto(result);
                 
+        }
+
+        public Result<BundleDto> ArchiveBundle(long bundleId)
+        {
+            var result = _repository.getFullBundle(bundleId);
+            result.Archive(result);
+            _repository.Update(result);
+            return MapToDto(result);
         }
        
     }

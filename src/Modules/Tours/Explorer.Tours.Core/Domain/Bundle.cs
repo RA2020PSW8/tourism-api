@@ -50,5 +50,13 @@ namespace Explorer.Tours.Core.Domain
             }
             return bundle;
         }
+
+        public Bundle Archive(Bundle bundle)
+        {
+            if (bundle.Status == "PUBLISHED")
+                bundle.Status = "ARCHIVED";
+
+            return bundle;
+        }
     }
 }

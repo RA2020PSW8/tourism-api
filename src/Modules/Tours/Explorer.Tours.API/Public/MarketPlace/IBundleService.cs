@@ -22,7 +22,8 @@ namespace Explorer.Tours.API.Public.MarketPlace
         Result<BundleDto> AddTourToBundle(long tourId, long bundleId);
         Result  RemoveTourFromBundle(long tourId, long bundleId);
 
-        Result<BundleDto> PublishBundle(BundleDto bundle);
+        Result<BundleDto> PublishBundle(long bundleId);
+        Result<BundleDto> ArchiveBundle(long bundleId);
 
 
     }

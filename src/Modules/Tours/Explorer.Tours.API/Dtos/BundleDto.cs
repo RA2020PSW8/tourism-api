@@ -11,6 +11,6 @@ namespace Explorer.Tours.API.Dtos
         public long Id { get; set; }
         public string Name { get; set; }
         public string Status { get; set; }
-        public ICollection<TourDto> Tours { get; set; }
+        public ICollection<TourDto>? Tours { get; set; }
     }
 }

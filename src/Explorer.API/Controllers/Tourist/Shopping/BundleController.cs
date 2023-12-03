@@ -66,5 +66,18 @@ namespace Explorer.API.Controllers.Tourist.Shopping
 
         }
 
+        [HttpPut("publish/{bundleId:int}")]
+        public ActionResult<BundleDto> PublishBundle(long bundleId)
+        {
+            var result = _service.PublishBundle(bundleId);
+            return CreateResponse(result);
+        }
+        [HttpPut("archive/{bundleId:int}")]
+        public ActionResult<BundleDto> ArchiveBundle(long bundleId)
+        {
+            var result = _service.ArchiveBundle(bundleId);
+            return CreateResponse(result);
+        }
+
     }
 }
