@@ -27,6 +27,7 @@ public static class PaymentsStartup
         services.AddScoped<IShoppingCartService, ShoppingCartService>();
         services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
         services.AddScoped<IWalletService, WalletService>();
+        services.AddScoped<IPaymentRecordService, PaymentRecordService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
