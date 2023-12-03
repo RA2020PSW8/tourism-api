@@ -48,11 +48,11 @@ namespace Explorer.API.Controllers.Tourist
             return CreateResponse(result);
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("addCoins/{id:int}")]
         [AllowAnonymous]
-        public ActionResult<WalletDto> Update([FromBody] WalletDto wallet)
+        public ActionResult<WalletDto> AddCoins([FromBody] WalletDto wallet)
         {
-            var result = _walletService.Update(wallet);
+            var result = _walletService.AddCoins(wallet);
             return CreateResponse(result);
         }
     }

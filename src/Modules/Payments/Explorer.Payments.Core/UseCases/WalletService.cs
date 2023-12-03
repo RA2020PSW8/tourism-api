@@ -33,7 +33,7 @@ namespace Explorer.Payments.Core.UseCases
             return MapToDto(cart);
         }
 
-        public override Result<WalletDto> Update(WalletDto updatedWalletDto)
+        public Result<WalletDto> AddCoins(WalletDto updatedWalletDto)
         {
             try
         {
