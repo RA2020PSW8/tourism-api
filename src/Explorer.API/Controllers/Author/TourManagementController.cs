@@ -89,4 +89,12 @@ public class TourManagementController : BaseApiController
         var result = _tourService.CreateCustom(tourDto);
         return CreateResponse(result);
     }
+
+    [HttpPost("campaign")]
+    public ActionResult<TourDto> CreateCampaignTour([FromBody] TourDto tourDto) 
+    {
+        tourDto.UserId = ClaimsPrincipalExtensions.PersonId(User);
+        var result = _tourService.CreateCampaign(tourDto);
+        return CreateResponse(result);
+    }
 }

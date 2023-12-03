@@ -17,6 +17,6 @@ public interface ITourService
         public Result<PagedResult<TourDto>> GetArchivedAndPublishedPaged(int page, int pageSize);
         Result<TourDto> CreateCustom(TourDto equipment);
         public  Result<PagedResult<TourDto>> GetCustomByUserPaged(int userId, int page, int pageSize);
+        Result<TourDto> CreateCampaign(TourDto tour);
+        Result<PagedResult<TourDto>> GetCampaignByUserPaged(int userId, int page, int pageSize);
 }
-
-
