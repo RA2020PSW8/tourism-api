@@ -22,8 +22,9 @@ public class PaymentsContext : DbContext
         modelBuilder.Entity<Coupon>()
             .Property(e => e.ExpiryDate)
             .HasConversion(
-                v => v.ToDateTime(TimeOnly.MinValue),
-                v => DateOnly.FromDateTime(v))
+                v => v.ToDateTime(TimeOnly.MinValue).Date,
+                v => DateOnly.FromDateTime(v.Date.AddDays(1)))
             .HasColumnType("date");
+
     }
 }
