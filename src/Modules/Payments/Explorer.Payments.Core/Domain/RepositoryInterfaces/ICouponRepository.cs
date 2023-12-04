@@ -12,5 +12,6 @@ namespace Explorer.Payments.Core.Domain.RepositoryInterfaces
     public interface ICouponRepository : ICrudRepository<Coupon>
     {
         Result<PagedResult<Coupon>> GetCouponForTourAndTourist(int page, int pageSize, int tourId, int touristId);
+        Result<PagedResult<Coupon>> GetCouponForTouristAllTour(int page, int pageSize, int touristId);
     }
 }

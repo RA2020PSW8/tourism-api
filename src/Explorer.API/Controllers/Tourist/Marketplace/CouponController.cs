@@ -43,9 +43,17 @@ namespace Explorer.API.Controllers.Tourist.Marketplace
 
         [HttpGet("getForTourAndTourist/{tourId:int}/{touristId:int}")]
         [Authorize(Roles = "tourist")]
-        public ActionResult<PagedResult<CouponDto>> GetCouponForTourAndTourist( int page,  int pageSize, int tourId, int touristId)
+        public ActionResult<PagedResult<CouponDto>> GetCouponForTourAndTourist(int page,  int pageSize, int tourId, int touristId)
         {
             var result = _couponService.GetCouponForTourAndTourist(page, pageSize, tourId, touristId);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("getForTourAndTourist/{touristId:int}")]
+        [Authorize(Roles = "tourist")]
+        public ActionResult<PagedResult<CouponDto>> GetCouponForTouristAllTour(int page, int pageSize, int touristId)
+        {
+            var result = _couponService.GetCouponForTouristAllTour(page, pageSize, touristId);
             return CreateResponse(result);
         }
 

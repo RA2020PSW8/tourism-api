@@ -11,7 +11,7 @@ namespace Explorer.Payments.Core.Domain
     {
         public string Code { get; set; }
         public double Discount { get; set; }
-        public int TourId { get; set; }
+        public int? TourId { get; set; }
         public int TouristId { get; set; }
         public int AuthorId { get; set; }
         public DateOnly ExpiryDate { get; set; }
