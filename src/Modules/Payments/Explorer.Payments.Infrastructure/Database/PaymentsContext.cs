@@ -13,6 +13,7 @@ public class PaymentsContext : DbContext
     public DbSet<ShoppingCart> ShoppingCarts { get; set; }
     public DbSet<TourPurchaseToken> TourPurchaseTokens { get; set; }
     public DbSet<Wallet> Wallets { get; set; }
+    public DbSet<Coupon> Coupons { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,5 +1,11 @@
-﻿using Explorer.Stakeholders.Core.Domain;
+﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.BuildingBlocks.Infrastructure.Database;
+using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
+using FluentResults;
+using System.Data;
+using System.Linq;
 
 namespace Explorer.Stakeholders.Infrastructure.Database.Repositories;
 
@@ -40,4 +46,13 @@ public class UserDatabaseRepository : IUserRepository
     {
         return _dbContext.Users.FirstOrDefault(user => user.Id == id && user.IsActive);
     }
+
+    public PagedResult<User> GetAllTourists(int page, int pageSize)
+    {
+        var task = _dbContext.Users.Where(u => u.Role == UserRole.Tourist).GetPagedById(page, pageSize);
+        task.Wait();
+        return task.Result;
+    }
+
+    
 }

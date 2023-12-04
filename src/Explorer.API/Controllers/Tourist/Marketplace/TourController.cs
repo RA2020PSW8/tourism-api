@@ -2,12 +2,12 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.TourAuthoring;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist.Marketplace;
 
-[Authorize(Policy = "touristPolicy")]
 [Route("api/marketplace/tours/")]
 public class TourController : BaseApiController
 {
@@ -19,6 +19,7 @@ public class TourController : BaseApiController
     }
 
     [HttpGet]
+    [Authorize(Roles = "tourist")]
     public ActionResult<PagedResult<TourDto>> GetPublished([FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _tourService.GetPublishedPaged(page, pageSize);
@@ -35,10 +36,19 @@ public class TourController : BaseApiController
     }
     
     [HttpGet("custom")]
+    [Authorize(Roles = "tourist")]
     public ActionResult<PagedResult<TourDto>> GetCustomByUser([FromQuery] int page, [FromQuery] int pageSize)
     {
         var touristId = ClaimsPrincipalExtensions.PersonId(User);
         var result = _tourService.GetCustomByUserPaged(touristId, page, pageSize);
+        return CreateResponse(result);
+    }
+
+    [HttpGet("allToursForAuthor/{id:int}")]
+    [Authorize(Roles = "author")]
+    public ActionResult<PagedResult<TourDto>> GetByAuthor(int page, int pageSize, int id)
+    {
+        var result = _tourService.GetByAuthor(page, pageSize, id);
         return CreateResponse(result);
     }
 }

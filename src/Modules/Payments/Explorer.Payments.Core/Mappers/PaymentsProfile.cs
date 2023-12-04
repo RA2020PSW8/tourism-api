@@ -12,5 +12,6 @@ public class PaymentsProfile : Profile
         CreateMap<ShoppingCartDto, ShoppingCart>().ReverseMap();
         CreateMap<TourPurchaseTokenDto, TourPurchaseToken>().ReverseMap();
         CreateMap<WalletDto, Wallet>().ReverseMap();
+        CreateMap<CouponDto, Coupon>().ReverseMap();    
     }
 }
