@@ -9,3 +9,11 @@ INSERT INTO encounters."Encounters"(
 INSERT INTO encounters."Encounters"(
 	"Id", "UserId", "Name", "Description", "Latitude", "Longitude", "Xp", "Status", "Type", "Range", "Image", "PeopleCount")
 	VALUES (-3, 1, 'Encounter2', 'Description3', 23.34, 32.34, 2, 0, 2, 120, null, null);
+
+INSERT INTO encounters."Encounters"(
+	"Id", "UserId", "Name", "Description", "Latitude", "Longitude", "Xp", "Status", "Type", "Range", "Image", "PeopleCount")
+	VALUES (-4, 1, 'Hidden Encounter', 'This encounter is very close, and will be updated', 23.34, 32.34, 2, 0, 2, 120, null, null);
+
+INSERT INTO encounters."Encounters"(
+	"Id", "UserId", "Name", "Description", "Latitude", "Longitude", "Xp", "Status", "Type", "Range", "Image", "PeopleCount")
+	VALUES (-5, 1, 'Hidden Encounter', 'This encounter is far away', 24.34, 33.34, 100, 0, 1, 200, 'img.png', null);

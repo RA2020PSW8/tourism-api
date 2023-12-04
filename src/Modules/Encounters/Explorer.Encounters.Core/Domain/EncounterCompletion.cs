@@ -6,7 +6,7 @@ namespace Explorer.Encounters.Core.Domain
     public class EncounterCompletion : Entity
     {
         public long UserId { get; init; }
-        public DateTime CompletionTime { get; init; }
+        public DateTime LastUpdatedAt { get; init; }
         public long EncounterId { get; }
         public Encounter Encounter { get; }
         public int Xp { get; init; }
@@ -18,7 +18,7 @@ namespace Explorer.Encounters.Core.Domain
         {
             UserId = userId;
             EncounterId = encounterId;
-            CompletionTime = DateTime.UtcNow;
+            LastUpdatedAt = DateTime.UtcNow;
             Xp = xp;
             Status = status;
         }

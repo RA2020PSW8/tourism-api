@@ -35,6 +35,13 @@ namespace Explorer.API.Controllers.Tourist.Encounters
             return CreateResponse(Result.Ok());
         }
 
+        [HttpPost("nearby")]
+        public ActionResult<PagedResult<EncounterCompletionDto>> CheckNearbyEncounters() // currently handles only hidden encounters, it would be benefitial if all checks for nearby encounters would be here together with criteria for completition
+        {
+            //_encounterCompletionService.CheckNearbyEncounters();
+            //return CreateResponse(Result.Ok());
 
+            throw new NotImplementedException();
+        }
     }
 }
