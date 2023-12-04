@@ -18,5 +18,12 @@ public class PaymentsContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("payments");
+
+        modelBuilder.Entity<Coupon>()
+            .Property(e => e.ExpiryDate)
+            .HasConversion(
+                v => v.ToDateTime(TimeOnly.MinValue),
+                v => DateOnly.FromDateTime(v))
+            .HasColumnType("date");
     }
 }

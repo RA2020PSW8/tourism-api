@@ -57,5 +57,12 @@ namespace Explorer.API.Controllers.Tourist.Marketplace
             return CreateResponse(result);
         }
 
+        [HttpGet("getForAuthor/{authorId:int}")]
+        [Authorize(Roles = "author")]
+        public ActionResult<PagedResult<CouponDto>> GetCouponsForAuthor(int page, int pageSize, int authorId)
+        {
+            var result = _couponService.GetCouponsForAuthor(page, pageSize, authorId);
+            return CreateResponse(result);
+        }
     }
 }
