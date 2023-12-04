@@ -34,11 +34,11 @@ namespace Explorer.Encounters.Core.UseCases
             return MapToDto(result);
         }
 
-        public Result<PagedResult<EncounterDto>> GetApprovedByStatus(string status)
+        public Result<PagedResult<EncounterDto>> GetApprovedByStatus(int page, int pageSize, string status)
         {
             if (Enum.TryParse<EncounterStatus>(status, out var encounterStatus))
             {
-                var encounters = _encounterRepository.GetApprovedByStatus(encounterStatus);
+                var encounters = _encounterRepository.GetApprovedByStatus(page, pageSize, encounterStatus);
                 return MapToDto(encounters);
             }
             else
@@ -91,12 +91,13 @@ namespace Explorer.Encounters.Core.UseCases
             }
         }
 
-        public Result<EncounterDto> Approve(EncounterDto encounter)
+        public Result<EncounterDto> Approve(EncounterDto encounterDto)
         {
             try
             {
-                encounter.ApprovalStatus = EncounterApprovalStatus.ADMIN_APPROVED.ToString();
-                var result = _encounterRepository.Update(MapToDomain(encounter));
+                var encounter = MapToDomain(encounterDto);
+                encounter.Approve();
+                var result = _encounterRepository.Update(encounter);
                 return MapToDto(result);
             }
             catch (Exception e)
@@ -105,12 +106,13 @@ namespace Explorer.Encounters.Core.UseCases
             }
         }
 
-        public Result<EncounterDto> Decline(EncounterDto encounter)
+        public Result<EncounterDto> Decline(EncounterDto encounterDto)
         {
             try
             {
-                encounter.ApprovalStatus = EncounterApprovalStatus.DECLINED.ToString();
-                var result = _encounterRepository.Update(MapToDomain(encounter));
+                var encounter = MapToDomain(encounterDto);
+                encounter.Decline();
+                var result = _encounterRepository.Update(encounter);
                 return MapToDto(result);
             }
             catch (Exception e)

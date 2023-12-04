@@ -12,7 +12,7 @@ namespace Explorer.Encounters.API.Public
         Result<EncounterDto> Update(EncounterDto encounter);
         Result Delete(int id);
         Result<PagedResult<EncounterDto>> GetApproved(int page, int pageSize);
-        Result<PagedResult<EncounterDto>> GetApprovedByStatus(string status);
+        Result<PagedResult<EncounterDto>> GetApprovedByStatus(int page, int pageSize, string status);
         Result<PagedResult<EncounterDto>> GetByUser(int page, int pageSize, long userId);
         Result<EncounterDto> Approve(EncounterDto encounter);
         Result<EncounterDto> Decline(EncounterDto encounter);

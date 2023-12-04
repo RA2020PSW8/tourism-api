@@ -4,6 +4,7 @@ using Explorer.Encounters.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.Core.Domain.Enums;
+using System.Threading.Tasks;
 
 namespace Explorer.Encounters.Infrastructure.Database.Repositories
 {
@@ -16,23 +17,25 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
             _dbSet = dbContext.Set<Encounter>();
         }
 
-        public PagedResult<Encounter> GetApproved(int page, int pageSiz)
+        public PagedResult<Encounter> GetApproved(int page, int pageSize)
         {
-            var encounters = _dbSet.AsNoTracking().Where(e => e.ApprovalStatus == EncounterApprovalStatus.SYSTEM_APPROVED || e.ApprovalStatus == EncounterApprovalStatus.ADMIN_APPROVED).ToList();
-            return new PagedResult<Encounter>(encounters, encounters.Count);
+            var task = _dbSet.AsNoTracking().Where(e => e.ApprovalStatus == EncounterApprovalStatus.SYSTEM_APPROVED || e.ApprovalStatus == EncounterApprovalStatus.ADMIN_APPROVED).GetPagedById(page, pageSize);
+            task.Wait();
+            return task.Result;
         }
 
-        public PagedResult<Encounter> GetApprovedByStatus(EncounterStatus status)
+        public PagedResult<Encounter> GetApprovedByStatus(int page, int pageSize, EncounterStatus status)
         {
-            var encounters = _dbSet.AsNoTracking().Where(e => e.Status == status
-                            && (e.ApprovalStatus == EncounterApprovalStatus.SYSTEM_APPROVED || e.ApprovalStatus == EncounterApprovalStatus.ADMIN_APPROVED)).ToList();
-            return new PagedResult<Encounter>(encounters, encounters.Count);
+            var task = _dbSet.AsNoTracking().Where(e => e.Status == status
+                            && (e.ApprovalStatus == EncounterApprovalStatus.SYSTEM_APPROVED || e.ApprovalStatus == EncounterApprovalStatus.ADMIN_APPROVED)).GetPagedById(page, pageSize);
+            task.Wait();
+            return task.Result;
         }
 
         public IEnumerable<Encounter> GetApprovedByStatusAndType(EncounterStatus status, EncounterType type)
         {
             return _dbSet.AsNoTracking().Where(e => e.Status == status && e.Type == type
-                            && (e.ApprovalStatus == EncounterApprovalStatus.SYSTEM_APPROVED || e.ApprovalStatus == EncounterApprovalStatus.ADMIN_APPROVED)).ToList();
+                            && (e.ApprovalStatus == EncounterApprovalStatus.SYSTEM_APPROVED || e.ApprovalStatus == EncounterApprovalStatus.ADMIN_APPROVED));
         }
 
         public PagedResult<Encounter> GetByUser(int page, int pageSize, long userId)

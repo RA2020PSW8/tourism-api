@@ -51,9 +51,9 @@ namespace Explorer.API.Controllers
         }
 
         [HttpGet("status")]
-        public ActionResult<PagedResult<EncounterDto>> GetApprovedByStatus([FromQuery] string status)
+        public ActionResult<PagedResult<EncounterDto>> GetApprovedByStatus([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] string status)
         {
-            var result = _encounterService.GetApprovedByStatus(status);
+            var result = _encounterService.GetApprovedByStatus(page, pageSize, status);
             return CreateResponse(result);
         }
 
