@@ -76,7 +76,9 @@ public class ProfileService : CrudService<PersonDto, Person>, IProfileService, I
             Surname = personProfile.Surname,
             ProfileImage = personProfile.ProfileImage,
             Biography = personProfile.Biography,
-            Quote = personProfile.Quote
+            Quote = personProfile.Quote,
+            XP = personProfile.XP,
+            Level = personProfile.Level
         };
 
         return Result.Ok(account);
