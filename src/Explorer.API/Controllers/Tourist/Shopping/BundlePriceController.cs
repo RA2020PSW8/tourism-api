@@ -1,11 +1,13 @@
 ﻿using Explorer.Payments.API.Dtos;
 using Explorer.Payments.API.Public;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist.Shopping
 {
+    [Authorize(Policy = "authorPolicy")]
     [Microsoft.AspNetCore.Mvc.Route("api/bundlePrice")]
     public class BundlePriceController : BaseApiController
     {

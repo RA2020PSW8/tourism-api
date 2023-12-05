@@ -3,10 +3,12 @@ using Explorer.Payments.API.Dtos;
 using Explorer.Payments.API.Public;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.MarketPlace;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist.Shopping
 {
+    [Authorize(Policy = "authorPolicy")]
     [Route("api/bundles")]
     public class BundleController : BaseApiController
     {
