@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Author;
 
+[Authorize(Policy = "userPolicy")]
 [Route("api/author/tours/")]
 public class TourManagementController : BaseApiController
 {
@@ -44,7 +45,7 @@ public class TourManagementController : BaseApiController
     }
 
     [HttpPut("{id:int}")]
-    [Authorize(Roles = "author")]
+    [Authorize(Roles = "author,tourist")]
     public ActionResult<TourDto> Update([FromBody] TourDto tour)
     {
         tour.UserId = User.PersonId();
