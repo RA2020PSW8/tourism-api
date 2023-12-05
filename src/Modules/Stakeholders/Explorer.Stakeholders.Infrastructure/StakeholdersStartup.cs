@@ -54,6 +54,7 @@ public static class StakeholdersStartup
         services.AddScoped<IChatMessageService, ChatMessageService>();
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IInternalTourService, TourService>();
+        services.AddScoped<IInternalNotificationService, NotificationService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)

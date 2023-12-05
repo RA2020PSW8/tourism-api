@@ -6,7 +6,7 @@ namespace Explorer.Tours.API.Internal
 {
     public interface IInternalTouristPositionService
     {
-        Result<PagedResult<TouristPositionDto>> GetPaged(int page, int pageSize);
         Result<TouristPositionDto> GetByUser(long userId);
+        Result<PagedResult<TouristPositionDto>> GetPaged(int page, int pageSize);
     }
 }

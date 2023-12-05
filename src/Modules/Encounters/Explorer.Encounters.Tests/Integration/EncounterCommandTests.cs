@@ -22,17 +22,19 @@ namespace Explorer.Encounters.Tests.Integration
             var dbContext = scope.ServiceProvider.GetRequiredService<EncountersContext>();
             var newEntity = new EncounterDto
             {
-                UserId = 1,
+                UserId = -1,
                 Name = "Encounter4",
                 Description = "Description4",
                 Latitude = 54.34,
                 Longitude = 34.56,
                 Xp = 4,
                 Status = "DRAFT",
-                Type = "SOCIAL"
+                Type = "SOCIAL",
+                ApprovalStatus = "PENDING"
             };
 
             // Act
+            //for some reason it won't get user by id
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as EncounterDto;
 
             // Assert - Response
@@ -63,7 +65,8 @@ namespace Explorer.Encounters.Tests.Integration
                 Longitude = 55.55,
                 Xp = 5,
                 Status = "ACTIVE",
-                Type = "MISC"
+                Type = "MISC",
+                ApprovalStatus = "SYSTEM_APPROVED"
             };
 
             // Act

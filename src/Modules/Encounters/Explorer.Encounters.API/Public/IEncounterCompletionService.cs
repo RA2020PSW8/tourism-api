@@ -17,5 +17,7 @@ namespace Explorer.Encounters.API.Public
         void UpdateSocialEncounters();
         Result<EncounterCompletionDto> StartEncounter(long userId, EncounterDto encounter);
         Result<EncounterCompletionDto> FinishEncounter(long userId, EncounterDto encounter);
+        Result<List<EncounterCompletionDto>> CheckNearbyEncounters(int userId);
+        Result<List<EncounterCompletionDto>> GetByIds(List<int> ids);
     }
 }

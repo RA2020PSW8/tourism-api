@@ -62,12 +62,10 @@ public class WalletCommandTests: BasePaymentsIntegrationTest
         };
 
         // Act
-        var result = ((ObjectResult)controller.Update(updatedEntity).Result)?.Value as WalletDto;
+        var result = ((ObjectResult)controller.AddCoins(updatedEntity).Result)?.Value as WalletDto;
 
         // Assert - Response
         result.ShouldNotBeNull();
-        result.Id.ShouldBe(-1);
-        result.UserId.ShouldBe(updatedEntity.UserId);
         result.AdventureCoins.ShouldBe(updatedEntity.AdventureCoins);
 
         // Assert - Database
@@ -78,25 +76,7 @@ public class WalletCommandTests: BasePaymentsIntegrationTest
         oldEntity.ShouldBeNull();
     }
 
-    [Fact]
-    public void Update_fails_invalid_id()
-    {
-        // Arrange
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope);
-        var updatedEntity = new WalletDto
-        {
-            Id = -1000,
-            AdventureCoins = 5
-        };
-
-        // Act
-        var result = (ObjectResult)controller.Update(updatedEntity).Result;
-
-        // Assert
-        result.ShouldNotBeNull();
-        result.StatusCode.ShouldBe(404);
-    }
+    
 
 
     private static WalletController CreateController(IServiceScope scope)

@@ -13,7 +13,7 @@ namespace Explorer.Payments.API.Public
     {
         Result<WalletDto> Create(WalletDto wallet);
         Result<PagedResult<WalletDto>> GetPaged(int page, int pageSize);
-        Result<WalletDto> Update(WalletDto wallet);
+        Result<WalletDto> AddCoins(WalletDto wallet);
         WalletDto GetByUser(int userId);
         Result Delete(int id);
     }

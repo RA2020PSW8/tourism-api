@@ -43,9 +43,9 @@ namespace Explorer.API.Controllers.Author
             return CreateResponse(result);
         }
 
-        [HttpDelete("{id:long}")]
+        [HttpDelete("{id:int}")]
         [Authorize(Roles = "author")]
-        public ActionResult Delete(long id)
+        public ActionResult Delete(int id)
         {
             var result = _keypointEncounterService.Delete(id);
             return CreateResponse(result);

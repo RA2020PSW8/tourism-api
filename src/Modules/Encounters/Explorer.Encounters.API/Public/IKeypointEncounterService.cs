@@ -12,7 +12,7 @@ namespace Explorer.Encounters.API.Public
         Result<KeypointEncounterDto> Update(KeypointEncounterDto encounter);
         Result UpdateEncountersLocation(LocationDto location, int keypointId);
         Result<PagedResult<KeypointEncounterDto>> GetPagedByKeypoint(int page, int pageSize, long keypointId);
-        Result Delete(long id);
+        Result Delete(int id);
         Result DeleteKeypointEncounters(int keypointId);
     }
 }

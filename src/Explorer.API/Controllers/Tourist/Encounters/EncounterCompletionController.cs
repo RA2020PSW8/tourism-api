@@ -27,6 +27,13 @@ namespace Explorer.API.Controllers.Tourist.Encounters
             return CreateResponse(result);
         }
 
+        [HttpPost("completions")]
+        public ActionResult<List<EncounterCompletionDto>> GetByIds([FromBody] List<int> ids)
+        {
+            var result = _encounterCompletionService.GetByIds(ids);
+            return CreateResponse(result);
+        }
+
 
         [HttpPost("updateSocialEncounters")]
         public ActionResult UpdateSocialEncounters()
@@ -49,6 +56,12 @@ namespace Explorer.API.Controllers.Tourist.Encounters
             return CreateResponse(result);
         }
 
-
+        [HttpGet("checkNearbyCompletions")]
+        public ActionResult<PagedResult<EncounterCompletionDto>> CheckNearbyEncounters() // currently handles only hidden encounters, it would be benefitial if all checks for nearby encounters would be here together with criteria for completition
+        {
+            var userId = ClaimsPrincipalExtensions.PersonId(User);
+            var result = _encounterCompletionService.CheckNearbyEncounters(userId);
+            return CreateResponse(result);
+        }
     }
 }
