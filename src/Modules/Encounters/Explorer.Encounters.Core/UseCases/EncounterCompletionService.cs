@@ -72,16 +72,19 @@ namespace Explorer.Encounters.Core.UseCases
                 }
             }
         }
-        public Result StartEncounter(long userId, EncounterDto encounter)
+        public Result<EncounterCompletionDto> StartEncounter(long userId, EncounterDto encounter)
         {
             Result<TouristPositionDto> position = _touristPositionService.GetByUser(userId);
+
+            if(position.IsSuccess == false) return Result.Fail(FailureCode.NotFound).WithError("Set your position first");
+
             EncounterCompletion encounterCompletion = new EncounterCompletion(userId, encounter.Id, encounter.Xp, EncounterCompletionStatus.STARTED);
             if (!_encounterCompletionRepository.HasUserStartedEncounter(userId, encounter.Id) && IsTouristInRange(position.Value, encounter.Longitude, encounter.Latitude, encounter.Range))
             {
                 try
                 {
-                    _encounterCompletionRepository.Create(encounterCompletion);
-                    return Result.Ok();
+                    var result = _encounterCompletionRepository.Create(encounterCompletion);
+                    return Result.Ok(MapToDto(result));
                 }
                 catch (KeyNotFoundException e)
                 {
@@ -91,15 +94,15 @@ namespace Explorer.Encounters.Core.UseCases
             return Result.Fail(FailureCode.Conflict).WithError("This encounter can't be started");
 
         }
-        public Result FinishEncounter(long userId, EncounterDto encounter)
+        public Result<EncounterCompletionDto> FinishEncounter(long userId, EncounterDto encounter)
         {
             var encounterCompletion = _encounterCompletionRepository.GetByUserAndEncounter(userId, encounter.Id);
             if (encounterCompletion == null) return Result.Fail(FailureCode.NotFound).WithError("You didn't started encounter yet");
 
             encounterCompletion.UpdateStatus(EncounterCompletionStatus.COMPLETED);
-            _encounterCompletionRepository.Update(encounterCompletion);
+            var result = _encounterCompletionRepository.Update(encounterCompletion);
 
-            return Result.Ok();
+            return Result.Ok(MapToDto(result));
 
         }
         private bool IsTouristInRangeAndUpdated(TouristPositionDto position, Encounter encounter)

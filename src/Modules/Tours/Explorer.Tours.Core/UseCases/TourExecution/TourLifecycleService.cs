@@ -86,31 +86,29 @@ public class TourLifecycleService : BaseService<TourProgressDto, TourProgress>, 
         }
     }
 
-    public Result<TourProgressDto> UpdateActiveTour(long userId, int passedKeypoints)
+    public Result<TourProgressDto> UpdateActiveTour(long userId, bool areRequiredEncountersDone)
     {
         try
         {
             var tourProgress = _tourProgressRepository.GetActiveByUser(userId);
             var touristPosition = tourProgress.TouristPosition;
 
-
-            if (passedKeypoints == tourProgress.Tour.Keypoints.Count)
-            {
-                tourProgress.Complete();
-                touristPosition.UpdateTime();
-                tourProgress.UpdateActivityTime();
-                _tourProgressRepository.Update(tourProgress);
-                _touristPositionRepository.Update(touristPosition);
-                return MapToDto(tourProgress);
-
-            }
             try
             {
                 var currentKeypoint = _keypointRepository.GetByTourAndPosition(tourProgress.TourId, tourProgress.CurrentKeyPoint).FirstOrDefault();
-
                 var dist = DistanceCalculator.CalculateDistance(touristPosition.Latitude, touristPosition.Longitude, currentKeypoint.Latitude, currentKeypoint.Longitude);
+                
+                if (tourProgress.CurrentKeyPoint == tourProgress.Tour.Keypoints.Count && areRequiredEncountersDone && dist <= 5)
+                {
+                    tourProgress.Complete();
+                    touristPosition.UpdateTime();
+                    tourProgress.UpdateActivityTime();
+                    _tourProgressRepository.Update(tourProgress);
+                    _touristPositionRepository.Update(touristPosition);
+                    return MapToDto(tourProgress);
 
-                if (dist <= 0.1)
+                }
+                if (dist <= 5)
                 {
                     var result = _keypointRepository.GetNextPositions(tourProgress.TourId, currentKeypoint.Position).ToList();
                     tourProgress.MoveToNextKeypoint(result[0] ?? 0);

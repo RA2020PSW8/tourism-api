@@ -8,4 +8,4 @@ INSERT INTO encounters."Encounters"(
 
 INSERT INTO encounters."Encounters"(
 	"Id", "UserId", "Name", "Description", "Latitude", "Longitude", "Xp", "Status", "Type", "Range", "Image", "PeopleCount")
-	VALUES (-3, 1, 'Encounter2', 'Description3', 23.34, 32.34, 2, 0, 2, 120, null, null);
+	VALUES (-3, 1, 'Encounter2', 'Description3', 23.34, 32.34, 2, 0, 2, 1070, null, null);
