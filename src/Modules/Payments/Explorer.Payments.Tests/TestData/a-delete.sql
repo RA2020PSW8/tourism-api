@@ -6,3 +6,5 @@ DELETE
 FROM payments."TourPurchaseTokens";
 DELETE
 FROM payments."Wallets";
+DELETE
+FROM payments."Coupons";

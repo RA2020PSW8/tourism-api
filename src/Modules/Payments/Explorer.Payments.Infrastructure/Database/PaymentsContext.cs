@@ -23,7 +23,7 @@ public class PaymentsContext : DbContext
             .Property(e => e.ExpiryDate)
             .HasConversion(
                 v => v.ToDateTime(TimeOnly.MinValue).Date,
-                v => DateOnly.FromDateTime(v.Date.AddDays(1)))
+                v => DateOnly.FromDateTime(v.Date))
             .HasColumnType("date");
 
     }

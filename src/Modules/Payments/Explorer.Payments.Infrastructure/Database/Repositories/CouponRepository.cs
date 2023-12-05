@@ -31,6 +31,13 @@ namespace Explorer.Payments.Infrastructure.Database.Repositories
             return task.Result;
         }
 
+        public Result<PagedResult<Coupon>> GetCouponForAuthorAndTourist(int page, int pageSize, int authorId, int touristId)
+        {
+            var task = _dbContext.Coupons.Where(c => c.TourId == 0 && c.TouristId == touristId && c.AuthorId == authorId).GetPagedById(page, pageSize);
+            task.Wait();
+            return task.Result;
+        }
+
         public Result<PagedResult<Coupon>> GetCouponForTouristAllTour(int page, int pageSize, int touristId)
         {
             var task = _dbContext.Coupons.Where(c => c.TourId == 0 && c.TouristId == touristId).GetPagedById(page, pageSize);

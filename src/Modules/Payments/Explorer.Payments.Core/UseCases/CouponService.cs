@@ -5,6 +5,9 @@ using Explorer.Payments.API.Public;
 using Explorer.Payments.Core.Domain;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;
 using Explorer.Tours.API.Internal;
+using Explorer.Tours.Core.Domain;
+using Explorer.Tours.Core.Domain.RepositoryInterfaces;
+using Explorer.Tours.Infrastructure.Database.Repositories;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -17,10 +20,12 @@ namespace Explorer.Payments.Core.UseCases
     public class CouponService : CrudService<CouponDto, Coupon>, ICouponService
     {
         protected readonly ICouponRepository _couponRepository;
+        protected readonly ITourRepository _tourRepository;
 
-        public CouponService(ICouponRepository repository, IMapper mapper) : base(repository, mapper)
+        public CouponService(ICouponRepository repository, IMapper mapper, ITourRepository tourRepository) : base(repository, mapper)
         {
             _couponRepository = repository;
+            _tourRepository = tourRepository;
         }
 
         private static string GenerateRandomAlphanumericString(int length = 8)
@@ -40,8 +45,20 @@ namespace Explorer.Payments.Core.UseCases
 
         public Result<PagedResult<CouponDto>> GetCouponForTourAndTourist(int page, int pageSize, int tourId, int touristId)
         {
+            Tour tour = _tourRepository.Get(tourId);
             var result = _couponRepository.GetCouponForTourAndTourist(page, pageSize, tourId, touristId);
-            return MapToDto(result);
+            int authorId = tour.UserId;
+            var resultAuthor = _couponRepository.GetCouponForAuthorAndTourist(page, pageSize, authorId, touristId);
+
+            PagedResult<Coupon> couponsFromTour = result.Value;
+            PagedResult<Coupon> couponsFromAuthor = resultAuthor.Value;
+
+            List<Coupon> allCouponsList = new List<Coupon>(couponsFromTour.Results);
+            allCouponsList.AddRange(couponsFromAuthor.Results);
+
+            PagedResult<Coupon> allCoupons = new PagedResult<Coupon>(allCouponsList, allCouponsList.Count);
+
+            return MapToDto(allCoupons);
         }
 
         public Result<PagedResult<CouponDto>> GetCouponForTouristAllTour(int page, int pageSize, int touristId)

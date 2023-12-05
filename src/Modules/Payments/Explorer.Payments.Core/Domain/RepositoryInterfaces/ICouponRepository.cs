@@ -14,5 +14,6 @@ namespace Explorer.Payments.Core.Domain.RepositoryInterfaces
         Result<PagedResult<Coupon>> GetCouponForTourAndTourist(int page, int pageSize, int tourId, int touristId);
         Result<PagedResult<Coupon>> GetCouponForTouristAllTour(int page, int pageSize, int touristId);
         Result<PagedResult<Coupon>> GetCouponsForAuthor(int page, int pageSize, int authorId);
+        Result<PagedResult<Coupon>> GetCouponForAuthorAndTourist(int page, int pageSize, int authorId, int touristId);
     }
 }
