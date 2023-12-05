@@ -15,7 +15,6 @@ namespace Explorer.Payments.API.Public
         Result<CouponDto> Update(CouponDto coupon);
         Result Delete(int id);
         Result<PagedResult<CouponDto>> GetCouponForTourAndTourist(int page, int pageSize, int tourId, int touristId);
-        Result<PagedResult<CouponDto>> GetCouponForTouristAllTour(int page, int pageSize, int touristId);
         Result<PagedResult<CouponDto>> GetCouponsForAuthor(int page, int pageSize, int authorId);
     }
 }

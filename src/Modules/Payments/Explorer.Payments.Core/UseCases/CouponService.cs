@@ -61,12 +61,6 @@ namespace Explorer.Payments.Core.UseCases
             return MapToDto(allCoupons);
         }
 
-        public Result<PagedResult<CouponDto>> GetCouponForTouristAllTour(int page, int pageSize, int touristId)
-        {
-            var result = _couponRepository.GetCouponForTouristAllTour(page, pageSize, touristId);
-            return MapToDto(result);
-        }
-
         public Result<PagedResult<CouponDto>> GetCouponsForAuthor(int page, int pageSize, int authorId)
         {
             var result = _couponRepository.GetCouponsForAuthor(page, pageSize, authorId);
