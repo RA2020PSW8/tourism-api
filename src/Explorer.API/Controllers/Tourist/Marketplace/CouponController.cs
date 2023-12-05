@@ -33,7 +33,7 @@ namespace Explorer.API.Controllers.Tourist.Marketplace
             return CreateResponse(result);
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut]
         [Authorize(Roles = "author")]
         public ActionResult<CouponDto> Update([FromBody] CouponDto coupon)
         {
