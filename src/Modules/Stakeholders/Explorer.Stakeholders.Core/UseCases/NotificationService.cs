@@ -2,6 +2,7 @@
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Dtos.Enums;
+using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
@@ -9,7 +10,7 @@ using FluentResults;
 
 namespace Explorer.Stakeholders.Core.UseCases;
 
-public class NotificationService : BaseService<NotificationDto, Notification>, INotificationService
+public class NotificationService : BaseService<NotificationDto, Notification>, INotificationService, IInternalNotificationService
 {
     protected readonly INotificationRepository _notificationRepository;
 

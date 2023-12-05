@@ -6,5 +6,6 @@ public enum NotificationType
     ISSUE_DEADLINE,
     MESSAGE,
     REQUEST_ACCEPTED,
-    REQUEST_DECLINED
+    REQUEST_DECLINED,
+    COINS_GIFTED
 }

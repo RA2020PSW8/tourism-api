@@ -12,5 +12,6 @@ namespace Explorer.Encounters.API.Public
         Result<EncounterDto> Update(EncounterDto encounter);
         Result Delete(int id);
         Result<PagedResult<EncounterDto>> GetAllByStatus(string status);
+        Result<PagedResult<EncounterDto>> GetNearbyHidden(int page, int pageSize, int userId);
     }
 }
