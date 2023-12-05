@@ -12,6 +12,8 @@ public class PaymentsContext : DbContext
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<ShoppingCart> ShoppingCarts { get; set; }
     public DbSet<TourPurchaseToken> TourPurchaseTokens { get; set; }
+    public DbSet<Wallet> Wallets { get; set; }
+    public DbSet<PaymentRecord> PaymentRecords { get; set; }
 
     public DbSet<BundlePrice> BundlePrices { get; set; }
 

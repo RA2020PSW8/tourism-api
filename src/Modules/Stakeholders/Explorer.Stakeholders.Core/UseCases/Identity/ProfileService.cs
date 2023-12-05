@@ -36,6 +36,17 @@ public class ProfileService : CrudService<PersonDto, Person>, IProfileService, I
         return people;
     }
 
+    public void AddXP(int userId, int addedXp)
+    {
+        var person = _personRepository.Get(userId);
+        if (person != null)
+        {
+            person.AddXp(addedXp);
+            _personRepository.Update(person);
+        }
+    }
+
+
     public Result<PagedResult<PersonDto>> GetUserNonFollowedProfiles(int page, int pageSize, long userId)
     {
         try

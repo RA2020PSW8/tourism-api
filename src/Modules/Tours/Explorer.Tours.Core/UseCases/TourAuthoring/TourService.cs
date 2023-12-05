@@ -12,7 +12,7 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring;
 public class TourService : CrudService<TourDto, Tour>, ITourService, IInternalTourService
 {
     protected readonly ITourRepository _tourRepository;
-
+    
     public TourService(ITourRepository tourRepository, IMapper mapper) : base(tourRepository, mapper)
     {
         _tourRepository = tourRepository;
@@ -39,6 +39,19 @@ public class TourService : CrudService<TourDto, Tour>, ITourService, IInternalTo
     public Result<PagedResult<TourDto>> GetArchivedAndPublishedPaged(int page, int pageSize)
     {
         var result = _tourRepository.GetArchivedAndPublishedPaged(page, pageSize);
+        return MapToDto(result);
+    }
+
+    public Result<TourDto> CreateCustom(TourDto tour)
+    {
+        tour.Status = "CUSTOM";
+        var result = _tourRepository.Create(MapToDomain(tour));
+        return MapToDto(result);
+    }
+
+    public Result<PagedResult<TourDto>> GetCustomByUserPaged(int userId, int page, int pageSize)
+    {
+        var result = _tourRepository.GetCustomByUserPaged(userId, page, pageSize);
         return MapToDto(result);
     }
 }
