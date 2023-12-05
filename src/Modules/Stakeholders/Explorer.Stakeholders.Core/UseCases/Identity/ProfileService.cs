@@ -133,4 +133,10 @@ public class ProfileService : CrudService<PersonDto, Person>, IProfileService, I
         var results = new PagedResult<Person>(follower.Following, follower.Following.Count);
         return MapToDto(results);
     }
+
+    public Result<bool> CanTouristCreateEncounters(long touristId) 
+    {
+        var tourist = _personRepository.GetFullProfile(touristId);
+        return tourist.CanTouristCreateEncounters();
+    }
 }
