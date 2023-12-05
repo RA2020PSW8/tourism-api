@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Explorer.BuildingBlocks.Core.Domain;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.API.Dtos;
 using Explorer.Encounters.API.Public;
@@ -9,8 +8,10 @@ using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.Core.Domain;
+using Explorer.Tours.API.Internal;
 using Explorer.Tours.API.Dtos;
 using FluentResults;
+
 
 namespace Explorer.Encounters.Core.UseCases
 {
@@ -19,13 +20,16 @@ namespace Explorer.Encounters.Core.UseCases
         protected IEncounterRepository _encounterRepository;
         protected IInternalUserService _userService;
         protected IInternalProfileService _profileService;
+        protected IInternalTouristPositionService _touristPositionService;
 
-        public EncounterService(IEncounterRepository encounterRepository, 
-            IInternalUserService userService, IInternalProfileService profileService, IMapper mapper): base(encounterRepository, mapper)
+        public EncounterService(IEncounterRepository encounterRepository,
+            IInternalUserService userService, IInternalProfileService profileService,
+            IInternalTouristPositionService touristPositionService, IMapper mapper) : base(encounterRepository, mapper)
         {
             _encounterRepository = encounterRepository;
             _userService = userService;
             _profileService = profileService;
+            _touristPositionService = touristPositionService;
         }
 
         public Result<PagedResult<EncounterDto>> GetApproved(int page, int pageSize)
@@ -120,6 +124,14 @@ namespace Explorer.Encounters.Core.UseCases
             {
                 return Result.Fail(FailureCode.InvalidArgument).WithError(e.Message);
             }
+        }
+
+
+        public Result<PagedResult<EncounterDto>> GetNearbyHidden(int page, int pageSize, int userId)
+        {
+            TouristPositionDto touristPosition = _touristPositionService.GetByUser(userId).Value;
+            var encounters = _encounterRepository.GetNearbyByType(page, pageSize, touristPosition.Longitude, touristPosition.Latitude, EncounterType.LOCATION);
+            return MapToDto(encounters);
         }
 
     }

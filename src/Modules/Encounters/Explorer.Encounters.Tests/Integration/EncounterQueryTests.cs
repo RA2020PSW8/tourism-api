@@ -25,8 +25,8 @@ namespace Explorer.Encounters.Tests.Integration
 
             // Assert
             result.ShouldNotBeNull();
-            result.Results.Count.ShouldBe(3);
-            result.TotalCount.ShouldBe(3);
+            result.Results.Count.ShouldBe(5);
+            result.TotalCount.ShouldBe(5);
         }
 
         private static EncounterController CreateController(IServiceScope scope)
