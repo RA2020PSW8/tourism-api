@@ -30,7 +30,6 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
         public EncounterCompletion GetByUserAndEncounter(long userId, long encounterId)
         {
             var encounterCompletion = _dbSet.FirstOrDefault(ec => ec.UserId == userId && ec.EncounterId == encounterId);
-            if (encounterCompletion == null) throw new KeyNotFoundException("Not found: " + userId + " + " + encounterId); 
             return encounterCompletion;
         }
 
