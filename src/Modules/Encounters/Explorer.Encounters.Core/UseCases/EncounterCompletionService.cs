@@ -130,7 +130,7 @@ namespace Explorer.Encounters.Core.UseCases
 
         public Result<List<EncounterCompletionDto>> CheckNearbyEncounters(int userId)
         {
-            TouristPositionDto touristPosition = _touristPositionService.GetByUser(userId).Value;
+            TouristPositionDto touristPosition = _touristPositionService.GetByUser(userId).ValueOrDefault;
             if(touristPosition == null)
             {
                 return Result.Fail(FailureCode.NotFound).WithError("You don't have set position");
@@ -143,7 +143,7 @@ namespace Explorer.Encounters.Core.UseCases
                 EncounterCompletion encounterCompletion = _encounterCompletionRepository.GetByUserAndEncounter(userId, encounter.Id);
                 if (encounterCompletion == null || encounterCompletion.IsFinished) continue;
 
-                if (DistanceCalculator.CalculateDistance(encounter.ImageLatitude, encounter.ImageLongitude, 
+                if (DistanceCalculator.CalculateDistance((double)encounter.ImageLatitude, (double)encounter.ImageLongitude, 
                     touristPosition.Latitude, touristPosition.Longitude) > HiddenLocationRange)
                 {
                     encounterCompletion.Reset();

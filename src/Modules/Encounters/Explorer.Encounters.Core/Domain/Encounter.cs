@@ -15,8 +15,8 @@ namespace Explorer.Encounters.Core.Domain
         public EncounterType Type { get; init; }
         public double Range { get; init; }
         public string? Image {  get; init; }
-        public double ImageLatitude { get; private set; }
-        public double ImageLongitude { get; private set; }
+        public double? ImageLatitude { get; private set; }
+        public double? ImageLongitude { get; private set; }
         public int? PeopleCount { get; init; }
 
         public Encounter() { }
