@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.API.Dtos;
 using Explorer.Encounters.API.Public;
+using Explorer.Encounters.Core.Domain;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,14 @@ namespace Explorer.API.Controllers
         public ActionResult<PagedResult<EncounterDto>> GetByStatus([FromQuery] string status)
         {
             var result = _encounterService.GetAllByStatus(status);
+            return CreateResponse(result);
+        }        
+        
+        [HttpGet("nearbyHidden")]
+        public ActionResult<PagedResult<EncounterDto>> GetNearbyHidden([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var userId = ClaimsPrincipalExtensions.PersonId(User);
+            var result = _encounterService.GetNearbyHidden(page, pageSize, userId);
             return CreateResponse(result);
         }
     }
