@@ -41,14 +41,9 @@ namespace Explorer.Encounters.Core.Domain
             Longitude = longitude;
         }
 
-        public void Approve()
+        public void UpdateApprovalStatus(EncounterApprovalStatus approvalStatus) 
         {
-            ApprovalStatus = EncounterApprovalStatus.ADMIN_APPROVED;
-        }
-
-        public void Decline()
-        {
-            ApprovalStatus = EncounterApprovalStatus.DECLINED;
+            ApprovalStatus = approvalStatus;
         }
 
     }

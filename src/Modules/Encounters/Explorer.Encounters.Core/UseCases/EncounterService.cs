@@ -59,18 +59,18 @@ namespace Explorer.Encounters.Core.UseCases
             return MapToDto(result);
         }
 
-        public override Result<EncounterDto> Create(EncounterDto encounter)
+        public override Result<EncounterDto> Create(EncounterDto encounterDto)
         {
             try
             {
-                UserDto user = _userService.Get(encounter.UserId).ValueOrDefault;
+                UserDto user = _userService.Get(encounterDto.UserId).ValueOrDefault;
                 if (user.Role == (int)UserRole.Tourist)
-                {
-                    PersonDto person = _profileService.Get(encounter.UserId).ValueOrDefault;
-                    if (person.Level >= 10) 
+                {                 
+                    if (_profileService.CanTouristCreateEncounters(encounterDto.UserId).Value) 
                     {
-                        encounter.ApprovalStatus = EncounterApprovalStatus.PENDING.ToString();
-                        var result = _encounterRepository.Create(MapToDomain(encounter));
+                        var encounter = MapToDomain(encounterDto);
+                        encounter.UpdateApprovalStatus(EncounterApprovalStatus.PENDING);
+                        var result = _encounterRepository.Create(encounter);
                         return MapToDto(result);
                     }
                     else
@@ -80,8 +80,9 @@ namespace Explorer.Encounters.Core.UseCases
                 }
                 else
                 {
-                    encounter.ApprovalStatus = EncounterApprovalStatus.SYSTEM_APPROVED.ToString();
-                    var result = _encounterRepository.Create(MapToDomain(encounter));
+                    var encounter = MapToDomain(encounterDto);
+                    encounter.UpdateApprovalStatus(EncounterApprovalStatus.SYSTEM_APPROVED);
+                    var result = _encounterRepository.Create(encounter);
                     return MapToDto(result);
                 }               
             }
@@ -96,7 +97,7 @@ namespace Explorer.Encounters.Core.UseCases
             try
             {
                 var encounter = MapToDomain(encounterDto);
-                encounter.Approve();
+                encounter.UpdateApprovalStatus(EncounterApprovalStatus.ADMIN_APPROVED);
                 var result = _encounterRepository.Update(encounter);
                 return MapToDto(result);
             }
@@ -111,7 +112,7 @@ namespace Explorer.Encounters.Core.UseCases
             try
             {
                 var encounter = MapToDomain(encounterDto);
-                encounter.Decline();
+                encounter.UpdateApprovalStatus(EncounterApprovalStatus.DECLINED);
                 var result = _encounterRepository.Update(encounter);
                 return MapToDto(result);
             }
