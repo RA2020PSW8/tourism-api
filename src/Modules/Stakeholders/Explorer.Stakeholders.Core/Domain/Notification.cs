@@ -58,6 +58,12 @@ public class Notification : Entity
             case NotificationType.REQUEST_DECLINED:
                 Content = "The request for public site registration '" + additionalMessage + "' has been declined.";
                 break;
+            case NotificationType.COINS_GIFTED:
+                Content = "Great news! You've just been gifted some coins!";
+                break;
+            case NotificationType.TOUR_PURCHASED:
+                Content = "The purchase was successful. You can see the purchased tour in your collection.";
+                break;
             default:
                 throw new Exception("Invalid Notification Type");
         }

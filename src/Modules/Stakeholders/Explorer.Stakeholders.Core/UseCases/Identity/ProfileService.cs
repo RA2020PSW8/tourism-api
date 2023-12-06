@@ -76,7 +76,9 @@ public class ProfileService : CrudService<PersonDto, Person>, IProfileService, I
             Surname = personProfile.Surname,
             ProfileImage = personProfile.ProfileImage,
             Biography = personProfile.Biography,
-            Quote = personProfile.Quote
+            Quote = personProfile.Quote,
+            XP = personProfile.XP,
+            Level = personProfile.Level
         };
 
         return Result.Ok(account);
@@ -132,5 +134,11 @@ public class ProfileService : CrudService<PersonDto, Person>, IProfileService, I
 
         var results = new PagedResult<Person>(follower.Following, follower.Following.Count);
         return MapToDto(results);
+    }
+
+    public Result<bool> CanTouristCreateEncounters(long touristId) 
+    {
+        var tourist = _personRepository.GetFullProfile(touristId);
+        return tourist.CanTouristCreateEncounters();
     }
 }

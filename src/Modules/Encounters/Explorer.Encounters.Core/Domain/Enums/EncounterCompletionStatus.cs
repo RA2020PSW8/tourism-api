@@ -10,6 +10,7 @@ namespace Explorer.Encounters.Core.Domain.Enums
     {
         STARTED,
         FAILED,
-        COMPLETED
+        COMPLETED,
+        PROGRESSING
     }
 }

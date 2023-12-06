@@ -21,12 +21,12 @@ namespace Explorer.Encounters.Tests.Integration
             var controller = CreateController(scope);
 
             // Act
-            var result = ((ObjectResult)controller.GetAll(0, 0).Result)?.Value as PagedResult<EncounterDto>;
+            var result = ((ObjectResult)controller.GetApproved(0, 0).Result)?.Value as PagedResult<EncounterDto>;
 
             // Assert
             result.ShouldNotBeNull();
-            result.Results.Count.ShouldBe(3);
-            result.TotalCount.ShouldBe(3);
+            result.Results.Count.ShouldBe(5);
+            result.TotalCount.ShouldBe(5);
         }
 
         private static EncounterController CreateController(IServiceScope scope)

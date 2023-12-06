@@ -5,6 +5,7 @@ public enum TourStatus
     PUBLISHED,
     ARCHIVED,
     DISABLED,
-    CUSTOM
+    CUSTOM,
+    CAMPAIGN
 }
 

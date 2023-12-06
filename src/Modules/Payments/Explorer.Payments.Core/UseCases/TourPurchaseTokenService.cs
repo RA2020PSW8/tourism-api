@@ -4,6 +4,7 @@ using Explorer.Payments.API.Dtos;
 using Explorer.Payments.API.Public;
 using Explorer.Payments.Core.Domain;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.API.Internal;
 using FluentResults;
 
 namespace Explorer.Payments.Core.UseCases;
@@ -13,14 +14,22 @@ public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPu
     protected readonly IOrderItemRepository _orderItemRepository;
     protected readonly IShoppingCartRepository _shoppingCartRepository;
     protected readonly ITourPurchaseTokenRepository _tourPurchaseTokenRepository;
+    protected readonly IPaymentRecordRepository _paymentRecordRepository;
+    protected readonly IWalletRepository _walletRepository;
+    protected readonly IInternalNotificationService _notificationService;
 
     public TourPurchaseTokenService(IOrderItemRepository orderItemRepository,
-        IShoppingCartRepository shoppingCartRepository, ITourPurchaseTokenRepository repository,
+        IShoppingCartRepository shoppingCartRepository, ITourPurchaseTokenRepository repository, IPaymentRecordRepository paymentRecordRepository,
+        IWalletRepository walletRepository,
+        IInternalNotificationService notificationService,
         IMapper mapper) : base(repository, mapper)
     {
         _tourPurchaseTokenRepository = repository;
         _shoppingCartRepository = shoppingCartRepository;
         _orderItemRepository = orderItemRepository;
+        _paymentRecordRepository = paymentRecordRepository;
+        _walletRepository = walletRepository;
+        _notificationService = notificationService;
     }
 
 
@@ -33,10 +42,11 @@ public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPu
 
 
         var tokens = new List<TourPurchaseToken>();
+        var paymentRecords = new List<PaymentRecord>();
 
         foreach (var orderId in shoppingCart.OrdersId)
         {
-            OrderItem orderItem = GetOrderItem(orderId);
+            OrderItem orderItem = GetOrderItem(orderId); 
 
             if (orderItem == null)
                 return Result.Fail(FailureCode.NotFound).WithError("Order item does not exist!");
@@ -47,9 +57,15 @@ public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPu
 
             var token = new TourPurchaseToken(orderItem.TourId, shoppingCart.UserId);
             tokens.Add(token);
+            var paymentRecord = new PaymentRecord(orderItem.TourId, shoppingCart.UserId, orderItem.TourPrice, DateTimeOffset.Now.ToUniversalTime()); 
+            paymentRecords.Add(paymentRecord);
         }
-
+        Wallet wallet = _walletRepository.GetByUser(shoppingCart.UserId);
+        wallet.AdventureCoins = wallet.AdventureCoins - shoppingCart.Price;
+        _walletRepository.Update(wallet);
         AddTokensToRepository(tokens);
+        AddPaymentRecordsToRepository(paymentRecords);
+        _notificationService.Generate(shoppingCart.UserId, Stakeholders.API.Dtos.Enums.NotificationType.TOUR_PURCHASED, "", DateTime.UtcNow, "");
         RemoveOrderItems(shoppingCart.OrdersId);
         DeleteShoppingCart(shoppingCartId);
 
@@ -100,6 +116,14 @@ public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPu
         if (tokens.Count > 0)
         {
             _tourPurchaseTokenRepository.AddRange(tokens);
+        }
+    }
+    
+    private void AddPaymentRecordsToRepository(List<PaymentRecord> paymentRecords)
+    {
+        if (paymentRecords.Count > 0)
+        {
+            _paymentRecordRepository.AddRange(paymentRecords);
         }
     }
 

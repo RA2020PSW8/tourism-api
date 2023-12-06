@@ -42,6 +42,14 @@ public class TourController : BaseApiController
         return CreateResponse(result);
     }
 
+    [HttpGet("campaign")]
+    public ActionResult<PagedResult<TourDto>> GetCampaignByUser([FromQuery] int page, [FromQuery] int pageSize)
+    {
+        var touristId = ClaimsPrincipalExtensions.PersonId(User);
+        var result = _tourService.GetCampaignByUserPaged(touristId, page, pageSize);
+        return CreateResponse(result);
+    }
+
     [HttpGet("author-published")]
     public ActionResult<PagedResult<TourDto>> GetPublishedByAuthor([FromQuery] int page, [FromQuery] int pageSize)
     {

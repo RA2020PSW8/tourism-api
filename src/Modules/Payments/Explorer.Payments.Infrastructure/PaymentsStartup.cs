@@ -5,6 +5,7 @@ using Explorer.Payments.Core.Mappers;
 using Explorer.Payments.Core.UseCases;
 using Explorer.Payments.Infrastructure.Database;
 using Explorer.Payments.Infrastructure.Database.Repositories;
+using Explorer.Stakeholders.API.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,6 +28,7 @@ public static class PaymentsStartup
         services.AddScoped<IShoppingCartService, ShoppingCartService>();
         services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
         services.AddScoped<IWalletService, WalletService>();
+        services.AddScoped<IPaymentRecordService, PaymentRecordService>();
         services.AddScoped<ISaleService, SaleService>();
         services.AddScoped<ITourSaleService, TourSaleService>();
     }
@@ -37,6 +39,7 @@ public static class PaymentsStartup
         services.AddScoped(typeof(IShoppingCartRepository), typeof(ShoppingCartRepository));
         services.AddScoped(typeof(ITourPurchaseTokenRepository), typeof(TourPurchaseTokenRepository));
         services.AddScoped(typeof(IWalletRepository), typeof(WalletRepository));
+        services.AddScoped(typeof(IPaymentRecordRepository), typeof(PaymentRecordRepository));
         services.AddScoped(typeof(ISaleRepository), typeof(SaleRepository));
         services.AddScoped(typeof(ITourSaleRepository), typeof(TourSaleRepository));
 

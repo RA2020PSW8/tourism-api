@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Administrator.Administration;
 
+[Authorize(Policy = "userPolicy")]
 [Route("api/administration/equipment")]
 public class EquipmentController : BaseApiController
 {
@@ -17,7 +18,7 @@ public class EquipmentController : BaseApiController
     }
 
     [HttpGet]
-    [Authorize(Roles = "administrator,author")]
+    [Authorize(Roles = "administrator,author,tourist")]
     public ActionResult<PagedResult<EquipmentDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _equipmentService.GetPaged(page, pageSize);
