@@ -7,8 +7,8 @@ INSERT INTO encounters."Encounters"(
 	VALUES (-2, 1, 'Encounter2', 'Description3', 23.34, 56.34, 6, 0, 0, 100, null, null, null, 12, 1);
 
 INSERT INTO encounters."Encounters"(
-	"Id", "UserId", "Name", "Description", "Latitude", "Longitude", "Xp", "Status", "Type", "Range", "Image", "ImageLatitude", "ImageLongitude", "PeopleCount", "ApprovalStatus")
-	VALUES (-3, 1, 'Encounter2', 'Description3', 23.34, 32.34, 2, 0, 2, 120, null, null, null, null, 1);
+	"Id", "UserId", "Name", "Description", "Latitude", "Longitude", "Xp", "Status", "Type", "Range", "Image", "PeopleCount", "ApprovalStatus")
+	VALUES (-3, 1, 'Encounter2', 'Description3', 23.34, 32.34, 2, 0, 2, 1070, null, null, 1);
 
 INSERT INTO encounters."Encounters"(
 	"Id", "UserId", "Name", "Description", "Latitude", "Longitude", "Xp", "Status", "Type", "Range", "Image", "ImageLatitude", "ImageLongitude", "PeopleCount", "ApprovalStatus")
