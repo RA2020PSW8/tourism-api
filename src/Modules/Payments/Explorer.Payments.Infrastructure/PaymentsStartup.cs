@@ -31,6 +31,7 @@ public static class PaymentsStartup
         services.AddScoped<IPaymentRecordService, PaymentRecordService>();
         services.AddScoped<ISaleService, SaleService>();
         services.AddScoped<ITourSaleService, TourSaleService>();
+        services.AddScoped<ICouponService, CouponService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -42,6 +43,7 @@ public static class PaymentsStartup
         services.AddScoped(typeof(IPaymentRecordRepository), typeof(PaymentRecordRepository));
         services.AddScoped(typeof(ISaleRepository), typeof(SaleRepository));
         services.AddScoped(typeof(ITourSaleRepository), typeof(TourSaleRepository));
+        services.AddScoped(typeof(ICouponRepository), typeof(CouponRepository));
 
         services.AddDbContext<PaymentsContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("payments"),

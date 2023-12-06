@@ -12,3 +12,5 @@ DELETE
 FROM payments."TourSales";
 DELETE
 FROM payments."Sales";
+DELETE
+FROM payments."Coupons";

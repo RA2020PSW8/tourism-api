@@ -2,6 +2,7 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Public.TourAuthoring;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -55,6 +56,14 @@ public class TourController : BaseApiController
     {
         var authorId = ClaimsPrincipalExtensions.PersonId(User);
         var result = _tourService.GetPublishedByAuthor(authorId, page, pageSize);
+        return CreateResponse(result);
+    }
+
+    [HttpGet("allToursForAuthor/{id:int}")]
+    [Authorize(Roles = "author")]
+    public ActionResult<PagedResult<TourDto>> GetByAuthor(int page, int pageSize, int id)
+    {
+        var result = _tourService.GetByAuthor(page, pageSize, id);
         return CreateResponse(result);
     }
 }
