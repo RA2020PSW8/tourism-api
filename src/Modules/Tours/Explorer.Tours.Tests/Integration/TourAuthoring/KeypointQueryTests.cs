@@ -11,7 +11,9 @@ namespace Explorer.Tours.Tests.Integration.TourAuthoring;
 [Collection("Sequential")]
 public class KeypointQueryTests : BaseToursIntegrationTest
 {
-    public KeypointQueryTests(ToursTestFactory factory) : base(factory) {}
+    public KeypointQueryTests(ToursTestFactory factory) : base(factory)
+    {
+    }
 
     [Fact]
     public void Retrieves_all()
@@ -28,7 +30,7 @@ public class KeypointQueryTests : BaseToursIntegrationTest
         result.Results.Count.ShouldBe(3);
         result.TotalCount.ShouldBe(3);
     }
-    
+
     [Fact]
     public void Retrieves_by_tour_id()
     {
@@ -45,7 +47,7 @@ public class KeypointQueryTests : BaseToursIntegrationTest
         result.Results.Count.ShouldBe(2);
         result.TotalCount.ShouldBe(2);
     }
-    
+
     private static KeypointController CreateController(IServiceScope scope)
     {
         return new KeypointController(scope.ServiceProvider.GetRequiredService<IKeypointService>())

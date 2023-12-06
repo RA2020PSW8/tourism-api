@@ -11,14 +11,15 @@ namespace Explorer.Tours.Core.UseCases.TourAuthoring;
 public class KeypointService : CrudService<KeypointDto, Keypoint>, IKeypointService
 {
     protected readonly IKeypointRepository _keypointRepository;
+
     public KeypointService(IKeypointRepository keypointRepository, IMapper mapper) : base(keypointRepository, mapper)
     {
         _keypointRepository = keypointRepository;
     }
-    
+
     public Result<List<KeypointDto>> CreateMultiple(List<KeypointDto> keypoints)
     {
-        List<KeypointDto> results = new List<KeypointDto>();
+        var results = new List<KeypointDto>();
         foreach (var keypoint in keypoints)
         {
             var result = CrudRepository.Create(MapToDomain(keypoint));

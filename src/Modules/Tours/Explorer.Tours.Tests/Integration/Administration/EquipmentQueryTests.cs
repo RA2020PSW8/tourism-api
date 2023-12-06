@@ -11,7 +11,9 @@ namespace Explorer.Tours.Tests.Integration.Administration;
 [Collection("Sequential")]
 public class EquipmentQueryTests : BaseToursIntegrationTest
 {
-    public EquipmentQueryTests(ToursTestFactory factory) : base(factory) { }
+    public EquipmentQueryTests(ToursTestFactory factory) : base(factory)
+    {
+    }
 
     [Fact]
     public void Retrieves_all()

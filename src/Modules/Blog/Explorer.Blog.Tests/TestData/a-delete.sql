@@ -1,3 +1,6 @@
-DELETE FROM blog."Blogs";
-DELETE FROM blog."ForumComments";
-DELETE FROM blog."BlogStatuses";
+DELETE
+FROM blog."Blogs";
+DELETE
+FROM blog."ForumComments";
+DELETE
+FROM blog."BlogStatuses";

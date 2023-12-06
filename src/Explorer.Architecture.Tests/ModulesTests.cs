@@ -22,7 +22,8 @@ public class ModulesTests : BaseArchitecturalTests
     public void Core_projects_should_only_reference_themselves_API_projects_and_core_building_blocks(string moduleName)
     {
         var examinedTypes = GetExaminedTypes($"Explorer.{moduleName}.Core");
-        var forbiddenTypes = GetForbiddenTypes("Explorer.BuildingBlocks.Core", "Explorer\\..+\\.API", $"Explorer.{moduleName}.Core");
+        var forbiddenTypes = GetForbiddenTypes("Explorer.BuildingBlocks.Core", "Explorer\\..+\\.API",
+            $"Explorer.{moduleName}.Core");
 
         var rule = Types().That().Are(examinedTypes).Should().NotDependOnAny(forbiddenTypes);
 
@@ -31,7 +32,8 @@ public class ModulesTests : BaseArchitecturalTests
 
     [Theory]
     [MemberData(nameof(GetModules))]
-    public void Infra_projects_should_only_reference_themselves_their_API_and_core_projects_and_building_blocks(string moduleName)
+    public void Infra_projects_should_only_reference_themselves_their_API_and_core_projects_and_building_blocks(
+        string moduleName)
     {
         var examinedTypes = GetExaminedTypes($"Explorer.{moduleName}.Infrastructure");
         var forbiddenTypes = GetForbiddenTypes("Explorer.BuildingBlocks.", $"Explorer.{moduleName}.");
@@ -83,11 +85,30 @@ public class ModulesTests : BaseArchitecturalTests
         rule.Check(Architecture);
     }
 
-    public static IEnumerable<object[]> GetModules() => new List<object[]>
+    public static IEnumerable<object[]> GetModules()
     {
-        new object[]
+        return new List<object[]>
         {
-            "Stakeholders"
-        }
-    };
+            new object[]
+            {
+                "Stakeholders"
+            },
+            new object[]
+            {
+                "Blogs"
+            },
+            new object[]
+            {
+                "Tours"
+            },
+            new object[]
+            {
+                "Payments"
+            },
+            new object[]
+            {
+                "Encounters"
+            }
+        };
+    }
 }

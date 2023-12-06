@@ -10,5 +10,6 @@ public class AccountRegistrationDto
     public string ProfileImage { get; set; }
     public string Biography { get; set; }
     public string Quote { get; set; }
-
+    public int? XP { get; set; }
+    public int? Level { get; set; }
 }

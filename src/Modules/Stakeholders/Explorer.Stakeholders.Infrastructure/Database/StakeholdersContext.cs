@@ -5,6 +5,10 @@ namespace Explorer.Stakeholders.Infrastructure.Database;
 
 public class StakeholdersContext : DbContext
 {
+    public StakeholdersContext(DbContextOptions<StakeholdersContext> options) : base(options)
+    {
+    }
+
     public DbSet<User> Users { get; set; }
     public DbSet<Person> People { get; set; }
     public DbSet<ApplicationRating> ApplicationRatings { get; set; }
@@ -15,8 +19,6 @@ public class StakeholdersContext : DbContext
     public DbSet<Club> Clubs { get; set; }
     public DbSet<ChatMessage> ChatMessages { get; set; }
     public DbSet<Notification> Notifications { get; set; }
-
-    public StakeholdersContext(DbContextOptions<StakeholdersContext> options) : base(options)  { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,8 +41,10 @@ public class StakeholdersContext : DbContext
             .HasMany(u => u.Followers)
             .WithMany(u => u.Following);
 
-        modelBuilder.Entity<TourIssueComment>().HasOne<TourIssue>().WithMany(t => t.Comments).HasForeignKey(te => te.TourIssueId);
-        modelBuilder.Entity<TourIssueComment>().HasOne<User>().WithMany(u => u.IssueComments).HasForeignKey(t => t.UserId);
+        modelBuilder.Entity<TourIssueComment>().HasOne<TourIssue>().WithMany(t => t.Comments)
+            .HasForeignKey(te => te.TourIssueId);
+        modelBuilder.Entity<TourIssueComment>().HasOne<User>().WithMany(u => u.IssueComments)
+            .HasForeignKey(t => t.UserId);
         modelBuilder.Entity<TourIssue>().HasOne<User>().WithMany(u => u.Issues).HasForeignKey(t => t.UserId);
 
         modelBuilder.Entity<ChatMessage>()

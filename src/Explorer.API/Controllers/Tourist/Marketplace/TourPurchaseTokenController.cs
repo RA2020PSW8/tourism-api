@@ -1,37 +1,41 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
-using Explorer.Tours.API.Dtos;
-using Explorer.Tours.API.Public.MarketPlace;
-using Explorer.Tours.API.Public.TourAuthoring;
+using Explorer.Payments.API.Dtos;
+using Explorer.Payments.API.Public;
+using Explorer.Stakeholders.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using FluentResults;
 using Microsoft.AspNetCore.Mvc;
-using Explorer.Tours.Core.UseCases.TourAuthoring;
 
-namespace Explorer.API.Controllers.Tourist.Marketplace
+namespace Explorer.API.Controllers.Tourist.Marketplace;
+
+[Authorize(Policy = "touristPolicy")]
+[Route("api/marketplace/tours/token")]
+public class TourPurchaseTokenController : BaseApiController
 {
-    [Authorize(Policy = "touristPolicy")]
-    [Route("api/marketplace/tours/token")]
-    public class TourPurchaseTokenController : BaseApiController
+    private readonly ITourPurchaseTokenService _tourPurchaseTokenService;
+
+    public TourPurchaseTokenController(ITourPurchaseTokenService tourPurchaseTokenService)
     {
-        private readonly ITourPurchaseTokenService _tourPurchaseTokenService;
+        _tourPurchaseTokenService = tourPurchaseTokenService;
+    }
 
-        public TourPurchaseTokenController(ITourPurchaseTokenService tourPurchaseTokenService)
-        {
-            _tourPurchaseTokenService = tourPurchaseTokenService;
-        }
+    [HttpPut("{id:int}")]
+    public ActionResult BuyShoppingCart(int id)
+    {
+        var result = _tourPurchaseTokenService.BuyShoppingCart(id);
+        return CreateResponse(result);
+    }
 
-        [HttpPut("{id:int}")]
-        public ActionResult BuyShoppingCart(int id)
-        {
-            var result = _tourPurchaseTokenService.BuyShoppingCart(id);
-            return CreateResponse(result);
-        }
+    [HttpGet]
+    public ActionResult<PagedResult<TourPurchaseTokenDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
+    {
+        var result = _tourPurchaseTokenService.GetPaged(page, pageSize);
+        return CreateResponse(result);
+    }
 
-        [HttpGet]
-        public ActionResult<PagedResult<TourPurchaseTokenDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
-        {
-            var result = _tourPurchaseTokenService.GetPaged(page, pageSize);
-            return CreateResponse(result);
-        }
+    [HttpGet("check-purchase/{tourId:int}")]
+    public ActionResult<bool> CheckIfPurchased([FromRoute] int tourId)
+    {
+        return _tourPurchaseTokenService.CheckIfPurchased(tourId, User.PersonId()).Value;
+
     }
 }
