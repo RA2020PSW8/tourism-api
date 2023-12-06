@@ -41,4 +41,12 @@ public class TourController : BaseApiController
         var result = _tourService.GetCustomByUserPaged(touristId, page, pageSize);
         return CreateResponse(result);
     }
+
+    [HttpGet("campaign")]
+    public ActionResult<PagedResult<TourDto>> GetCampaignByUser([FromQuery] int page, [FromQuery] int pageSize)
+    {
+        var touristId = ClaimsPrincipalExtensions.PersonId(User);
+        var result = _tourService.GetCampaignByUserPaged(touristId, page, pageSize);
+        return CreateResponse(result);
+    }
 }

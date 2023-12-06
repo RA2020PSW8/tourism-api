@@ -54,4 +54,17 @@ public class TourService : CrudService<TourDto, Tour>, ITourService, IInternalTo
         var result = _tourRepository.GetCustomByUserPaged(userId, page, pageSize);
         return MapToDto(result);
     }
+
+    public Result<TourDto> CreateCampaign(TourDto tour)
+    {
+        tour.Status = "CAMPAIGN";
+        var result = _tourRepository.Create(MapToDomain(tour));
+        return MapToDto(result);
+    }
+
+    public Result<PagedResult<TourDto>> GetCampaignByUserPaged(int userId, int page, int pageSize) 
+    { 
+        var result = _tourRepository.GetCampaignByUserPaged(userId, page, pageSize);
+        return MapToDto(result);
+    }
 }

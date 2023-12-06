@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Author;
 
+[Authorize(Policy = "userPolicy")]
 [Route("api/author/tours/")]
 public class TourManagementController : BaseApiController
 {
@@ -44,7 +45,7 @@ public class TourManagementController : BaseApiController
     }
 
     [HttpPut("{id:int}")]
-    [Authorize(Roles = "author")]
+    [Authorize(Roles = "author,tourist")]
     public ActionResult<TourDto> Update([FromBody] TourDto tour)
     {
         tour.UserId = User.PersonId();
@@ -87,6 +88,14 @@ public class TourManagementController : BaseApiController
     {   
         tourDto.UserId = ClaimsPrincipalExtensions.PersonId(User);
         var result = _tourService.CreateCustom(tourDto);
+        return CreateResponse(result);
+    }
+
+    [HttpPost("campaign")]
+    public ActionResult<TourDto> CreateCampaignTour([FromBody] TourDto tourDto) 
+    {
+        tourDto.UserId = ClaimsPrincipalExtensions.PersonId(User);
+        var result = _tourService.CreateCampaign(tourDto);
         return CreateResponse(result);
     }
 }
