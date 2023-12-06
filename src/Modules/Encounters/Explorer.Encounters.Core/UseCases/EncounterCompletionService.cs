@@ -163,6 +163,7 @@ namespace Explorer.Encounters.Core.UseCases
                 if((DateTime.UtcNow - encounterCompletion.LastUpdatedAt).TotalSeconds >= HiddenLocationInterval)
                 {
                     encounterCompletion.Complete();
+                    _profileService.AddXP((int)userId, encounterCompletion.Xp);
                     _encounterCompletionRepository.Update(encounterCompletion);
                     completedEncounters.Add(encounterCompletion);
                 }
