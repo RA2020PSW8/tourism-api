@@ -8,4 +8,5 @@ public interface ITourRepository : ICrudRepository<Tour>
     public PagedResult<Tour> GetPublishedPaged(int page, int pageSize);
     public PagedResult<Tour> GetArchivedAndPublishedPaged(int page, int pageSize);
     public PagedResult<Tour> GetCustomByUserPaged(int userId, int page, int pageSize);
+    public PagedResult<Tour> GetPublishedByAuthor(int authorId, int page, int pageSize);
 }

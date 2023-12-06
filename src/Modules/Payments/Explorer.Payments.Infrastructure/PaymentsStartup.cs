@@ -27,6 +27,8 @@ public static class PaymentsStartup
         services.AddScoped<IShoppingCartService, ShoppingCartService>();
         services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
         services.AddScoped<IWalletService, WalletService>();
+        services.AddScoped<ISaleService, SaleService>();
+        services.AddScoped<ITourSaleService, TourSaleService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -35,9 +37,11 @@ public static class PaymentsStartup
         services.AddScoped(typeof(IShoppingCartRepository), typeof(ShoppingCartRepository));
         services.AddScoped(typeof(ITourPurchaseTokenRepository), typeof(TourPurchaseTokenRepository));
         services.AddScoped(typeof(IWalletRepository), typeof(WalletRepository));
+        services.AddScoped(typeof(ISaleRepository), typeof(SaleRepository));
+        services.AddScoped(typeof(ITourSaleRepository), typeof(TourSaleRepository));
 
         services.AddDbContext<PaymentsContext>(opt =>
-            opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
+            opt.UseNpgsql(DbConnectionStringBuilder.Build("payments"),
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "payments")));
     }
 }

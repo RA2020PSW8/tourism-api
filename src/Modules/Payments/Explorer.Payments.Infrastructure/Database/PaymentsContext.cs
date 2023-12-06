@@ -14,8 +14,19 @@ public class PaymentsContext : DbContext
     public DbSet<TourPurchaseToken> TourPurchaseTokens { get; set; }
     public DbSet<Wallet> Wallets { get; set; }
 
+    public DbSet<Sale> Sales { get; set; }
+    public DbSet<TourSale> TourSales { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("payments");
+
+        modelBuilder.Entity<TourSale>()
+            .HasKey(ts => new { ts.SaleId, ts.TourId });
+
+        modelBuilder.Entity<TourSale>()
+            .HasOne<Sale>()
+            .WithMany(e => e.TourSales)
+            .HasForeignKey(te => te.SaleId);
     }
 }

@@ -54,4 +54,10 @@ public class TourService : CrudService<TourDto, Tour>, ITourService, IInternalTo
         var result = _tourRepository.GetCustomByUserPaged(userId, page, pageSize);
         return MapToDto(result);
     }
+
+    public Result<PagedResult<TourDto>> GetPublishedByAuthor(int authorId, int page, int pageSize)
+    {
+        var result = _tourRepository.GetPublishedByAuthor(authorId, page, pageSize);
+        return MapToDto(result);
+    }
 }

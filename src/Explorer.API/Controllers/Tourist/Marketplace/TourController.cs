@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist.Marketplace;
 
-[Authorize(Policy = "touristPolicy")]
+[Authorize(Policy = "personPolicy")]
 [Route("api/marketplace/tours/")]
 public class TourController : BaseApiController
 {
@@ -39,6 +39,14 @@ public class TourController : BaseApiController
     {
         var touristId = ClaimsPrincipalExtensions.PersonId(User);
         var result = _tourService.GetCustomByUserPaged(touristId, page, pageSize);
+        return CreateResponse(result);
+    }
+
+    [HttpGet("author-published")]
+    public ActionResult<PagedResult<TourDto>> GetPublishedByAuthor([FromQuery] int page, [FromQuery] int pageSize)
+    {
+        var authorId = ClaimsPrincipalExtensions.PersonId(User);
+        var result = _tourService.GetPublishedByAuthor(authorId, page, pageSize);
         return CreateResponse(result);
     }
 }
