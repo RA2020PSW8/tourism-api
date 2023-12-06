@@ -50,7 +50,7 @@ namespace Explorer.Encounters.Core.UseCases
             {
                 try
                 {
-                    var result = _encounterCompletionRepository.Get(id); // can be moved to Repo probably, so we don't have to do foreach here
+                    var result = _encounterCompletionRepository.GetByEncounter(id); // can be moved to Repo probably, so we don't have to do foreach here
                     results.Add(result);
                 }
                 catch(KeyNotFoundException e)
@@ -126,6 +126,7 @@ namespace Explorer.Encounters.Core.UseCases
 
             encounterCompletion.UpdateStatus(EncounterCompletionStatus.COMPLETED);
             var result = _encounterCompletionRepository.Update(encounterCompletion);
+            _profileService.AddXP((int)userId, encounter.Xp);
 
             return Result.Ok(MapToDto(result));
 

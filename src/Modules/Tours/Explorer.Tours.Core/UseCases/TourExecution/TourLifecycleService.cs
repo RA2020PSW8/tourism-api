@@ -98,7 +98,7 @@ public class TourLifecycleService : BaseService<TourProgressDto, TourProgress>, 
                 var currentKeypoint = _keypointRepository.GetByTourAndPosition(tourProgress.TourId, tourProgress.CurrentKeyPoint).FirstOrDefault();
                 var dist = DistanceCalculator.CalculateDistance(touristPosition.Latitude, touristPosition.Longitude, currentKeypoint.Latitude, currentKeypoint.Longitude);
                 
-                if (tourProgress.CurrentKeyPoint == tourProgress.Tour.Keypoints.Count && areRequiredEncountersDone && dist <= 5)
+                if (tourProgress.CurrentKeyPoint == tourProgress.Tour.Keypoints.Count && areRequiredEncountersDone && dist <= 0.5)
                 {
                     tourProgress.Complete();
                     touristPosition.UpdateTime();
@@ -108,7 +108,7 @@ public class TourLifecycleService : BaseService<TourProgressDto, TourProgress>, 
                     return MapToDto(tourProgress);
 
                 }
-                if (dist <= 5)
+                if (dist <= 0.5)
                 {
                     var result = _keypointRepository.GetNextPositions(tourProgress.TourId, currentKeypoint.Position).ToList();
                     tourProgress.MoveToNextKeypoint(result[0] ?? 0);
