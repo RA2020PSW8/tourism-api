@@ -42,14 +42,14 @@ namespace Explorer.API.Controllers.Tourist.Encounters
             return CreateResponse(Result.Ok());
         }
         [HttpPost("startEncounter")]
-        public ActionResult StartEncounter([FromBody] EncounterDto encounter)
+        public ActionResult<EncounterCompletionDto> StartEncounter([FromBody] EncounterDto encounter)
         {
             var userId = ClaimsPrincipalExtensions.PersonId(User);
             var result = _encounterCompletionService.StartEncounter(userId, encounter);
             return CreateResponse(result);
         }
         [HttpPut("finishEncounter")]
-        public ActionResult FinishEncounter([FromBody] EncounterDto encounter)
+        public ActionResult<EncounterCompletionDto> FinishEncounter([FromBody] EncounterDto encounter)
         {
             var userId = ClaimsPrincipalExtensions.PersonId(User);
             var result = _encounterCompletionService.FinishEncounter(userId, encounter);

@@ -32,6 +32,11 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
             var encounterCompletion = _dbSet.FirstOrDefault(ec => ec.UserId == userId && ec.EncounterId == encounterId);
             return encounterCompletion;
         }
+        public EncounterCompletion GetByEncounter(long encounterId)
+        {
+            var encounterCompletion = _dbSet.FirstOrDefault(ec => ec.EncounterId == encounterId);
+            return encounterCompletion;
+        }
 
         public bool HasUserStartedEncounter(long userId, long encounterId) 
         {

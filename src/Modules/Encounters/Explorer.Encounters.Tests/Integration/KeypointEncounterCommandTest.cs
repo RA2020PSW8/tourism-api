@@ -102,7 +102,7 @@ namespace Explorer.Encounters.Tests.Integration
             result.KeypointId.ShouldBe(updatedEntity.KeypointId);
 
             // Assert - Database
-            var storedEntity = dbContext.KeypointEncounters.FirstOrDefault(i => i.Encounter.Name == "Encounter123");
+            var storedEntity = dbContext.KeypointEncounters.FirstOrDefault(i => i.EncounterId == -1);
             storedEntity.ShouldNotBeNull();
             storedEntity.IsRequired.ShouldBe(updatedEntity.IsRequired);
             var oldEntity = dbContext.Encounters.FirstOrDefault(i => i.Name == "Encounter1");
