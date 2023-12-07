@@ -16,4 +16,28 @@ public class TourSaleService:CrudService<TourSaleDto, TourSale>, ITourSaleServic
     {
         _saleRepository = tourSaleRepository;
     }
+
+    public new Result<TourSaleDto> Create(TourSaleDto tourSaleDto)
+    {
+        var tour = MapToDomain(tourSaleDto);
+        var result = _saleRepository.Create(tour);
+        if (result == null)
+            return Result.Fail("Tour is alredy on sale");
+        return MapToDto(_saleRepository.Create(tour));
+    }
+
+    public new Result Delete(int tourId)
+    {
+        try
+        {
+            _saleRepository.Delete(tourId);
+            return Result.Ok();
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions, log them, etc.
+            return Result.Fail("Failed to delete the tour from the sale.")
+                .WithError(ex.Message);
+        }
+    }
 }

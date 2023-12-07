@@ -18,6 +18,10 @@ public class TourSaleController : BaseApiController
     public ActionResult<TourSaleDto> Create([FromBody] TourSaleDto saleDto)
     {
         var result = _saleService.Create(saleDto);
+        if (!result.IsSuccess)
+        {
+            return BadRequest(new { message = result.Reasons });
+        }
         return CreateResponse(result);
     }
 

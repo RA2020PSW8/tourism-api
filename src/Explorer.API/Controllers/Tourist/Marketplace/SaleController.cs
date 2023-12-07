@@ -33,10 +33,17 @@ public class SaleController:BaseApiController
         return CreateResponse(result);
     }
 
-    [HttpDelete("{tourId:int}")]
-    public ActionResult Delete(int tourId)
+    [HttpPut]
+    public ActionResult<SaleDto> Update([FromBody] SaleDto saleDto)
     {
-        var result = _saleService.Delete(tourId);
+        var result = _saleService.Update(saleDto);
+        return CreateResponse(result);
+    }
+
+    [HttpDelete("{id:int}")]
+    public ActionResult Delete(int id)
+    {
+        var result = _saleService.Delete(id);
         return CreateResponse(result);
     }
 
