@@ -4,10 +4,8 @@ using Explorer.Payments.API.Dtos;
 using Explorer.Payments.API.Public;
 using Explorer.Payments.Core.Domain;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;
+using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Internal;
-using Explorer.Tours.Core.Domain;
-using Explorer.Tours.Core.Domain.RepositoryInterfaces;
-using Explorer.Tours.Infrastructure.Database.Repositories;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -20,12 +18,12 @@ namespace Explorer.Payments.Core.UseCases
     public class CouponService : CrudService<CouponDto, Coupon>, ICouponService
     {
         protected readonly ICouponRepository _couponRepository;
-        protected readonly ITourRepository _tourRepository;
+        protected readonly IInternalTourService _internalTourService;
 
-        public CouponService(ICouponRepository repository, IMapper mapper, ITourRepository tourRepository) : base(repository, mapper)
+        public CouponService(ICouponRepository repository, IMapper mapper, IInternalTourService internalTourService) : base(repository, mapper)
         {
             _couponRepository = repository;
-            _tourRepository = tourRepository;
+            _internalTourService = internalTourService;
         }
 
         private static string GenerateRandomAlphanumericString(int length = 8)
@@ -45,9 +43,10 @@ namespace Explorer.Payments.Core.UseCases
 
         public Result<PagedResult<CouponDto>> GetCouponForTourAndTourist(int page, int pageSize, int tourId, int touristId)
         {
-            Tour tour = _tourRepository.Get(tourId);
+            Result<TourDto> tourResult = _internalTourService.Get(tourId);
+            TourDto tourDto = tourResult.Value;
             var result = _couponRepository.GetCouponForTourAndTourist(page, pageSize, tourId, touristId);
-            int authorId = tour.UserId;
+            int authorId = tourDto.UserId;
             var resultAuthor = _couponRepository.GetCouponForAuthorAndTourist(page, pageSize, authorId, touristId);
 
             PagedResult<Coupon> couponsFromTour = result.Value;

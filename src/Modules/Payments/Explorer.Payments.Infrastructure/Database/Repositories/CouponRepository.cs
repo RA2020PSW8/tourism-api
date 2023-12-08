@@ -26,14 +26,14 @@ namespace Explorer.Payments.Infrastructure.Database.Repositories
 
         public Result<PagedResult<Coupon>> GetCouponForTourAndTourist(int page, int pageSize, int tourId, int touristId)
         {
-            var task = _dbContext.Coupons.Where(c => c.TourId == tourId && c.TouristId == touristId).GetPagedById(page, pageSize);
+            var task = _dbContext.Coupons.Where(c => c.TourId == tourId && c.TouristId == touristId && c.ExpiryDate > DateOnly.FromDateTime(DateTime.Now).AddDays(-1)).GetPagedById(page, pageSize);
             task.Wait();
             return task.Result;
         }
 
         public Result<PagedResult<Coupon>> GetCouponForAuthorAndTourist(int page, int pageSize, int authorId, int touristId)
         {
-            var task = _dbContext.Coupons.Where(c => c.TourId == 0 && c.TouristId == touristId && c.AuthorId == authorId).GetPagedById(page, pageSize);
+            var task = _dbContext.Coupons.Where(c => c.TourId == 0 && c.TouristId == touristId && c.AuthorId == authorId && c.ExpiryDate > DateOnly.FromDateTime(DateTime.Now).AddDays(-1)).GetPagedById(page, pageSize);
             task.Wait();
             return task.Result;
         }
