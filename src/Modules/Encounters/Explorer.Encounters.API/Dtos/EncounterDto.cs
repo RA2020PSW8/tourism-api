@@ -13,8 +13,9 @@
         public string Type { get; set; }
         public double Range { get; set; }
         public string? Image { get; set; }
-        public double ImageLatitude { get; set; }
-        public double ImageLongitude { get; set; }
+        public double? ImageLatitude { get; set; }
+        public double? ImageLongitude { get; set; }
         public int? PeopleCount { get; set; }
+        public string ApprovalStatus { get; set; }
     }
 }

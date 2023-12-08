@@ -39,9 +39,9 @@ public class TourLifecycleController : BaseApiController
     }
 
     [HttpPut("updateActive")]
-    public ActionResult<TourProgressDto> UpdateActiveTour()
+    public ActionResult<TourProgressDto> UpdateActiveTour([FromBody] bool areRequiredEncountersDone)
     {
-        var result = _tourLifecycleService.UpdateActiveTour(User.PersonId());
+        var result = _tourLifecycleService.UpdateActiveTour(User.PersonId(), areRequiredEncountersDone);
         return CreateResponse(result);
     }
 }

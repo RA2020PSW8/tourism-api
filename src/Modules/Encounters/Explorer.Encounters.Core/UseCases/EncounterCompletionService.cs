@@ -5,11 +5,10 @@ using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.Domain;
 using Explorer.Encounters.Core.Domain.Enums;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.API.Internal;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Internal;
 using FluentResults;
-using System;
-using System.Collections.Generic;
 
 namespace Explorer.Encounters.Core.UseCases
 {
@@ -18,16 +17,18 @@ namespace Explorer.Encounters.Core.UseCases
         protected IEncounterCompletionRepository _encounterCompletionRepository;
         protected IEncounterRepository _encounterRepository;
         protected IInternalTouristPositionService _touristPositionService;
+        protected IInternalProfileService _profileService;
 
         private const double HiddenLocationRange = 0.050;
         private const double HiddenLocationInterval = 30;
 
         public EncounterCompletionService(IEncounterCompletionRepository encoutnerCompletionRepository, IInternalTouristPositionService touristPositionService,
-            IEncounterRepository encounterRepository, IMapper mapper) : base(encoutnerCompletionRepository, mapper)
+            IEncounterRepository encounterRepository, IInternalProfileService profileService, IMapper mapper) : base(encoutnerCompletionRepository, mapper)
         {
             _encounterCompletionRepository = encoutnerCompletionRepository;
             _touristPositionService = touristPositionService;
             _encounterRepository = encounterRepository;
+            _profileService = profileService;
         }
 
         public Result<PagedResult<EncounterCompletionDto>> GetPagedByUser(int page, int pageSize, int userId)
@@ -49,7 +50,7 @@ namespace Explorer.Encounters.Core.UseCases
             {
                 try
                 {
-                    var result = _encounterCompletionRepository.Get(id); // can be moved to Repo probably, so we don't have to do foreach here
+                    var result = _encounterCompletionRepository.GetByEncounter(id); // can be moved to Repo probably, so we don't have to do foreach here
                     results.Add(result);
                 }
                 catch(KeyNotFoundException e)
@@ -62,10 +63,10 @@ namespace Explorer.Encounters.Core.UseCases
 
         public void UpdateSocialEncounters()
         {
-            List<Encounter> socialEncounters = _encounterRepository.GetAllByStatusAndType(EncounterStatus.ACTIVE, EncounterType.SOCIAL).ToList();
+            List<Encounter> socialEncounters = _encounterRepository.GetApprovedByStatusAndType(EncounterStatus.ACTIVE, EncounterType.SOCIAL).ToList();
             List<TouristPositionDto> touristPositions = _touristPositionService.GetPaged(0, 0).ValueOrDefault.Results;
             List<long> nearbyUserIds = new List<long>();
-            
+
             foreach (var encounter in socialEncounters)
             {
                 nearbyUserIds = touristPositions
@@ -89,23 +90,26 @@ namespace Explorer.Encounters.Core.UseCases
                             EncounterCompletion encounterCompletion = _encounterCompletionRepository.GetByUserAndEncounter(userId, encounter.Id);
                             encounterCompletion.UpdateStatus(EncounterCompletionStatus.COMPLETED);
                             _encounterCompletionRepository.Update(encounterCompletion);
+                            _profileService.AddXP((int)userId, encounter.Xp);
 
                         }
                     }
                 }
             }
         }
-
-        public Result StartEncounter(long userId, EncounterDto encounter)
+        public Result<EncounterCompletionDto> StartEncounter(long userId, EncounterDto encounter)
         {
             Result<TouristPositionDto> position = _touristPositionService.GetByUser(userId);
+
+            if(position.IsSuccess == false) return Result.Fail(FailureCode.NotFound).WithError("Set your position first");
+
             EncounterCompletion encounterCompletion = new EncounterCompletion(userId, encounter.Id, encounter.Xp, EncounterCompletionStatus.STARTED);
             if (!_encounterCompletionRepository.HasUserStartedEncounter(userId, encounter.Id) && IsTouristInRange(position.Value, encounter.Longitude, encounter.Latitude, encounter.Range))
             {
                 try
                 {
-                    _encounterCompletionRepository.Create(encounterCompletion);
-                    return Result.Ok();
+                    var result = _encounterCompletionRepository.Create(encounterCompletion);
+                    return Result.Ok(MapToDto(result));
                 }
                 catch (KeyNotFoundException e)
                 {
@@ -115,16 +119,16 @@ namespace Explorer.Encounters.Core.UseCases
             return Result.Fail(FailureCode.Conflict).WithError("This encounter can't be started");
 
         }
-
-        public Result FinishEncounter(long userId, EncounterDto encounter)
+        public Result<EncounterCompletionDto> FinishEncounter(long userId, EncounterDto encounter)
         {
             var encounterCompletion = _encounterCompletionRepository.GetByUserAndEncounter(userId, encounter.Id);
             if (encounterCompletion == null) return Result.Fail(FailureCode.NotFound).WithError("You didn't started encounter yet");
 
             encounterCompletion.UpdateStatus(EncounterCompletionStatus.COMPLETED);
-            _encounterCompletionRepository.Update(encounterCompletion);
+            var result = _encounterCompletionRepository.Update(encounterCompletion);
+            _profileService.AddXP((int)userId, encounter.Xp);
 
-            return Result.Ok();
+            return Result.Ok(MapToDto(result));
 
         }
 
@@ -159,6 +163,7 @@ namespace Explorer.Encounters.Core.UseCases
                 if((DateTime.UtcNow - encounterCompletion.LastUpdatedAt).TotalSeconds >= HiddenLocationInterval)
                 {
                     encounterCompletion.Complete();
+                    _profileService.AddXP((int)userId, encounterCompletion.Xp);
                     _encounterCompletionRepository.Update(encounterCompletion);
                     completedEncounters.Add(encounterCompletion);
                 }
@@ -166,11 +171,9 @@ namespace Explorer.Encounters.Core.UseCases
 
             return MapToDto(completedEncounters);
         }
-
         private bool IsTouristInRangeAndUpdated(TouristPositionDto position, Encounter encounter)
         {
-            double touristDistance = DistanceCalculator.CalculateDistance(position.Latitude, position.Longitude, encounter.Latitude, encounter.Longitude);
-            bool isInRange = touristDistance < encounter.Range;
+            bool isInRange = IsTouristInRange(position, encounter.Longitude, encounter.Latitude, encounter.Range);
             bool updatedRecently = position.UpdatedAt > DateTime.UtcNow.AddMinutes(-10);
 
             return isInRange && updatedRecently;

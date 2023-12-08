@@ -4,7 +4,7 @@ using Explorer.Encounters.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.Core.Domain.Enums;
-using Explorer.Tours.Core.Domain;
+
 
 namespace Explorer.Encounters.Infrastructure.Database.Repositories
 {
@@ -16,15 +16,40 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
         {
             _dbSet = dbContext.Set<Encounter>();
         }
-        public PagedResult<Encounter> GetAllByStatus(EncounterStatus status)
+
+        public PagedResult<Encounter> GetApproved(int page, int pageSize)
         {
-            var encounters = _dbSet.AsNoTracking().Where(e => e.Status == status).ToList();
-            return new PagedResult<Encounter>(encounters, encounters.Count);
+            var task = _dbSet.AsNoTracking().Where(e => e.ApprovalStatus == EncounterApprovalStatus.SYSTEM_APPROVED || e.ApprovalStatus == EncounterApprovalStatus.ADMIN_APPROVED).GetPagedById(page, pageSize);
+            task.Wait();
+            return task.Result;
         }
 
-        public IEnumerable<Encounter> GetAllByStatusAndType(EncounterStatus status, EncounterType type)
+        public PagedResult<Encounter> GetApprovedByStatus(int page, int pageSize, EncounterStatus status)
         {
-            return _dbSet.AsNoTracking().Where(e => e.Status == status && e.Type == type).ToList();
+            var task = _dbSet.AsNoTracking().Where(e => e.Status == status
+                            && (e.ApprovalStatus == EncounterApprovalStatus.SYSTEM_APPROVED || e.ApprovalStatus == EncounterApprovalStatus.ADMIN_APPROVED)).GetPagedById(page, pageSize);
+            task.Wait();
+            return task.Result;
+        }
+
+        public IEnumerable<Encounter> GetApprovedByStatusAndType(EncounterStatus status, EncounterType type)
+        {
+            return _dbSet.AsNoTracking().Where(e => e.Status == status && e.Type == type
+                            && (e.ApprovalStatus == EncounterApprovalStatus.SYSTEM_APPROVED || e.ApprovalStatus == EncounterApprovalStatus.ADMIN_APPROVED));
+        }
+
+        public PagedResult<Encounter> GetByUser(int page, int pageSize, long userId)
+        {
+            var task = _dbSet.Where(e => e.UserId == userId).GetPagedById(page, pageSize);
+            task.Wait();
+            return task.Result;
+        }
+
+        public PagedResult<Encounter> GetTouristCreatedEncounters(int page, int pageSize)
+        {
+            var task = _dbSet.Where(e => e.ApprovalStatus != EncounterApprovalStatus.SYSTEM_APPROVED).GetPagedById(page, pageSize);
+            task.Wait();
+            return task.Result;
         }
 
         public PagedResult<Encounter> GetNearbyByType(int page, int pageSize, double longitude, double latitude, EncounterType type)

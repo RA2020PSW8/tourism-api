@@ -76,4 +76,9 @@ public class Person : Entity
         XP += xp;
         Level = (int)Math.Ceiling(XP / 1000.0);
     }
+
+    public bool CanTouristCreateEncounters() 
+    { 
+        return Level >= 10 ? true : false;
+    }   
 }

@@ -18,10 +18,12 @@ namespace Explorer.Encounters.Core.Domain
         public double? ImageLatitude { get; private set; }
         public double? ImageLongitude { get; private set; }
         public int? PeopleCount { get; init; }
+        public EncounterApprovalStatus ApprovalStatus { get; private set; }
 
         public Encounter() { }
 
-        public Encounter(int userId, string name, string description, double latitude, double longitude, int xp, EncounterStatus status, EncounterType type, double range, string image, double imageLatitude, double imageLongitude, int peopleCount)
+
+        public Encounter(int userId, string name, string description, double latitude, double longitude, int xp, EncounterStatus status, EncounterType type, double range, string image, double imageLatitude, double imageLongitude, int peopleCount, EncounterApprovalStatus approvalStatus)
         {
             UserId = userId;
             Name = name;
@@ -36,11 +38,18 @@ namespace Explorer.Encounters.Core.Domain
             ImageLatitude = imageLatitude;
             ImageLongitude = imageLongitude;
             PeopleCount = peopleCount;
+            ApprovalStatus = approvalStatus;
         }
         public void UpdateLocation(double latitude, double longitude)
         {
             Latitude = latitude;
             Longitude = longitude;
         }
+
+        public void UpdateApprovalStatus(EncounterApprovalStatus approvalStatus) 
+        {
+            ApprovalStatus = approvalStatus;
+        }
+
     }
 }

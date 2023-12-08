@@ -1,4 +1,8 @@
 ﻿INSERT INTO stakeholders."People"("Id", "UserId", "Name", "Surname", "Email", "ProfileImage", "Biography", "Quote", "XP", "Level")
+VALUES (-1, -1, 'Admin', 'Admin', 'admin@gmail.com',
+        'https://cdn3.vectorstock.com/i/1000x1000/87/32/woman-female-young-person-icon-vector-10458732.jpg',
+        'My biography', 'Happiness is priceless', 0, 0);
+INSERT INTO stakeholders."People"("Id", "UserId", "Name", "Surname", "Email", "ProfileImage", "Biography", "Quote", "XP", "Level")
 VALUES (-11, -11, 'Ana', 'Anić', 'autor1@gmail.com',
         'https://cdn3.vectorstock.com/i/1000x1000/87/32/woman-female-young-person-icon-vector-10458732.jpg',
         'My biography', 'Happiness is priceless', 0, 0);

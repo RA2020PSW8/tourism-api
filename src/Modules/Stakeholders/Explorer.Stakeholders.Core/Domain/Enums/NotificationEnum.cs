@@ -7,5 +7,6 @@ public enum NotificationType
     MESSAGE,
     REQUEST_ACCEPTED,
     REQUEST_DECLINED,
-    COINS_GIFTED
+    COINS_GIFTED,
+    TOUR_PURCHASED
 }

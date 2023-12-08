@@ -83,4 +83,12 @@ public class ProfileController : BaseApiController
             return CreateResponse(Result.Fail(FailureCode.InvalidArgument).WithError(e.Message));
         }
     }
+
+    [HttpGet("canCreateEncounters")]
+    public ActionResult<bool> CanTouristCreateEncounters()
+    {
+        var result = _profileService.CanTouristCreateEncounters(ClaimsPrincipalExtensions.PersonId(User));
+        return CreateResponse(result);
+    }
+
 }
