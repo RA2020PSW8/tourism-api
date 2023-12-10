@@ -80,7 +80,7 @@ namespace Explorer.Payments.Tests.Integration
             var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
 
             //Act
-            var result = (OkResult)controller.Delete(-1);
+            var result = (ObjectResult)controller.Delete(-1);
 
             //Assert - Response
             result.ShouldNotBeNull();

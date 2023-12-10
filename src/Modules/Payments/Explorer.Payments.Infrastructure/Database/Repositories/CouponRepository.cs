@@ -44,5 +44,11 @@ namespace Explorer.Payments.Infrastructure.Database.Repositories
             task.Wait();
             return task.Result;
         }
+
+        public Coupon GetCouponByTourId(int tourId)
+        {
+            return _dbContext.Coupons.FirstOrDefault(coupon => coupon.TourId == tourId);
+        }
+
     }
 }

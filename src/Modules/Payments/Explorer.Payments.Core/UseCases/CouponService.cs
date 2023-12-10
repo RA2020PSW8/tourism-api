@@ -65,5 +65,12 @@ namespace Explorer.Payments.Core.UseCases
             var result = _couponRepository.GetCouponsForAuthor(page, pageSize, authorId);
             return MapToDto(result);
         }
+
+        public CouponDto GetCouponByTourId(int tourId)
+        {
+            var result = _couponRepository.GetCouponByTourId(tourId); 
+            return MapToDto(result);
+        }
+
     }
 }

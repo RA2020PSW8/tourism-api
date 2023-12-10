@@ -17,11 +17,13 @@ public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPu
     protected readonly IPaymentRecordRepository _paymentRecordRepository;
     protected readonly IWalletRepository _walletRepository;
     protected readonly IInternalNotificationService _notificationService;
+    protected readonly ICouponRepository _couponRepository;
 
     public TourPurchaseTokenService(IOrderItemRepository orderItemRepository,
         IShoppingCartRepository shoppingCartRepository, ITourPurchaseTokenRepository repository, IPaymentRecordRepository paymentRecordRepository,
         IWalletRepository walletRepository,
         IInternalNotificationService notificationService,
+        ICouponRepository couponRepository,
         IMapper mapper) : base(repository, mapper)
     {
         _tourPurchaseTokenRepository = repository;
@@ -30,44 +32,74 @@ public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPu
         _paymentRecordRepository = paymentRecordRepository;
         _walletRepository = walletRepository;
         _notificationService = notificationService;
+        _couponRepository = couponRepository;
     }
 
 
-    public Result BuyShoppingCart(int shoppingCartId)
+    public Result BuyShoppingCart(int shoppingCartId, List<CouponDto> selectedCoupons)
     {
         ShoppingCart shoppingCart = GetShoppingCart(shoppingCartId);
+        shoppingCart.Price = 0;
 
-        if(shoppingCart == null)
+        if (shoppingCart == null)
             return Result.Fail(FailureCode.NotFound).WithError("Shopping cart does not exist!");
-
 
         var tokens = new List<TourPurchaseToken>();
         var paymentRecords = new List<PaymentRecord>();
 
         foreach (var orderId in shoppingCart.OrdersId)
         {
-            OrderItem orderItem = GetOrderItem(orderId); 
+            OrderItem orderItem = GetOrderItem(orderId);
 
             if (orderItem == null)
                 return Result.Fail(FailureCode.NotFound).WithError("Order item does not exist!");
 
+            shoppingCart.Price += orderItem.TourPrice;
 
             if (CheckIfPurchased(orderItem.TourId, shoppingCart.UserId).Value)
                 return Result.Fail(FailureCode.NotFound).WithError("Token already exists!");
 
+            if(selectedCoupons.Count > 0)
+            {
+                foreach (var coupon in selectedCoupons)
+                {
+
+                    if (coupon != null && coupon.TourId == orderItem.TourId)
+                    {
+                        var discountedPrice = orderItem.TourPrice * (coupon.Discount / 100);
+                        orderItem.TourPrice -= discountedPrice;
+                        shoppingCart.Price -= discountedPrice;
+                    }
+                }
+            }
+
             var token = new TourPurchaseToken(orderItem.TourId, shoppingCart.UserId);
             tokens.Add(token);
-            var paymentRecord = new PaymentRecord(orderItem.TourId, shoppingCart.UserId, orderItem.TourPrice, DateTimeOffset.Now.ToUniversalTime()); 
+
+            var paymentRecord = new PaymentRecord(orderItem.TourId, shoppingCart.UserId, orderItem.TourPrice, DateTimeOffset.Now.ToUniversalTime());
             paymentRecords.Add(paymentRecord);
+
         }
+
         Wallet wallet = _walletRepository.GetByUser(shoppingCart.UserId);
         wallet.AdventureCoins = wallet.AdventureCoins - shoppingCart.Price;
         _walletRepository.Update(wallet);
+
         AddTokensToRepository(tokens);
         AddPaymentRecordsToRepository(paymentRecords);
+
         _notificationService.Generate(shoppingCart.UserId, Stakeholders.API.Dtos.Enums.NotificationType.TOUR_PURCHASED, "", DateTime.UtcNow, "");
+
         RemoveOrderItems(shoppingCart.OrdersId);
         DeleteShoppingCart(shoppingCartId);
+
+        if (selectedCoupons.Count > 0)
+        {
+            foreach (var coupon in selectedCoupons)
+            {
+                _couponRepository.Delete(coupon.Id);
+            }
+        }
 
         return Result.Ok();
     }
