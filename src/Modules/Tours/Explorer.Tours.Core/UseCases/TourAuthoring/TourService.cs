@@ -44,7 +44,15 @@ public class TourService : CrudService<TourDto, Tour>, ITourService, IInternalTo
 
     public Result<TourDto> CreateCustom(TourDto tour)
     {
-        tour.Status = "CUSTOM";
+        if (tour.Keypoints != null)
+        {
+            tour.Status = tour.Keypoints.Count < 2 || tour.Keypoints == null ? "DRAFT" : "CUSTOM";
+        }
+        else
+        {
+            tour.Status = "DRAFT";
+        }
+
         var result = _tourRepository.Create(MapToDomain(tour));
         return MapToDto(result);
     }
