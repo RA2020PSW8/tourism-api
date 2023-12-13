@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Author;
 
-[Authorize(Policy = "userPolicy")]
+[Authorize(Policy = "personPolicy")]
 [Route("api/author/keypoints")]
 public class KeypointController : BaseApiController
 {
