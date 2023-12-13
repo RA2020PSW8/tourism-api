@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist;
 
-[Authorize(Policy = "touristPolicy")]
+[Authorize(Policy = "userPolicy")]
 [Route("api/tourist/orderItems")]
 public class OrderItemController : BaseApiController
 {
