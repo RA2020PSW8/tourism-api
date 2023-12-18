@@ -55,6 +55,7 @@ public static class StakeholdersStartup
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IInternalTourService, TourService>();
         services.AddScoped<IInternalNotificationService, NotificationService>();
+        services.AddScoped<IInternalEmailService, EmailService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
