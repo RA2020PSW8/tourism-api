@@ -21,9 +21,9 @@ namespace Explorer.Payments.Core.UseCases
         protected readonly IWalletRepository _walletRepository;
         protected readonly IInternalNotificationService _notificationService;
         protected readonly IInternalEmailService _emailService;
-        protected readonly IUserService _userService;
+        protected readonly IInternalUserService _userService;
 
-        public WalletService(IWalletRepository repository, IMapper mapper, IInternalNotificationService notificationService, IInternalEmailService emailService, IUserService userService) : base(repository, mapper)
+        public WalletService(IWalletRepository repository, IMapper mapper, IInternalNotificationService notificationService, IInternalEmailService emailService, IInternalUserService userService) : base(repository, mapper)
         {
             _walletRepository = repository;
             _notificationService = notificationService;

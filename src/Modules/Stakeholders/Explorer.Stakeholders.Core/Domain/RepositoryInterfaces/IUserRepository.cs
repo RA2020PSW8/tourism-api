@@ -1,4 +1,6 @@
-﻿namespace Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
+﻿using Explorer.BuildingBlocks.Core.UseCases;
+
+namespace Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 
 public interface IUserRepository
 {
@@ -7,4 +9,5 @@ public interface IUserRepository
     User Create(User user);
     long GetPersonId(long userId);
     User? GetActiveById(long id);
+    public User GetByToken(string token);
 }

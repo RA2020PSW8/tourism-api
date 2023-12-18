@@ -1,5 +1,8 @@
-﻿using Explorer.Stakeholders.Core.Domain;
+﻿using Explorer.BuildingBlocks.Core.UseCases;
+using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
+using FluentResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace Explorer.Stakeholders.Infrastructure.Database.Repositories;
 
@@ -40,4 +43,16 @@ public class UserDatabaseRepository : IUserRepository
     {
         return _dbContext.Users.FirstOrDefault(user => user.Id == id && user.IsActive);
     }
+    public User GetByToken(string token)
+    {
+        var user = _dbContext.Users.AsNoTracking().FirstOrDefault(user => user.VerificationToken == token);
+        return user;
+        
+    }
+    /*public PagedResult<User> GetByTokenPaged(int page, int pageSize, string token)
+    {
+        var task = _dbContext.Where(t => t.UserId == userId).Include(t => t.Comments).GetPagedById(page, pageSize);
+        task.Wait();
+        return task.Result;
+    }*/
 }

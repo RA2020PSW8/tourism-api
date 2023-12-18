@@ -10,8 +10,8 @@ public class User : Entity
         Issues = new List<TourIssue>();
     }
 
-    public User(string username, string password, UserRole role, bool isActive, string email, bool isBlocked,
-        ICollection<TourIssueComment>? issueComments = null, ICollection<TourIssue> issues = null)
+    public User(string username, string password, UserRole role, bool isActive, string email, bool isBlocked,  string verificationToken,
+        ICollection<TourIssueComment>? issueComments = null, ICollection<TourIssue> issues = null, bool isEnabled = false)
     {
         Username = username;
         Password = password;
@@ -22,6 +22,8 @@ public class User : Entity
         IsBlocked = isBlocked;
         IssueComments = issueComments;
         Issues = issues;
+        IsEnabled = isEnabled;
+        VerificationToken = verificationToken;
     }
 
     public string Username { get; }
@@ -32,6 +34,8 @@ public class User : Entity
     public bool IsBlocked { get; set; }
     public ICollection<TourIssueComment>? IssueComments { get; private set; }
     public ICollection<TourIssue>? Issues { get; private set; }
+    public bool IsEnabled { get; set; }
+    public string VerificationToken {  get; set; }
 
     private void Validate()
     {
