@@ -9,8 +9,8 @@ FROM payments."Wallets";
 DELETE
 FROM payments."PaymentRecords";
 DELETE
-FROM payments."TourSales";
+FROM payments."Discounts";
 DELETE
-FROM payments."Sales";
+FROM payments."TourDiscounts";
 DELETE
 FROM payments."Coupons";

@@ -14,21 +14,21 @@ public class PaymentsContext : DbContext
     public DbSet<TourPurchaseToken> TourPurchaseTokens { get; set; }
     public DbSet<Wallet> Wallets { get; set; }
     public DbSet<PaymentRecord> PaymentRecords { get; set; }
-    public DbSet<Sale> Sales { get; set; }
-    public DbSet<TourSale> TourSales { get; set; }
+    public DbSet<Discount> Discounts { get; set; }
+    public DbSet<TourDiscount> TourDiscounts { get; set; }
     public DbSet<Coupon> Coupons { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("payments");
 
-        modelBuilder.Entity<TourSale>()
-            .HasKey(ts => new { ts.SaleId, ts.TourId });
+        modelBuilder.Entity<TourDiscount>()
+            .HasKey(ts => new { ts.DiscountId, ts.TourId });
 
-        modelBuilder.Entity<TourSale>()
-            .HasOne<Sale>()
-            .WithMany(e => e.TourSales)
-            .HasForeignKey(te => te.SaleId);
+        modelBuilder.Entity<TourDiscount>()
+            .HasOne<Discount>()
+            .WithMany(e => e.TourDiscounts)
+            .HasForeignKey(te => te.DiscountId);
 
         modelBuilder.Entity<Coupon>()
             .Property(e => e.ExpiryDate)

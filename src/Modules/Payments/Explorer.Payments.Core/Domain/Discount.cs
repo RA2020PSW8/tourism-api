@@ -3,11 +3,11 @@ using Explorer.BuildingBlocks.Core.Domain;
 
 namespace Explorer.Payments.Core.Domain;
 
-public class Sale:Entity
+public class Discount:Entity
 {
-    public Sale(){}
+    public Discount(){}
 
-    public Sale(DateOnly startDate, DateOnly endDate, double percentage, int userId)
+    public Discount(DateOnly startDate, DateOnly endDate, double percentage, int userId)
     {
         StartDate = startDate;
         EndDate = endDate;
@@ -19,7 +19,7 @@ public class Sale:Entity
     public DateOnly EndDate { get; init; }
     public double Percentage { get; init; }
     public int UserId { get; init; }
-    public ICollection<TourSale>? TourSales { get; set; }
+    public virtual ICollection<TourDiscount>? TourDiscounts { get; set; }
 
     private static void Validate(double percentage, DateOnly startDate, DateOnly endDate)
     {

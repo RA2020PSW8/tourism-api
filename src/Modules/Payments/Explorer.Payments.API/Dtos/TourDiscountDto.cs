@@ -1,7 +1,7 @@
 namespace Explorer.Payments.API.Dtos;
 
-public class TourSaleDto
+public class TourDiscountDto
 {
-    public int SaleId { get; set; }
+    public int DiscountId { get; set; }
     public int TourId { get; set; }
 }
