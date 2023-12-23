@@ -29,7 +29,7 @@ namespace Explorer.Payments.Tests.Integration
             using var scope = Factory.Services.CreateScope();
             var controller = CreateController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
-            var newEntity = new API.Dtos.CouponDto(-3, "CCCCCCCC", 15, -1, -21, -11, new DateOnly(2024,11,11));
+            var newEntity = new API.Dtos.CouponDto(-3, "CCCCCCCC", 15, -1, -21, -11, new DateOnly(2024, 11, 11));
 
             // Act
             var result = ((ObjectResult)controller.Create(newEntity).Result)?.Value as CouponDto;
@@ -80,7 +80,7 @@ namespace Explorer.Payments.Tests.Integration
             var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
 
             //Act
-            var result = (ObjectResult)controller.Delete(-1);
+            var result = (OkResult)controller.Delete(-1);
 
             //Assert - Response
             result.ShouldNotBeNull();

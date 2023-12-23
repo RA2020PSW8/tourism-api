@@ -9,9 +9,9 @@ using Shouldly;
 
 namespace Explorer.Payments.Tests.Integration;
 
-public class DiscountCommandTests(PaymentsTestFactory factory) : BasePaymentsIntegrationTest(factory)
+public class DiscountCommandTests : BasePaymentsIntegrationTest
 {
-
+    public DiscountCommandTests(PaymentsTestFactory factory) : base(factory) { }
 
     [Fact]
     public void Creates()
@@ -74,7 +74,7 @@ public class DiscountCommandTests(PaymentsTestFactory factory) : BasePaymentsInt
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
 
-        var result = ((ObjectResult)controller.Delete(id: -1));
+        var result = ((OkResult)controller.Delete(id: -1));
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
 

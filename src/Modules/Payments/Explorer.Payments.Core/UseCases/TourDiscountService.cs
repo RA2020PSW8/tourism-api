@@ -8,23 +8,27 @@ using FluentResults;
 
 namespace Explorer.Payments.Core.UseCases;
 
-public class TourDiscountService(ITourDiscountRepository tourDiscountRepository, IMapper mapper) : CrudService<TourDiscountDto, TourDiscount>(tourDiscountRepository, mapper), ITourDiscountService
+public class TourDiscountService : CrudService<TourDiscountDto, TourDiscount>, ITourDiscountService
 {
-
+    private readonly ITourDiscountRepository _discountRepository;
+    public TourDiscountService(ITourDiscountRepository tourDiscountRepository, IMapper mapper) : base(tourDiscountRepository, mapper)
+    {
+        _discountRepository = tourDiscountRepository;
+    }
     public new Result<TourDiscountDto> Create(TourDiscountDto tourDiscountDto)
     {
         var tour = MapToDomain(tourDiscountDto);
-        var result = tourDiscountRepository.Create(tour);
+        var result = _discountRepository.Create(tour);
         if (result == null)
             return Result.Fail("Tour is already on Discount");
-        return MapToDto(tourDiscountRepository.Create(tour));
+        return MapToDto(_discountRepository.Create(tour));
     }
 
     public new Result Delete(int tourId)
     {
         try
         {
-            tourDiscountRepository.Delete(tourId);
+            _discountRepository.Delete(tourId);
             return Result.Ok();
         }
         catch (Exception ex)
@@ -36,6 +40,6 @@ public class TourDiscountService(ITourDiscountRepository tourDiscountRepository,
 
     public Result<List<int>> GetToursFromOtherDiscount(int discountId)
     {
-        return tourDiscountRepository.GetToursFromOtherDiscount(discountId);
+        return _discountRepository.GetToursFromOtherDiscount(discountId);
     }
 }
