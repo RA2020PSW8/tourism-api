@@ -20,6 +20,7 @@ public class StakeholdersContext : DbContext
     public DbSet<ChatMessage> ChatMessages { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<ClubChallengeRequest> ClubChallengeRequests { get; set; }
+    public DbSet<ClubFight> ClubFights { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -84,5 +85,15 @@ public class StakeholdersContext : DbContext
             .HasOne(cc => cc.Challenged)
             .WithMany()
             .HasForeignKey(cc => cc.ChallengedId);
+
+        modelBuilder.Entity<ClubFight>()
+            .HasOne(cf => cf.Club1)
+            .WithMany()
+            .HasForeignKey(cf => cf.Club1Id);
+        
+        modelBuilder.Entity<ClubFight>()
+            .HasOne(cf => cf.Club2)
+            .WithMany()
+            .HasForeignKey(cf => cf.Club2Id);
     }
 }
