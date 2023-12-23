@@ -10,8 +10,13 @@ using Shouldly;
 
 namespace Explorer.Payments.Tests.Integration;
 
-public class DiscountQueryTests(PaymentsTestFactory factory) : BasePaymentsIntegrationTest(factory)
+public class DiscountQueryTests : BasePaymentsIntegrationTest
 {
+
+    public DiscountQueryTests(PaymentsTestFactory factory) : base(factory)
+    {
+
+    }
     [Fact]
     public void Retrieves_all()
     {

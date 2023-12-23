@@ -5,9 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Explorer.Payments.Tests.Integration;
 
-public class TourDiscountQueryTests(PaymentsTestFactory factory) : BasePaymentsIntegrationTest(factory)
+public class TourDiscountQueryTests : BasePaymentsIntegrationTest
 {
+    public TourDiscountQueryTests(PaymentsTestFactory factory) : base(factory)
+    {
 
+    }
     private static TourDiscountController CreateController(IServiceScope scope)
     {
         return new TourDiscountController(scope.ServiceProvider.GetRequiredService<ITourDiscountService>())
