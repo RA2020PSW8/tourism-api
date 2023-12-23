@@ -50,7 +50,7 @@ public class AuthenticationService : IAuthenticationService
             var user = _userRepository.Create(new User(account.Username, account.Password, UserRole.Tourist, true,
                 account.Email, false));
             var person = _personRepository.Create(new Person(user.Id, account.Name, account.Surname, account.Email,
-                account.ProfileImage, account.Biography, account.Quote, 0, 0, -1));
+                account.ProfileImage, account.Biography, account.Quote, 0, 0, null));
 
             return _tokenGenerator.GenerateAccessToken(user, person.Id);
         }
