@@ -39,10 +39,11 @@ public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPu
     public Result BuyShoppingCart(int shoppingCartId, List<CouponDto> selectedCoupons)
     {
         ShoppingCart shoppingCart = GetShoppingCart(shoppingCartId);
-        shoppingCart.Price = 0;
 
         if (shoppingCart == null)
             return Result.Fail(FailureCode.NotFound).WithError("Shopping cart does not exist!");
+
+        shoppingCart.Price = 0;
 
         var tokens = new List<TourPurchaseToken>();
         var paymentRecords = new List<PaymentRecord>();
