@@ -19,6 +19,7 @@ public class StakeholdersContext : DbContext
     public DbSet<Club> Clubs { get; set; }
     public DbSet<ChatMessage> ChatMessages { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+    public DbSet<ClubChallengeRequest> ClubChallengeRequests { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -41,6 +42,11 @@ public class StakeholdersContext : DbContext
             .HasMany(u => u.Followers)
             .WithMany(u => u.Following);
 
+        modelBuilder.Entity<Person>()
+            .HasOne(p => p.Club)
+            .WithMany(c => c.Members)
+            .HasForeignKey(p => p.ClubId);
+
         modelBuilder.Entity<TourIssueComment>().HasOne<TourIssue>().WithMany(t => t.Comments)
             .HasForeignKey(te => te.TourIssueId);
         modelBuilder.Entity<TourIssueComment>().HasOne<User>().WithMany(u => u.IssueComments)
@@ -62,5 +68,21 @@ public class StakeholdersContext : DbContext
         modelBuilder.Entity<ChatMessage>()
             .Property(e => e.Id)
             .ValueGeneratedOnAdd();
+
+        modelBuilder.Entity<Club>()
+            .HasOne(c => c.Owner)
+            .WithMany()
+            .HasForeignKey(c => c.OwnerId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<ClubChallengeRequest>()
+            .HasOne(cc => cc.Challenger)
+            .WithMany()
+            .HasForeignKey(cc => cc.ChallengerId);
+        
+        modelBuilder.Entity<ClubChallengeRequest>()
+            .HasOne(cc => cc.Challenged)
+            .WithMany()
+            .HasForeignKey(cc => cc.ChallengedId);
     }
 }
