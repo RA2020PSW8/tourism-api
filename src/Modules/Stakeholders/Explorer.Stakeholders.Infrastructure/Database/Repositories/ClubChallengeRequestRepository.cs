@@ -15,6 +15,11 @@ public class ClubChallengeRequestRepository : CrudDatabaseRepository<ClubChallen
         _dbSet = dbContext.Set<ClubChallengeRequest>();
     }
 
+    public ClubChallengeRequest GetNoTracking(long id)
+    {
+        return _dbSet.AsNoTracking().FirstOrDefault(r => r.Id == id);
+    }
+
     public ClubChallengeRequest GetByIdWithClubs(long id)
     {
         return _dbSet.AsNoTracking()

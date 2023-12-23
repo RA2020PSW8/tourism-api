@@ -46,7 +46,8 @@ public class StakeholdersContext : DbContext
         modelBuilder.Entity<Person>()
             .HasOne(p => p.Club)
             .WithMany(c => c.Members)
-            .HasForeignKey(p => p.ClubId);
+            .HasForeignKey(p => p.ClubId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<TourIssueComment>().HasOne<TourIssue>().WithMany(t => t.Comments)
             .HasForeignKey(te => te.TourIssueId);
@@ -74,7 +75,7 @@ public class StakeholdersContext : DbContext
             .HasOne(c => c.Owner)
             .WithMany()
             .HasForeignKey(c => c.OwnerId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<ClubChallengeRequest>()
             .HasOne(cc => cc.Challenger)

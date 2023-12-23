@@ -41,7 +41,7 @@ public class ClubChallengeRequestService : BaseService<ClubChallengeRequestDto, 
 
     public Result<ClubChallengeRequestDto> AcceptChallenge(ClubChallengeRequestDto request)
     {
-        ClubChallengeRequest existingRequest = _challengeRequestRepository.Get((int)request.Id);
+        ClubChallengeRequest existingRequest = _challengeRequestRepository.GetNoTracking((long)request.Id);
         if (existingRequest.Status == ClubChallengeRequestStatus.ACCEPTED)
         {
             return Result.Fail("Already accepted");

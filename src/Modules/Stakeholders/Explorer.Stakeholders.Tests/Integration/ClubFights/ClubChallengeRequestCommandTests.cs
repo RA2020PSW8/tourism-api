@@ -23,9 +23,9 @@ public class ClubChallengeRequestCommandTests : BaseStakeholdersIntegrationTest
         var controller = CreateController(scope);
         var newEntity = new ClubChallengeRequestDto()
         {
-            Id = 0,
-            ChallengerId = 1,
-            ChallengedId = 2
+            Id = -12,
+            ChallengerId = -1,
+            ChallengedId = -2
         };
     
         // Act
@@ -37,6 +37,7 @@ public class ClubChallengeRequestCommandTests : BaseStakeholdersIntegrationTest
         result.Status.ShouldBe("PENDING");
     }
     
+    [Fact]
     public void AcceptsChallenge()
     {
         // Arrange
@@ -44,9 +45,9 @@ public class ClubChallengeRequestCommandTests : BaseStakeholdersIntegrationTest
         var controller = CreateController(scope);
         var updatedEntity = new ClubChallengeRequestDto()
         {
-            Id = 1,
-            ChallengerId = 1,
-            ChallengedId = 2
+            Id = -1,
+            ChallengerId = -1,
+            ChallengedId = -2
         };
     
         // Act
