@@ -7,7 +7,7 @@ namespace Explorer.Stakeholders.Core.Domain;
 public class Person : Entity
 {
     public Person(long userId, string name, string surname, string email, string profileImage, string biography,
-        string quote, int xP, int level)
+        string quote, int xP, int level, long? clubId)
     {
         UserId = userId;
         Name = name;
@@ -20,6 +20,7 @@ public class Person : Entity
         Level = level;
         Followers = new List<Person>();
         Following = new List<Person>();
+        ClubId = clubId;
         Validate();
     }
 
@@ -32,6 +33,8 @@ public class Person : Entity
     public string Quote { get; init; }
     public int XP { get; set; }
     public int Level { get; set; }
+    public long? ClubId { get; set; }
+    public Club? Club { get; set; }
 
     [InverseProperty(nameof(Following))] public List<Person> Followers { get; } = new();
 
