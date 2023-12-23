@@ -5,9 +5,9 @@ namespace Explorer.Stakeholders.Core.Domain;
 
 public class ClubChallengeRequest : Entity
 {
-    public Club Challenger { get; init; }
+    public Club? Challenger { get; init; }
     public long ChallengerId { get; init; }
-    public Club Challenged { get; init; }
+    public Club? Challenged { get; init; }
     public long ChallengedId { get; init; }
     public ClubChallengeRequestStatus Status { get; init; }
 

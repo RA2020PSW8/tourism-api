@@ -4,6 +4,7 @@ using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.API.Public.Tourist;
 using Explorer.Stakeholders.Core.Domain;
+using Explorer.Stakeholders.Core.Domain.Enums;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
 
@@ -13,22 +14,21 @@ public class ClubChallengeRequestService : BaseService<ClubChallengeRequestDto, 
 {
     private readonly IClubChallengeRequestRepository _challengeRequestRepository;
     private readonly IClubService _clubService;
+    private readonly IClubFightService _fightService;
 
-    public ClubChallengeRequestService(IClubChallengeRequestRepository repository, IClubService clubService, IMapper mapper): base(mapper)
+    public ClubChallengeRequestService(IClubChallengeRequestRepository repository, IClubService clubService,
+       IClubFightService fightService, IMapper mapper): base(mapper)
     {
         _challengeRequestRepository = repository;
         _clubService = clubService;
+        _fightService = fightService;
     }
 
     public Result<ClubChallengeRequestDto> Create(ClubChallengeRequestDto request)
     {
-        ClubDto Challenger = _clubService.Get((int)request.ChallengerId).Value;
-        ClubDto Challanged = _clubService.Get((int)request.ChallengedId).Value;
-        
         request.Status = "PENDING";
-        request.Challenger = Challenger;
-        request.Challenged = Challanged;
-        
+        request.Challenger = null;
+        request.Challenged = null;
         var result = _challengeRequestRepository.Create(MapToDomain(request));
         return MapToDto(result);
     }
@@ -37,5 +37,24 @@ public class ClubChallengeRequestService : BaseService<ClubChallengeRequestDto, 
     {
         var result = _challengeRequestRepository.Update(MapToDomain(request));
         return MapToDto(result);
+    }
+
+    public Result<ClubChallengeRequestDto> AcceptChallenge(ClubChallengeRequestDto request)
+    {
+        ClubChallengeRequest existingRequest = _challengeRequestRepository.Get((int)request.Id);
+        if (existingRequest.Status == ClubChallengeRequestStatus.ACCEPTED)
+        {
+            return Result.Fail("Already accepted");
+        }
+        
+        var fight = _fightService.CreateFromRequest(request);
+        if (fight == null)
+        {
+            return Result.Fail("One of the clubs are currently in active fight");
+        }
+
+        request.Status = "ACCEPTED";
+        var result = Update(request);
+        return result;
     }
 }

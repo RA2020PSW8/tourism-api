@@ -14,4 +14,12 @@ public class ClubChallengeRequestRepository : CrudDatabaseRepository<ClubChallen
     {
         _dbSet = dbContext.Set<ClubChallengeRequest>();
     }
+
+    public ClubChallengeRequest GetByIdWithClubs(long id)
+    {
+        return _dbSet.AsNoTracking()
+            .Include(cf => cf.Challenger)
+            .Include(cf => cf.Challenged)
+            .FirstOrDefault(cf => cf.Id == id);
+    }
 }

@@ -23,10 +23,10 @@ public class ClubChallengeRequestController : BaseApiController
         return CreateResponse(result);
     }
     
-    [HttpPut]
-    public ActionResult<ClubChallengeRequestDto> Update([FromBody] ClubChallengeRequestDto challengeRequestDto)
+    [HttpPut("accept")]
+    public ActionResult<ClubChallengeRequestDto> AcceptChallenge([FromBody] ClubChallengeRequestDto challengeRequestDto)
     {
-        var result = _requestService.Update(challengeRequestDto);
+        var result = _requestService.AcceptChallenge(challengeRequestDto);
         return CreateResponse(result);
     }
 }

@@ -55,6 +55,7 @@ public static class StakeholdersStartup
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IInternalTourService, TourService>();
         services.AddScoped<IInternalNotificationService, NotificationService>();
+        services.AddScoped<IClubFightService, ClubFightService>();
         services.AddScoped<IClubChallengeRequestService, ClubChallengeRequestService>();
     }
 
@@ -80,6 +81,7 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(IChatMessageRepository), typeof(ChatMessageDatabaseRepository));
         services.AddScoped(typeof(INotificationRepository), typeof(NotificationRepository));
         services.AddScoped(typeof(IClubChallengeRequestRepository), typeof(ClubChallengeRequestRepository));
+        services.AddScoped(typeof(IClubFightRepository), typeof(ClubFightRepository));
 
         services.AddControllers().AddJsonOptions(options =>
         {

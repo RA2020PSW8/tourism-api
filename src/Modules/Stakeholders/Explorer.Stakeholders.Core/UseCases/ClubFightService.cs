@@ -20,7 +20,13 @@ public class ClubFightService : CrudService<ClubFightDto, ClubFight>, IClubFight
 
     public Result<ClubFightDto> CreateFromRequest(ClubChallengeRequestDto request)
     {
-        ClubFight newClubFight = new ClubFight(null, DateTime.Now, request.ChallengerId, request.ChallengedId, true);
+        ClubFight existingFight = _fightRepository.GetCurrentFightForOneOfTwoClubs(request.ChallengerId, request.ChallengedId);
+        if (existingFight != null)
+        {
+            return null;
+        }
+
+        ClubFight newClubFight = new ClubFight(null, DateTime.UtcNow, request.ChallengerId, request.ChallengedId, true);
         var result = _fightRepository.Create(newClubFight);
         return MapToDto(result);
     }
