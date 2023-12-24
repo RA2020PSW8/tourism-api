@@ -15,5 +15,8 @@ namespace Explorer.Encounters.Core.Domain.RepositoryInterfaces
         EncounterCompletion GetByEncounter(long encounterId);
         public bool HasUserStartedEncounter(long userId, long encounterId);
         public bool HasUserCompletedEncounter(long userId, long encounterId);
+
+        public int GetCompletedCountByUser(long userId);
+        public int GetFailedCountByUser(long userId);
     }
 }
