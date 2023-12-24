@@ -55,6 +55,7 @@ public static class StakeholdersStartup
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IInternalTourService, TourService>();
         services.AddScoped<IInternalNotificationService, NotificationService>();
+        services.AddScoped<INewsletterPreferenceService, NewsletterPreferenceService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -78,6 +79,7 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(IApplicationRatingRepository), typeof(ApplicationRatingDatabaseRepository));
         services.AddScoped(typeof(IChatMessageRepository), typeof(ChatMessageDatabaseRepository));
         services.AddScoped(typeof(INotificationRepository), typeof(NotificationRepository));
+        services.AddScoped(typeof(ICrudRepository<NewsletterPreference>), typeof(CrudDatabaseRepository<NewsletterPreference, StakeholdersContext>));
 
         services.AddControllers().AddJsonOptions(options =>
         {
