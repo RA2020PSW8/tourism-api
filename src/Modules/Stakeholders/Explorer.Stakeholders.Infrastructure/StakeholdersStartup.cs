@@ -24,6 +24,7 @@ using Explorer.Tours.API.Internal;
 using Explorer.Tours.Core.UseCases.TourAuthoring;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Explorer.Stakeholders.Infrastructure.Database.NewFolder;
 
 namespace Explorer.Stakeholders.Infrastructure;
 
@@ -56,6 +57,8 @@ public static class StakeholdersStartup
         services.AddScoped<IInternalTourService, TourService>();
         services.AddScoped<IInternalNotificationService, NotificationService>();
         services.AddScoped<INewsletterPreferenceService, NewsletterPreferenceService>();
+        services.AddScoped<IInternalEmailService, EmailService>();
+        services.AddScoped<IEmailVerificationService, EmailService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
