@@ -19,15 +19,18 @@ public class NewsletterPreferenceService : CrudService<NewsletterPreferenceDto, 
     {
         try
         {
-            var exists = CrudRepository.Get(np.UserID);
-            if (exists != null)
+            try
             {
+                var exists = CrudRepository.Get(np.UserID);
                 exists.Frequency = np.Frequency;
                 exists.LastSent = np.LastSent;
                 return MapToDto(CrudRepository.Update(exists));
             }
-            else
+            catch (KeyNotFoundException) 
+            {
                 return MapToDto(CrudRepository.Create(MapToDomain(np)));
+            }
+                
         }
         catch (ArgumentException e)
         {
