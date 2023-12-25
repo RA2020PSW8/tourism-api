@@ -80,6 +80,12 @@ namespace Explorer.API.Controllers.Tourist.Shopping
             var result = _service.ArchiveBundle(bundleId);
             return CreateResponse(result);
         }
+        [HttpGet("calculate")]
+        public ActionResult<double> CalculatePrice([FromQuery] long bundleId)
+        {
+            var result = _service.CalculatePrice(bundleId);
+            return CreateResponse(result);
+        }
 
     }
 }

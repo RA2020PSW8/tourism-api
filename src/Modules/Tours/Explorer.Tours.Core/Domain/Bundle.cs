@@ -11,7 +11,7 @@ namespace Explorer.Tours.Core.Domain
     public class Bundle : Entity
     {
         public string Name { get; init; }
-        public double TotalPrice { get; init; }
+        
         public string Status { get; private set; }
         public ICollection<Tour>? Tours { get; set; }   
 

@@ -25,6 +25,8 @@ namespace Explorer.Tours.API.Public.MarketPlace
         Result<BundleDto> PublishBundle(long bundleId);
         Result<BundleDto> ArchiveBundle(long bundleId);
 
+        Result<double> CalculatePrice(long bundleId);
+
 
     }
 }

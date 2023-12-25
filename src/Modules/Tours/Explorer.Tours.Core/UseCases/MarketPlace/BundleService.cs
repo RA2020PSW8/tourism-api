@@ -37,6 +37,18 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
             return MapToDto(result);
         }
 
+        public Result<double> CalculatePrice(long bundleId)
+        {
+            double sum = 0;
+            var result = _repository.getFullBundle(bundleId);
+            foreach (var item in result.Tours)
+            {
+                sum += item.Price;
+            }
+
+            return sum;
+        }
+
         public Result<BundleDto> Get(long id)
         {
             var result = _repository.getFullBundle(id);
@@ -71,7 +83,7 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
                 bundle.Tours.Add(tour);
                 _repository.Update(bundle);
             }
-
+            
             return MapToDto(bundle);
         }
 
