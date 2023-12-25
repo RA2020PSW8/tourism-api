@@ -24,7 +24,7 @@ public class ClubController : BaseApiController
     [HttpGet]
     public ActionResult<PagedResult<ClubDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _clubService.GetPaged(page, pageSize);
+        var result = _clubService.GetAll(page, pageSize);
         return CreateResponse(result);
     }
 

@@ -21,6 +21,11 @@ public class ClubService : CrudService<ClubDto, Club>, IClubService
         var result =  _clubRepository.GetUntracked(id);
         return MapToDto(result);
     }
+    public Result<PagedResult<ClubDto>> GetAll(int page, int pageSize)
+    {
+        var result = _clubRepository.GetAll(page, pageSize);
+        return MapToDto(result);
+    }
 
     public PagedResult<ClubDto> GetAllByUser(int page, int pageSize, int currentUserId)
     {

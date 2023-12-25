@@ -21,6 +21,7 @@ public class StakeholdersContext : DbContext
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<ClubChallengeRequest> ClubChallengeRequests { get; set; }
     public DbSet<ClubFight> ClubFights { get; set; }
+    public DbSet<Achievement> Achievements { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -76,6 +77,10 @@ public class StakeholdersContext : DbContext
             .WithMany()
             .HasForeignKey(c => c.OwnerId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Club>()
+            .HasMany(c => c.Achievements)
+            .WithMany();
 
         modelBuilder.Entity<ClubChallengeRequest>()
             .HasOne(cc => cc.Challenger)
