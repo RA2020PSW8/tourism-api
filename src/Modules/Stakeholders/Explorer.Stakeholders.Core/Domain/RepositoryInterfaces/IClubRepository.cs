@@ -5,4 +5,5 @@ namespace Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 public interface IClubRepository: ICrudRepository<Club>
 {
     public Club GetUntracked(long id);
+    public Club GetWithMembers(long id);
 }
