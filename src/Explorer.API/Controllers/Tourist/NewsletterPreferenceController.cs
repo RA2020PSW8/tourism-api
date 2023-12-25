@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist;
 
-[Authorize(Policy = "touristPolicy")]
+[Authorize(Policy = "userpolicy")]
 [Route("api/tourist/newsletterpreference")]
 
 public class NewsletterPreferenceController : BaseApiController
@@ -25,7 +25,7 @@ public class NewsletterPreferenceController : BaseApiController
         return CreateResponse(result);
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id}")]
     public ActionResult<PagedResult<NewsletterPreferenceDto>> Get(int id)
     {
         var result = _newsletterPreferenceService.Get(id);
@@ -39,7 +39,7 @@ public class NewsletterPreferenceController : BaseApiController
         return CreateResponse(result);
     }
 
-    [HttpPut("{id:int")]
+    [HttpPut("{id}")]
     public ActionResult<NewsletterPreferenceDto> Update([FromBody] NewsletterPreferenceDto newsletterPreference)
     {
         var result = _newsletterPreferenceService.Update(newsletterPreference);

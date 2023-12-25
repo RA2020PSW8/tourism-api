@@ -12,8 +12,8 @@ public class NewsletterPreference : Entity
 {
     public long UserID { get; init; }
     public User User { get; init; }
-    public uint Frequency { get; init; }
-    public DateTime LastSent { get; init; }
+    public uint Frequency { get; set; }
+    public DateTime LastSent { get; set; }
 
     public NewsletterPreference(long userID, uint frequency, DateTime lastSent)
     {
