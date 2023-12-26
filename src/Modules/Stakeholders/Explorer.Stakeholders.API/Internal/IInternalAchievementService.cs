@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorer.Stakeholders.API.Public
+namespace Explorer.Stakeholders.API.Internal
 {
-    public interface IAchievementService
+    public interface IInternalAchievementService
     {
-        public AchievementDto getFightAchievement(ClubDto club);
         public AchievementDto getHiddenEncounterAchievement(int completedCount);
     }
 }

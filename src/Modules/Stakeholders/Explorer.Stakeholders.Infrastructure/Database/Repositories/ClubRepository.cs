@@ -36,4 +36,12 @@ public class ClubRepository : CrudDatabaseRepository<Club, StakeholdersContext>,
         task.Wait();
         return task.Result;
     }
+    public Club Get(long id)
+    {
+        var club = DbContext.Clubs.Where(c => c.Id == id)
+                .Include("Members")
+                .Include("Achievements")
+                .FirstOrDefault();
+        return club;
+    }
 }

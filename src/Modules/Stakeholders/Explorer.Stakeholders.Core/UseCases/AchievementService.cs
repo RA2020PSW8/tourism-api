@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain.Enums;
+using Explorer.Stakeholders.API.Internal;
 
 namespace Explorer.Stakeholders.Core.UseCases
 {
-    public class AchievementService : CrudService<AchievementDto, Achievement>, IAchievementService
+    public class AchievementService : CrudService<AchievementDto, Achievement>, IAchievementService, IInternalAchievementService
     {
         private readonly IAchievementRepository _achievementRepository;
 
@@ -23,7 +24,7 @@ namespace Explorer.Stakeholders.Core.UseCases
             _achievementRepository = repository;
         }
 
-        public AchievementDto checkFightAchievement(ClubDto club)
+        public AchievementDto getFightAchievement(ClubDto club)
         {
             if (!club.Achievements.Any(a => (int)a.Type == (int)AchievementType.FIGHT_2))
                 return club.FightsWon > 5 ? MapToDto(_achievementRepository.GetByType(AchievementType.FIGHT_2)) : null;
@@ -31,6 +32,12 @@ namespace Explorer.Stakeholders.Core.UseCases
                 return club.FightsWon > 10 ? MapToDto(_achievementRepository.GetByType(AchievementType.FIGHT_2)) : null;
             else
                 return null;
+        }
+        public AchievementDto getHiddenEncounterAchievement(int completedCount)
+        {
+            if (completedCount >= 1)
+                return MapToDto(_achievementRepository.GetByType(AchievementType.HIDDEN_ENCOUNTER));
+            return null;
         }
 
     }

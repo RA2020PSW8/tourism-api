@@ -141,4 +141,8 @@ public class ProfileService : CrudService<PersonDto, Person>, IProfileService, I
         var tourist = _personRepository.GetFullProfile(touristId);
         return tourist.CanTouristCreateEncounters();
     }
+    public Result<PersonDto> Get(long userId)
+    {
+        return MapToDto(_personRepository.Get(userId));
+    }
 }

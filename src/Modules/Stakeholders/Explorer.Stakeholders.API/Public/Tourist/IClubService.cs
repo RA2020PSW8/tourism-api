@@ -1,5 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.API.Dtos.Enums;
 using FluentResults;
 
 namespace Explorer.Stakeholders.API.Public.Tourist;
@@ -16,4 +17,5 @@ public interface IClubService
 
     Result Delete(int id);
     PagedResult<ClubDto> GetAllByUser(int page, int pageSize, int userId);
+    Result<ClubDto> AddAchievement(long clubId, long achievementId);
 }

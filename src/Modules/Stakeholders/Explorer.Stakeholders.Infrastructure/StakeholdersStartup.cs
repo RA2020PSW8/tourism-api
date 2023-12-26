@@ -58,6 +58,8 @@ public static class StakeholdersStartup
         services.AddScoped<IClubFightService, ClubFightService>();
         services.AddScoped<IClubChallengeRequestService, ClubChallengeRequestService>();
         services.AddScoped<IAchievementService, AchievementService>();
+        services.AddScoped<IInternalAchievementService, AchievementService>();
+        services.AddScoped<IInternalClubService, ClubService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
