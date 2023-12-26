@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.API.Public.Tourist;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
@@ -8,7 +9,7 @@ using FluentResults;
 
 namespace Explorer.Stakeholders.Core.UseCases.Tourist;
 
-public class ClubService : CrudService<ClubDto, Club>, IClubService
+public class ClubService : CrudService<ClubDto, Club>, IClubService, IInternalClubService
 {
     private IClubRepository _clubRepository;
     public ClubService(IClubRepository repository, IMapper mapper) : base(repository, mapper)

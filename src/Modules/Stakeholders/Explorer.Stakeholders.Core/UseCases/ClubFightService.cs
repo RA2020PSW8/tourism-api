@@ -1,6 +1,7 @@
 using AutoMapper;
 using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.API.Public.Tourist;
 using Explorer.Stakeholders.Core.Domain;
@@ -9,7 +10,7 @@ using FluentResults;
 
 namespace Explorer.Stakeholders.Core.UseCases;
 
-public class ClubFightService : CrudService<ClubFightDto, ClubFight>, IClubFightService
+public class ClubFightService : CrudService<ClubFightDto, ClubFight>, IClubFightService, IInternalClubFightService
 {
     private readonly IClubFightRepository _fightRepository;
     

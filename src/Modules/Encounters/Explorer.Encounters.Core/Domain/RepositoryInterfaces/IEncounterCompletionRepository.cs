@@ -15,5 +15,6 @@ namespace Explorer.Encounters.Core.Domain.RepositoryInterfaces
         EncounterCompletion GetByEncounter(long encounterId);
         public bool HasUserStartedEncounter(long userId, long encounterId);
         public bool HasUserCompletedEncounter(long userId, long encounterId);
+        public int GetTotalXPInDateRangeByUser(long userId, DateTime start, DateTime end);
     }
 }
