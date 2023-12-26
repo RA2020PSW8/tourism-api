@@ -48,6 +48,8 @@ namespace Explorer.Encounters.Core.UseCases
 
                 clubFightXPInfo.Club1ParticipantsInfo.Add(ConvertToFightParticipant(member, memberXp));
             }
+            clubFightXPInfo.Club1ParticipantsInfo = clubFightXPInfo.Club1ParticipantsInfo.OrderByDescending(pi => pi.XPInFight).ToList();
+            clubFightXPInfo.club1TotalXp = clubFightXPInfo.Club1ParticipantsInfo.Select(pi => pi.XPInFight).Sum();
 
             foreach (var member in club2.Members)
             {
@@ -55,8 +57,7 @@ namespace Explorer.Encounters.Core.UseCases
 
                 clubFightXPInfo.Club2ParticipantsInfo.Add(ConvertToFightParticipant(member, memberXp));
             }
-
-            clubFightXPInfo.club1TotalXp = clubFightXPInfo.Club1ParticipantsInfo.Select(pi => pi.XPInFight).Sum();
+            clubFightXPInfo.Club2ParticipantsInfo = clubFightXPInfo.Club2ParticipantsInfo.OrderByDescending(pi => pi.XPInFight).ToList();
             clubFightXPInfo.club2TotalXp = clubFightXPInfo.Club2ParticipantsInfo.Select(pi => pi.XPInFight).Sum();
 
             return clubFightXPInfo;
