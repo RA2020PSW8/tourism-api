@@ -63,6 +63,7 @@ public static class StakeholdersStartup
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
+        services.AddHostedService<NewsletterBackgroundService>();
         services.AddScoped(typeof(ICrudRepository<Person>),
             typeof(CrudDatabaseRepository<Person, StakeholdersContext>));
         services.AddScoped(typeof(ICrudRepository<ClubJoinRequest>),
@@ -83,7 +84,6 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(IChatMessageRepository), typeof(ChatMessageDatabaseRepository));
         services.AddScoped(typeof(INotificationRepository), typeof(NotificationRepository));
         services.AddScoped(typeof(ICrudRepository<NewsletterPreference>), typeof(CrudDatabaseRepository<NewsletterPreference, StakeholdersContext>));
-
         services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
