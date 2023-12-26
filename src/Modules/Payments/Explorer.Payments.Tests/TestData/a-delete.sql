@@ -8,3 +8,7 @@ DELETE
 FROM payments."Wallets";
 DELETE
 FROM payments."PaymentRecords";
+DELETE
+FROM payments."WishLists";
+DELETE 
+FROM payments."WishListItems";

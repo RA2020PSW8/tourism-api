@@ -29,6 +29,8 @@ public static class PaymentsStartup
         services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
         services.AddScoped<IWalletService, WalletService>();
         services.AddScoped<IPaymentRecordService, PaymentRecordService>();
+        services.AddScoped<IWishListItemService, WishListItemService>();
+        services.AddScoped<IWishListService, WishListService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -38,6 +40,8 @@ public static class PaymentsStartup
         services.AddScoped(typeof(ITourPurchaseTokenRepository), typeof(TourPurchaseTokenRepository));
         services.AddScoped(typeof(IWalletRepository), typeof(WalletRepository));
         services.AddScoped(typeof(IPaymentRecordRepository), typeof(PaymentRecordRepository));
+        services.AddScoped(typeof(IWishListItemRepository), typeof(WishListItemRepository));
+        services.AddScoped(typeof(IWishListRepository), typeof(WishListRepository));
 
         services.AddDbContext<PaymentsContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
