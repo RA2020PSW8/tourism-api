@@ -29,4 +29,11 @@ public class ClubChallengeRequestController : BaseApiController
         var result = _requestService.AcceptChallenge(challengeRequestDto);
         return CreateResponse(result);
     }
+    
+    [HttpGet("club/{clubId:long}")]
+    public ActionResult<List<ClubChallengeRequestDto>> GetChallengesForClub([FromRoute] long clubId)
+    {
+        var result = _requestService.GetCurrentChallengesForClub(clubId);
+        return CreateResponse(result);
+    }
 }

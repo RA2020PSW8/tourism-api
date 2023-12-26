@@ -6,4 +6,5 @@ public interface IClubChallengeRequestRepository : ICrudRepository<ClubChallenge
 {
     ClubChallengeRequest GetByIdWithClubs(long id);
     ClubChallengeRequest GetNoTracking(long id);
+    List<ClubChallengeRequest> GetCurrentChallengesForClub(long clubId);
 }
