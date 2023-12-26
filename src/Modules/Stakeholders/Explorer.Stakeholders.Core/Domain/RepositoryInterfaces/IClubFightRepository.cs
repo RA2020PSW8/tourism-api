@@ -5,5 +5,6 @@ namespace Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 
 public interface IClubFightRepository : ICrudRepository<ClubFight>
 {
+    ClubFight GetWithClubs(int fightId);
     ClubFight GetCurrentFightForOneOfTwoClubs(long clubId1, long clubId2);
 }
