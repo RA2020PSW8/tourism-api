@@ -6,6 +6,6 @@ namespace Explorer.Payments.Core.Domain.RepositoryInterfaces;
 public interface ITourDiscountRepository : ICrudRepository<TourDiscount>
 {
     public void Delete(int tourId);
-    public List<int> GetToursFromOtherDiscount(int discountId);
+    public List<int> GetToursFromOtherDiscounts(int discountId);
 
 }

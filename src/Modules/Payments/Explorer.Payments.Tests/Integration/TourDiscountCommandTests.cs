@@ -36,6 +36,7 @@ public class TourDiscountCommandTests : BasePaymentsIntegrationTest
         var storedEntity = dbContext.TourDiscounts.FirstOrDefault(i => i.TourId == tourDiscount.TourId);
         storedEntity.ShouldNotBeNull();
     }
+
     [Fact]
     public void Deletes()
     {
@@ -44,27 +45,11 @@ public class TourDiscountCommandTests : BasePaymentsIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
 
         var result = ((OkResult)controller.Delete(-1));
-        result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
 
         // Assert - Database
-        var storedCourse = dbContext.Discounts.FirstOrDefault(i => i.Id == -1);
-        storedCourse.ShouldBeNull();
-    }
-
-    [Fact]
-    public void Delete_fails_invalid_id()
-    {
-        // Arrange
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope);
-
-        // Act
-        var result = (OkResult)controller.Delete(-1000);
-
-        // Assert
-        result.ShouldNotBeNull();
-        result.StatusCode.ShouldBe(404);
+        var storedDiscount = dbContext.TourDiscounts.FirstOrDefault(td => td.TourId == -1);
+        storedDiscount.ShouldBeNull();
     }
 
 

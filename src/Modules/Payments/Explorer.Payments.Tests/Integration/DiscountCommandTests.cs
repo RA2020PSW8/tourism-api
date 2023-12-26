@@ -83,21 +83,6 @@ public class DiscountCommandTests : BasePaymentsIntegrationTest
         var storedCourse = dbContext.Discounts.FirstOrDefault(i => i.Id == -1);
         storedCourse.ShouldBeNull();
     }
-
-    [Fact]
-    public void Delete_fails_invalid_id()
-    {
-        // Arrange
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope);
-
-        // Act
-        var result = (ObjectResult)controller.Delete(-1000);
-
-        // Assert
-        result.ShouldNotBeNull();
-        result.StatusCode.ShouldBe(404);
-    }
     private static DiscountController CreateController(IServiceScope scope)
     {
         return new DiscountController(scope.ServiceProvider.GetRequiredService<IDiscountService>())

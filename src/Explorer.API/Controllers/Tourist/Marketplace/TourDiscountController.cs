@@ -18,7 +18,12 @@ public class TourDiscountController : BaseApiController
     public ActionResult<TourDiscountDto> Create([FromBody] TourDiscountDto discountDto)
     {
         var result = _discountService.Create(discountDto);
-        return !result.IsSuccess ? BadRequest(new { message = result.Reasons }) : CreateResponse(result);
+        return !result.IsSuccess
+            ? BadRequest(new
+            {
+                message = result.Reasons
+            })
+            : CreateResponse(result);
     }
 
     [HttpDelete("{tourId:int}")]
@@ -28,9 +33,9 @@ public class TourDiscountController : BaseApiController
         return CreateResponse(result);
     }
 
-    [HttpGet("tours/{discountId}")]
-    public ActionResult<List<int>> GetToursFromOtherDiscount(int discountId)
+    [HttpGet("tours/{discountId:int}")]
+    public ActionResult<List<int>> GetToursFromOtherDiscounts(int discountId)
     {
-        return CreateResponse(_discountService.GetToursFromOtherDiscount(discountId));
+        return CreateResponse(_discountService.GetToursFromOtherDiscounts(discountId));
     }
 }

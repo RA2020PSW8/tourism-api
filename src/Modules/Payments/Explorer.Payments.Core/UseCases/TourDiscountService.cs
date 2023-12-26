@@ -21,7 +21,7 @@ public class TourDiscountService : CrudService<TourDiscountDto, TourDiscount>, I
         var result = _discountRepository.Create(tour);
         if (result == null)
             return Result.Fail("Tour is already on Discount");
-        return MapToDto(_discountRepository.Create(tour));
+        return MapToDto(result);
     }
 
     public new Result Delete(int tourId)
@@ -38,8 +38,8 @@ public class TourDiscountService : CrudService<TourDiscountDto, TourDiscount>, I
         }
     }
 
-    public Result<List<int>> GetToursFromOtherDiscount(int discountId)
+    public Result<List<int>> GetToursFromOtherDiscounts(int discountId)
     {
-        return _discountRepository.GetToursFromOtherDiscount(discountId);
+        return _discountRepository.GetToursFromOtherDiscounts(discountId);
     }
 }

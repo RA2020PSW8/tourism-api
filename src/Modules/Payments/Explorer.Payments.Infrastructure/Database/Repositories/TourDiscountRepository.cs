@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Explorer.Payments.Infrastructure.Database.Repositories;
 
-public class TourDiscountRepository: CrudDatabaseRepository<TourDiscount, PaymentsContext>, ITourDiscountRepository
+public class TourDiscountRepository : CrudDatabaseRepository<TourDiscount, PaymentsContext>, ITourDiscountRepository
 {
     private readonly PaymentsContext _dbContext;
     private readonly DbSet<TourDiscount> _dbSet;
@@ -39,8 +39,8 @@ public class TourDiscountRepository: CrudDatabaseRepository<TourDiscount, Paymen
         _dbContext.SaveChanges();
     }
 
-    public List<int> GetToursFromOtherDiscount(int discountId)
+    public List<int> GetToursFromOtherDiscounts(int discountId)
     {
-        return _dbSet.Where(t=> t.DiscountId != discountId).Select(td => td.TourId).ToList();
+        return _dbSet.Where(t => t.DiscountId != discountId).Select(td => td.TourId).ToList();
     }
 }
