@@ -17,6 +17,8 @@ public class PaymentsContext : DbContext
     public DbSet<WishListItem> WishListItems { get; set; }
     public DbSet<WishList> WishLists { get; set; }
 
+    public DbSet<BundlePrice> BundlePrices { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("payments");

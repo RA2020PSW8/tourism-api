@@ -23,6 +23,8 @@ public class ToursContext : DbContext
     public DbSet<PublicKeypoint> PublicKeyPoints { get; set; }
     public DbSet<TourProgress> TourProgresses { get; set; }
 
+    public DbSet<Bundle> Bundle {  get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("tours");
@@ -55,6 +57,10 @@ public class ToursContext : DbContext
             .HasOne(tr => tr.Tour)
             .WithMany(t => t.TourReviews)
             .HasForeignKey(tr => tr.TourId);
+
+        modelBuilder.Entity<Tour>()
+       .HasMany(t => t.Bundles)
+       .WithMany(b => b.Tours);
     }
 
     private static void ConfigureTourProgress(ModelBuilder modelBuilder)

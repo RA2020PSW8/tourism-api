@@ -22,4 +22,5 @@ DELETE
 FROM tours."PublicKeyPoints";
 DELETE
 FROM tours."TouristPositions";
-
+DELETE
+FROM tours."Bundle";
