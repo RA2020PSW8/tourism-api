@@ -1,6 +1,7 @@
 using Explorer.API.Controllers.Tourist.Marketplace;
 using Explorer.Payments.API.Dtos;
 using Explorer.Payments.API.Public;
+using Explorer.Payments.Core.Domain;
 using Explorer.Payments.Core.UseCases;
 using Explorer.Payments.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ public class DiscountCommandTests : BasePaymentsIntegrationTest
         {
             Id = -5,
             StartDate = DateOnly.Parse("1/1/2023"),
-            EndDate = DateOnly.Parse("1/1/2023"),
+            EndDate = DateOnly.Parse("1/1/2024"),
             Percentage = 10,
             UserId = -11
         };
@@ -37,7 +38,7 @@ public class DiscountCommandTests : BasePaymentsIntegrationTest
         result.Percentage.ShouldBe(Discount.Percentage);
 
         // Assert - Database
-        var storedEntity = dbContext.Discounts.FirstOrDefault(i => i.Percentage == Discount.Percentage);
+        var storedEntity = dbContext.Discounts.FirstOrDefault(i => i.Id == -5);
         storedEntity.ShouldNotBeNull();
         storedEntity.Id.ShouldBe(result.Id);
     }
