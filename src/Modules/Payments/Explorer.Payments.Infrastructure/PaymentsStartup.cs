@@ -1,5 +1,7 @@
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Payments.API.Public;
+using Explorer.Payments.Core.Domain;
 using Explorer.Payments.Core.Domain.RepositoryInterfaces;
 using Explorer.Payments.Core.Mappers;
 using Explorer.Payments.Core.UseCases;
@@ -27,6 +29,7 @@ public static class PaymentsStartup
         services.AddScoped<IOrderItemService, OrderItemService>();
         services.AddScoped<IShoppingCartService, ShoppingCartService>();
         services.AddScoped<ITourPurchaseTokenService, TourPurchaseTokenService>();
+        services.AddScoped<IBundlePriceService, BundlePriceService>();
         services.AddScoped<IWalletService, WalletService>();
         services.AddScoped<IPaymentRecordService, PaymentRecordService>();
         services.AddScoped<IDiscountService, DiscountService>();
@@ -39,6 +42,7 @@ public static class PaymentsStartup
         services.AddScoped(typeof(IOrderItemRepository), typeof(OrderItemRepository));
         services.AddScoped(typeof(IShoppingCartRepository), typeof(ShoppingCartRepository));
         services.AddScoped(typeof(ITourPurchaseTokenRepository), typeof(TourPurchaseTokenRepository));
+        services.AddScoped(typeof(IBundlePriceRepository), typeof(BundlePriceRepository));
         services.AddScoped(typeof(IWalletRepository), typeof(WalletRepository));
         services.AddScoped(typeof(IPaymentRecordRepository), typeof(PaymentRecordRepository));
         services.AddScoped(typeof(IDiscountRepository), typeof(DiscountRepository));

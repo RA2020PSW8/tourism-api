@@ -18,6 +18,8 @@ public class PaymentsContext : DbContext
     public DbSet<TourDiscount> TourDiscounts { get; set; }
     public DbSet<Coupon> Coupons { get; set; }
 
+    public DbSet<BundlePrice> BundlePrices { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("payments");
