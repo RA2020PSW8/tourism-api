@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Explorer.API.Controllers.Tourist;
 
-[Authorize(Policy = "touristPolicy")]
+[Authorize(Policy = "userPolicy")]
 [Route("api/tourist/clubs")]
 public class ClubController : BaseApiController
 {
@@ -56,6 +56,13 @@ public class ClubController : BaseApiController
     public ActionResult Delete(int id)
     {
         var result = _clubService.Delete(id);
+        return CreateResponse(result);
+    }
+    
+    [HttpGet("{clubId:int}")]
+    public ActionResult<ClubDto> GetById([FromRoute] int clubId)
+    {
+        var result = _clubService.GetWithMembers(clubId);
         return CreateResponse(result);
     }
 }

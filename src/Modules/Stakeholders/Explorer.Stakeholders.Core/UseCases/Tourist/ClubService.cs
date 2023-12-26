@@ -16,6 +16,12 @@ public class ClubService : CrudService<ClubDto, Club>, IClubService
         _clubRepository = repository;
     }
 
+    public Result<ClubDto> GetWithMembers(int id)
+    {
+        var result =  _clubRepository.GetWithMembers(id);
+        return MapToDto(result);
+    }
+
     public Result<ClubDto> GetUntracked(long id)
     {
         var result =  _clubRepository.GetUntracked(id);

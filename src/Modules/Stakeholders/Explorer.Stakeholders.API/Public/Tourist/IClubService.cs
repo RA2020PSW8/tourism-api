@@ -11,6 +11,7 @@ public interface IClubService
     Result<ClubDto> Create(ClubDto club);
     Result<ClubDto> Update(ClubDto club);
     Result<ClubDto> Get(int id);
+    Result<ClubDto> GetWithMembers(int id);
     Result<ClubDto> GetUntracked(long id);
 
     Result Delete(int id);

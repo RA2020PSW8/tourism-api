@@ -10,13 +10,21 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories;
 
 public class ClubRepository : CrudDatabaseRepository<Club, StakeholdersContext>, IClubRepository
 {
+    private readonly DbSet<Club> _dbSet;
+    
     public ClubRepository(StakeholdersContext dbContext) : base(dbContext)
     {
+        _dbSet = dbContext.Clubs;
     }
 
     public Club GetUntracked(long id)
     {
-        return DbContext.Clubs.AsNoTracking().FirstOrDefault(c => c.Id == id);
+        return _dbSet.AsNoTracking().FirstOrDefault(c => c.Id == id);
+    }
+
+    public Club GetWithMembers(long id)
+    {
+        return _dbSet.AsNoTracking().Include(c => c.Owner).Include(c => c.Members).Include(c => c.Achievements).FirstOrDefault(c => c.Id == id);
     }
     public PagedResult<Club> GetAll(int page, int pageSize)
     {
