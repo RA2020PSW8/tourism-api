@@ -9,21 +9,29 @@ using Microsoft.AspNetCore.Mvc;
 namespace Explorer.API.Controllers.Tourist.Statistics
 {
     [Authorize(Policy = "touristPolicy")]
-    [Route("api/tourist/statistics")]
-    public class StatisticsController : BaseApiController
+    [Route("api/tourist/encounterStatistics")]
+    public class EncounterStatisticsController : BaseApiController
     {
         private readonly IStatisticsService _statisticsService;
 
-        public StatisticsController(IStatisticsService statisticsService)
+        public EncounterStatisticsController(IStatisticsService statisticsService)
         {
            _statisticsService = statisticsService;
         }
 
-        [HttpGet("encounterCompletions")]
-        public ActionResult<EncounterStatsDto> GetPagedByUser()
+        [HttpGet("completions")]
+        public ActionResult<EncounterStatsDto> GetByUser()
         {
             var userId = ClaimsPrincipalExtensions.PersonId(User);
             var result = _statisticsService.GetEncounterStatsByUser(userId);
+            return CreateResponse(result);
+        }
+
+        [HttpGet("yearCompletions")]
+        public ActionResult<EncounterStatsDto> GetByUserAndYear([FromQuery] int year)
+        {
+            var userId = ClaimsPrincipalExtensions.PersonId(User);
+            var result = _statisticsService.GetEncounterYearStatsByUser(userId, year);
             return CreateResponse(result);
         }
 

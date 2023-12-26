@@ -59,5 +59,17 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
         {
             return _dbSet.Where(ec => ec.UserId == userId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.FAILED).Count();
         }
+
+        public int GetCompletedCountByUserAndMonth(long userId, int month, int year)
+        {
+            return _dbSet.Where(ec => ec.UserId == userId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED 
+            && ec.LastUpdatedAt.Month == month && ec.LastUpdatedAt.Year == year).Count();
+        }
+
+        public int GetFailedCountByUserAndMonth(long userId, int month, int year)
+        {
+            return _dbSet.Where(ec => ec.UserId == userId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.FAILED
+            && ec.LastUpdatedAt.Month == month && ec.LastUpdatedAt.Year == year).Count();
+        }
     }
 }

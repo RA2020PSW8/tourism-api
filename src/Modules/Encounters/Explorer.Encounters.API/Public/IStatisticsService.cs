@@ -11,5 +11,6 @@ namespace Explorer.Encounters.API.Public
     public interface IStatisticsService
     {
         Result<EncounterStatsDto> GetEncounterStatsByUser(int userId);
+        Result<EncounterYearStatsDto> GetEncounterYearStatsByUser(int userId, int year);
     }
 }

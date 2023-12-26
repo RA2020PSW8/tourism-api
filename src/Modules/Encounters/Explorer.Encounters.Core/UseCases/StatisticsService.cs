@@ -17,7 +17,7 @@ namespace Explorer.Encounters.Core.UseCases
     {
         protected IEncounterCompletionRepository _encounterCompletionRepository;
 
-        public StatisticsService(IEncounterCompletionRepository encoutnerCompletionRepository, IMapper mapper)
+        public StatisticsService(IEncounterCompletionRepository encoutnerCompletionRepository)
         { 
             _encounterCompletionRepository = encoutnerCompletionRepository;
         }
@@ -28,6 +28,19 @@ namespace Explorer.Encounters.Core.UseCases
             encounterStats.CompletedCount = _encounterCompletionRepository.GetCompletedCountByUser(userId);
             encounterStats.FailedCount = _encounterCompletionRepository.GetFailedCountByUser(userId);
             return encounterStats;
+        }
+
+        public Result<EncounterYearStatsDto> GetEncounterYearStatsByUser(int userId, int year)
+        {
+            EncounterYearStatsDto encounterYearStats = new EncounterYearStatsDto();
+            encounterYearStats.Year = year;
+            for(int month = 1; month <= 12; month++)
+            {
+                encounterYearStats.CompletedCountByMonths.Add(_encounterCompletionRepository.GetCompletedCountByUserAndMonth(userId, month, year));
+                encounterYearStats.FailedCountByMonths.Add(_encounterCompletionRepository.GetFailedCountByUserAndMonth(userId, month, year));
+            }
+           
+            return encounterYearStats;
         }
     }
 }
