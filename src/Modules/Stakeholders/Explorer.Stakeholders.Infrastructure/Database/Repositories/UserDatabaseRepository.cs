@@ -49,10 +49,4 @@ public class UserDatabaseRepository : IUserRepository
         return user;
         
     }
-    /*public PagedResult<User> GetByTokenPaged(int page, int pageSize, string token)
-    {
-        var task = _dbContext.Where(t => t.UserId == userId).Include(t => t.Comments).GetPagedById(page, pageSize);
-        task.Wait();
-        return task.Result;
-    }*/
 }
