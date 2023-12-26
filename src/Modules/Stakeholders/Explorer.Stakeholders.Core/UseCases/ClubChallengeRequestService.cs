@@ -57,4 +57,10 @@ public class ClubChallengeRequestService : BaseService<ClubChallengeRequestDto, 
         var result = Update(request);
         return result;
     }
+
+    public Result<List<ClubChallengeRequestDto>> GetCurrentChallengesForClub(long clubId)
+    {
+        var result = _challengeRequestRepository.GetCurrentChallengesForClub(clubId);
+        return MapToDto(result);
+    }
 }
