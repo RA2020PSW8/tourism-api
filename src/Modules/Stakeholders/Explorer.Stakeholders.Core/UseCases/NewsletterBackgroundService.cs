@@ -47,6 +47,8 @@ namespace Explorer.Stakeholders.Core.UseCases
                         {
                             Console.WriteLine("[" + candidate.UserID + "," + candidate.Frequency + "," + candidate.LastSent + "]");
                         }
+                        if(candidates.Count > 0)
+                            scopedProcessingService.SendNewsletter(candidates);
                         await Task.Delay(30000, stoppingToken);
                     }
 

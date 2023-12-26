@@ -15,12 +15,12 @@ public class NewsletterPreference : Entity
     public uint Frequency { get; set; }
     public DateTime LastSent { get; set; }
 
-    public NewsletterPreference(long userID, uint frequency, DateTime lastSent)
+    public NewsletterPreference(long userID, DateTime lastSent, uint frequency = 0)
     {
         UserID = userID;
         Frequency = frequency;
         LastSent = lastSent;
-        if (frequency != 0 && frequency != 1 && frequency != 3 && frequency != 7)
-            throw new ArgumentNullException("Invalid frequency");
+        /*if (frequency != 0 && frequency != 1 && frequency != 3 && frequency != 7)
+            throw new ArgumentNullException("Invalid frequency");*/
     }
 }

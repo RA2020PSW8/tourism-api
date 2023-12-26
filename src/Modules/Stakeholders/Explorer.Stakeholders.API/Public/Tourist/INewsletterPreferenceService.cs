@@ -16,5 +16,6 @@ public interface INewsletterPreferenceService
     public Result<NewsletterPreferenceDto> Create(NewsletterPreferenceDto entity);
     public Result<NewsletterPreferenceDto> Update(NewsletterPreferenceDto entity);
     public List<NewsletterPreferenceDto> CheckCandidatesForNewsletter();
+    public void SendNewsletter(List<NewsletterPreferenceDto> candidates);
     public Result Delete(int id);
 }
