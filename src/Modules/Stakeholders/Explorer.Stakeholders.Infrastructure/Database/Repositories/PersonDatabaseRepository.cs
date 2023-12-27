@@ -28,4 +28,13 @@ public class PersonDatabaseRepository : CrudDatabaseRepository<Person, Stakehold
         //.IgnoreAutoIncludes();
         return person;
     }
+    public Person Get(long personId)
+    {
+        var person = _dbContext.People.Where(b => b.Id == personId)
+            .Include("Following")
+            .Include("Followers")
+            .Include("Club")
+            .FirstOrDefault();
+        return person;
+    }
 }

@@ -1,4 +1,5 @@
 using Explorer.API.Controllers.Tourist.Marketplace;
+using Explorer.Payments.API.Dtos;
 using Explorer.Payments.API.Public;
 using Explorer.Payments.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
@@ -22,8 +23,10 @@ public class TourPurchaseTokenCommandTests : BasePaymentsIntegrationTest
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<PaymentsContext>();
 
+        List<CouponDto> coupons = new List<CouponDto>();
+
         // Act
-        var result = (ObjectResult)controller.BuyShoppingCart(-1);
+        var result = (ObjectResult)controller.BuyShoppingCart(-1, coupons);
 
         // Assert - Response
         result.ShouldNotBeNull();
@@ -43,8 +46,10 @@ public class TourPurchaseTokenCommandTests : BasePaymentsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
+        List<CouponDto> coupons = new List<CouponDto>();
+
         // Act
-        var result = (ObjectResult)controller.BuyShoppingCart(-111);
+        var result = (ObjectResult)controller.BuyShoppingCart(-111, coupons);
 
         // Assert
         result.ShouldNotBeNull();
@@ -58,8 +63,10 @@ public class TourPurchaseTokenCommandTests : BasePaymentsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
+        List<CouponDto> coupons = new List<CouponDto>();
+
         // Act
-        var result = ((ObjectResult)controller.BuyShoppingCart(-3));
+        var result = ((ObjectResult)controller.BuyShoppingCart(-3, coupons));
 
         // Assert
         result.ShouldNotBeNull();
@@ -73,8 +80,10 @@ public class TourPurchaseTokenCommandTests : BasePaymentsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
+        List<CouponDto> coupons = new List<CouponDto>();
+
         // Act
-        var result = (ObjectResult)controller.BuyShoppingCart(-1);
+        var result = (ObjectResult)controller.BuyShoppingCart(-1, coupons);
 
         // Assert
         result.ShouldNotBeNull();

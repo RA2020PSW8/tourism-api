@@ -1,7 +1,10 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+﻿using AutoMapper.Configuration.Conventions;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Encounters.Core.Domain;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -48,6 +51,48 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
         {
             var encounterCompletion = _dbSet.FirstOrDefault(ec => ec.UserId == userId && ec.EncounterId == encounterId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED);
             return encounterCompletion != null ? true : false;
+        }
+
+        public int GetTotalXPInDateRangeByUser(long userId, DateTime start, DateTime end)
+        {
+            var xpSum = _dbSet.Where(ec => userId == ec.UserId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED && ec.LastUpdatedAt > start && ec.LastUpdatedAt < end).Sum(ec => ec.Xp);
+            return xpSum;
+        }
+
+        public int GetTotalXPInDateRangeByUsers(List<long> userIds, DateTime start, DateTime end)
+        {
+            var xpSum = _dbSet.Where(ec => userIds.Contains(ec.UserId) && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED && ec.LastUpdatedAt > start && ec.LastUpdatedAt < end).Sum(ec => ec.Xp);
+            return xpSum;
+        }
+
+        public List<EncounterCompletion> GetMembersCompletedHiddenEncounters(List<long> memberIds)
+        {
+            var encounterCompletions = _dbSet.Where(ec =>
+                    memberIds.Contains(ec.UserId) && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED)
+                .ToList();
+            return encounterCompletions;
+        }
+
+        public int GetCompletedCountByUser(long userId)
+        {
+            return _dbSet.Where(ec => ec.UserId == userId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED).Count();
+        }
+
+        public int GetFailedCountByUser(long userId)
+        {
+            return _dbSet.Where(ec => ec.UserId == userId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.FAILED).Count();
+        }
+
+        public int GetCompletedCountByUserAndMonth(long userId, int month, int year)
+        {
+            return _dbSet.Where(ec => ec.UserId == userId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED 
+            && ec.LastUpdatedAt.Month == month && ec.LastUpdatedAt.Year == year).Count();
+        }
+
+        public int GetFailedCountByUserAndMonth(long userId, int month, int year)
+        {
+            return _dbSet.Where(ec => ec.UserId == userId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.FAILED
+            && ec.LastUpdatedAt.Month == month && ec.LastUpdatedAt.Year == year).Count();
         }
     }
 }
