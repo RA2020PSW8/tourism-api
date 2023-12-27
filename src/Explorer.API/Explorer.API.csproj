@@ -11,8 +11,9 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
+
     
   <ItemGroup>
     <ProjectReference Include="..\BuildingBlocks\Explorer.BuildingBlocks.Core\Explorer.BuildingBlocks.Core.csproj" />
@@ -28,5 +29,6 @@
     <ProjectReference Include="..\Modules\Payments\Explorer.Payments.API\Explorer.Payments.API.csproj"/>
     <ProjectReference Include="..\Modules\Payments\Explorer.Payments.Infrastructure\Explorer.Payments.Infrastructure.csproj"/>
   </ItemGroup>
+
 
 </Project>

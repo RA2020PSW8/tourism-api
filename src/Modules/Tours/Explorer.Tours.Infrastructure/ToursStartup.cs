@@ -49,6 +49,8 @@ public static class ToursStartup
         services.AddScoped<ITourLifecycleService, TourLifecycleService>();
         services.AddScoped<ITourFilteringService, TourFilteringService>();
         services.AddScoped<IStatisticsService, StatisticsService>();
+        services.AddScoped<IBundleService, BundleService>();
+
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -72,6 +74,7 @@ public static class ToursStartup
         services.AddScoped(typeof(IObjectRepository), typeof(ObjectRepository));
         services.AddScoped(typeof(ITourProgressRepository), typeof(TourProgressRepository));
         services.AddScoped(typeof(ITourReviewRepository), typeof(TourReviewRepository));
+        services.AddScoped ( typeof(IBundleRepository), typeof(BundleRepository));
 
         services.AddDbContext<ToursContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),
