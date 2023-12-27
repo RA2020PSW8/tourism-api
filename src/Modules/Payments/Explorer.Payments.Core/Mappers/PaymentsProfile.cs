@@ -14,6 +14,8 @@ public class PaymentsProfile : Profile
         CreateMap<BundlePriceDto, BundlePrice>().ReverseMap();
         CreateMap<WalletDto, Wallet>().ReverseMap();
         CreateMap<PaymentRecordDto, PaymentRecord>().ReverseMap();
+        CreateMap<WishListItemDto, WishListItem>().ReverseMap();
+        CreateMap<WishListDto, WishList>().ReverseMap();
         CreateMap<DiscountDto, Discount>().ReverseMap();
         CreateMap<TourDiscountDto, TourDiscount>().ReverseMap();
         CreateMap<CouponDto, Coupon>().ReverseMap();
