@@ -1,6 +1,7 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Payments.API.Dtos;
 using Explorer.Payments.API.Public;
+using Explorer.Payments.Core.Domain;
 using Explorer.Stakeholders.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,10 @@ public class TourPurchaseTokenController : BaseApiController
         _tourPurchaseTokenService = tourPurchaseTokenService;
     }
 
-    [HttpPut("{id:int}")]
-    public ActionResult BuyShoppingCart(int id)
+    [HttpPost("{id:int}")]
+    public ActionResult BuyShoppingCart(int id, [FromBody] List<CouponDto> selectedCoupons)
     {
-        var result = _tourPurchaseTokenService.BuyShoppingCart(id);
+        var result = _tourPurchaseTokenService.BuyShoppingCart(id, selectedCoupons);
         return CreateResponse(result);
     }
 

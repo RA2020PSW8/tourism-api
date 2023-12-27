@@ -16,14 +16,16 @@ public class OrderItemService : CrudService<OrderItemDto, OrderItem>, IOrderItem
 
     protected readonly IShoppingCartService _shoppingCartService;
     protected readonly IInternalTourService _tourService;
+    protected readonly IDiscountService _DiscountService;
 
 
     public OrderItemService(IOrderItemRepository repository, IMapper mapper,
-        IShoppingCartService shoppingCartService, IInternalTourService tourService) : base(repository, mapper)
+        IShoppingCartService shoppingCartService, IInternalTourService tourService, IDiscountService DiscountService) : base(repository, mapper)
     {
         _orderItemRepository = repository;
         _shoppingCartService = shoppingCartService;
         _tourService = tourService;
+        _DiscountService = DiscountService;
     }
 
     public override Result<OrderItemDto> Create(OrderItemDto entity)
@@ -80,8 +82,10 @@ public class OrderItemService : CrudService<OrderItemDto, OrderItem>, IOrderItem
     private void AddItemToShoppingCart(ShoppingCartDto shoppingCart, OrderItemDto entity)
     {
         shoppingCart.OrdersId.Add(entity.Id);
-        var price = _tourService.Get(entity.TourId).Value.Price;
-        shoppingCart.Price += price;
+        var originalPrice = _tourService.Get(entity.TourId).Value.Price;
+        var discount = _DiscountService.GetDiscountForTour(entity.TourId).Value;
+        var discountedPrice = originalPrice - (originalPrice * (discount / 100));
+        shoppingCart.Price += discountedPrice;
     }
 
 
