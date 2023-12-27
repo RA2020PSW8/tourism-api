@@ -5,10 +5,13 @@ using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.Domain;
 using Explorer.Encounters.Core.Domain.Enums;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Internal;
+using Explorer.Stakeholders.Core.Domain;
 using Explorer.Tours.API.Dtos;
 using Explorer.Tours.API.Internal;
 using FluentResults;
+using System;
 
 namespace Explorer.Encounters.Core.UseCases
 {
@@ -18,17 +21,22 @@ namespace Explorer.Encounters.Core.UseCases
         protected IEncounterRepository _encounterRepository;
         protected IInternalTouristPositionService _touristPositionService;
         protected IInternalProfileService _profileService;
+        protected IInternalAchievementService _achievementService;
+        protected IInternalClubService _clubService;
 
         private const double HiddenLocationRange = 0.050;
         private const double HiddenLocationInterval = 30;
 
         public EncounterCompletionService(IEncounterCompletionRepository encoutnerCompletionRepository, IInternalTouristPositionService touristPositionService,
-            IEncounterRepository encounterRepository, IInternalProfileService profileService, IMapper mapper) : base(encoutnerCompletionRepository, mapper)
+            IEncounterRepository encounterRepository, IInternalProfileService profileService,
+            IInternalAchievementService achievementService, IInternalClubService clubService, IMapper mapper) : base(encoutnerCompletionRepository, mapper)
         {
             _encounterCompletionRepository = encoutnerCompletionRepository;
             _touristPositionService = touristPositionService;
             _encounterRepository = encounterRepository;
             _profileService = profileService;
+            _achievementService = achievementService;
+            _clubService = clubService;
         }
 
         public Result<PagedResult<EncounterCompletionDto>> GetPagedByUser(int page, int pageSize, int userId)
@@ -135,6 +143,7 @@ namespace Explorer.Encounters.Core.UseCases
         public Result<List<EncounterCompletionDto>> CheckNearbyEncounters(int userId)
         {
             TouristPositionDto touristPosition = _touristPositionService.GetByUser(userId).ValueOrDefault;
+            PersonDto tourist = _profileService.Get(userId).Value;
             if(touristPosition == null)
             {
                 return Result.Fail(FailureCode.NotFound).WithError("You don't have set position");
@@ -166,6 +175,16 @@ namespace Explorer.Encounters.Core.UseCases
                     _profileService.AddXP((int)userId, encounterCompletion.Xp);
                     _encounterCompletionRepository.Update(encounterCompletion);
                     completedEncounters.Add(encounterCompletion);
+
+                    if (tourist.Club == null)
+                        break;
+                    List<long> memberIds = tourist.Club.Members.ConvertAll(member => member.Id);
+                    List <EncounterCompletion> completions = _encounterCompletionRepository.GetMembersCompletedHiddenEncounters(memberIds);
+                    AchievementDto achievement = _achievementService.getHiddenEncounterAchievement(completions.Count);
+                    
+                    if (achievement != null)
+                        _clubService.AddAchievement((long)tourist.ClubId, achievement.Id);
+
                 }
             }
 

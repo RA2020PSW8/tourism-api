@@ -14,4 +14,5 @@ public interface IProfileService
     Result<PagedResult<PersonDto>> Follow(long followerId, long followedId);
     Result<PagedResult<PersonDto>> Unfollow(long followerId, long unfollowedId);
     Result<bool> CanTouristCreateEncounters(long touristId);
+    Result<PersonDto> Get(long userId);
 }

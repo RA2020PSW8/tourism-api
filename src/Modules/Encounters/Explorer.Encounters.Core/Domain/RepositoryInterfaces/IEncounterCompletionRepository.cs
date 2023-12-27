@@ -1,5 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Encounters.Core.Domain.Enums;
+using Explorer.Stakeholders.API.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace Explorer.Encounters.Core.Domain.RepositoryInterfaces
         EncounterCompletion GetByEncounter(long encounterId);
         public bool HasUserStartedEncounter(long userId, long encounterId);
         public bool HasUserCompletedEncounter(long userId, long encounterId);
+        List<EncounterCompletion> GetMembersCompletedHiddenEncounters(List<long> memberIds);
     }
 }

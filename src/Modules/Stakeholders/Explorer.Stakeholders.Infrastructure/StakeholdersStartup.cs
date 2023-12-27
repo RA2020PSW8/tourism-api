@@ -57,6 +57,9 @@ public static class StakeholdersStartup
         services.AddScoped<IInternalNotificationService, NotificationService>();
         services.AddScoped<IClubFightService, ClubFightService>();
         services.AddScoped<IClubChallengeRequestService, ClubChallengeRequestService>();
+        services.AddScoped<IAchievementService, AchievementService>();
+        services.AddScoped<IInternalAchievementService, AchievementService>();
+        services.AddScoped<IInternalClubService, ClubService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -82,6 +85,7 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(INotificationRepository), typeof(NotificationRepository));
         services.AddScoped(typeof(IClubChallengeRequestRepository), typeof(ClubChallengeRequestRepository));
         services.AddScoped(typeof(IClubFightRepository), typeof(ClubFightRepository));
+        services.AddScoped(typeof(IAchievementRepository), typeof(AchievementDatabaseRepository));
 
         services.AddControllers().AddJsonOptions(options =>
         {

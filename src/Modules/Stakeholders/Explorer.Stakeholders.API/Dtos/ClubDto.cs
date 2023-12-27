@@ -10,4 +10,5 @@ public class ClubDto
     public PersonDto? Owner { get; set; }
     public int? FightsWon { get; set; }
     public List<PersonDto>? Members { get; set; }
+    public List<AchievementDto>? Achievements { get; set; }
 }
