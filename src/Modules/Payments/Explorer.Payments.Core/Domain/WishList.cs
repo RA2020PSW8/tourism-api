@@ -14,9 +14,9 @@ public class WishList : Entity
     public WishList(int userId, List<int> wishListItemsIs)
     {
         UserId = userId;
-        WishListItemsIs = wishListItemsIs;
+        WishListItemsId = wishListItemsIs;
     }
 
     public int UserId { get; set; }
-    public List<int> WishListItemsIs {  get; set; }
+    public List<int> WishListItemsId {  get; set; }
 }

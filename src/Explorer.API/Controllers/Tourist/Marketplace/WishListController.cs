@@ -31,6 +31,7 @@ public class WishListController : BaseApiController
     [HttpPost]
     public ActionResult<WishListDto> Create([FromBody] WishListDto wishList)
     {
+        wishList.UserId = User.PersonId();
         var result = _wishListService.Create(wishList);
         return CreateResponse(result);
     }
@@ -38,6 +39,7 @@ public class WishListController : BaseApiController
     [HttpPut("{id:int}")]
     public ActionResult<ShoppingCartDto> Update([FromBody] WishListDto wishList)
     {
+        wishList.UserId = User.PersonId();
         var result = _wishListService.Update(wishList);
         return CreateResponse(result);
     }

@@ -14,6 +14,6 @@ public interface IWishListItemService
     Result<PagedResult<WishListItemDto>> GetPaged(int page, int pageSize);
     Result<WishListItemDto> Create(WishListItemDto wishListItem);
     Result<WishListItemDto> Update(WishListItemDto wishListItem);
-    PagedResult<WishListItemDto> GetAllByUser(int page, int pageSize, int userId);
+    Result<PagedResult<WishListItemDto>> GetAllByUser(int page, int pageSize, int userId);
     Result Delete(int id);
 }

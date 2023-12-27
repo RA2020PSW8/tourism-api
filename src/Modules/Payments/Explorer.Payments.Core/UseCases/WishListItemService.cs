@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,7 +33,6 @@ public class WishListItemService : CrudService<WishListItemDto, WishListItem>, I
     {
         try
         {
-            
             var wishList = _wishListService.GetByUser(entity.Id);
             if (wishList == null)
             {
@@ -65,17 +65,17 @@ public class WishListItemService : CrudService<WishListItemDto, WishListItem>, I
         }
     }
 
-    public PagedResult<WishListItemDto> GetAllByUser(int page, int pageSize, int userId)
+    
+  
+    public Result<PagedResult<WishListItemDto>> GetAllByUser(int page, int pageSize, int userId)
     {
-        var wishList = _wishListService.GetByUser(userId);
-        var result = GetPaged(page, pageSize);
-        
-        var filteredItems = result.ValueOrDefault.Results
-            .Where(wishListItem => wishList != null &&  wishList.WishListItemsId.Contains(wishListItem.Id) && wishListItem.UserId == userId);
-        //TODO: prebaci
+        var pagedResult = _wishListItemRepository.GetByUser(page, pageSize, userId); // GetPaged(1, 1);
+        return MapToDto(pagedResult);
 
-        return (PagedResult<WishListItemDto>)filteredItems;
     }
+
+  
+
 
     private void CreateNewWishList(WishListItemDto entity)
     {
@@ -125,4 +125,7 @@ public class WishListItemService : CrudService<WishListItemDto, WishListItem>, I
             return Result.Fail(FailureCode.NotFound).WithError(e.Message);
         }
     }
+
+ 
+
 }

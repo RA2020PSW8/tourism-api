@@ -25,6 +25,7 @@ public class WishListItemRepository : CrudDatabaseRepository<WishListItem, Payme
     public PagedResult<WishListItem> GetByUser(int page, int pageSize, int userId)
     {
         var result = _dbSet.Where(r => r.UserId == userId).GetPagedById(page, pageSize);
+        result.Wait();
         return result.Result;
     }
 

@@ -28,17 +28,18 @@ public class WishListItemController : BaseApiController
     }
 
     [HttpGet("byUser")]
-    public ActionResult<PagedResult<WishListItemDto>> GetAllByUser([FromQuery] int page, [FromQuery] int pageSize)
+    public ActionResult<PagedResult<WishListItemDto>> GetAllByUser()
     {
-        var result = _wishListItemService.GetAllByUser(page, pageSize, User.PersonId());
-        var resultValue = Result.Ok(result);
-        return CreateResponse(resultValue);
+        var result = _wishListItemService.GetAllByUser(1, 1, User.PersonId());
+        //var resultValue = Result.Ok(result);
+        return CreateResponse(result);
     }
 
 
     [HttpPost]
     public ActionResult<WishListItemDto> Create([FromBody] WishListItemDto wishListItem)
     {
+        wishListItem.UserId = User.PersonId();
         var result = _wishListItemService.Create(wishListItem);
         return CreateResponse(result);
     }
@@ -46,6 +47,7 @@ public class WishListItemController : BaseApiController
     [HttpPut("{id:int}")]
     public ActionResult<WishListItemDto> Update([FromBody] WishListItemDto wishListItem)
     {
+        wishListItem.UserId = User.PersonId();
         var result = _wishListItemService.Update(wishListItem);
         return CreateResponse(result);
     }

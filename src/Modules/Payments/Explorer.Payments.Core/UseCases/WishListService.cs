@@ -40,7 +40,7 @@ public class WishListService : CrudService<WishListDto, WishList>, IWishListServ
             var existingEntity = _wishListRepository.Get(updatedEntity.Id);
             if (existingEntity == null) return Result.Fail("Wish list not found.");
 
-            existingEntity.WishListItemsIs = updatedEntity.WishListItemsId;
+            existingEntity.WishListItemsId = updatedEntity.WishListItemsId;
             _wishListRepository.Update(existingEntity);
             return Result.Ok();
         }
