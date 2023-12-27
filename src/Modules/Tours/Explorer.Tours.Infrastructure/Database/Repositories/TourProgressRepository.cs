@@ -3,6 +3,7 @@ using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.Enum;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Explorer.Tours.Infrastructure.Database.Repositories;
 
@@ -35,5 +36,11 @@ public class TourProgressRepository : CrudDatabaseRepository<TourProgress, Tours
             .FirstOrDefault(tp => tp.TouristPosition.UserId == userId);
         if (tourProgress == null) throw new KeyNotFoundException("Not found: " + userId);
         return tourProgress;
+    }
+
+    public int GetCompletedCountByUserAndMonth(long userId, int month, int year)
+    {
+        return _dbSet.Where(tp => tp.TouristPosition.UserId == userId && tp.Status == TourProgressStatus.COMPLETED
+           && tp.LastActivity.Month == month && tp.LastActivity.Year == year).Count();
     }
 }
