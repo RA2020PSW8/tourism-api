@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="Database\Repositories\ClubFightRepository.cs~RF136197f.TMP" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
     </ItemGroup>
 
