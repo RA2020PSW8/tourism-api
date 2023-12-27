@@ -33,13 +33,15 @@ public class WishListItemService : CrudService<WishListItemDto, WishListItem>, I
     {
         try
         {
-            var wishList = _wishListService.GetByUser(entity.Id);
+            var wishList = _wishListService.GetByUser(entity.UserId);
             if (wishList == null)
             {
                 var newCreatedWishListItem = _wishListItemRepository.Create(MapToDomain(entity));
-                CreateNewWishList(MapToDto(newCreatedWishListItem));
-                wishList = _wishListService.GetByUser((int)newCreatedWishListItem.Id);
-                AddItemToWishList(wishList, MapToDto(newCreatedWishListItem));
+                var newItemDto = MapToDto(newCreatedWishListItem);
+                CreateNewWishList(newItemDto);
+                wishList = _wishListService.GetByUser((int)newItemDto.UserId);
+                wishList.WishListItemsId.Add((int)newItemDto.Id);
+                //AddItemToWishList(wishList, MapToDto(newCreatedWishListItem));
                 _wishListService.Update(wishList);
 
                 // var newresult = CrudRepository.Create(MapToDomain(entity));
@@ -52,8 +54,10 @@ public class WishListItemService : CrudService<WishListItemDto, WishListItem>, I
             }
 
             var createdWishListItem = _wishListItemRepository.Create(MapToDomain(entity));
-            wishList = _wishListService.GetByUser((int)createdWishListItem.Id);
-            AddItemToWishList(wishList, MapToDto(createdWishListItem));
+            var itemDto = MapToDto(createdWishListItem);
+            wishList = _wishListService.GetByUser((int)itemDto.UserId);
+            wishList.WishListItemsId.Add((int)itemDto.Id);
+            //AddItemToWishList(wishList, MapToDto(createdWishListItem));
             _wishListService.Update(wishList);
             
             //var result = CrudRepository.Create(MapToDomain(entity));
