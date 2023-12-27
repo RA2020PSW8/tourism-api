@@ -19,6 +19,9 @@ public class StakeholdersContext : DbContext
     public DbSet<Club> Clubs { get; set; }
     public DbSet<ChatMessage> ChatMessages { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+    public DbSet<ClubChallengeRequest> ClubChallengeRequests { get; set; }
+    public DbSet<ClubFight> ClubFights { get; set; }
+    public DbSet<Achievement> Achievements { get; set; }
     public DbSet<NewsletterPreference> NewsletterPreferences { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -42,6 +45,12 @@ public class StakeholdersContext : DbContext
             .HasMany(u => u.Followers)
             .WithMany(u => u.Following);
 
+        modelBuilder.Entity<Person>()
+            .HasOne(p => p.Club)
+            .WithMany(c => c.Members)
+            .HasForeignKey(p => p.ClubId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         modelBuilder.Entity<TourIssueComment>().HasOne<TourIssue>().WithMany(t => t.Comments)
             .HasForeignKey(te => te.TourIssueId);
         modelBuilder.Entity<TourIssueComment>().HasOne<User>().WithMany(u => u.IssueComments)
@@ -64,6 +73,36 @@ public class StakeholdersContext : DbContext
             .Property(e => e.Id)
             .ValueGeneratedOnAdd();
 
+        modelBuilder.Entity<Club>()
+            .HasOne(c => c.Owner)
+            .WithMany()
+            .HasForeignKey(c => c.OwnerId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Club>()
+            .HasMany(c => c.Achievements)
+            .WithMany();
+
+        modelBuilder.Entity<ClubChallengeRequest>()
+            .HasOne(cc => cc.Challenger)
+            .WithMany()
+            .HasForeignKey(cc => cc.ChallengerId);
+        
+        modelBuilder.Entity<ClubChallengeRequest>()
+            .HasOne(cc => cc.Challenged)
+            .WithMany()
+            .HasForeignKey(cc => cc.ChallengedId);
+
+        modelBuilder.Entity<ClubFight>()
+            .HasOne(cf => cf.Club1)
+            .WithMany()
+            .HasForeignKey(cf => cf.Club1Id);
+        
+        modelBuilder.Entity<ClubFight>()
+            .HasOne(cf => cf.Club2)
+            .WithMany()
+            .HasForeignKey(cf => cf.Club2Id);
+        
         modelBuilder.Entity<User>()
             .HasOne(u => u.NewsletterPreference) // User može da ima nula ili jedan NewsletterPreference
             .WithOne(np => np.User) // NewsletterPreference mora da ima tačno jedan User
@@ -74,6 +113,5 @@ public class StakeholdersContext : DbContext
             .HasOne(np => np.User) // NewsletterPreference pripada tačno jednom User-u
             .WithOne(u => u.NewsletterPreference) // Veza sa User entitetom
             .IsRequired(); // NewsletterPreference mora da ima User-a (ne može biti NULL)
-
     }
 }

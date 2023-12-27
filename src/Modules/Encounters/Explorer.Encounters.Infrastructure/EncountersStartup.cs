@@ -7,8 +7,10 @@ using Explorer.Encounters.Core.UseCases;
 using Explorer.Encounters.Infrastructure.Database;
 using Explorer.Encounters.Infrastructure.Database.Repositories;
 using Explorer.Stakeholders.API.Internal;
+using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.UseCases;
 using Explorer.Stakeholders.Core.UseCases.Identity;
+using Explorer.Stakeholders.Core.UseCases.Tourist;
 using Explorer.Tours.API.Internal;
 using Explorer.Tours.Core.UseCases.TourExecution;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +36,9 @@ namespace Explorer.Encounters.Infrastructure
             services.AddScoped<IInternalTouristPositionService, TouristPositionService>();
             services.AddScoped<IInternalUserService, UserService>();
             services.AddScoped<IInternalProfileService, ProfileService>();
+            services.AddScoped<IXPService, XPService>();
+            services.AddScoped<IInternalClubFightService, ClubFightService>();
+            services.AddScoped<IInternalClubService, ClubService>();
             services.AddScoped<IStatisticsService, StatisticsService>();
         }
 

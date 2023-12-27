@@ -56,6 +56,11 @@ public static class StakeholdersStartup
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IInternalTourService, TourService>();
         services.AddScoped<IInternalNotificationService, NotificationService>();
+        services.AddScoped<IClubFightService, ClubFightService>();
+        services.AddScoped<IClubChallengeRequestService, ClubChallengeRequestService>();
+        services.AddScoped<IAchievementService, AchievementService>();
+        services.AddScoped<IInternalAchievementService, AchievementService>();
+        services.AddScoped<IInternalClubService, ClubService>();
         services.AddScoped<INewsletterPreferenceService, NewsletterPreferenceService>();
         services.AddScoped<IInternalEmailService, EmailService>();
         services.AddScoped<IEmailVerificationService, EmailService>();
@@ -71,7 +76,7 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(IUserRepository), typeof(UserDatabaseRepository));
         services.AddScoped(typeof(IClubJoinRequestRepository), typeof(ClubJoinRequestDatabaseRepository));
         services.AddScoped(typeof(ICrudRepository<User>), typeof(CrudDatabaseRepository<User, StakeholdersContext>));
-        services.AddScoped(typeof(ICrudRepository<Club>), typeof(CrudDatabaseRepository<Club, StakeholdersContext>));
+        services.AddScoped(typeof(IClubRepository), typeof(ClubRepository));
         services.AddScoped(typeof(ICrudRepository<ClubInvitation>),
             typeof(CrudDatabaseRepository<ClubInvitation, StakeholdersContext>));
         services.AddScoped(typeof(ICrudRepository<TourIssue>),
@@ -83,7 +88,11 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(IApplicationRatingRepository), typeof(ApplicationRatingDatabaseRepository));
         services.AddScoped(typeof(IChatMessageRepository), typeof(ChatMessageDatabaseRepository));
         services.AddScoped(typeof(INotificationRepository), typeof(NotificationRepository));
+        services.AddScoped(typeof(IClubChallengeRequestRepository), typeof(ClubChallengeRequestRepository));
+        services.AddScoped(typeof(IClubFightRepository), typeof(ClubFightRepository));
+        services.AddScoped(typeof(IAchievementRepository), typeof(AchievementDatabaseRepository));
         services.AddScoped(typeof(ICrudRepository<NewsletterPreference>), typeof(CrudDatabaseRepository<NewsletterPreference, StakeholdersContext>));
+
         services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;

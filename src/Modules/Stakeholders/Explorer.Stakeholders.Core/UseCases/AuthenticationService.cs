@@ -61,8 +61,7 @@ public class AuthenticationService : IAuthenticationService
              $"Kliknite na sledeći link kako biste potvrdili svoj email: <a href='https://localhost:44333/api/administration/users/verify?token={user.VerificationToken}'>Potvrdi email</a>");
 
             var person = _personRepository.Create(new Person(user.Id, account.Name, account.Surname, account.Email,
-                account.ProfileImage, account.Biography, account.Quote, 0, 0));
-            
+                account.ProfileImage, account.Biography, account.Quote, 0, 0, null));
 
             return _tokenGenerator.GenerateAccessToken(user, person.Id);
         }

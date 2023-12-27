@@ -45,25 +45,27 @@ public class ClubJoinRequestService : CrudService<ClubJoinRequestDto, ClubJoinRe
 
     public Result<ClubJoinRequestDto> Create(ClubDto club, int userId)
     {
-        if (_requestRepository.Exists(club.Id, userId))
-            return Result.Fail(FailureCode.Conflict).WithError("Request for this user already exists");
-        if (club.MemberIds.Any(id => id == userId))
-            return Result.Fail(FailureCode.Conflict).WithError("User is member");
-        try
-        {
-            var joinRequest = new ClubJoinRequestDto
-            {
-                Id = 0,
-                UserId = userId,
-                ClubId = club.Id,
-                Status = ClubJoinRequestDto.JoinRequestStatus.Pending
-            };
-            var result = CrudRepository.Create(MapToDomain(joinRequest));
-            return MapToDto(result);
-        }
-        catch (ArgumentException e)
-        {
-            return Result.Fail(FailureCode.InvalidArgument).WithError($"Error while creating request: {e.Message}");
-        }
+        // if (_requestRepository.Exists(club.Id, userId))
+        //     return Result.Fail(FailureCode.Conflict).WithError("Request for this user already exists");
+        // if (club.MemberIds.Any(id => id == userId))
+        //     return Result.Fail(FailureCode.Conflict).WithError("User is member");
+        // try
+        // {
+        //     var joinRequest = new ClubJoinRequestDto
+        //     {
+        //         Id = 0,
+        //         UserId = userId,
+        //         ClubId = club.Id,
+        //         Status = ClubJoinRequestDto.JoinRequestStatus.Pending
+        //     };
+        //     var result = CrudRepository.Create(MapToDomain(joinRequest));
+        //     return MapToDto(result);
+        // }
+        // catch (ArgumentException e)
+        // {
+        //     return Result.Fail(FailureCode.InvalidArgument).WithError($"Error while creating request: {e.Message}");
+        // }
+
+        throw new NotImplementedException();
     }
 }

@@ -12,4 +12,6 @@ public class PersonDto
     public string Email { get; set; }
     public int? XP { get; set; }
     public int? Level { get; set; }
+    public ClubDto? Club { get; set; }
+    public long? ClubId { get; set; }
 }
