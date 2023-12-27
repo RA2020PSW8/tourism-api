@@ -1,4 +1,5 @@
-﻿using Explorer.BuildingBlocks.Core.UseCases;
+﻿using AutoMapper.Configuration.Conventions;
+using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Encounters.Core.Domain;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
@@ -52,6 +53,12 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
             return encounterCompletion != null ? true : false;
         }
 
+        public int GetTotalXPInDateRangeByUser(long userId, DateTime start, DateTime end)
+        {
+            var xpSum = _dbSet.Where(ec => userId == ec.UserId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED && ec.LastUpdatedAt > start && ec.LastUpdatedAt < end).Sum(ec => ec.Xp);
+            return xpSum;
+        }
+        
         public List<EncounterCompletion> GetMembersCompletedHiddenEncounters(List<long> memberIds)
         {
             var encounterCompletions =  _dbSet.Where(ec => memberIds.Contains(ec.UserId) && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED).ToList();

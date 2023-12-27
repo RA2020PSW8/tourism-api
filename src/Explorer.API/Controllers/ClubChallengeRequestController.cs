@@ -15,14 +15,14 @@ public class ClubChallengeRequestController : BaseApiController
     {
         _requestService = requestService;
     }
-    
+
     [HttpPost]
     public ActionResult<ClubChallengeRequestDto> Create([FromBody] ClubChallengeRequestDto challengeRequestDto)
     {
         var result = _requestService.Create(challengeRequestDto);
         return CreateResponse(result);
     }
-    
+
     [HttpPut("accept")]
     public ActionResult<ClubChallengeRequestDto> AcceptChallenge([FromBody] ClubChallengeRequestDto challengeRequestDto)
     {

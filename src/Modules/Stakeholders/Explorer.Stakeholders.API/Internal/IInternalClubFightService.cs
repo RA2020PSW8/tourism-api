@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace Explorer.Stakeholders.API.Internal
 {
-    public interface IInternalClubService
+    public interface IInternalClubFightService
     {
-        Result<ClubDto> GetWithMembers(int clubId);
-        Result<ClubDto> AddAchievement(long clubId, long achievementId);
+        Result<ClubFightDto> Get(int id);
     }
 }
