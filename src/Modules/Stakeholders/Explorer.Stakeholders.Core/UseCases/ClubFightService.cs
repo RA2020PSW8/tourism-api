@@ -56,4 +56,11 @@ public class ClubFightService : CrudService<ClubFightDto, ClubFight>, IClubFight
 
         return results;
     }
+
+    public Result<List<ClubFightDto>> GetAllByClub(int clubId)
+    {
+        var result = _fightRepository.GetAllByClub(clubId);
+
+        return MapToDto(result);
+    }
 }
