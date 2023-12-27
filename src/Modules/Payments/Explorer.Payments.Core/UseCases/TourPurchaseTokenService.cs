@@ -150,11 +150,6 @@ public class TourPurchaseTokenService : CrudService<TourPurchaseTokenDto, TourPu
         return _tourPurchaseTokenRepository.CheckIfPurchased(tourId, userId);
     }
 
-    public string GetMessageText(List<OrderItem> orderItems)
-    {
-        return "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Congratulations on Your Adventure Coins!</title>\r\n    <style>\r\n        body {\r\n            font-family: 'Arial', sans-serif;\r\n            background-color: #f4f4f4;\r\n            color: #333;\r\n            margin: 0;\r\n            padding: 0;\r\n        }\r\n\r\n        .container {\r\n            max-width: 600px;\r\n            margin: 20px auto;\r\n            background-color: #fff;\r\n            padding: 20px;\r\n            border-radius: 8px;\r\n            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\r\n        }\r\n\r\n        h1 {\r\n            color: #3498db; /* Blue color for the title */\r\n            text-align: center;\r\n        }\r\n\r\n        p {\r\n            font-size: 16px;\r\n            line-height: 1.6;\r\n            text-align: justify;\r\n        }\r\n\r\n        .button {\r\n            display: inline-block;\r\n            padding: 10px 20px;\r\n            font-size: 16px;\r\n            text-align: center;\r\n            text-decoration: none;\r\n            background-color: #4CAF50;\r\n            color: #fff;\r\n            border-radius: 5px;\r\n            transition: background-color 0.3s;\r\n        }\r\n\r\n        .button:hover {\r\n            background-color: #45a049;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n    <div class=\"container\">\r\n        <h1>New purchase!</h1>\r\n        <p>You have just been gifted Adventure Coins! Get ready for an exciting journey filled with thrilling experiences and epic quests.</p>\r\n        <p>Use your Adventure Coins wisely and make the most of every adventure that comes your way.</p>\r\n        <p>Happy exploring!</p>\r\n    </div>\r\n</body>\r\n</html>\r\n";
-    }
-
     public string GetMessageText(List<OrderItem> orderItems, double totalPurchaseAmount)
     {
         StringBuilder messageBuilder = new StringBuilder();
