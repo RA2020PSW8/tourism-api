@@ -25,6 +25,7 @@ using Explorer.Tours.Core.UseCases.TourAuthoring;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Explorer.Stakeholders.Infrastructure.Database.NewFolder;
+using Explorer.Stakeholders.Infrastructure.Database.Services;
 
 namespace Explorer.Stakeholders.Infrastructure;
 
