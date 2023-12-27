@@ -3,9 +3,7 @@ using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
-using FluentResults;
-using System.Data;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Explorer.Stakeholders.Infrastructure.Database.Repositories;
 
@@ -53,6 +51,11 @@ public class UserDatabaseRepository : IUserRepository
         task.Wait();
         return task.Result;
     }
-
     
+    public User GetByToken(string token)
+    {
+        var user = _dbContext.Users.AsNoTracking().FirstOrDefault(user => user.VerificationToken == token);
+        return user;
+        
+    }
 }

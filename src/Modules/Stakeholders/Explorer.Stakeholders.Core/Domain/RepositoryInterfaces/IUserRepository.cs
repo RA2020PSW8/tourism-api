@@ -1,6 +1,6 @@
 ﻿using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.Stakeholders.API.Dtos;
-using FluentResults;
+
 
 namespace Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 
@@ -12,4 +12,5 @@ public interface IUserRepository
     long GetPersonId(long userId);
     User? GetActiveById(long id);
     PagedResult<User> GetAllTourists(int page, int pageSize);
+    public User GetByToken(string token);
 }

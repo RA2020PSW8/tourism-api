@@ -52,4 +52,17 @@ public class UserService : CrudService<UserDto, User>, IUserService, IInternalUs
         var result = _userDatabaseRepository.GetAllTourists(page, pageSize);
         return MapToDto(result);
     }
+
+    public Result<UserDto> GetByToken(string token)
+    {
+        try
+        {
+            var result = _userDatabaseRepository.GetByToken(token);
+            return MapToDto(result);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+        }
+    }
 }

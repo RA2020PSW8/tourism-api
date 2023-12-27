@@ -9,4 +9,6 @@ public class UserDto
     public bool IsActive { get; set; }
     public string Email { get; set; }
     public bool IsBlocked { get; set; }
+    public bool IsEnabled {  get; set; }
+    public string VerificationToken { get; set; }
 }
