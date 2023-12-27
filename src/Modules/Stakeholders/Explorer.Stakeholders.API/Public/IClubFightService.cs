@@ -7,5 +7,6 @@ public interface IClubFightService
 {
     Result<ClubFightDto> CreateFromRequest(ClubChallengeRequestDto request);
     Result<ClubFightDto> GetWithClubs(int fightId);
-    Result<ClubFightDto> Update(ClubFightDto clubFightDto);   
+    Result<ClubFightDto> Update(ClubFightDto clubFightDto);
+    Result<List<ClubFightDto>> GetAllByClub(int clubId);
 }

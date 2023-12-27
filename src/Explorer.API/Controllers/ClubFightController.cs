@@ -1,6 +1,7 @@
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.UseCases;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,11 +18,17 @@ public class ClubFightController : BaseApiController
         _clubFightService = clubFightService;
     }
 
-    [HttpGet]
     [HttpGet("{fightId:int}")]
     public ActionResult<ClubFightDto> GetById([FromRoute] int fightId)
     {
         var result = _clubFightService.GetWithClubs(fightId);
+        return CreateResponse(result);
+    }
+
+    [HttpGet("all/{clubId:int}")]
+    public ActionResult<List<ClubFightDto>> GetAllByClub([FromRoute] int clubId)
+    {
+        var result = _clubFightService.GetAllByClub(clubId);
         return CreateResponse(result);
     }
 }

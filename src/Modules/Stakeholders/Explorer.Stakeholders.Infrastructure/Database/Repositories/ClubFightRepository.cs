@@ -34,4 +34,12 @@ public class ClubFightRepository : CrudDatabaseRepository<ClubFight, Stakeholder
             .Include(cf => cf.Club2.Members)
             .Include(cf => cf.Club2.Achievements).ToList();
     }
+
+    public List<ClubFight> GetAllByClub(int clubId)
+    {
+        return _dbSet.Where(cf => cf.Club1Id == clubId || cf.Club2Id == clubId)
+            .Include(cf => cf.Club1)
+            .Include(cf => cf.Club2)
+            .OrderByDescending(cf => cf.EndOfFight).ToList();
+    }
 }
