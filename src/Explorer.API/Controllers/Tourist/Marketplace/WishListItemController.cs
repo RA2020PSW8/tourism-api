@@ -58,4 +58,6 @@ public class WishListItemController : BaseApiController
         var result = _wishListItemService.Delete(id);
         return CreateResponse(result);
     }
+
+    
 }
