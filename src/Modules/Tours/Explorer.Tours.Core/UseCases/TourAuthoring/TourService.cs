@@ -70,9 +70,15 @@ public class TourService : CrudService<TourDto, Tour>, ITourService, IInternalTo
         return MapToDto(result);
     }
 
-    public Result<PagedResult<TourDto>> GetCampaignByUserPaged(int userId, int page, int pageSize) 
-    { 
+    public Result<PagedResult<TourDto>> GetCampaignByUserPaged(int userId, int page, int pageSize)
+    {
         var result = _tourRepository.GetCampaignByUserPaged(userId, page, pageSize);
+        return MapToDto(result);
+    }
+
+    public Result<PagedResult<TourDto>> GetPublishedByAuthor(int authorId, int page, int pageSize)
+    {
+        var result = _tourRepository.GetPublishedByAuthor(authorId, page, pageSize);
         return MapToDto(result);
     }
 }

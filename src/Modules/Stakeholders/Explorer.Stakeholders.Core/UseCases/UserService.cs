@@ -4,6 +4,7 @@ using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
+using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
 
 namespace Explorer.Stakeholders.Core.UseCases;
@@ -12,11 +13,13 @@ public class UserService : CrudService<UserDto, User>, IUserService, IInternalUs
 {
     private readonly IMapper _mapper;
     private readonly ICrudRepository<User> _userRepository;
+    private readonly IUserRepository _userDatabaseRepository;
 
-    public UserService(ICrudRepository<User> repository, IMapper mapper) : base(repository, mapper)
+    public UserService(ICrudRepository<User> repository, IMapper mapper, IUserRepository userDatabaseRepository) : base(repository, mapper)
     {
         _userRepository = repository;
         _mapper = mapper;
+        _userDatabaseRepository = userDatabaseRepository;
     }
 
     public Result<List<UserDto>> GetMany(List<int> userIds)
@@ -42,5 +45,24 @@ public class UserService : CrudService<UserDto, User>, IUserService, IInternalUs
         }
 
         return users;
+    }
+
+    public Result<PagedResult<UserDto>> GetAllTourists(int page, int pageSize)
+    {
+        var result = _userDatabaseRepository.GetAllTourists(page, pageSize);
+        return MapToDto(result);
+    }
+
+    public Result<UserDto> GetByToken(string token)
+    {
+        try
+        {
+            var result = _userDatabaseRepository.GetByToken(token);
+            return MapToDto(result);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+        }
     }
 }

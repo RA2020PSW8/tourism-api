@@ -25,6 +25,13 @@ public class ProfileController : BaseApiController
         var result = _profileService.GetProfile(userId);
         return CreateResponse(result);
     }
+    
+    [HttpGet("zelimdaumrem/{userId:int}")]
+    public ActionResult<AccountRegistrationDto> GetPersonDto(long userId)
+    {
+        var result = _profileService.GetPersonDto(userId);
+        return CreateResponse(result);
+    }
 
     [HttpGet("not-followed")]
     public ActionResult<PagedResult<PersonDto>> GetNonFollowedProfiles([FromQuery] int page, [FromQuery] int pageSize)

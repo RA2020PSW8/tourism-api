@@ -84,6 +84,25 @@ public class ProfileService : CrudService<PersonDto, Person>, IProfileService, I
         return Result.Ok(account);
     }
 
+    public Result<PersonDto> GetPersonDto(long userId)
+    {
+        var personProfile = _personRepository.Get(userId);
+        
+        var endMySuffering = new PersonDto()
+        {
+            Name = personProfile.Name,
+            Surname = personProfile.Surname,
+            ProfileImage = personProfile.ProfileImage,
+            Biography = personProfile.Biography,
+            Quote = personProfile.Quote,
+            XP = personProfile.XP,
+            Level = personProfile.Level,
+            ClubId = personProfile.ClubId
+        };
+
+        return endMySuffering;
+    }
+
     public Result<PersonDto> UpdateProfile(PersonDto updatedPerson)
     {
         var existingPerson = _personRepository.Get(updatedPerson.Id);
@@ -140,5 +159,9 @@ public class ProfileService : CrudService<PersonDto, Person>, IProfileService, I
     {
         var tourist = _personRepository.GetFullProfile(touristId);
         return tourist.CanTouristCreateEncounters();
+    }
+    public Result<PersonDto> Get(long userId)
+    {
+        return MapToDto(_personRepository.Get(userId));
     }
 }

@@ -12,3 +12,9 @@ DELETE
 FROM payments."WishLists";
 DELETE 
 FROM payments."WishListItems";
+DELETE
+FROM payments."Discounts";
+DELETE
+FROM payments."TourDiscounts";
+DELETE
+FROM payments."Coupons";
