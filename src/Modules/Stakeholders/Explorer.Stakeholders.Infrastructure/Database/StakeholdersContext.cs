@@ -19,6 +19,7 @@ public class StakeholdersContext : DbContext
     public DbSet<Club> Clubs { get; set; }
     public DbSet<ChatMessage> ChatMessages { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+    public DbSet<NewsletterPreference> NewsletterPreferences { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -62,5 +63,17 @@ public class StakeholdersContext : DbContext
         modelBuilder.Entity<ChatMessage>()
             .Property(e => e.Id)
             .ValueGeneratedOnAdd();
+
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.NewsletterPreference) // User može da ima nula ili jedan NewsletterPreference
+            .WithOne(np => np.User) // NewsletterPreference mora da ima tačno jedan User
+            .HasForeignKey<NewsletterPreference>(np => np.UserID) // Spoljni ključ u NewsletterPreference koji pokazuje na User.Id
+            .IsRequired(false); // NewsletterPreference.UserId nije obavezan (može biti NULL)
+
+        modelBuilder.Entity<NewsletterPreference>()
+            .HasOne(np => np.User) // NewsletterPreference pripada tačno jednom User-u
+            .WithOne(u => u.NewsletterPreference) // Veza sa User entitetom
+            .IsRequired(); // NewsletterPreference mora da ima User-a (ne može biti NULL)
+
     }
 }

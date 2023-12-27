@@ -11,4 +11,5 @@ public interface IUserService
     Result<UserDto> Create(UserDto user);
     Result<UserDto> Update(UserDto user);
     Result Delete(int id);
+    public Result<UserDto> GetByToken(string token);
 }

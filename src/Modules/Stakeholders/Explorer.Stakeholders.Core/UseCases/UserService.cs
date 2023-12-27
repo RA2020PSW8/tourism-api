@@ -4,6 +4,7 @@ using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
+using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
 
 namespace Explorer.Stakeholders.Core.UseCases;
@@ -12,10 +13,12 @@ public class UserService : CrudService<UserDto, User>, IUserService, IInternalUs
 {
     private readonly IMapper _mapper;
     private readonly ICrudRepository<User> _userRepository;
+    private readonly IUserRepository _userRepo;
 
-    public UserService(ICrudRepository<User> repository, IMapper mapper) : base(repository, mapper)
+    public UserService(ICrudRepository<User> repository, IMapper mapper, IUserRepository userRepo) : base(repository, mapper)
     {
         _userRepository = repository;
+        _userRepo = userRepo;
         _mapper = mapper;
     }
 
@@ -42,5 +45,18 @@ public class UserService : CrudService<UserDto, User>, IUserService, IInternalUs
         }
 
         return users;
+    }
+    public Result<UserDto> GetByToken(string token)
+    {
+        try
+        {
+            var result = _userRepo.GetByToken(token);
+            return MapToDto(result);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return Result.Fail(FailureCode.NotFound).WithError(e.Message);
+        }
+
     }
 }

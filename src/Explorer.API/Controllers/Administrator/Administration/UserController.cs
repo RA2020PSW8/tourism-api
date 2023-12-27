@@ -44,4 +44,19 @@ public class UserController : BaseApiController
         var result = _userService.Delete(id);
         return CreateResponse(result);
     }
+
+    [HttpGet("verify")]
+    [AllowAnonymous]
+    public ActionResult Verify(string token)
+    {
+        var user = _userService.GetByToken(token).Value;
+        user.IsEnabled = true;
+        var result = _userService.Update(user);
+        if (result.IsSuccess)
+        {
+            return Ok("Confirmed");
+        }
+        return CreateResponse(result);
+
+    }
 }
