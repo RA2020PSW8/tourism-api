@@ -63,7 +63,7 @@ namespace Explorer.Encounters.Core.UseCases
             return clubFightXPInfo;
         }
 
-        public FightParticipantInfoDto ConvertToFightParticipant(PersonDto person, int xp)
+        private FightParticipantInfoDto ConvertToFightParticipant(PersonDto person, int xp)
         {
             FightParticipantInfoDto fightParticipantInfoDto = new FightParticipantInfoDto()
             {
@@ -74,6 +74,31 @@ namespace Explorer.Encounters.Core.UseCases
             };
 
             return fightParticipantInfoDto;
+        }
+
+        /* Kinda doesn't belong in XPService */
+        public void UpdateFights()
+        {
+            List<ClubFightDto> passedUnfinishedFights = _clubFightService.GetPassedUnfinishedFights().ValueOrDefault;
+
+            foreach (var clubFight in passedUnfinishedFights)
+            {
+                clubFight.WinnerId = DeclareWinner(clubFight);
+                clubFight.IsInProgress = false;
+            }
+
+            _clubFightService.UpdateMultiple(passedUnfinishedFights);
+        }
+
+        private int DeclareWinner(ClubFightDto clubFight)
+        {
+            List<long> club1MemberIds = clubFight.Club1.Members.Select(m => m.Id).ToList();
+            List<long> club2MemberIds = clubFight.Club2.Members.Select(m => m.Id).ToList();
+
+            int club1TotalXP = _encounterCompletionRepository.GetTotalXPInDateRangeByUsers(club1MemberIds, clubFight.StartOfFight, clubFight.EndOfFight);
+            int club2TotalXP = _encounterCompletionRepository.GetTotalXPInDateRangeByUsers(club2MemberIds, clubFight.StartOfFight, clubFight.EndOfFight);
+
+            return club1TotalXP > club2TotalXP ? clubFight.Club1.Id : clubFight.Club2.Id;
         }
     }
 }

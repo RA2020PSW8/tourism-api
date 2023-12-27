@@ -2,6 +2,7 @@ namespace Explorer.Stakeholders.API.Dtos;
 
 public class ClubFightDto
 {
+    public int? Id { get; set; }
     public int? WinnerId { get; set; }
     public DateTime StartOfFight { get; set; }
     public DateTime EndOfFight { get; set; }

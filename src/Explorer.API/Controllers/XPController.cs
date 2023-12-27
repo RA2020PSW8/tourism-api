@@ -3,6 +3,7 @@ using Explorer.Encounters.API.Public;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,13 @@ namespace Explorer.API.Controllers
         {
             var result = _xpService.GetClubFightXPInfo(clubFightId);
             return CreateResponse(result);
+        }
+
+        [HttpGet("fight/update")]
+        public ActionResult<Result> SneakyUpdateFights()
+        {
+            _xpService.UpdateFights();
+            return CreateResponse(Result.Ok());
         }
     }
 }

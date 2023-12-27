@@ -58,7 +58,13 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
             var xpSum = _dbSet.Where(ec => userId == ec.UserId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED && ec.LastUpdatedAt > start && ec.LastUpdatedAt < end).Sum(ec => ec.Xp);
             return xpSum;
         }
-        
+
+        public int GetTotalXPInDateRangeByUsers(List<long> userIds, DateTime start, DateTime end)
+        {
+            var xpSum = _dbSet.Where(ec => userIds.Contains(ec.UserId) && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED && ec.LastUpdatedAt > start && ec.LastUpdatedAt < end).Sum(ec => ec.Xp);
+            return xpSum;
+        }
+
         public List<EncounterCompletion> GetMembersCompletedHiddenEncounters(List<long> memberIds)
         {
             var encounterCompletions =  _dbSet.Where(ec => memberIds.Contains(ec.UserId) && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED).ToList();
