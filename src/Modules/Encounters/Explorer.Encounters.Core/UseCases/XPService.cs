@@ -5,6 +5,8 @@ using Explorer.Encounters.API.Public;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Internal;
+using Explorer.Stakeholders.Core.Domain;
+using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -19,12 +21,14 @@ namespace Explorer.Encounters.Core.UseCases
         private IEncounterCompletionRepository _encounterCompletionRepository;
         private IInternalClubService _clubService;
         private IInternalClubFightService _clubFightService;
+        private IInternalAchievementService _achievementService;
 
-        public XPService(IEncounterCompletionRepository encounterCompletionRepository, IInternalClubService clubService, IInternalClubFightService clubFightService)
+        public XPService(IEncounterCompletionRepository encounterCompletionRepository, IInternalClubService clubService, IInternalClubFightService clubFightService, IInternalAchievementService achievementService)
         {
             _encounterCompletionRepository = encounterCompletionRepository;
             _clubService = clubService;
-            _clubFightService = clubFightService;   
+            _clubFightService = clubFightService;
+            _achievementService = achievementService;
         }
 
         public Result<ClubFightXPInfoDto> GetClubFightXPInfo(int clubFightId)
@@ -63,7 +67,7 @@ namespace Explorer.Encounters.Core.UseCases
             return clubFightXPInfo;
         }
 
-        public FightParticipantInfoDto ConvertToFightParticipant(PersonDto person, int xp)
+        private FightParticipantInfoDto ConvertToFightParticipant(PersonDto person, int xp)
         {
             FightParticipantInfoDto fightParticipantInfoDto = new FightParticipantInfoDto()
             {
@@ -74,6 +78,49 @@ namespace Explorer.Encounters.Core.UseCases
             };
 
             return fightParticipantInfoDto;
+        }
+
+        /* Kinda doesn't belong in XPService */
+        public void UpdateFights()
+        {
+            List<ClubFightDto> passedUnfinishedFights = _clubFightService.GetPassedUnfinishedFights().ValueOrDefault;
+
+            foreach (var clubFight in passedUnfinishedFights)
+            {
+                ClubDto winner = DeclareWinner(clubFight);
+                winner.FightsWon++;
+                clubFight.WinnerId = winner.Id;
+                clubFight.IsInProgress = false;
+                UpdateWinnerAchievements(winner);
+
+                // clearing loser achievements from memory because EF
+                ClubDto loser = winner.Id == clubFight.Club1.Id ? clubFight.Club2 : clubFight.Club1;
+                loser.Achievements.Clear();
+            }
+
+            _clubFightService.UpdateMultiple(passedUnfinishedFights);
+        }
+
+        private void UpdateWinnerAchievements(ClubDto winner)
+        {
+            AchievementDto achievement = _achievementService.getFightAchievement(winner);
+            winner.Achievements.Clear(); // must be here because queries are AsNoTracking, so no duplicates are inserted
+            if (achievement != null)
+            {
+                // _clubService.AddAchievement(winner.Id, achievement.Id); // (: EF and his tracking
+                winner.Achievements.Add(_achievementService.GetNoTracking((int)achievement.Id));
+            }
+        }
+
+        private ClubDto DeclareWinner(ClubFightDto clubFight)
+        {
+            List<long> club1MemberIds = clubFight.Club1.Members.Select(m => m.Id).ToList();
+            List<long> club2MemberIds = clubFight.Club2.Members.Select(m => m.Id).ToList();
+
+            int club1TotalXP = _encounterCompletionRepository.GetTotalXPInDateRangeByUsers(club1MemberIds, clubFight.StartOfFight, clubFight.EndOfFight);
+            int club2TotalXP = _encounterCompletionRepository.GetTotalXPInDateRangeByUsers(club2MemberIds, clubFight.StartOfFight, clubFight.EndOfFight);
+
+            return club1TotalXP > club2TotalXP ? clubFight.Club1 : clubFight.Club2;
         }
     }
 }

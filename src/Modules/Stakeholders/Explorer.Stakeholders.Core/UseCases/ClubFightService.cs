@@ -5,6 +5,7 @@ using Explorer.Stakeholders.API.Internal;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.Domain;
 using Explorer.Stakeholders.Core.Domain.RepositoryInterfaces;
+using Explorer.Tours.API.Dtos;
 using FluentResults;
 
 namespace Explorer.Stakeholders.Core.UseCases;
@@ -36,5 +37,23 @@ public class ClubFightService : CrudService<ClubFightDto, ClubFight>, IClubFight
         ClubFight newClubFight = new ClubFight(null, DateTime.UtcNow, request.ChallengerId, request.ChallengedId, true);
         var result = _fightRepository.Create(newClubFight);
         return MapToDto(result);
+    }
+
+    public Result<List<ClubFightDto>> GetPassedUnfinishedFights()
+    {
+        var result = _fightRepository.GetPassedUnfinishedFights();
+        return MapToDto(result);
+    }
+
+    public Result<List<ClubFightDto>> UpdateMultiple(List<ClubFightDto> clubFights)
+    {
+        var results = new List<ClubFightDto>();
+        foreach (var fight in clubFights)
+        {
+            var result = CrudRepository.Update(MapToDomain(fight));
+            results.Add(MapToDto(result));
+        }
+
+        return results;
     }
 }

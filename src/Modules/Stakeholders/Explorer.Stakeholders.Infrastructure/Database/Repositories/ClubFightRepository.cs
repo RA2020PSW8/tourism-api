@@ -16,11 +16,22 @@ public class ClubFightRepository : CrudDatabaseRepository<ClubFight, Stakeholder
 
     public ClubFight GetWithClubs(int fightId)
     {
-        return _dbSet.Include(cf => cf.Club1).Include(cf => cf.Club2).FirstOrDefault(cf => cf.Id == fightId);
+        return _dbSet.AsNoTracking().Include(cf => cf.Club1).Include(cf => cf.Club2).FirstOrDefault(cf => cf.Id == fightId);
     }
 
     public ClubFight GetCurrentFightForOneOfTwoClubs(long clubId1, long clubId2)
     {
         return _dbSet.AsNoTracking().FirstOrDefault(cf => cf.IsInProgress && (cf.Club1Id == clubId1 || cf.Club2Id == clubId1 || cf.Club1Id == clubId2 || cf.Club2Id == clubId2));
+    }
+
+    public List<ClubFight> GetPassedUnfinishedFights()
+    {
+        return _dbSet.AsNoTracking().Where(cf => cf.IsInProgress && cf.EndOfFight <= DateTime.UtcNow)
+            .Include(cf => cf.Club1)
+            .Include(cf => cf.Club1.Members)
+            .Include(cf => cf.Club1.Achievements)
+            .Include(cf => cf.Club2)
+            .Include(cf => cf.Club2.Members)
+            .Include(cf => cf.Club2.Achievements).ToList();
     }
 }
