@@ -12,7 +12,8 @@ public class Club : Entity
     public int FightsWon { get; init; }
     public Person Owner { get; init; }
     public ICollection<Person> Members { get; set; }
-    
+    public ICollection<Achievement> Achievements { get; set; }
+
     public Club(){ }
 
     public Club(string name, string? description, string? image, int userId, int fightsWon)

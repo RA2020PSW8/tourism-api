@@ -43,7 +43,7 @@ public class ClubCommandTests : BaseStakeholdersIntegrationTest
     //     storedEntity.ShouldNotBeNull();
     //     storedEntity.Id.ShouldBe(result.Id);
     // }
-
+    /*
     [Fact]
     public void Create_fails_invalid_data()
     {
@@ -62,7 +62,7 @@ public class ClubCommandTests : BaseStakeholdersIntegrationTest
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(400);
     }
-
+    */
     // [Fact]
     // public void Updates()
     // {

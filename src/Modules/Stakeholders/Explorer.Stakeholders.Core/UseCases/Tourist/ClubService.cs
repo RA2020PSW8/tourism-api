@@ -12,9 +12,11 @@ namespace Explorer.Stakeholders.Core.UseCases.Tourist;
 public class ClubService : CrudService<ClubDto, Club>, IClubService, IInternalClubService
 {
     private IClubRepository _clubRepository;
-    public ClubService(IClubRepository repository, IMapper mapper) : base(repository, mapper)
+    private IAchievementRepository _achievementRepository;
+    public ClubService(IClubRepository repository, IAchievementRepository achievementRepository,IMapper mapper) : base(repository, mapper)
     {
         _clubRepository = repository;
+        _achievementRepository = achievementRepository;
     }
 
     public Result<ClubDto> GetWithMembers(int id)
@@ -26,6 +28,11 @@ public class ClubService : CrudService<ClubDto, Club>, IClubService, IInternalCl
     public Result<ClubDto> GetUntracked(long id)
     {
         var result =  _clubRepository.GetUntracked(id);
+        return MapToDto(result);
+    }
+    public Result<PagedResult<ClubDto>> GetAll(int page, int pageSize)
+    {
+        var result = _clubRepository.GetAll(page, pageSize);
         return MapToDto(result);
     }
 
@@ -40,5 +47,13 @@ public class ClubService : CrudService<ClubDto, Club>, IClubService, IInternalCl
         //
         // return new PagedResult<ClubDto>(filteredItems, filteredItems.Count);
         throw new NotImplementedException();
+    }
+
+    public Result<ClubDto> AddAchievement(long clubId, long achievementId)
+    {
+        Club club = _clubRepository.Get(clubId);
+        club.Achievements.Add(_achievementRepository.Get(achievementId));
+        var updatedClub = _clubRepository.Update(club);
+        return MapToDto(updatedClub);
     }
 }

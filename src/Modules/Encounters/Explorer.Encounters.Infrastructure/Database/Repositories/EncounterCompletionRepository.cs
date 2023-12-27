@@ -3,6 +3,8 @@ using Explorer.BuildingBlocks.Core.UseCases;
 using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Encounters.Core.Domain;
 using Explorer.Encounters.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.API.Dtos;
+using Explorer.Stakeholders.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -55,6 +57,12 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
         {
             var xpSum = _dbSet.Where(ec => userId == ec.UserId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED && ec.LastUpdatedAt > start && ec.LastUpdatedAt < end).Sum(ec => ec.Xp);
             return xpSum;
+        }
+        
+        public List<EncounterCompletion> GetMembersCompletedHiddenEncounters(List<long> memberIds)
+        {
+            var encounterCompletions =  _dbSet.Where(ec => memberIds.Contains(ec.UserId) && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED).ToList();
+            return encounterCompletions;
         }
     }
 }

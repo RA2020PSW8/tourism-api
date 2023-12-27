@@ -1,5 +1,4 @@
 ﻿using Explorer.Stakeholders.API.Dtos;
-using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Explorer.Stakeholders.API.Internal
 {
-    public interface IInternalClubService
+    public interface IInternalAchievementService
     {
-        Result<ClubDto> GetWithMembers(int clubId);
-        Result<ClubDto> AddAchievement(long clubId, long achievementId);
+        public AchievementDto getHiddenEncounterAchievement(int completedCount);
     }
 }
