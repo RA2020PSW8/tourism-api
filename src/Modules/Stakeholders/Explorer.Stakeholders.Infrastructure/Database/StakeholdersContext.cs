@@ -22,6 +22,7 @@ public class StakeholdersContext : DbContext
     public DbSet<ClubChallengeRequest> ClubChallengeRequests { get; set; }
     public DbSet<ClubFight> ClubFights { get; set; }
     public DbSet<Achievement> Achievements { get; set; }
+    public DbSet<NewsletterPreference> NewsletterPreferences { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -101,5 +102,16 @@ public class StakeholdersContext : DbContext
             .HasOne(cf => cf.Club2)
             .WithMany()
             .HasForeignKey(cf => cf.Club2Id);
+        
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.NewsletterPreference) // User može da ima nula ili jedan NewsletterPreference
+            .WithOne(np => np.User) // NewsletterPreference mora da ima tačno jedan User
+            .HasForeignKey<NewsletterPreference>(np => np.UserID) // Spoljni ključ u NewsletterPreference koji pokazuje na User.Id
+            .IsRequired(false); // NewsletterPreference.UserId nije obavezan (može biti NULL)
+
+        modelBuilder.Entity<NewsletterPreference>()
+            .HasOne(np => np.User) // NewsletterPreference pripada tačno jednom User-u
+            .WithOne(u => u.NewsletterPreference) // Veza sa User entitetom
+            .IsRequired(); // NewsletterPreference mora da ima User-a (ne može biti NULL)
     }
 }

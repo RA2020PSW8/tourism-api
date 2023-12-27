@@ -20,3 +20,5 @@ DELETE
 FROM stakeholders."ChatMessages";
 DELETE
 FROM stakeholders."Notifications";
+DELETE
+FROM stakeholders."NewsletterPreferences";

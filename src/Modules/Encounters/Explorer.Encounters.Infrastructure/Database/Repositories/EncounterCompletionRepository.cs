@@ -67,8 +67,32 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
 
         public List<EncounterCompletion> GetMembersCompletedHiddenEncounters(List<long> memberIds)
         {
-            var encounterCompletions =  _dbSet.Where(ec => memberIds.Contains(ec.UserId) && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED).ToList();
+            var encounterCompletions = _dbSet.Where(ec =>
+                    memberIds.Contains(ec.UserId) && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED)
+                .ToList();
             return encounterCompletions;
+        }
+
+        public int GetCompletedCountByUser(long userId)
+        {
+            return _dbSet.Where(ec => ec.UserId == userId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED).Count();
+        }
+
+        public int GetFailedCountByUser(long userId)
+        {
+            return _dbSet.Where(ec => ec.UserId == userId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.FAILED).Count();
+        }
+
+        public int GetCompletedCountByUserAndMonth(long userId, int month, int year)
+        {
+            return _dbSet.Where(ec => ec.UserId == userId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.COMPLETED 
+            && ec.LastUpdatedAt.Month == month && ec.LastUpdatedAt.Year == year).Count();
+        }
+
+        public int GetFailedCountByUserAndMonth(long userId, int month, int year)
+        {
+            return _dbSet.Where(ec => ec.UserId == userId && ec.Status == Core.Domain.Enums.EncounterCompletionStatus.FAILED
+            && ec.LastUpdatedAt.Month == month && ec.LastUpdatedAt.Year == year).Count();
         }
     }
 }

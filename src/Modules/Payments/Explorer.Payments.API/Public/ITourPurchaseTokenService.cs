@@ -6,7 +6,7 @@ namespace Explorer.Payments.API.Public;
 
 public interface ITourPurchaseTokenService
 {
-    Result BuyShoppingCart(int shoppingCartId);
+    Result BuyShoppingCart(int shoppingCartId, List<CouponDto> selectedCoupons);
     Result<PagedResult<TourPurchaseTokenDto>> GetPaged(int page, int pageSize);
     Result<bool> CheckIfPurchased(long userId, long tourId);
 }

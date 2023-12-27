@@ -44,6 +44,20 @@ public class TourQueryTests : BaseToursIntegrationTest
         result.TotalCount.ShouldBe(3);
     }
 
+    [Fact]
+    public void Retrieves_all_by_author()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+
+        var result =
+            ((ObjectResult)controller.GetByAuthor(1, 20, 1).Result)?.Value as PagedResult<TourDto>;
+
+        result.ShouldNotBeNull();
+        result.Results.Count.ShouldBe(3);
+        result.TotalCount.ShouldBe(3);
+    }
+
     private static TourController CreateController(IServiceScope scope)
     {
         return new TourController(scope.ServiceProvider.GetRequiredService<ITourService>())

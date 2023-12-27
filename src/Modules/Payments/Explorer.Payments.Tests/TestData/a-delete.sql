@@ -8,3 +8,9 @@ DELETE
 FROM payments."Wallets";
 DELETE
 FROM payments."PaymentRecords";
+DELETE
+FROM payments."Discounts";
+DELETE
+FROM payments."TourDiscounts";
+DELETE
+FROM payments."Coupons";

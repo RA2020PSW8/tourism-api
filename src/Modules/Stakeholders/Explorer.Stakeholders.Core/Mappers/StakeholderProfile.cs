@@ -21,5 +21,6 @@ public class StakeholderProfile : Profile
         CreateMap<ClubChallengeRequestDto, ClubChallengeRequest>().ReverseMap();
         CreateMap<ClubFightDto, ClubFight>().ReverseMap();
         CreateMap<AchievementDto, Achievement>().ReverseMap();
+        CreateMap<NewsletterPreferenceDto, NewsletterPreference>().ReverseMap();
     }
 }

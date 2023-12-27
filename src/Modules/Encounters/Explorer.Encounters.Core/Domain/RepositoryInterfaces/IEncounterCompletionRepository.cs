@@ -19,5 +19,10 @@ namespace Explorer.Encounters.Core.Domain.RepositoryInterfaces
         public int GetTotalXPInDateRangeByUser(long userId, DateTime start, DateTime end);
         public int GetTotalXPInDateRangeByUsers(List<long> userId, DateTime start, DateTime end);
         List<EncounterCompletion> GetMembersCompletedHiddenEncounters(List<long> memberIds);
+        int GetCompletedCountByUser(long userId);
+        int GetFailedCountByUser(long userId);
+        int GetCompletedCountByUserAndMonth(long userId, int monthIndex, int year);
+        int GetFailedCountByUserAndMonth(long userId, int monthIndex, int year);
+
     }
 }

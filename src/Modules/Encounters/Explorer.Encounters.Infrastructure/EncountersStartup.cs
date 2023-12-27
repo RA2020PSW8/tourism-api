@@ -39,6 +39,7 @@ namespace Explorer.Encounters.Infrastructure
             services.AddScoped<IXPService, XPService>();
             services.AddScoped<IInternalClubFightService, ClubFightService>();
             services.AddScoped<IInternalClubService, ClubService>();
+            services.AddScoped<IStatisticsService, StatisticsService>();
         }
 
         private static void SetupInfrastructure(IServiceCollection services)

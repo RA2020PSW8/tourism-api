@@ -24,6 +24,7 @@ using Explorer.Tours.API.Internal;
 using Explorer.Tours.Core.UseCases.TourAuthoring;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Explorer.Stakeholders.Infrastructure.Database.NewFolder;
 
 namespace Explorer.Stakeholders.Infrastructure;
 
@@ -60,10 +61,14 @@ public static class StakeholdersStartup
         services.AddScoped<IAchievementService, AchievementService>();
         services.AddScoped<IInternalAchievementService, AchievementService>();
         services.AddScoped<IInternalClubService, ClubService>();
+        services.AddScoped<INewsletterPreferenceService, NewsletterPreferenceService>();
+        services.AddScoped<IInternalEmailService, EmailService>();
+        services.AddScoped<IEmailVerificationService, EmailService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
+        services.AddHostedService<NewsletterBackgroundService>();
         services.AddScoped(typeof(ICrudRepository<Person>),
             typeof(CrudDatabaseRepository<Person, StakeholdersContext>));
         services.AddScoped(typeof(ICrudRepository<ClubJoinRequest>),
@@ -86,6 +91,7 @@ public static class StakeholdersStartup
         services.AddScoped(typeof(IClubChallengeRequestRepository), typeof(ClubChallengeRequestRepository));
         services.AddScoped(typeof(IClubFightRepository), typeof(ClubFightRepository));
         services.AddScoped(typeof(IAchievementRepository), typeof(AchievementDatabaseRepository));
+        services.AddScoped(typeof(ICrudRepository<NewsletterPreference>), typeof(CrudDatabaseRepository<NewsletterPreference, StakeholdersContext>));
 
         services.AddControllers().AddJsonOptions(options =>
         {

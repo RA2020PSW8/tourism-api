@@ -19,4 +19,8 @@ public interface ITourService
         public  Result<PagedResult<TourDto>> GetCustomByUserPaged(int userId, int page, int pageSize);
         Result<TourDto> CreateCampaign(TourDto tour);
         Result<PagedResult<TourDto>> GetCampaignByUserPaged(int userId, int page, int pageSize);
+        public  Result<PagedResult<TourDto>> GetPublishedByAuthor(int authorId, int page, int pageSize);
+
 }
+
+
