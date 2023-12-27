@@ -29,7 +29,9 @@ public class ClubFightRepository : CrudDatabaseRepository<ClubFight, Stakeholder
         return _dbSet.AsNoTracking().Where(cf => cf.IsInProgress && cf.EndOfFight <= DateTime.UtcNow)
             .Include(cf => cf.Club1)
             .Include(cf => cf.Club1.Members)
+            .Include(cf => cf.Club1.Achievements)
             .Include(cf => cf.Club2)
-            .Include(cf => cf.Club2.Members).ToList();
+            .Include(cf => cf.Club2.Members)
+            .Include(cf => cf.Club2.Achievements).ToList();
     }
 }

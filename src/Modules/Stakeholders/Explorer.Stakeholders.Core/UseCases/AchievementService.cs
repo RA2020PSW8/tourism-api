@@ -24,12 +24,17 @@ namespace Explorer.Stakeholders.Core.UseCases
             _achievementRepository = repository;
         }
 
+        public AchievementDto GetNoTracking(int id)
+        {
+            return MapToDto(_achievementRepository.GetNoTracking(id));
+        }
+
         public AchievementDto getFightAchievement(ClubDto club)
         {
             if (!club.Achievements.Any(a => (int)a.Type == (int)AchievementType.FIGHT_2))
                 return club.FightsWon > 5 ? MapToDto(_achievementRepository.GetByType(AchievementType.FIGHT_2)) : null;
             else if (!club.Achievements.Any(a => (int)a.Type == (int)AchievementType.FIGHT_1))
-                return club.FightsWon > 10 ? MapToDto(_achievementRepository.GetByType(AchievementType.FIGHT_2)) : null;
+                return club.FightsWon > 10 ? MapToDto(_achievementRepository.GetByType(AchievementType.FIGHT_1)) : null;
             else
                 return null;
         }

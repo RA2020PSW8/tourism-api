@@ -14,14 +14,20 @@ namespace Explorer.Stakeholders.Infrastructure.Database.Repositories
     public class AchievementDatabaseRepository : CrudDatabaseRepository<Achievement, StakeholdersContext>, IAchievementRepository
     {
         protected readonly StakeholdersContext DbContext;
+
         public AchievementDatabaseRepository(StakeholdersContext dbContext) : base(dbContext)
         {
             DbContext = dbContext;
         }
 
+        public Achievement GetNoTracking(int id)
+        {
+            return DbContext.Achievements.AsNoTracking().FirstOrDefault(a => a.Id == id);
+        }
+
         public Achievement GetByType(AchievementType type)
         {
-            return DbContext.Achievements.FirstOrDefault(achievement => achievement.Type == type);
+            return DbContext.Achievements.AsNoTracking().FirstOrDefault(achievement => achievement.Type == type);
         }
     }
 }
