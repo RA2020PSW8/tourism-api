@@ -3,6 +3,7 @@ using Explorer.BuildingBlocks.Infrastructure.Database;
 using Explorer.Tours.API.Public;
 using Explorer.Tours.API.Public.Administration;
 using Explorer.Tours.API.Public.MarketPlace;
+using Explorer.Tours.API.Public.Statistics;
 using Explorer.Tours.API.Public.TourAuthoring;
 using Explorer.Tours.API.Public.TourExecution;
 using Explorer.Tours.Core.Domain;
@@ -11,6 +12,7 @@ using Explorer.Tours.Core.Mappers;
 using Explorer.Tours.Core.UseCases;
 using Explorer.Tours.Core.UseCases.Administration;
 using Explorer.Tours.Core.UseCases.MarketPlace;
+using Explorer.Tours.Core.UseCases.Statistics;
 using Explorer.Tours.Core.UseCases.TourAuthoring;
 using Explorer.Tours.Core.UseCases.TourExecution;
 using Explorer.Tours.Infrastructure.Database;
@@ -46,6 +48,9 @@ public static class ToursStartup
         services.AddScoped<IPublicKeypointService, PublicKeypointService>();
         services.AddScoped<ITourLifecycleService, TourLifecycleService>();
         services.AddScoped<ITourFilteringService, TourFilteringService>();
+        services.AddScoped<IStatisticsService, StatisticsService>();
+        services.AddScoped<IBundleService, BundleService>();
+
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -69,6 +74,7 @@ public static class ToursStartup
         services.AddScoped(typeof(IObjectRepository), typeof(ObjectRepository));
         services.AddScoped(typeof(ITourProgressRepository), typeof(TourProgressRepository));
         services.AddScoped(typeof(ITourReviewRepository), typeof(TourReviewRepository));
+        services.AddScoped ( typeof(IBundleRepository), typeof(BundleRepository));
 
         services.AddDbContext<ToursContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("tours"),

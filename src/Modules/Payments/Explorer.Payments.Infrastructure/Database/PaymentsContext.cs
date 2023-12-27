@@ -15,6 +15,8 @@ public class PaymentsContext : DbContext
     public DbSet<Wallet> Wallets { get; set; }
     public DbSet<PaymentRecord> PaymentRecords { get; set; }
 
+    public DbSet<BundlePrice> BundlePrices { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("payments");

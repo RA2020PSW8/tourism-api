@@ -34,6 +34,7 @@ namespace Explorer.Encounters.Infrastructure
             services.AddScoped<IInternalTouristPositionService, TouristPositionService>();
             services.AddScoped<IInternalUserService, UserService>();
             services.AddScoped<IInternalProfileService, ProfileService>();
+            services.AddScoped<IStatisticsService, StatisticsService>();
         }
 
         private static void SetupInfrastructure(IServiceCollection services)
