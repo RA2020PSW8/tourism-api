@@ -7,10 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\BuildingBlocks\Explorer.BuildingBlocks.Core\Explorer.BuildingBlocks.Core.csproj"/>
+        <ProjectReference Include="..\..\..\BuildingBlocks\Explorer.BuildingBlocks.Core\Explorer.BuildingBlocks.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Internal\"/>
+        <Folder Include="Internal\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Accord.MachineLearning" Version="3.8.0" />
     </ItemGroup>
 </Project>

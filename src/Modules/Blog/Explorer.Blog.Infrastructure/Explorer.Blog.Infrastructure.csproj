@@ -7,8 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\BuildingBlocks\Explorer.BuildingBlocks.Infrastructure\Explorer.BuildingBlocks.Infrastructure.csproj"/>
-        <ProjectReference Include="..\Explorer.Blog.Core\Explorer.Blog.Core.csproj"/>
+      <PackageReference Include="Accord.MachineLearning" Version="3.8.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\BuildingBlocks\Explorer.BuildingBlocks.Infrastructure\Explorer.BuildingBlocks.Infrastructure.csproj" />
+        <ProjectReference Include="..\Explorer.Blog.Core\Explorer.Blog.Core.csproj" />
     </ItemGroup>
 
 </Project>

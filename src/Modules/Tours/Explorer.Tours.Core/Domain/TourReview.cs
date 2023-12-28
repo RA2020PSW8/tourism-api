@@ -8,7 +8,7 @@ public class TourReview : Entity
     {
     }
 
-    public TourReview(int rating, string comment, DateTime visitDate, DateTime ratingDate, List<string> imageLinks,
+    public TourReview(double rating, string comment, DateTime visitDate, DateTime ratingDate, List<string> imageLinks,
         long userId, long tourId)
     {
         if (rating < 1 || rating > 5) throw new ArgumentException("Rating must be between 1 and 5");
@@ -22,7 +22,7 @@ public class TourReview : Entity
         TourId = tourId;
     }
 
-    public int Rating { get; init; }
+    public double Rating { get; init; }
     public string Comment { get; init; }
 
     public long? UserId { get; init; }

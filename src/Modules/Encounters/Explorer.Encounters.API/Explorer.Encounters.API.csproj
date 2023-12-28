@@ -14,4 +14,8 @@
     <Folder Include="Internal\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Accord.MachineLearning" Version="3.8.0" />
+  </ItemGroup>
+
 </Project>

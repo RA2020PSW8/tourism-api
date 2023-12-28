@@ -21,4 +21,9 @@ public class TourReviewRepository : CrudDatabaseRepository<TourReview, ToursCont
         task.Wait();
         return task.Result;
     }
+
+    /*public PagedResult<TourReview> GetPopularTours() { 
+        
+    
+    }*/
 }

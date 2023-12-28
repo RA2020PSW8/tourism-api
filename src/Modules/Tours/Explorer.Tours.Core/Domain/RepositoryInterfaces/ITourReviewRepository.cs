@@ -2,7 +2,7 @@
 
 namespace Explorer.Tours.Core.Domain.RepositoryInterfaces;
 
-public interface ITourReviewRepository
+public interface ITourReviewRepository: ICrudRepository<TourReview>
 {
     public PagedResult<TourReview> GetByTourId(long tourId, int page, int pageSize);
 }

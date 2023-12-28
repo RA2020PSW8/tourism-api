@@ -57,4 +57,15 @@ public class TourRepository : CrudDatabaseRepository<Tour, ToursContext>, ITourR
         task.Wait();
         return task.Result;
     }
+
+    public PagedResult<Tour> GetByIds(int page, int pageSize, List<long> tourIds)
+    {
+           var task =  _dbSet.Where(t => tourIds.Contains(t.Id))
+      .Include(t => t.Keypoints)
+      .Include(t => t.TourReviews)
+      .GetPagedById(page, pageSize);
+      task.Wait(); 
+
+      return task.Result;
+    }
 }
