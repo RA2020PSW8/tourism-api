@@ -64,6 +64,8 @@ public class TourReviewController : BaseApiController
         return CreateResponse(result);
     }
 
+    
+
     [HttpPost("averageRate")]
     [AllowAnonymous]
     public ActionResult<double> CalculateAverageRate([FromBody] List<TourReviewDto> reviews)

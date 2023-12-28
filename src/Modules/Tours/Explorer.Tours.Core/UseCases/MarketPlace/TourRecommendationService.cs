@@ -5,6 +5,8 @@ using Explorer.Tours.API.Public.MarketPlace;
 using Explorer.Tours.Core.Domain;
 using Explorer.Tours.Core.Domain.Enum;
 using Explorer.Tours.Core.Domain.RepositoryInterfaces;
+using Explorer.Stakeholders.API.Public;
+
 
 using FluentResults;
 using System;
@@ -32,12 +34,16 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
         protected readonly ITouristPositionRepository _touristPositionRepository;
         protected readonly ITourProgressRepository _tourProgressRepository;
         protected readonly ITourPurchaseTokenRepository _tourPurchaseTokenRepository;
+
+        protected readonly IProfileService _profileService; 
+        
      
         private string _apiDirectory;
 
         public TourRecommendationService(
             ITourReviewRepository tourReviewRepository, ITourRepository tourRepository, ITourPreferenceRepository tourPreferenceRepository, ITouristPositionRepository touristPositionRepository,  
-            IKeypointRepository keyPointRepository,ITourProgressRepository tourProgressRepository, ITourPurchaseTokenRepository tourPurchaseTokenRepository,IMapper mapper) : base(mapper)
+            IKeypointRepository keyPointRepository,ITourProgressRepository tourProgressRepository, ITourPurchaseTokenRepository tourPurchaseTokenRepository, IProfileService profileService, 
+            IMapper mapper) : base(mapper)
         {
             string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             _apiDirectory = GetRootDir();
@@ -50,9 +56,52 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
             _tourRepository = tourRepository;
             _keyPointRepository = keyPointRepository;
             _tourProgressRepository = tourProgressRepository;
-            _tourPurchaseTokenRepository = tourPurchaseTokenRepository; 
+            _tourPurchaseTokenRepository = tourPurchaseTokenRepository;
+
+            _profileService = profileService; 
         }
 
+        public Result<PagedResult<KeyValuePair<TourDto,double>>> GetRecommendedCommunityTours(double latitude, double longitude, long id, long tourId) {
+            var following = _profileService.GetFollowing(id);
+            var recommendationSet = _reviewRepository.GetPaged(0, 0).Results; 
+
+            if (following.IsSuccess)
+            {
+                List<KeyValuePair<TourDto, double>> allRecommendations = new List<KeyValuePair<TourDto, double>>();
+
+                foreach (var person in following.Value.Results)
+                {
+                    var tourCompletion = _tourProgressRepository.GetCompletedByUser(person.UserId).ToList();
+                    if (tourCompletion != null && tourCompletion.Select(t => t.TourId).Contains(tourId))
+                    {
+                        var recommendations = GetRecommendedTours(latitude, longitude, person.UserId);
+                        if (recommendations.IsSuccess)
+                        {
+                            allRecommendations.AddRange(recommendations.Value.Results.Select(tour =>
+                            {
+                                var tourReviews = recommendationSet.Where(r => r.TourId == tour.Id);
+                                var averageRating = tourReviews.Any() ? tourReviews.Average(review => review.Rating) : 0;
+                                return new KeyValuePair<TourDto, double>(tour, averageRating);
+                            }));
+                        }
+                    }
+                }
+
+                var combinedRecommendations = new PagedResult<KeyValuePair<TourDto, double>>(
+                    allRecommendations,
+                    allRecommendations.Count
+                );
+
+                return combinedRecommendations;
+            }
+
+            return new PagedResult<KeyValuePair<TourDto, double>>(new List<KeyValuePair<TourDto, double>>(), 0);
+
+
+
+
+
+        }
         public Result<PagedResult<TourDto>> GetRecommendedToursAI(int page, int pageSize, int id)
         {
         
@@ -238,7 +287,7 @@ namespace Explorer.Tours.Core.UseCases.MarketPlace
 
        
 
-        public Result<PagedResult<TourDto>> GetRecommendedActiveTours(double latitude, double longitutde)
+        public Result<PagedResult<TourDto>> GetRecommendedActiveTours(double latitude, double longitude)
         {
 
             List<long> activeIds = _tourProgressRepository.GetActiveTours().Select(t => t.TourId).Distinct().ToList();

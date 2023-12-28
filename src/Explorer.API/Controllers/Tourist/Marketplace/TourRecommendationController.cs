@@ -44,6 +44,15 @@ namespace Explorer.API.Controllers.Tourist.Marketplace
             return CreateResponse(result); 
         }
 
+        [HttpGet("recommended-tours-community/{id:int}")]
+        public ActionResult<PagedResult<KeyValuePair<TourDto,double>>> GetCommunityTourRecommendations([FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] long tourId, long id) {
+
+            var result = _tourRecommendationService.GetRecommendedCommunityTours(latitude, longitude, id, tourId);
+
+            return CreateResponse(result); 
+        
+        }
+
 
         [HttpGet("recommended-tours-kp")]
         public ActionResult<PagedResult<TourDto>> GetRecommendedToursByKeypoints([FromQuery] double latitude, [FromQuery]double longitude)

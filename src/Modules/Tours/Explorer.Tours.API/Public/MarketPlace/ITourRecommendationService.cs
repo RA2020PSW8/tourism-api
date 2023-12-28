@@ -15,6 +15,8 @@ namespace Explorer.Tours.API.Public.MarketPlace
         public Result<PagedResult<TourDto>> GetRecommendedToursByKeypoints(double latitude, double longitude);
 
         public Result<PagedResult<TourDto>> GetRecommendedTours(double latitude, double longitutde, long id);
-        public Result<PagedResult<TourDto>> GetRecommendedActiveTours(double latitude, double longitutde); 
+        public Result<PagedResult<TourDto>> GetRecommendedActiveTours(double latitude, double longitude); 
+
+        public Result<PagedResult<KeyValuePair<TourDto,double>>> GetRecommendedCommunityTours(double latitude, double longitude, long id, long tourId);
     }
 }
