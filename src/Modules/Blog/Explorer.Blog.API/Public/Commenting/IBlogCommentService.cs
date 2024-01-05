@@ -9,6 +9,6 @@ public interface IBlogCommentService
     Result<PagedResult<BlogCommentDto>> GetPaged(int page, int pageSize, long blogId);
     Result<BlogCommentDto> Get(int id, long userId);
     Result<BlogCommentDto> Create(BlogCommentDto blogCommentDto);
-    Result<BlogCommentDto> Update(BlogCommentDto blogCommentDto);
+    Result<BlogCommentDto> Update(BlogCommentDto blogCommentDto,long userId);
     Result Delete(int id);
 }
