@@ -37,7 +37,7 @@ public class CommentCommandTests : BaseBlogIntegrationTest
         result.Id.ShouldNotBe(0);
         result.Id.ShouldBe(result.Id);
 
-        var storedEntity = dbContext.ForumComments.FirstOrDefault(i => i.Comment == newEntity.Comment);
+        var storedEntity = dbContext.BlogComments.FirstOrDefault(i => i.Comment == newEntity.Comment);
         storedEntity.ShouldNotBeNull();
         storedEntity.Id.ShouldBe(result.Id);
     }
@@ -88,10 +88,10 @@ public class CommentCommandTests : BaseBlogIntegrationTest
         result.LastEditTime.ShouldBe(updatedEntity.LastEditTime);
         result.IsDeleted.ShouldBe(updatedEntity.IsDeleted);
 
-        var storedEntity = dbContext.ForumComments.FirstOrDefault(i => i.Comment == updatedEntity.Comment);
+        var storedEntity = dbContext.BlogComments.FirstOrDefault(i => i.Comment == updatedEntity.Comment);
         storedEntity.ShouldNotBeNull();
         storedEntity.Comment.ShouldBe(updatedEntity.Comment);
-        var oldEntity = dbContext.ForumComments.FirstOrDefault(i => i.Comment == "komentar 1");
+        var oldEntity = dbContext.BlogComments.FirstOrDefault(i => i.Comment == "komentar 1");
         oldEntity.ShouldBeNull();
     }
 
@@ -124,7 +124,7 @@ public class CommentCommandTests : BaseBlogIntegrationTest
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
 
-        var storedCourse = dbContext.ForumComments.FirstOrDefault(i => i.Id == -1);
+        var storedCourse = dbContext.BlogComments.FirstOrDefault(i => i.Id == -1);
         storedCourse.ShouldBeNull();
     }
 

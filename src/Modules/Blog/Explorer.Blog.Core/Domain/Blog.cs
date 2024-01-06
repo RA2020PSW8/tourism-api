@@ -33,10 +33,15 @@ public class Blog : Entity
     public DateOnly CreationDate { get; init; }
     public List<string>? ImageLinks { get; init; }
     public ICollection<BlogStatus>? BlogStatuses { get; init; }
-    public List<BlogRating>? BlogRatings { get; set; } = new();
+    public List<BlogRating>? BlogRatings { get; set; }
 
     public void AddRating(BlogRating blogRating)
     {
+        if (BlogRatings == null) 
+        {
+            BlogRatings = new();
+        }
+
         var foundRating =
             BlogRatings.FirstOrDefault(r => r.UserId == blogRating.UserId && r.BlogId == blogRating.BlogId);
         if (foundRating != null)
