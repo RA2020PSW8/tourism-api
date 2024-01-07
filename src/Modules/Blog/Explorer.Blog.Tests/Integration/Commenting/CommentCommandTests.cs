@@ -70,9 +70,10 @@ public class CommentCommandTests : BaseBlogIntegrationTest
         var updatedEntity = new BlogCommentDto
         {
             Id = -1,
-            BlogId = 1,
-            Username = "steva",
-            Comment = "novi komentar",
+            BlogId = -1,
+            UserId = -1,
+            Username = "turista1",
+            Comment = "azurirani",
             PostTime = DateTime.Now.ToUniversalTime(),
             LastEditTime = DateTime.Now.ToUniversalTime(),
             IsDeleted = false
@@ -103,7 +104,13 @@ public class CommentCommandTests : BaseBlogIntegrationTest
         var updatedEntity = new BlogCommentDto
         {
             Id = -69,
-            Comment = "nesto ovde ne valja"
+            BlogId = -1,
+            UserId= -1,
+            Username = "turista1",
+            Comment = "novi komentar",
+            PostTime = DateTime.Now.ToUniversalTime(),
+            LastEditTime = DateTime.Now.ToUniversalTime(),
+            IsDeleted = false
         };
 
         var result = (ObjectResult)controller.Update(updatedEntity).Result;
