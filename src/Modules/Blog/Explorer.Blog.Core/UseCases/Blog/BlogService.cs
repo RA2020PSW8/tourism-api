@@ -189,20 +189,22 @@ public class BlogService : BaseService<BlogDto, Domain.Blog>, IBlogService
         var commentNumber = _blogCommentService.GetPaged(0, 0, blog.Id).Value.Results.Count();
 
         double score = (upvotes - downvotes) * (commentNumber + 1);
-        if (score < 0)
+
+        if (score > 35 || commentNumber >= 2)
+        {
+            status = "POPULAR";
+        }
+        else if (score > 2 || commentNumber >= 1)
+        {
+            status = "ACTIVE";
+        }
+        else if(score < 0)
         {
             blog.CloseBlog();
             status = "CLOSED";
         }
-        else if (score > 35 || commentNumber >= 2)
+        else
         {
-            status = "ACTIVE";
-        }
-        else if (score > 2 || commentNumber >= 1)
-        {
-            status = "OPENED";
-        }
-        else {
             status = "NEW";
         }
 
