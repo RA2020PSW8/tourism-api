@@ -83,12 +83,19 @@ public class BlogCommentService : BaseService<BlogCommentDto, BlogComment>, IBlo
         return finalResult;
     }
 
-    public Result<BlogCommentDto> Update(BlogCommentDto blogCommentDto)
+    public Result<BlogCommentDto> Update(BlogCommentDto blogCommentDto,long userId)
     {
         try
         {
-            var result = _repository.Update(MapToDomain(blogCommentDto));
-            return MapToDto(result);
+            if (blogCommentDto.UserId == userId)
+            {
+                var result = _repository.Update(MapToDomain(blogCommentDto));
+                return MapToDto(result);
+            }
+            else 
+            {
+                return Result.Fail(FailureCode.InvalidArgument).WithError("Not your comment");
+            }
         }
         catch (KeyNotFoundException e)
         {
