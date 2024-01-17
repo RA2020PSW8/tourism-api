@@ -14,6 +14,7 @@ namespace Explorer.Encounters.Core.Domain.RepositoryInterfaces
         public PagedResult<Encounter> GetByUser(int page, int pageSize, long userId);
         public PagedResult<Encounter> GetTouristCreatedEncounters(int page, int pageSize);
         PagedResult<Encounter> GetNearbyByType(int page, int pageSize, double longitude, double latitude, EncounterType type);
+        PagedResult<Encounter> GetNearby(int page, int pageSize, double longitude, double latitude);
 
     }
 }

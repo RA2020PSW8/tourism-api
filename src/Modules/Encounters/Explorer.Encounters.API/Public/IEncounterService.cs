@@ -18,6 +18,7 @@ namespace Explorer.Encounters.API.Public
         Result<EncounterDto> Decline(EncounterDto encounter);
         Result<PagedResult<EncounterDto>> GetTouristCreatedEncounters(int page, int pageSize);
         Result<PagedResult<EncounterDto>> GetNearbyHidden(int page, int pageSize, int userId);
+        Result<PagedResult<EncounterDto>> GetNearby(int page, int pageSize, int userId);
 
     }
 }
