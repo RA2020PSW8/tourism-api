@@ -59,6 +59,7 @@ namespace Explorer.Encounters.Core.UseCases
                 try
                 {
                     var result = _encounterCompletionRepository.GetByEncounter(id); // can be moved to Repo probably, so we don't have to do foreach here
+                    if (result == null) continue;
                     results.Add(result);
                 }
                 catch(KeyNotFoundException e)
