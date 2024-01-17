@@ -6,4 +6,5 @@ public interface IPersonRepository : ICrudRepository<Person>
 {
     Person GetFullProfile(long personId);
     bool Exists(long personId);
+    Person GetFull(long personId);
 }
