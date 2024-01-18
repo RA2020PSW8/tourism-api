@@ -19,10 +19,10 @@ public class TourPurchaseTokenController : BaseApiController
         _tourPurchaseTokenService = tourPurchaseTokenService;
     }
 
-    [HttpPost("{id:int}")]
-    public ActionResult BuyShoppingCart(int id, [FromBody] List<CouponDto> selectedCoupons)
+    [HttpGet("{id:int}")]
+    public ActionResult BuyShoppingCart(int id)
     {
-        var result = _tourPurchaseTokenService.BuyShoppingCart(id, selectedCoupons);
+        var result = _tourPurchaseTokenService.BuyShoppingCart(id, new List<CouponDto>());
         return CreateResponse(result);
     }
 
