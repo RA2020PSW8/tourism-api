@@ -24,8 +24,8 @@ namespace Explorer.Encounters.Core.UseCases
         protected IInternalAchievementService _achievementService;
         protected IInternalClubService _clubService;
 
-        private const double HiddenLocationRange = 0.50;
-        private const double HiddenLocationInterval = 30;
+        private const double HiddenLocationRange = 0.50; // was 0.050
+        private const double HiddenLocationInterval = 5;
 
         public EncounterCompletionService(IEncounterCompletionRepository encoutnerCompletionRepository, IInternalTouristPositionService touristPositionService,
             IEncounterRepository encounterRepository, IInternalProfileService profileService,
@@ -59,6 +59,7 @@ namespace Explorer.Encounters.Core.UseCases
                 try
                 {
                     var result = _encounterCompletionRepository.GetByEncounter(id); // can be moved to Repo probably, so we don't have to do foreach here
+                    if (result == null) continue;
                     results.Add(result);
                 }
                 catch(KeyNotFoundException e)
