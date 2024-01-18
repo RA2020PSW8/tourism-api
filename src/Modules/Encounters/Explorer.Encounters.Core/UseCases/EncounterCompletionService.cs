@@ -25,7 +25,7 @@ namespace Explorer.Encounters.Core.UseCases
         protected IInternalClubService _clubService;
 
         private const double HiddenLocationRange = 0.050;
-        private const double HiddenLocationInterval = 30;
+        private const double HiddenLocationInterval = 5;
 
         public EncounterCompletionService(IEncounterCompletionRepository encoutnerCompletionRepository, IInternalTouristPositionService touristPositionService,
             IEncounterRepository encounterRepository, IInternalProfileService profileService,
