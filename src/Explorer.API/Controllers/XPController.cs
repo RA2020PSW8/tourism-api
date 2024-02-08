@@ -30,7 +30,7 @@ namespace Explorer.API.Controllers
         [HttpGet("fight/update")]
         public ActionResult<Result> SneakyUpdateFights()
         {
-            _xpService.UpdateFights();
+            _xpService.UpdateFights(false);
             return CreateResponse(Result.Ok());
         }
     }

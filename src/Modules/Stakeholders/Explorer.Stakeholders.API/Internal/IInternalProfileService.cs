@@ -8,5 +8,5 @@ public interface IInternalProfileService
     Result<List<PersonDto>> GetMany(List<int> peopleIds);
     void AddXP(int userId, int addedXp);
     Result<bool> CanTouristCreateEncounters(long touristId);
-    Result<PersonDto> Get(long userId);
+    Result<PersonDto> GetFull(long userId);
 }

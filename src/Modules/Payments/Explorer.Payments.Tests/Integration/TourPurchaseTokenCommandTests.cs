@@ -26,7 +26,7 @@ public class TourPurchaseTokenCommandTests : BasePaymentsIntegrationTest
         List<CouponDto> coupons = new List<CouponDto>();
 
         // Act
-        var result = (ObjectResult)controller.BuyShoppingCart(-1, coupons);
+        var result = (ObjectResult)controller.BuyShoppingCart(-1);
 
         // Assert - Response
         result.ShouldNotBeNull();
@@ -49,7 +49,7 @@ public class TourPurchaseTokenCommandTests : BasePaymentsIntegrationTest
         List<CouponDto> coupons = new List<CouponDto>();
 
         // Act
-        var result = (ObjectResult)controller.BuyShoppingCart(-111, coupons);
+        var result = (ObjectResult)controller.BuyShoppingCart(-111);
 
         // Assert
         result.ShouldNotBeNull();
@@ -66,7 +66,7 @@ public class TourPurchaseTokenCommandTests : BasePaymentsIntegrationTest
         List<CouponDto> coupons = new List<CouponDto>();
 
         // Act
-        var result = ((ObjectResult)controller.BuyShoppingCart(-3, coupons));
+        var result = ((ObjectResult)controller.BuyShoppingCart(-3));
 
         // Assert
         result.ShouldNotBeNull();
@@ -83,7 +83,7 @@ public class TourPurchaseTokenCommandTests : BasePaymentsIntegrationTest
         List<CouponDto> coupons = new List<CouponDto>();
 
         // Act
-        var result = (ObjectResult)controller.BuyShoppingCart(-1, coupons);
+        var result = (ObjectResult)controller.BuyShoppingCart(-1);
 
         // Assert
         result.ShouldNotBeNull();

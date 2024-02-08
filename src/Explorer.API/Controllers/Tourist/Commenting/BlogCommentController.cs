@@ -44,8 +44,7 @@ public class BlogCommentController : BaseApiController
     [HttpPut("{id:int}")]
     public ActionResult<BlogCommentDto> Update([FromBody] BlogCommentDto comment)
     {
-        comment.UserId = User.PersonId();
-        var result = _blogCommentService.Update(comment);
+        var result = _blogCommentService.Update(comment, User.PersonId());
         return CreateResponse(result);
     }
 

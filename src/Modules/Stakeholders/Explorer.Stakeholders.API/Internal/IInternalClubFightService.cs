@@ -11,6 +11,7 @@ namespace Explorer.Stakeholders.API.Internal
     public interface IInternalClubFightService
     {
         Result<ClubFightDto> Get(int id);
+        Result<List<ClubFightDto>> GetTricky();
         Result<List<ClubFightDto>> GetPassedUnfinishedFights();
         Result<List<ClubFightDto>> UpdateMultiple(List<ClubFightDto> clubFights);
     }

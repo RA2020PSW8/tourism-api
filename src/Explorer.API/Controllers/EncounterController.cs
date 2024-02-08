@@ -66,6 +66,14 @@ namespace Explorer.API.Controllers
             return CreateResponse(result);
         }
 
+        [HttpGet("nearby")]
+        public ActionResult<PagedResult<EncounterDto>> GetNearby([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var userId = ClaimsPrincipalExtensions.PersonId(User);
+            var result = _encounterService.GetNearby(page, pageSize, userId);
+            return CreateResponse(result);
+        }
+
         [HttpGet("byUser")]
         public ActionResult<PagedResult<EncounterDto>> GetByUser([FromQuery] int page, [FromQuery] int pageSize)
         {

@@ -24,8 +24,8 @@ namespace Explorer.Encounters.Core.UseCases
         protected IInternalAchievementService _achievementService;
         protected IInternalClubService _clubService;
 
-        private const double HiddenLocationRange = 0.050;
-        private const double HiddenLocationInterval = 30;
+        private const double HiddenLocationRange = 0.50; // was 0.050
+        private const double HiddenLocationInterval = 5;
 
         public EncounterCompletionService(IEncounterCompletionRepository encoutnerCompletionRepository, IInternalTouristPositionService touristPositionService,
             IEncounterRepository encounterRepository, IInternalProfileService profileService,
@@ -59,6 +59,7 @@ namespace Explorer.Encounters.Core.UseCases
                 try
                 {
                     var result = _encounterCompletionRepository.GetByEncounter(id); // can be moved to Repo probably, so we don't have to do foreach here
+                    if (result == null) continue;
                     results.Add(result);
                 }
                 catch(KeyNotFoundException e)
@@ -143,7 +144,7 @@ namespace Explorer.Encounters.Core.UseCases
         public Result<List<EncounterCompletionDto>> CheckNearbyEncounters(int userId)
         {
             TouristPositionDto touristPosition = _touristPositionService.GetByUser(userId).ValueOrDefault;
-            PersonDto tourist = _profileService.Get(userId).Value;
+            PersonDto tourist = _profileService.GetFull(userId).Value;
             if(touristPosition == null)
             {
                 return Result.Fail(FailureCode.NotFound).WithError("You don't have set position");
@@ -151,12 +152,12 @@ namespace Explorer.Encounters.Core.UseCases
             List<Encounter> nearbyEncounters = _encounterRepository.GetNearbyByType(0, 0, touristPosition.Longitude, touristPosition.Latitude, EncounterType.LOCATION).Results.ToList();
             List<EncounterCompletion> completedEncounters = new List<EncounterCompletion>();
 
-            foreach(var encounter in nearbyEncounters)
+            foreach (var encounter in nearbyEncounters)
             {
                 EncounterCompletion encounterCompletion = _encounterCompletionRepository.GetByUserAndEncounter(userId, encounter.Id);
                 if (encounterCompletion == null || encounterCompletion.IsFinished) continue;
 
-                if (DistanceCalculator.CalculateDistance((double)encounter.ImageLatitude, (double)encounter.ImageLongitude, 
+                if (DistanceCalculator.CalculateDistance((double)encounter.ImageLatitude, (double)encounter.ImageLongitude,
                     touristPosition.Latitude, touristPosition.Longitude) > HiddenLocationRange)
                 {
                     encounterCompletion.Reset();
@@ -169,14 +170,14 @@ namespace Explorer.Encounters.Core.UseCases
                     _encounterCompletionRepository.Update(encounterCompletion);
                 }
 
-                if((DateTime.UtcNow - encounterCompletion.LastUpdatedAt).TotalSeconds >= HiddenLocationInterval)
+                if ((DateTime.UtcNow - encounterCompletion.LastUpdatedAt).TotalSeconds >= HiddenLocationInterval)
                 {
                     encounterCompletion.Complete();
                     _profileService.AddXP((int)userId, encounterCompletion.Xp);
                     _encounterCompletionRepository.Update(encounterCompletion);
                     completedEncounters.Add(encounterCompletion);
 
-                    if (tourist.Club == null)
+                    if (tourist.Club == null || tourist.Club.Achievements.Any(a => (int)a.Type == 0))
                         break;
                     List<long> memberIds = tourist.Club.Members.ConvertAll(member => member.Id);
                     List <EncounterCompletion> completions = _encounterCompletionRepository.GetMembersCompletedHiddenEncounters(memberIds);

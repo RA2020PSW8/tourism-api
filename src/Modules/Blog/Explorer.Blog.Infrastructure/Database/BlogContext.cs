@@ -10,7 +10,7 @@ public class BlogContext : DbContext
     }
 
     public DbSet<Core.Domain.Blog> Blogs { get; set; }
-    public DbSet<BlogComment> ForumComments { get; set; }
+    public DbSet<BlogComment> BlogComments { get; set; }
     public DbSet<BlogStatus> BlogStatuses { get; set; }
     public DbSet<BlogRating> BlogRatings { get; set; }
 

@@ -11,6 +11,6 @@ namespace Explorer.Encounters.API.Public
     public interface IXPService
     {
         Result<ClubFightXPInfoDto> GetClubFightXPInfo(int clubFightId);
-        void UpdateFights();
+        void UpdateFights(bool tricky);
     }
 }

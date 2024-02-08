@@ -26,9 +26,26 @@ public class ClubFightService : CrudService<ClubFightDto, ClubFight>, IClubFight
         return MapToDto(result);
     }
 
+    public Result<ClubFightDto> Get(int fightId)
+    {
+        var result = _fightRepository.Get(fightId);
+
+        return MapToDto(result);
+    }
+
+    public Result<List<ClubFightDto>> GetTricky()
+    {
+        var result = _fightRepository.GetTricky();
+
+        return MapToDto(result);
+    }
+    
+    
+
     public Result<ClubFightDto> CreateFromRequest(ClubChallengeRequestDto request)
     {
-        ClubFight existingFight = _fightRepository.GetCurrentFightForOneOfTwoClubs(request.ChallengerId, request.ChallengedId);
+        ClubFight existingFight =
+            _fightRepository.GetCurrentFightForOneOfTwoClubs(request.ChallengerId, request.ChallengedId);
         if (existingFight != null)
         {
             return null;

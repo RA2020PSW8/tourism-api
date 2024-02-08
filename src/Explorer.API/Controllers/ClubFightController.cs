@@ -1,3 +1,4 @@
+using Explorer.Encounters.API.Public;
 using Explorer.Stakeholders.API.Dtos;
 using Explorer.Stakeholders.API.Public;
 using Explorer.Stakeholders.Core.UseCases;
@@ -12,10 +13,12 @@ namespace Explorer.API.Controllers;
 public class ClubFightController : BaseApiController
 {
     private readonly IClubFightService _clubFightService;
+    private readonly IXPService _xpService;
 
-    public ClubFightController(IClubFightService clubFightService)
+    public ClubFightController(IClubFightService clubFightService, IXPService xpService)
     {
         _clubFightService = clubFightService;
+        _xpService = xpService;
     }
 
     [HttpGet("{fightId:int}")]
@@ -30,5 +33,15 @@ public class ClubFightController : BaseApiController
     {
         var result = _clubFightService.GetAllByClub(clubId);
         return CreateResponse(result);
+    }
+    
+    [HttpGet("end/{fightId:int}")]
+    public void EndFight([FromRoute] int fightId)
+    {
+        // var fightResult = _clubFightService.Get(fightId);
+        // ClubFightDto fightDto = fightResult.Value;
+        // fightDto.EndOfFight = DateTime.Now;
+        // _clubFightService.Update(fightDto);
+        _xpService.UpdateFights(true);
     }
 }

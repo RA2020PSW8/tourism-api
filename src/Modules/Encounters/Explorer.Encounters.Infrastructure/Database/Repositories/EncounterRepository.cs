@@ -94,5 +94,47 @@ namespace Explorer.Encounters.Infrastructure.Database.Repositories
             task.Wait();
             return task.Result;
         }
+
+        public PagedResult<Encounter> GetNearby(int page, int pageSize, double longitude, double latitude)
+        {
+            double earthRadius = 6371;
+            var degreeRad = Math.PI / 180.0;
+
+            var longDegree = longitude * degreeRad;
+            var latDegree = latitude * degreeRad;
+
+            var task = _dbSet
+                .Where(e =>
+                    2 * earthRadius *
+                    Math.Atan2(
+                        Math.Sqrt(
+                            Math.Sin((e.Latitude * degreeRad - latDegree) / 2) *
+                            Math.Sin((e.Latitude * degreeRad - latDegree) / 2)
+                            +
+                            Math.Cos(e.Latitude * degreeRad) * Math.Cos(latDegree)
+                                                              *
+                                                              Math.Sin((e.Longitude * degreeRad - longDegree) / 2) *
+                                                              Math.Sin((e.Longitude * degreeRad - longDegree) / 2)
+                        )
+                        ,
+                        Math.Sqrt(
+                            1
+                            -
+                            (
+                                Math.Sin((e.Latitude * degreeRad - latDegree) / 2) *
+                                Math.Sin((e.Latitude * degreeRad - latDegree) / 2)
+                                +
+                                Math.Cos(e.Latitude * degreeRad) * Math.Cos(latDegree)
+                                                                  *
+                                                                  Math.Sin((e.Longitude * degreeRad - longDegree) / 2) *
+                                                                  Math.Sin((e.Longitude * degreeRad - longDegree) / 2)
+                            )
+                        )
+                    )
+                    <= e.Range)
+                .GetPagedById(page, pageSize);
+            task.Wait();
+            return task.Result;
+        }
     }
 }
