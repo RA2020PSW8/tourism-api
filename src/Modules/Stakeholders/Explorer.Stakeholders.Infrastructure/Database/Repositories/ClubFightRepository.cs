@@ -18,6 +18,11 @@ public class ClubFightRepository : CrudDatabaseRepository<ClubFight, Stakeholder
     {
         return _dbSet.AsNoTracking().Include(cf => cf.Club1).Include(cf => cf.Club2).FirstOrDefault(cf => cf.Id == fightId);
     }
+    
+    public ClubFight Get(int fightId)
+    {
+        return _dbSet.FirstOrDefault(cf => cf.Id == fightId);
+    }
 
     public ClubFight GetCurrentFightForOneOfTwoClubs(long clubId1, long clubId2)
     {
@@ -27,6 +32,16 @@ public class ClubFightRepository : CrudDatabaseRepository<ClubFight, Stakeholder
     public List<ClubFight> GetPassedUnfinishedFights()
     {
         return _dbSet.AsNoTracking().Where(cf => cf.IsInProgress && cf.EndOfFight <= DateTime.UtcNow)
+            .Include(cf => cf.Club1)
+            .Include(cf => cf.Club1.Members)
+            .Include(cf => cf.Club1.Achievements)
+            .Include(cf => cf.Club2)
+            .Include(cf => cf.Club2.Members)
+            .Include(cf => cf.Club2.Achievements).ToList();
+    }    
+    public List<ClubFight> GetTricky()
+    {
+        return _dbSet.AsNoTracking().Where(cf => cf.IsInProgress)
             .Include(cf => cf.Club1)
             .Include(cf => cf.Club1.Members)
             .Include(cf => cf.Club1.Achievements)

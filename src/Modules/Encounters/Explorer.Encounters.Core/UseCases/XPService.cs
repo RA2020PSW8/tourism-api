@@ -81,10 +81,18 @@ namespace Explorer.Encounters.Core.UseCases
         }
 
         /* Kinda doesn't belong in XPService */
-        public void UpdateFights()
+        public void UpdateFights(bool tricky = false)
         {
-            List<ClubFightDto> passedUnfinishedFights = _clubFightService.GetPassedUnfinishedFights().ValueOrDefault;
+            List<ClubFightDto> passedUnfinishedFights;
 
+            if (tricky)
+            {
+                passedUnfinishedFights = _clubFightService.GetTricky().ValueOrDefault;
+            }
+            else
+            {
+                passedUnfinishedFights = _clubFightService.GetPassedUnfinishedFights().ValueOrDefault;
+            }
             foreach (var clubFight in passedUnfinishedFights)
             {
                 ClubDto winner = DeclareWinner(clubFight);
