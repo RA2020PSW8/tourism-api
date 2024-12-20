@@ -26,7 +26,7 @@ Community module that provides users with a place to create and share blogs, lea
 
 ## Tests
 
-The project includes automatic tests written with `xUnit`, including Unit and Integration tests. Tests are located within corresponding modules and can be run with the Test Explorer inside IDE. It's important to create a test database using the similar steps as mentioned in the [Running project](#running-project) section, parameters about the test database can be found inside the [DbConnectionStringBuilder.cs](\src\BuildingBlocks/Explorer.BuildingBlocks.Tests/BaseTestFactory.cs) file.
+The project includes automatic tests written with `xUnit`, including Unit and Integration tests. Tests are located within corresponding modules and can be run with the Test Explorer inside IDE. It's important to create a test database using the similar steps as mentioned in the [Running project](#running-project) section, parameters about the test database can be found inside the [DbConnectionStringBuilder.cs](/src/BuildingBlocks/Explorer.BuildingBlocks.Tests/BaseTestFactory.cs) file.
 ## Running project
 ### Requirements
 You must have software from this list installed on your system to be able to run the backend of the project
@@ -35,7 +35,7 @@ You must have software from this list installed on your system to be able to run
 
 ### Running project
 After you setup all the required software follow these steps to run the application
-1. create a database on your PostgreSQL server. You can use parameters found inside [DbConnectionStringBuilder.cs](\src\BuildingBlocks\Explorer.BuildingBlocks.Infrastructure\Database\DbConnectionStringBuilder.cs) file or if you create a database with different parameters update the linked file
+1. create a database on your PostgreSQL server. You can use parameters found inside [DbConnectionStringBuilder.cs](/src/BuildingBlocks/Explorer.BuildingBlocks.Infrastructure/Database/DbConnectionStringBuilder.cs) file or if you create a database with different parameters update the linked file
 2. run the `tutours-db-backup.sql` script found inside the [/scripts](/scripts) folder. You can do so by using the `/include <filename>` command inside the PSQL Tool
 3. enter the Visual Studio or JetBrains Rider IDE, build the project and run. You will most likely be prompted to install the IIS Express SSL certificate, accept it 
 
